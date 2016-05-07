@@ -1,0 +1,25 @@
+{
+  "generator-m-ionic": {
+    "answers": {
+      "appName": "Skillit",
+      "appId": "com.skillit.app",
+      "ionicCss": false,
+      "bowerPackages": [
+        "angular-dynamic-locale#~0.1.27",
+        "angular-translate#~2.11.0",
+        "angular-translate-loader-static-files#~2.11.0",
+        "localforage#~1.4.0"
+      ],
+      "platforms": [],
+      "plugins": [
+        "cordova-plugin-device",
+        "ionic-plugin-keyboard",
+        "cordova-plugin-splashscreen"
+      ],
+      "appModule": "Skillit",
+      "ecosystems": [
+        "ionic-platform"
+      ]
+    }
+  }
+}
