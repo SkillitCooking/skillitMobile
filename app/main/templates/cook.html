@@ -1,0 +1,36 @@
+<ion-view view-title="Skillit">
+  <!-- do you want padding? -->
+          
+    <ion-content class="padding">
+      <!-- content goes here -->
+      <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
+      <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
+        <div class="wrap-class" ng-class="getWrapClass($index)">
+          <h2>{{name}}</h2>
+          <ion-list>
+            <div ng-repeat="ingredient in ingredients">
+              <ion-checkbox ng-model="ingredient.isSelected">
+                {{ingredient.name}}
+              </ion-checkbox>
+              <ion-item ng-if="ingredient.isSelected">
+                Forms:
+                <div ng-repeat="form in ingredient.ingredientForms">
+                  {{form.name}}
+                  <label class="toggle toggle-royal">
+                   <input type="checkbox" ng-model="form.isSelected">
+                   <div class="track">
+                     <div class="handle"></div>
+                   </div>
+                 </label>
+                </div>
+              </ion-item>
+            </div>
+          </ion-list>
+          <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button button-stable">Previous</button>
+          <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button button-energized">Next</button>
+          <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button button-positive">Choose Recipes</button>
+        </div>
+    </ion-slide>
+          </ion-slide-box>
+</ion-content>
+</ion-view>

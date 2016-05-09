@@ -3,9 +3,13 @@ angular.module('main', [
   'ionic',
   'ngCordova',
   'ui.router',
+  'restangular'
   // TODO: load other modules selected during generation
 ])
-.config(function ($stateProvider, $urlRouterProvider) {
+.constant('_', window._)
+.config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
+  //Restangular setup
+  RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
 
   // ROUTING with ui.router
   $urlRouterProvider.otherwise('/main/list');
@@ -31,6 +35,55 @@ angular.module('main', [
           'tab-list': {
             templateUrl: 'main/templates/list-detail.html',
             // controller: 'SomeCtrl as ctrl'
+          }
+        }
+      })
+      //base screen of flow for cook tab
+      .state('main.cook', {
+        url: '/cook',
+        views: {
+          'tab-cook': {
+            templateUrl: 'main/templates/cook.html',
+            controller: 'CookCtrl as ctrl'
+          }
+        }
+      })
+      .state('main.cookRecipeSelection', {
+        url: '/cook/recipeSelection',
+        views: {
+          'tab-cook': {
+            templateUrl: 'main/templates/cook-recipe-selection.html',
+            controller: 'CookRecipeSelectionCtrl as ctrl'
+          }
+        },
+        params: {
+          selectedIngredients: null
+        }
+      })
+      .state('main.tips', {
+        url: '/tips',
+        views: {
+          'tab-tips': {
+            templateUrl: 'main/templates/tips.html',
+            controller: 'TipsCtrl as ctrl'
+          }
+        }
+      })
+      .state('main.recipes', {
+        url: '/recipes',
+        views: {
+          'tab-recipes': {
+            templateUrl: 'main/templates/recipes.html',
+            controller: 'RecipesCtrl as ctrl'
+          }
+        }
+      })
+      .state('main.learn', {
+        url: '/learn',
+        views: {
+          'tab-learn': {
+            templateUrl: 'main/templates/learn.html',
+            controller: 'LearnCtrl as ctrl'
           }
         }
       })
