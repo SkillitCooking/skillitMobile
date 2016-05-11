@@ -60,6 +60,19 @@ angular.module('main', [
           selectedIngredients: null
         }
       })
+      .state('main.cookPresent', {
+        url: '/cook/recipePresent',
+        views: {
+          'tab-cook': {
+            templateUrl: 'main/templates/cook-present.html',
+            controller: 'CookPresentCtrl as ctrl'
+          }
+        },
+        params: {
+          recipeIds: null,
+          selectedIngredientNames: null
+        }
+      })
       .state('main.tips', {
         url: '/tips',
         views: {
