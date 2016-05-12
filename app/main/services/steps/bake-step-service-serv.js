@@ -11,7 +11,6 @@ angular.module('main')
         case "StepProduct":
           //find referenced step via sourceId
           var referencedStep = _.find(recipe.stepList, function(iterStep) {
-            console.log("input: ", input);
             return iterStep.stepId === input.sourceId;
           });
           if(referencedStep){
@@ -36,13 +35,6 @@ angular.module('main')
           break;
 
         default:
-          //for testing purposes
-          step.ingredientsToBake = [];
-          step.products = {};
-          step.products[step.productKeys[0]] = {
-            "ingredients": recipe.ingredientList.ingredientTypes[0].ingredients,
-            "dishes": [recipe.ingredientList.equipmentNeeded[0]]
-          };
           console.log("Baking step service Error: unexpected sourceType: ", input.sourceType);
           break;
       }
@@ -53,7 +45,7 @@ angular.module('main')
     var bakingTime = _.find(step.stepSpecifics, function(specific) {
       return specific.propName === "bakingTime";
     }).val;
-    var stepText = "Bake ";
+    var stepText = "Bake the ";
     switch(step.ingredientsToBake.length){
       case 0:
         //error case - we obviously expect ingredients to bake
@@ -87,12 +79,9 @@ angular.module('main')
   service.fillInStep = function(recipe, stepIndex) {
     var step = recipe.stepList[stepIndex];
     //instantiate step
-    console.log("step before instantiate: ", step);
     instantiateStep(step, recipe);
-    console.log("step before construct: ", step);
     //construct step text
     constructStepText(step);
-    console.log("step after construct: ", step);
   };
 
   return service;
