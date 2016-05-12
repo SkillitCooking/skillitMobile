@@ -1,8 +1,10 @@
 'use strict';
 angular.module('main')
 .factory('RecipeInstantiationService', 
-  ['bakeStepService', 'boilStepService', 'bringToBoilStepService', 
-  function (bakeStepService, boilStepService, bringToBoilStepService) {
+  ['bakeStepService', 'boilStepService', 'bringToBoilStepService',
+  'customStepService',
+  function (bakeStepService, boilStepService, bringToBoilStepService,
+    customStepService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames) {
@@ -37,7 +39,7 @@ angular.module('main')
             break;
 
           case "Custom":
-            //custom service
+            customStepService.fillInStep(recipes[i], j);
             break;
 
           case "Cut":
