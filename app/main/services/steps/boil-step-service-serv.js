@@ -21,7 +21,7 @@ angular.module('main')
                   step.products = {};
                   step.products[step.productKeys[0]] = {};
                 }
-                step.products[step.productKeys[0]].ingredients = step.ingredientsToBoil;
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
               } else {
                 //then ingredientType not found, throw error
                 console.log("Boil step service Error: no ingredientType found for input key", input);
@@ -39,7 +39,7 @@ angular.module('main')
                     step.products = {};
                     step.products[step.productKeys[0]] = {};
                   }
-                  step.products[step.productKeys[0]].ingredients = step.ingredientsToBoil;
+                  step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
                 } else {
                   //then no products for referencedStep, throw error
                   console.log("Boil step service Error: no products for referencedStep", referencedStep);
