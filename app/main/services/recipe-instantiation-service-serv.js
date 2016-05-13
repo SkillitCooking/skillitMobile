@@ -4,10 +4,11 @@ angular.module('main')
   ['bakeStepService', 'boilStepService', 'bringToBoilStepService',
   'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'placeStepService',
-  'preheatOvenStepService', 'sauteeStepService',
+  'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
   function (bakeStepService, boilStepService, bringToBoilStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
-    heatStepService, placeStepService, preheatOvenStepService, sauteeStepService) {
+    heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
+    seasonStepService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames) {
@@ -70,7 +71,7 @@ angular.module('main')
             break;
 
           case "Season":
-            //seasonService
+            seasonStepService.fillInStep(recipes[i], j);
             break;
 
           case "SlowCook":
