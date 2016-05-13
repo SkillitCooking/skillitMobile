@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('customStepService', function ($log) {
+.factory('customStepService', function ($log) {
   var service = {};
 
   function instantiateStep (step, recipe) {
