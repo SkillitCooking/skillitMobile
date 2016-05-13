@@ -3,9 +3,10 @@ angular.module('main')
 .factory('RecipeInstantiationService', 
   ['bakeStepService', 'boilStepService', 'bringToBoilStepService',
   'customStepService', 'cutStepService', 'dryStepService',
-  'equipmentPrepStepService',
+  'equipmentPrepStepService', 'heatStepService', 'placeStepService',
   function (bakeStepService, boilStepService, bringToBoilStepService,
-    customStepService, cutStepService, dryStepService, equipmentPrepStepService) {
+    customStepService, cutStepService, dryStepService, equipmentPrepStepService,
+    heatStepService, placeStepService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames) {
@@ -52,11 +53,11 @@ angular.module('main')
             break;
 
           case "Heat":
-            //heatService
+            heatStepService.fillInStep(recipes[i], j);
             break;
 
           case "Place":
-            //placeService
+            placeStepService.fillInStep(recipes[i], j);
             break;
 
           case "PreheatOven":
