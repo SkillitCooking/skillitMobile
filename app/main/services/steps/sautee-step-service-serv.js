@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('sauteeStepService', ['_', function (_) {
+.factory('sauteeStepService', ['_', 'stirStepService', function (_, stirStepService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -140,8 +140,14 @@ angular.module('main')
         }
         break;
     }
-    stepText += " for " + sauteeDuration;
+    stepText += " for " + sauteeDuration + ".";
     step.text = stepText;
+  }
+
+  function constructAuxiliarySteps(step) {
+    for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
+      stirStepService.constructAuxiliaryStep(step.auxiliarySteps[i], step.ingredientsToSautee);
+    }
   }
 
   service.fillInStep = function(recipe, stepIndex) {
@@ -150,6 +156,10 @@ angular.module('main')
     instantiateStep(step, recipe);
     //construct step
     constructStepText(step);
+    //auxiliary step handling
+    if(step.auxiliarySteps && step.auxiliarySteps.length > 0){
+      constructAuxiliarySteps(step);
+    }
   };
 
   return service;

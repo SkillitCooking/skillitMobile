@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('bakeStepService', ['_', function (_) {
+.factory('bakeStepService', ['_', 'stirStepService', function (_, stirStepService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -76,12 +76,30 @@ angular.module('main')
     step.text = stepText;
   }
 
+  function constructAuxiliarySteps(step, recipe) {
+    //need to get associated ingredientType for each auxStep,
+    //then send its ingredients to the stirStep service
+    for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
+      var auxStep = step.auxiliarySteps[i];
+      console.log("auxStep: ", auxStep);
+      var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
+        return type.typeName === auxStep.ingredientTypeName;
+      });
+      console.log("ingredientType: ", ingredientType);
+      stirStepService.constructAuxiliaryStep(auxStep, ingredientType.ingredients);
+    }
+  }
+
   service.fillInStep = function(recipe, stepIndex) {
     var step = recipe.stepList[stepIndex];
     //instantiate step
     instantiateStep(step, recipe);
     //construct step text
     constructStepText(step);
+    //construct auxiliary steps
+    if(step.auxiliarySteps && step.auxiliarySteps.length > 0){
+      constructAuxiliarySteps(step, recipe);
+    }
   };
 
   return service;

@@ -102,5 +102,42 @@ angular.module('main')
     constructStepText(step);
   };
 
+  service.constructAuxiliaryStep = function(step, ingredients) {
+    var whenToStir = _.find(step.stepSpecifics, function(specific) {
+      return specific.propName === "whenToStir";
+    }).val;
+    var stirType = _.find(step.stepSpecifics, function(specific) {
+      return specific.propName === "stirType";
+    }).val;
+    var auxStepText = stirType + " the ";
+    switch(ingredients.length) {
+      case 0:
+        //error
+        auxStepText = "NO INGREDIENTS GIVEN FOR AUX STEP CONSTRUCTION";
+        console.log("stirStepService error: no ingredients for aux step construction");
+        break;
+
+      case 1:
+        auxStepText += ingredients[0].name;
+        break;
+
+      case 2:
+        auxStepText += ingredients[0].name + " and " + ingredients[1].name;
+        break;
+
+      default:
+        for (var i = ingredients.length - 1; i >= 0; i--) {
+          if(i === 0) {
+            auxStepText += "and " + ingredients[i].name;
+          } else {
+            auxStepText += ingredients[i].name + ", ";
+          }
+        }
+        break;
+    }
+    auxStepText += " " + whenToStir + ".";
+    step.text = auxStepText;
+  };
+
   return service;
 }]);
