@@ -5,11 +5,11 @@ angular.module('main')
   'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'placeStepService',
   'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
-  'slowCookStepService', 'steamingStepService',
+  'slowCookStepService', 'steamingStepService', 'stirStepService',
   function (bakeStepService, boilStepService, bringToBoilStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
     heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
-    seasonStepService, slowCookStepService, steamingStepService) {
+    seasonStepService, slowCookStepService, steamingStepService, stirStepService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames) {
@@ -88,7 +88,7 @@ angular.module('main')
             break;
 
           case "Stir":
-            //stirService
+            stirStepService.fillInStep(recipes[i], j);
             break;
 
           default:
