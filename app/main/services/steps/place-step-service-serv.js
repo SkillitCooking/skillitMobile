@@ -27,7 +27,7 @@ angular.module('main')
               };
             }
             //may need to instantiate ingredients...
-            step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToPlace);
+            step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
           } else {
             //error: no ingredientType for the input
             console.log("placeStepService error: no ingredientType for input: ", input);
@@ -47,7 +47,7 @@ angular.module('main')
                   ingredients: []
                 };
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToPlace);
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
             } else {
               //error: then no products for step
               console.log("placeStepService error: no products for referenced step: ", referencedStep);

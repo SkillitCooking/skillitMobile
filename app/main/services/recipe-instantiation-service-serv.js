@@ -5,10 +5,11 @@ angular.module('main')
   'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'placeStepService',
   'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
+  'slowCookStepService', 'steamingStepService',
   function (bakeStepService, boilStepService, bringToBoilStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
     heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
-    seasonStepService) {
+    seasonStepService, slowCookStepService, steamingStepService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames) {
@@ -75,11 +76,11 @@ angular.module('main')
             break;
 
           case "SlowCook":
-            //slowCookService
+            slowCookStepService.fillInStep(recipes[i], j);
             break;
 
           case "Steam":
-            //steamService
+            steamingStepService.fillInStep(recipes[i], j);
             break;
 
           case "EquipmentPrep":
@@ -92,6 +93,7 @@ angular.module('main')
 
           default:
             //default error handling
+            console.log("RecipeInstantiationService error: unexpected stepType: ", stepList[j]);
             break;
         }
       }
