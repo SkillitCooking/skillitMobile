@@ -144,12 +144,12 @@ angular.module('main')
                 }
                 count++;
               }
-              if(prepModifier && prepModifier != ""){
-                stepText += " with " + prepModifier;
-              }
               break;
         }
         break;
+    }
+    if(prepModifier && prepModifier != "") {
+      stepText += " with " + prepModifier;
     }
     step.text = stepText;
   }
