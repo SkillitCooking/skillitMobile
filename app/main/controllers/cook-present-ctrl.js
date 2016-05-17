@@ -54,7 +54,6 @@ angular.module('main')
       $scope.stepTipStep = step;
       $scope.selectedTipArr = Array($scope.stepTipStep.stepTips.length).fill(false);
       $scope.selectedTipArr[0] = true;
-      $scope.stepTipStep.stepTips.push({title: "fakeTitle"});
       $scope.displayStepTip = $scope.stepTipStep.stepTips[0];
       $ionicPopover.fromTemplateUrl('main/templates/step-tip-popover.html', 
         {scope: $scope}).then(function(popover) {
