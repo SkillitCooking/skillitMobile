@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('heatStepService', ['_', function (_) {
+.service('heatStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -31,6 +31,7 @@ angular.module('main')
         console.log("heatStepService error: unexpected sourceType: ", input);
         break;
     }
+    StepTipService.setStepTipInfo(step, []);
   }
 
   function constructStepText(step) {

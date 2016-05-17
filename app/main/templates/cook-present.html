@@ -1,16 +1,29 @@
 <ion-view view-title="main module">
   <!-- do you want padding? -->
   <ion-content class="padding">
-
-    <!-- content goes here -->
-    <ion-list>
-      <ion-item class="item item-divider">
-        This is your cookPresent template!
-      </ion-item>
-      <ion-item class="item item-icon">
-        Yeiiii!
-      </ion-item>
+    <h1>{{combinedRecipe.name}}</h1>
+    <iframe width="427" height="240" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+    <br/>
+    <p><b>Prep Time</b>:{{combinedRecipe.prepTime}}</p>
+    <p><b>Total Time</b>: {{combinedRecipe.totalTime}}</p>
+    <br/>
+    <ion-list class="list">
+      <div ng-repeat="step in combinedRecipe.stepList">
+        <ion-item ng-if="isSingleStep(step)" ng-click="showTip(step, $event)">
+          <h2>Step {{step.stepNumber)}}</h2>
+          <p>{{step.text}}</p>
+          <i ng-if="step.hasTip" class="ion-information-circled"></i>
+          <i ng-if="step.hasVideo" class="ion-videocamera"></i>
+        </ion-item>
+        <ion-item ng-if="!isSingleStep(step)" ng-repeat="subStep in step.textArr" ng-click="showTip(subStep, $event)">
+          <h2>Step {{subStep.stepNumber}}</h2>
+          <p>{{subStep.text}}</p>
+          <i ng-if="subStep.hasTip" class="ion-information-circled"></i>
+          <i ng-if="subStep.hasVideo" class="ion-videocamera"></i>
+        </ion-item>
+      </div>
     </ion-list>
-
   </ion-content>
 </ion-view>
+
+

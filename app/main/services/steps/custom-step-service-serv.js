@@ -1,11 +1,14 @@
 'use strict';
 angular.module('main')
-.factory('customStepService', function ($log) {
+.factory('customStepService', ['StepTipService', function (StepTipService) {
   var service = {};
 
   function instantiateStep (step, recipe) {
     //not doing anything with inputs currently...
     //instantiate later with more time
+    //assuming, for now, that there will be no ingredientTips that are
+    //either general to all Steps or specific to the Custom type...
+    StepTipService.setStepTipInfo(step, []);
   }
 
   function constructStepText(step) {
@@ -24,4 +27,4 @@ angular.module('main')
   };
 
   return service;
-});
+}]);

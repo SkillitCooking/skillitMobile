@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('steamingStepService', ['_', function (_) {
+.factory('steamingStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -59,6 +59,7 @@ angular.module('main')
           console.log("steamingStepService error: unexpected sourceType: ", input);
           break;
       }
+      StepTipService.setStepTipInfo(step, step.ingredientsToSteam);
     }
     //get dishes
     switch(dishInput.sourceType) {

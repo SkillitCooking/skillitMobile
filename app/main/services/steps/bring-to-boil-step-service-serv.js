@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('bringToBoilStepService', ['_', function (_) {
+.factory('bringToBoilStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -30,6 +30,8 @@ angular.module('main')
         console.log("bringToBoilStepService Error: unexpected sourceType: ", input.sourceType);
         break;
     }
+    //step tips
+    StepTipService.setStepTipInfo(step, []);
   }
 
   function constructStepText(step) {

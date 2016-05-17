@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('placeStepService', ['_', function (_) {
+.factory('placeStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   //ingredientInputs ==> ingredientsToPlace
@@ -114,6 +114,9 @@ angular.module('main')
       default:
         break;
     }
+    //set StepTips
+    //Do we want to conflate the two types of ingredients for issuing a stepList?
+    StepTipService.setStepTipInfo(step, step.ingredientsToPlace.concat(step.alreadyPlacedIngredients));
   }
 
   function constructStepText(step) {

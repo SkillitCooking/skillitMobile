@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('boilStepService', ['_', function (_) {
+.factory('boilStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -19,7 +19,9 @@ angular.module('main')
                 step.ingredientsToBoil = step.ingredientsToBoil.concat(ingredientType.ingredients);
                 if(!step.products) {
                   step.products = {};
-                  step.products[step.productKeys[0]] = {};
+                  step.products[step.productKeys[0]] = {
+                    ingredients: []
+                  };
                 }
                 step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
               } else {
@@ -37,7 +39,9 @@ angular.module('main')
                   step.ingredientsToBoil = step.ingredientsToBoil.concat(referencedStep.products[input.key].ingredients);
                   if(!step.products) {
                     step.products = {};
-                    step.products[step.productKeys[0]] = {};
+                    step.products[step.productKeys[0]] = {
+                      ingredients: []
+                    };
                   }
                   step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
                 } else {
@@ -63,7 +67,9 @@ angular.module('main')
               step.boilingDish = dish;
               if(!step.products){
                 step.products = {};
-                step.products[step.productKeys[0]] = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
               }
               step.products[step.productKeys[0]].dishes = [step.boilingDish];
             } else {
@@ -82,7 +88,9 @@ angular.module('main')
                 //will possibly want to make more general in the future
                 if(!step.products){
                   step.products = {};
-                  step.products[step.productKeys[0]] = {};
+                  step.products[step.productKeys[0]] = {
+                    ingredients: []
+                  };
                 }
                 step.products[step.productKeys[0]].dishes = [step.boilingDish];
               } else {
@@ -104,6 +112,8 @@ angular.module('main')
         console.log("Boil step service error: unexpect inputName: ", inputName);
       }
     }
+    //set StepTips
+    StepTipService.setStepTipInfo(step, step.ingredientsToBoil);
   }
 
   function constructStepText(step) {

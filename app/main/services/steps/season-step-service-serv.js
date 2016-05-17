@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('seasonStepService', ['_', function (_) {
+.factory('seasonStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -98,6 +98,8 @@ angular.module('main')
         console.log("seasonStepService error: unexpected sourceType: ", dishInput);
         break;
     }
+    //set stepTips
+    StepTipService.setStepTipInfo(step, step.ingredientsToSeason);
   }
 
   function constructStepText(step) {

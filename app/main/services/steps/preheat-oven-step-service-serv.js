@@ -1,11 +1,11 @@
 'use strict';
 angular.module('main')
-.factory('preheatOvenStepService', ['_', function (_) {
+.factory('preheatOvenStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   //no inputs, no products... for now
   function instantiateStep(step, recipe) {
-    
+    StepTipService.setStepTipInfo(step, []);
   }
 
   function constructStepText(step) {
@@ -19,7 +19,7 @@ angular.module('main')
   service.fillInStep = function(recipe, stepIndex) {
     var step = recipe.stepList[stepIndex];
     //instantiate
-    //instantiateStep(step, recipe);
+    instantiateStep(step, recipe);
     //construct
     constructStepText(step);
   };

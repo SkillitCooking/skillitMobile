@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('equipmentPrepStepService', ['_', function (_) {
+.factory('equipmentPrepStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -57,6 +57,8 @@ angular.module('main')
           console.log("equipmentPrepStepService error: unexpected sourceType for dishInputs: ", inputs[i]);
       }
     }
+    //set stepTips
+    StepTipService.setStepTipInfo(step, []);
   }
 
   function constructStepText(step) {

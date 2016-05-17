@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('cutStepService', ['_', function (_) {
+.factory('cutStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -63,12 +63,14 @@ angular.module('main')
       return specific.propName === "actionModifier";
     }).val;
     for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
-      var stepText = actionType;
-      stepText += " the " + step.ingredientsToCut[i].name;
+      var arrElem = {};
+      arrElem.text = actionType;
+      arrElem.text += " the " + step.ingredientsToCut[i].name;
       if(actionModifier){
-        stepText += " " + actionModifier;
+        arrElem.text += " " + actionModifier;
       }
-      step.textArr.push(stepText);
+      StepTipService.setTipForTextArrElem(arrElem, step.ingredientsToCut[i], step);
+      step.textArr.push(arrElem);
     }
   }
 

@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
-.factory('bakeStepService', ['_', 'stirStepService', function (_, stirStepService) {
+.factory('bakeStepService', ['_', 'stirStepService', 'StepTipService', 
+  function (_, stirStepService, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -39,6 +40,8 @@ angular.module('main')
           break;
       }
     }
+    //fill in step tip related information
+    StepTipService.setStepTipInfo(step, step.ingredientsToBake);
   }
 
   function constructStepText(step) {

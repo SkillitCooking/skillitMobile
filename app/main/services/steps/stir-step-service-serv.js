@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('stirStepService', ['_', function (_) {
+.service('stirStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -54,6 +54,7 @@ angular.module('main')
         console.log("stirStepService error: unexpected sourceType: ", input);
         break;
     }
+    StepTipService.setStepTipInfo(step, step.ingredientsToStir);
   }
 
   function constructStepText(step) {
