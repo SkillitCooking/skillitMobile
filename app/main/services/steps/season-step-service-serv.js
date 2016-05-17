@@ -99,6 +99,7 @@ angular.module('main')
         break;
     }
     //set stepTips
+    console.log(step.ingredientsToSeason);
     StepTipService.setStepTipInfo(step, step.ingredientsToSeason);
   }
 
