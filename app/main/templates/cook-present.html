@@ -10,7 +10,7 @@
     <ion-list class="list">
       <div ng-repeat="step in combinedRecipe.stepList">
         <ion-item ng-if="isSingleStep(step)" ng-click="showTip(step, $event)">
-          <h2>Step {{step.stepNumber)}}</h2>
+          <h2>Step {{step.stepNumber}}</h2>
           <p>{{step.text}}</p>
           <i ng-if="step.hasTip" class="ion-information-circled"></i>
           <i ng-if="step.hasVideo" class="ion-videocamera"></i>
