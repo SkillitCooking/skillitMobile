@@ -14,12 +14,14 @@ angular.module('main')
 
   service.cullIngredients = function(recipes, ingredientNames) {
     for (var i = recipes.length - 1; i >= 0; i--) {
-      var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
-      for (var j = ingredientTypes.length - 1; j >= 0; j--) {
-        var ingredients = ingredientTypes[j].ingredients;
-        for(var k = ingredients.length - 1; k >= 0; k--) {
-          if(!ingredientNames.includes(ingredients[k].name)){
-            ingredients.splice(k, 1);
+      if(recipes[i].recipeType !== "Full") {
+        var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
+        for (var j = ingredientTypes.length - 1; j >= 0; j--) {
+          var ingredients = ingredientTypes[j].ingredients;
+          for(var k = ingredients.length - 1; k >= 0; k--) {
+            if(!ingredientNames.includes(ingredients[k].name)){
+              ingredients.splice(k, 1);
+            }
           }
         }
       }
