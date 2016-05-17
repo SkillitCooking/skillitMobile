@@ -57,18 +57,17 @@ angular.module('main')
         break;
 
       case 1:
-        stepText += step.ingredientsToBake[0].name + " for " + bakingTime;
+        stepText += step.ingredientsToBake[0].name + bakingTime;
         break;
 
       case 2:
-        stepText += step.ingredientsToBake[0].name + " and " + step.ingredientsToBake[1].name + 
-          " for " + bakingTime;
+        stepText += step.ingredientsToBake[0].name + " and " + step.ingredientsToBake[1].name + bakingTime;
         break;
 
       default:
         for (var i = step.ingredientsToBake.length - 1; i >= 0; i--) {
           if(i === 0){
-            stepText += "and " + step.ingredientsToBake[i].name + " for " +
+            stepText += "and " + step.ingredientsToBake[i].name +
               bakingTime;
           } else {
             stepText += step.ingredientsToBake[i].name + ", ";

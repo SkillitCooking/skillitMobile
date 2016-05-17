@@ -98,7 +98,7 @@ angular.module('main')
         break;
     }
     stepText += " on " + tempSetting;
-    stepText += " for " + slowCookDuration;
+    stepText += slowCookDuration;
     step.text = stepText;
   }
 

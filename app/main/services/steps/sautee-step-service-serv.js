@@ -143,7 +143,7 @@ angular.module('main')
         }
         break;
     }
-    stepText += " for " + sauteeDuration + ".";
+    stepText += sauteeDuration + ".";
     step.text = stepText;
   }
 
