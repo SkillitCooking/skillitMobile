@@ -6,17 +6,16 @@
       <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
       <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
         <div class="wrap-class" ng-class="getWrapClass($index)">
-          <h2>{{name}}</h2>
+          <h2 class="ingredient-type-heading">{{name}}</h2>
           <ion-list>
             <div ng-repeat="ingredient in ingredients">
-              <ion-checkbox ng-model="ingredient.isSelected">
+              <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
                 {{ingredient.name}}
               </ion-checkbox>
-              <ion-item ng-if="ingredient.isSelected">
-                Forms:
-                <div ng-repeat="form in ingredient.ingredientForms">
-                  {{form.name}}
-                  <label class="toggle toggle-royal">
+              <ion-item ng-if="ingredient.isSelected" class="ingredient-form-items">                
+                <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
+                  <label class="checkbox checkbox-balanced">
+                  <span class="ingredient-form-name">{{form.name}}</span>
                    <input type="checkbox" ng-model="form.isSelected">
                    <div class="track">
                      <div class="handle"></div>
