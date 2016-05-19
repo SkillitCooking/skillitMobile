@@ -12,12 +12,16 @@ angular.module('main')
           return type.typeName === input.key;
         });
         if(ingredientType) {
-          step.ingredientsToDry = ingredientType.ingredients;
-          step.products = {};
-          step.products[step.productKeys[0]] = {
-            ingredients: step.ingredientsToDry,
-            dishes: []
-          };
+          if(ingredientType.ingredients.length > 0) {
+            step.ingredientsToDry = ingredientType.ingredients;
+            step.products = {};
+            step.products[step.productKeys[0]] = {
+              ingredients: step.ingredientsToDry,
+              dishes: []
+            };
+          } else {
+            step.isEmpty = true;
+          }
         } else {
           //error: ingredientType could not be found via key
           console.log("dryStepService Error: no ingredientType found with input :", input);
@@ -29,11 +33,20 @@ angular.module('main')
           return iterStep.stepId === input.sourceId;
         });
         if(referencedStep){
-          if(referencedStep.products){
-
+          if(!referencedStep.isEmpty) {
+            if(referencedStep.products){
+              step.ingredientsToDry = referencedStep.products[input.key].ingredients;
+              step.products = {};
+              step.products[step.productKeys[0]] = {
+                ingredients: step.ingredientsToDry,
+                dishes: []
+              };
+            } else {
+              //error - no products on referencedStep
+              console.log("dryStepService Error: cannot find products for referencedStep: ", referencedStep);
+            }
           } else {
-            //error - no products on referencedStep
-            console.log("dryStepService Error: cannot find products for referencedStep: ", referencedStep);
+            step.isEmpty = true;
           }
         } else {
           //error - can't find referencedStep
@@ -47,40 +60,44 @@ angular.module('main')
         break;
     }
     //set stepTip
-    StepTipService.setStepTipInfo(step, ingredientsToDry);
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, ingredientsToDry);
+    }
   }
 
   function constructStepText(step) {
-    var dryMethod = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "dryMethod";
-    }).val;
-    var stepText = dryMethod + " dry the ";
-    switch(step.ingredientsToDry.length) {
-      case 0:
-        //error
-        stepText = "NO INGREDIENTS TO DRY";
-        console.log("dryStepService error: no ingredientsToDry");
-        break;
+    if(!step.isEmpty) {
+      var dryMethod = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "dryMethod";
+      }).val;
+      var stepText = dryMethod + " dry the ";
+      switch(step.ingredientsToDry.length) {
+        case 0:
+          //error
+          stepText = "NO INGREDIENTS TO DRY";
+          console.log("dryStepService error: no ingredientsToDry");
+          break;
 
-      case 1:
-        stepText += step.ingredientsToDry[0].name;
-        break;
+        case 1:
+          stepText += step.ingredientsToDry[0].name;
+          break;
 
-      case 2:
-        stepText += step.ingredientsToDry[0].name + " and " + step.ingredientsToDry[1].name;
-        break;
+        case 2:
+          stepText += step.ingredientsToDry[0].name + " and " + step.ingredientsToDry[1].name;
+          break;
 
-      default:
-        for (var i = step.ingredientsToDry.length - 1; i >= 0; i--) {
-          if(i === 0){
-            stepText += "and " + step.ingredientsToDry[i].name;
-          } else {
-            stepText += step.ingredientsToDry[i].name + ", ";
+        default:
+          for (var i = step.ingredientsToDry.length - 1; i >= 0; i--) {
+            if(i === 0){
+              stepText += "and " + step.ingredientsToDry[i].name;
+            } else {
+              stepText += step.ingredientsToDry[i].name + ", ";
+            }
           }
-        }
-        break;
+          break;
+      }
+      step.text = stepText;
     }
-    step.text = stepText;
   }
 
   service.fillInStep = function(recipe, stepIndex) {

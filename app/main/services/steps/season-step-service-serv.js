@@ -13,12 +13,16 @@ angular.module('main')
           return type.typeName === ingredientInput.key;
         });
         if(ingredientType) {
-          step.ingredientsToSeason = ingredientType.ingredients;
-          if(!step.products){
-            step.products = {};
-            step.products[step.productKeys[0]] = {};
+          if(ingredientType.ingredients.length > 0) {
+            step.ingredientsToSeason = ingredientType.ingredients;
+            if(!step.products){
+              step.products = {};
+              step.products[step.productKeys[0]] = {};
+            }
+            step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
+          } else {
+            step.isEmpty = true;
           }
-          step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
         } else {
           //error: no type found
           console.log("seasonStepService error: no type found for input: ", ingredientInput);
@@ -30,16 +34,20 @@ angular.module('main')
           return iterStep.stepId === ingredientInput.sourceId;
         });
         if(referencedStep){
-          if(referencedStep.products){
-            step.ingredientsToSeason = referencedStep.products[ingredientInput.key].ingredients;
-            if (!step.products) {
-              step.products = {};
-              step.products[step.productKeys[0]] = {};
+          if(!referencedStep.isEmpty){
+            if(referencedStep.products){
+              step.ingredientsToSeason = referencedStep.products[ingredientInput.key].ingredients;
+              if (!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {};
+              }
+              step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
+            } else {
+              //error - no products for step
+              console.log("seasonStepService error: no products for step: ", referencedStep);
             }
-            step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
           } else {
-            //error - no products for step
-            console.log("seasonStepService error: no products for step: ", referencedStep);
+            step.isEmpty = true;
           }
         } else {
           //error - can't find step from input
@@ -76,16 +84,18 @@ angular.module('main')
           return iterStep.stepId === dishInput.sourceId;
         });
         if(referencedStep) {
-          if(referencedStep.products){
-            step.seasoningDish = referencedStep.products[dishInput.key].dishes[0];
-            if(!step.products) {
-              step.products = {};
-              step.products[step.productKeys[0]] = {};
+          if(!referencedStep.isEmpty) {
+            if(referencedStep.products){
+              step.seasoningDish = referencedStep.products[dishInput.key].dishes[0];
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {};
+              }
+              step.products[step.productKeys[0]].dishes = [step.seasoningDish];    
+            } else {
+              //error - no products for step
+              console.log("seasonStepService error: no products for step: ", referencedStep);
             }
-            step.products[step.productKeys[0]].dishes = [step.seasoningDish];    
-          } else {
-            //error - no products for step
-            console.log("seasonStepService error: no products for step: ", referencedStep);
           }
         } else {
           //error - no find step from input
@@ -99,55 +109,58 @@ angular.module('main')
         break;
     }
     //set stepTips
-    console.log(step.ingredientsToSeason);
-    StepTipService.setStepTipInfo(step, step.ingredientsToSeason);
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, step.ingredientsToSeason);
+    }
   }
 
   function constructStepText(step) {
-    var isOil = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "isOil";
-    }).val;
-    var isSeason = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "isSeason";
-    }).val;
-    var stepText = "";
-    if(isOil && isSeason){
-      stepText += "Oil and season ";
-    } else if (isOil) {
-      stepText += "Oil ";
-    } else if (isSeason) {
-      stepText += "Season ";
-    } else {
-      //error need oil OR season
-      stepText = "NEITHER OIL NOR SEASON";
-      console.log("seasonStepService error: neither oil nor season: ", step);
-    }
-    switch(step.ingredientsToSeason.length) {
-      case 0:
-        //error
-        console.log("seasonStepService error: no ingredientsToSeason: ", step);
-        stepText += "NO INGREDIENTS TO SEASON";
-        break;
+    if(!step.isEmpty) {
+      var isOil = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "isOil";
+      }).val;
+      var isSeason = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "isSeason";
+      }).val;
+      var stepText = "";
+      if(isOil && isSeason){
+        stepText += "Oil and season ";
+      } else if (isOil) {
+        stepText += "Oil ";
+      } else if (isSeason) {
+        stepText += "Season ";
+      } else {
+        //error need oil OR season
+        stepText = "NEITHER OIL NOR SEASON";
+        console.log("seasonStepService error: neither oil nor season: ", step);
+      }
+      switch(step.ingredientsToSeason.length) {
+        case 0:
+          //error
+          console.log("seasonStepService error: no ingredientsToSeason: ", step);
+          stepText += "NO INGREDIENTS TO SEASON";
+          break;
 
-      case 1:
-        stepText += step.ingredientsToSeason[0].name;
-        break;
+        case 1:
+          stepText += step.ingredientsToSeason[0].name;
+          break;
 
-      case 2:
-        stepText += step.ingredientsToSeason[0].name + " and " + step.ingredientsToSeason[1].name;
-        break;
+        case 2:
+          stepText += step.ingredientsToSeason[0].name + " and " + step.ingredientsToSeason[1].name;
+          break;
 
-      default:
-        for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
-          if(i === 0){
-            stepText += "and " + step.ingredientsToSeason[i].name;
-          } else {
-            stepText += step.ingredientsToSeason[i].name + ", ";
+        default:
+          for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
+            if(i === 0){
+              stepText += "and " + step.ingredientsToSeason[i].name;
+            } else {
+              stepText += step.ingredientsToSeason[i].name + ", ";
+            }
           }
-        }
-        break;
+          break;
+      }
+      step.text = stepText;
     }
-    step.text = stepText;
   }
 
   service.fillInStep = function(recipe, stepIndex) {

@@ -31,6 +31,7 @@ angular.module('main')
     var recipes = response.data;
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
     RecipeInstantiationService.fillInSteps(recipes);
+    RecipeInstantiationService.setBackwardsIsEmptySteps(recipes);
     //build the below out later
     $scope.combinedRecipe = getCombinedRecipe(recipes);
     console.log("recipe: ", $scope.combinedRecipe);
