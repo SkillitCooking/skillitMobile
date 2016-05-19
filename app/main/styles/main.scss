@@ -9,12 +9,11 @@ $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
 $positive:                        #4a87ee !default;
 $calm:                            #43cee6 !default;
-$balanced:                        #66cc33 !default;
+$balanced:                        #ef4734 !default;
 $energized:                       #f0b840 !default;
 $assertive:                       #ef4e3a !default;
 $royal:                           #8a6de9 !default;
 $dark:                            #444 !default;
-
 // The path for our ionicons font files, relative to the built & temporary main.css
 $ionicons-font-path: "../assets/fonts" !default;
 
@@ -22,3 +21,18 @@ $ionicons-font-path: "../assets/fonts" !default;
 @import "../../bower_components/ionic/scss/ionic";
 
 
+
+/*COOK TAB*/
+/*ingredient input tab*/
+.ingredient-type-heading {
+	text-align: center;
+}
+div.ingredient-form-selection {
+	display: inline;
+}
+.ingredient-form-selection .checkbox input {
+	display: inline-block;
+}
+.ingredient-form-items {
+	padding: 0 5px;
+}
