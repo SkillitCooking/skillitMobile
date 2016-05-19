@@ -36,6 +36,10 @@ var bsInit = function (paths, openOverride) {
   bs.init(bsOptions);
 };
 
+gulp.task('reload-browser', function() {
+  bs.reload();
+});
+
 // WATCH
 gulp.task('watch', ['inject-all'], function () {
 
@@ -64,7 +68,7 @@ gulp.task('watch', ['inject-all'], function () {
     }
   });
   // watch for changes in scss
-  gulp.watch('app/*/styles/**/*.scss', ['styles']);
+  gulp.watch('app/*/styles/**/*.scss', ['styles', 'inject-all']);
   // watch for changes in environment files and new config files
   gulp.watch([
     'app/main/constants/env-*.json',
