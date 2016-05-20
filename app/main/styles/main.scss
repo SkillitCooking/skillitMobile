@@ -20,19 +20,125 @@ $ionicons-font-path: "../assets/fonts" !default;
 // Include all of Ionic
 @import "../../bower_components/ionic/scss/ionic";
 
+/**********************************/
+/*FONTS*/
+h2.ingredient-type-heading, h3.recipe-category {
+	font-family: 'Just Another Hand', cursive;
+	font-size: 50px;
+	color: $balanced;
+}
 
+/**********************************/
+/*BOTTOM NAV TABS*/
+.tab-nav.tabs {
+	color: $balanced;
+	border-color: $balanced;
+}
 
+/**********************************/
 /*COOK TAB*/
-/*ingredient input tab*/
+/*general*/
+.padding.cook-tab {
+	padding-top: 0;
+}
+
+/*slider dots*/
+.slider-pager {
+	top: 2px;
+	
+}
+.slider-pager .slider-pager-page {
+	color: $balanced;	
+}
+
+/*next & prev buttons */
+.bottom-nav-buttons-cook-tab {
+	margin: 10px;
+	height: 47px;
+}
+.prev-nav-button {
+	float: left;
+}
+.next-nav-button {
+	float: right;
+}
+.bottom-nav-buttons-cook-tab .button.button-balanced {
+	border-radius: 50%;
+	color: $balanced;
+	background-color: #ffffff;
+	border: 1px solid $balanced;
+}
+.bottom-nav-buttons-cook-tab .button.button-balanced:active {
+	background-color: $balanced;
+	color: #ffffff;
+}
+
+/*ingredient input tabs*/
 .ingredient-type-heading {
-	text-align: center;
+	margin-top: 20px !important;
+	color: $balanced;
 }
 div.ingredient-form-selection {
 	display: inline;
 }
 .ingredient-form-selection .checkbox input {
-	display: inline-block;
+	display: block;
+	margin: 0 auto;
 }
 .ingredient-form-items {
 	padding: 0 5px;
 }
+.ingredient-form-type {
+	opacity: 0.4;
+}
+.grouping-of-ingredient-forms {
+	padding-left: 23px;
+}
+.grouping-of-ingredient-forms input.checkbox {
+	border-color: $balanced;
+	color: $balanced;
+	background-color: #ffffff;
+}
+.cook-tab .list .item {
+	border-left: none;
+	border-right: none;
+}
+
+/*recipe selection tab*/
+.individual-recipe-in-list {
+	box-shadow: 0px 1px 3px #999999;
+	margin-bottom: 10px;
+	white-space: nowrap;
+}
+.individual-recipe-in-list img {
+	width: 100px;
+	height: 100px;
+}
+.col-36 {
+	flex: 0 0 33.3333%;
+	max-width: 39%;
+}
+.cook-recipe-selection .item, .cook-recipe-selection .item p, .cook-recipe-selection .item h2 {
+	white-space: normal; 
+}
+.cook-recipe-selection .item {
+	padding: 2px;
+}
+
+/*recipe instructions page*/
+.recipe-instructions {
+	box-shadow: 0px 1px 3px #999999;
+	margin-bottom: 10px;
+	white-space: normal;
+}
+.instruction-step-tip-icon {
+	position: absolute;
+    bottom: 7px;
+    right: 7px;
+    color: $balanced;
+}
+.recipe-instructions.item, .recipe-instructions.item p {
+	white-space: normal; 
+}
+
+
