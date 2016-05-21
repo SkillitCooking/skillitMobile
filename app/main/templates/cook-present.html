@@ -15,7 +15,7 @@
           <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
         </ion-item>
         <ion-item class="recipe-instructions" ng-if="!isSingleStep(step)" ng-repeat="subStep in step.textArr" ng-click="showTip(subStep, $event)">
-          <p><b>Step {{step.stepNumber}}:</b> {{step.text}}</p>
+          <p><b>Step {{subStep.stepNumber}}:</b> {{subStep.text}}</p>
           <i ng-if="subStep.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
           <i ng-if="subStep.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
         </ion-item>
