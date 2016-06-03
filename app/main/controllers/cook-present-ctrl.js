@@ -2,7 +2,7 @@
 angular.module('main')
 .controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', 'StepCombinationService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, RecipeInstantiationService, StepCombinationService, $ionicPopover, $ionicModal) {
 
-  var player;
+  /*var player;
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('popup-video');
@@ -11,7 +11,7 @@ angular.module('main')
   var tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
 
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
