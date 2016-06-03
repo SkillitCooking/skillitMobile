@@ -68,8 +68,10 @@ angular.module('main')
     //set isEmpty condition
     if(step.ingredientsToSlowCook.length === 0) {
       step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
-    if(step.isEmpty) {
+    if(!step.isEmpty) {
       StepTipService.setStepTipInfo(step, step.ingredientsToSlowCook);
     }
   }

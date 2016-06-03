@@ -1,25 +1,23 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', '$ionicPopover', function ($scope, $stateParams, RecipeService, RecipeInstantiationService, $ionicPopover) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', 'StepCombinationService', '$ionicPopover', function (_, $scope, $stateParams, RecipeService, RecipeInstantiationService, StepCombinationService, $ionicPopover) {
 
-  function getCombinedRecipe(recipes) {
-    //assign step numbers
-    var combinedRecipe = recipes[0];
-    var stepNumber = 1;
-    if(combinedRecipe) {
-      for (var i = 0; i < combinedRecipe.stepList.length; i++) {
-        if(combinedRecipe.stepList[i].textArr) {
-          for (var j = 0; j < combinedRecipe.stepList[i].textArr.length; j++) {
-            combinedRecipe.stepList[i].textArr[j].stepNumber = stepNumber;
-            stepNumber += 1;
-          }
-        } else {
-          combinedRecipe.stepList[i].stepNumber = stepNumber;
-          stepNumber += 1;
-        }
+  function getIngredientsForRecipes(recipes) {
+    var ingredientsForRecipes = [];
+    for (var i = recipes.length - 1; i >= 0; i--) {
+      var ingredientsForRecipe = {};
+      ingredientsForRecipe.name = recipes[i].name;
+      ingredientsForRecipe.ingredients = [];
+      var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
+      for (var j = ingredientTypes.length - 1; j >= 0; j--) {
+        ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(ingredientTypes[j].ingredients);
       }
+      ingredientsForRecipe.ingredients = _.map(ingredientsForRecipe.ingredients, function(ingredient) {
+          return ingredient.name;
+        });
+      ingredientsForRecipes.push(ingredientsForRecipe);
     }
-    return combinedRecipe;
+    return ingredientsForRecipes;
   }
 
   $scope.recipeIds = $stateParams.recipeIds;
@@ -27,14 +25,18 @@ angular.module('main')
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
   };
-  RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
+    RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
+    console.log("preingredient For Recipes: ", angular.copy(recipes));
+    $scope.ingredientsForRecipes = getIngredientsForRecipes(recipes);
     RecipeInstantiationService.fillInSteps(recipes);
     RecipeInstantiationService.setBackwardsIsEmptySteps(recipes);
+    RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
-    $scope.combinedRecipe = getCombinedRecipe(recipes);
-    console.log("recipe: ", $scope.combinedRecipe);
+    $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes);
+    console.log("combined recipe: ", $scope.combinedRecipe);
+    console.log("ingredientsForRecipes", $scope.ingredientsForRecipes);
   });
 
   $scope.isSingleStep = function(step) {

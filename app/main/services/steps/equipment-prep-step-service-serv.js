@@ -62,6 +62,8 @@ angular.module('main')
     //isEmpty condition
     if(step.dishesToPrep.length === 0) {
       step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set stepTips
     if(!step.isEmpty) {

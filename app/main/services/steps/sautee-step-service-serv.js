@@ -118,6 +118,8 @@ angular.module('main')
     //set isEmpty condition
     if(step.ingredientsToSautee.length === 0) {
       step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set StepTips
     if(!step.isEmpty) {

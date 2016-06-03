@@ -119,6 +119,8 @@ angular.module('main')
     //check isEmpty condition
     if(step.ingredientsToSteam.length === 0) {
       step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     if(!step.isEmpty) {
       StepTipService.setStepTipInfo(step, step.ingredientsToSteam);

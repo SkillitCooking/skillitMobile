@@ -20,6 +20,7 @@ angular.module('main')
               ingredients: ingredientType.ingredients,
               dishes: []
             };
+            step.isEmpty = false;
           } else {
             step.isEmpty = true;
           }
@@ -44,6 +45,7 @@ angular.module('main')
                 ingredients: step.ingredientsToStir,
                 dishes: referencedStep.products[input.key].dishes
               };
+              step.isEmpty = false;
             } else {
               //error - no products for found step
               console.log("stirStepService error: no products for referencedStep: ", referencedStep);

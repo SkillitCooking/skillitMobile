@@ -68,6 +68,13 @@ angular.module('main')
   $scope.recipeSelected = function(recipe) {
     //"pull up" present-recipe page using first one selected
     var recipeIds = [recipe._id];
+    if($scope.alaCarteClickedArr) {
+      for (var i = $scope.alaCarteClickedArr.length - 1; i >= 0; i--) {
+        if($scope.alaCarteClickedArr[i]) {
+          recipeIds.push($scope.alaCarteRecipes[i]._id);
+        }
+      }
+    }
     console.log("selected in selectionctrl: ", $scope.selectedIngredientNames);
     $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames});
   };

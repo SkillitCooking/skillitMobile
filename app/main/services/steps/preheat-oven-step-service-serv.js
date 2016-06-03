@@ -6,6 +6,8 @@ angular.module('main')
   //no inputs, no products... for now
   function instantiateStep(step, recipe) {
     StepTipService.setStepTipInfo(step, []);
+    //make below more sophisticated when detecting for no Bake Step...
+    step.isEmpty = false;
   }
 
   function constructStepText(step) {

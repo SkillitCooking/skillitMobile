@@ -10,6 +10,9 @@ angular.module('main')
     var ingredientInputs = step.stepInputs["ingredientInputs"];
     var dishInputs = step.stepInputs["dishInputs"];
     //ingredients
+    if(!ingredientInputs){
+      ingredientInputs = [];
+    }
     for (var i = ingredientInputs.length - 1; i >= 0; i--) {
       var ingredientInput = ingredientInputs[i];
       switch(ingredientInput.sourceType) {
@@ -123,7 +126,9 @@ angular.module('main')
     if(ingredientInputs && ingredientInputs.length > 0) {
       if((!step.products || !step.products[step.productKeys[0]]) || (!step.products[step.productKeys[0]].ingredients || step.products[step.productKeys[0]].ingredients.length === 0)) {
         step.isEmpty = true;
-      } 
+      } else {
+        step.isEmpty = false;
+      }
     }
 
     //assuming, for now, that there will be no ingredientTips that are

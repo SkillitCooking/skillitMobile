@@ -26,6 +26,7 @@ angular.module('main')
                   ingredients: step.ingredientsToBake,
                   dishes: [step.bakingDish]
                 };
+                step.isEmpty = false;
               } else {
                 //then no products for referencedStep, throw error
                 console.log("Baking step service Error: no products for referencedStep", referencedStep);

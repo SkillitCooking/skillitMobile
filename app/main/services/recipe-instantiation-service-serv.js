@@ -137,6 +137,9 @@ angular.module('main')
       case "Sautee":
         return true;
 
+      case "Season":
+        return true;
+
       case "SlowCook":
         return true;
 
@@ -213,8 +216,9 @@ angular.module('main')
       var dishInputStep = _.find(stepList, function(step) {
         return step.stepId === dishInput.sourceId;
       });
-      step.isEmpty = false;
+      dishInputStep.isEmpty = false;
       var newDishInput = getDishInput(dishInputStep);
+      console.log("recursive dishInput: ", dishInputStep);
       if(newDishInput) {
         if(Array.isArray(newDishInput)) {
           for (var i = newDishInput.length - 1; i >= 0; i--) {
@@ -233,8 +237,10 @@ angular.module('main')
         for (var j = recipes[i].stepList.length - 1; j >= 0; j--) {
           var step = recipes[i].stepList[j];
           if(!step.isEmpty && hasIngredientInput(step)) {
+            console.log("step not empty");
             var dishInput = getDishInput(step);
             if(dishInput) {
+              console.log("positive dishInput: ", dishInput);
               //check if dishInput is array, then handle accordingly
               if(Array.isArray(dishInput)) {
                 for (var k = dishInput.length - 1; k >= 0; k--) {
@@ -245,6 +251,37 @@ angular.module('main')
               }
             }
           }
+        }
+      }
+    }
+  };
+
+  service.setTheRestIsEmpty = function(recipes) {
+    for (var i = recipes.length - 1; i >= 0; i--) {
+      var preheatIndex = -1;
+      if(recipes[i].recipeType === "BYO") {
+        var stepList = recipes[i].stepList;
+        for (var j = stepList.length - 1; j >= 0; j--) {
+          var step = stepList[j];
+          if(!_.has(step, 'isEmpty')) {
+            console.log("---- Step has no isEmpty ---- ", step);
+            step.isEmpty = true;
+          }
+          //preheat check - assumes only one preheatOven per recipe
+          if(step.stepType === 'PreheatOven') {
+            console.log("Preheat detection");
+            preheatIndex = j;
+          }
+          if(step.stepType === 'Bake' && !step.isEmpty) {
+            //then preheat needed, set index to -1
+            console.log("Preheat needed");
+            preheatIndex = -1;
+          }
+        }
+        if(preheatIndex !== -1) {
+          //then set preheat to empty
+          console.log("Preheat set to empty");
+          stepList[preheatIndex].isEmpty = true;
         }
       }
     }

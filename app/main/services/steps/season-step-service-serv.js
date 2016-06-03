@@ -20,6 +20,7 @@ angular.module('main')
               step.products[step.productKeys[0]] = {};
             }
             step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
+            step.isEmpty = false;
           } else {
             step.isEmpty = true;
           }
@@ -42,6 +43,7 @@ angular.module('main')
                 step.products[step.productKeys[0]] = {};
               }
               step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
+              step.isEmpty = false;
             } else {
               //error - no products for step
               console.log("seasonStepService error: no products for step: ", referencedStep);

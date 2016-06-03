@@ -12,7 +12,7 @@
               <ion-checkbox ng-model="ingredient.isSelected">
                 {{ingredient.name}}
               </ion-checkbox>
-              <ion-item ng-if="ingredient.isSelected">
+              <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1">
                 Forms:
                 <div ng-repeat="form in ingredient.ingredientForms">
                   {{form.name}}

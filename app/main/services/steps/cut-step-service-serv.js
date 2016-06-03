@@ -20,6 +20,8 @@ angular.module('main')
               ingredients: step.ingredientsToCut,
               dishes: []
             };
+            step.recipeCategory = recipe.recipeCategory;
+            step.isEmpty = false;
           } else {
             step.isEmpty = true;
           }
@@ -42,6 +44,8 @@ angular.module('main')
                 ingredients: step.ingredientsToCut,
                 dishes: []
               };
+              step.recipeCategory = recipe.recipeCategory;
+              step.isEmpty = false;
             } else {
               //then no products for referencedStep, throw error
               console.log("cutStepService Error: no proudcts for referencedStep: ", referencedStep);
@@ -74,10 +78,14 @@ angular.module('main')
       }).val;
       for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
         var arrElem = {};
+        arrElem.recipeCategorys = [step.recipeCategory];
+        arrElem.actionType = actionType;
+        arrElem.ingredientName = step.ingredientsToCut[i].name;
         arrElem.text = actionType;
         arrElem.text += " the " + step.ingredientsToCut[i].name;
         if(actionModifier){
           arrElem.text += " " + actionModifier;
+          arrElem.actionModifier = actionModifier;
         }
         StepTipService.setTipForTextArrElem(arrElem, step.ingredientsToCut[i], step);
         step.textArr.push(arrElem);

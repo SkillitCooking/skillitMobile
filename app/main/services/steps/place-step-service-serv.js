@@ -125,6 +125,8 @@ angular.module('main')
     //isEmpty condition
     if(step.ingredientsToPlace.length === 0) {
       step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set StepTips
     //Do we want to conflate the two types of ingredients for issuing a stepList?

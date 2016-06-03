@@ -62,6 +62,9 @@ angular.module('main')
         if(step.ingredientsToBoil.length === 0){
           //then no ingredients were picked up
           step.isEmpty = true;
+        } else {
+          //then step is not empty
+          step.isEmpty = false;
         }
       } else if (inputName === "dishInput"){
         //do not expect IngredientList

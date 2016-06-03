@@ -19,6 +19,7 @@ angular.module('main')
               ingredients: step.ingredientsToDry,
               dishes: []
             };
+            step.isEmpty = false;
           } else {
             step.isEmpty = true;
           }
@@ -41,6 +42,7 @@ angular.module('main')
                 ingredients: step.ingredientsToDry,
                 dishes: []
               };
+              step.isEmpty = false;
             } else {
               //error - no products on referencedStep
               console.log("dryStepService Error: cannot find products for referencedStep: ", referencedStep);
