@@ -1,6 +1,17 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', 'StepCombinationService', '$ionicPopover', function (_, $scope, $stateParams, RecipeService, RecipeInstantiationService, StepCombinationService, $ionicPopover) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', 'StepCombinationService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, RecipeInstantiationService, StepCombinationService, $ionicPopover, $ionicModal) {
+
+  var player;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('popup-video');
+  }
+
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
@@ -50,9 +61,13 @@ angular.module('main')
     }
   };
 
+  function autoPlayVideo(videoURL) {
+
+  }
+
   //first have popup show both cases; then do automatic video play for video case
   $scope.showTip = function(step, event) {
-    if(step.hasTip || step.hasVideo){
+    if(step.hasTip || step.stepTips.length > 1) {
       console.log(step);
       $scope.stepTipStep = step;
       $scope.selectedTipArr = Array($scope.stepTipStep.stepTips.length).fill(false);
@@ -63,8 +78,38 @@ angular.module('main')
         $scope.popover = popover;
         $scope.popover.show(event);
       });
+    } else if(step.hasVideo) {
+      //video autoplay
+      //load youtube api
+      
+      $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1";
+      var autoplayTemplate = '<ion-modal-view>' + 
+        '<iframe width="427" height="240" ng-src="{{autoplayURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>' +
+        '</ion-modal-view>';
+      $scope.modal = $ionicModal.fromTemplate(autoplayTemplate, {
+        scope: $scope,
+        animation: 'slide-in-up'
+      });
+      $scope.modal.show();
     }
   };
+
+  $scope.$on('$destroy', function() {
+    if($scope.popover) {
+      $scope.popover.remove();
+    }
+    if($scope.modal) {
+      $scope.modal.remove();
+    }
+  });
+
+  $scope.$on('modal.hidden', function() {
+    $scope.modal.remove();
+  });
+
+  $scope.$on('modal.removed', function() {
+    $scope.modal.remove();
+  });
 
   $scope.selectStepTip = function(index) {
     $scope.selectedTipArr.fill(false);
