@@ -3,11 +3,11 @@
     <h1 class="title">{{displayStepTip.title}}</h1>
   </ion-header-bar>
   <ion-content>
-    <!--div class="button-bar">
+    <div ng-if="stepTipStep.stepTips.length > 1" class="button-bar">
       <a ng-repeat="stepTip in stepTipStep.stepTips" ng-class="getStepTipButtonClass($index)"
         ng-click="selectStepTip($index)"></a>
     </div>
-    <h4>{{displayStepTip.title}}</h4>-->
+    <h4>{{displayStepTip.title}}</h4>
     <p ng-if="tipHasText()">{{displayStepTip.text}}</p>
     <h5 ng-if="tipHasVideo()">{{displayStepTip.videoTitle}}</h5>
     <iframe ng-if="tipHasVideo()" width="427" height="240" ng-src="{{displayStepTip.videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>

@@ -1,8 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('RecipeService', function ($log, Restangular) {
-
-  $log.log('Hello from your Service: RecipeService in module main');
+.factory('RecipeService', function (Restangular) {
   var baseRecipes = Restangular.all('recipes');
 
   return {

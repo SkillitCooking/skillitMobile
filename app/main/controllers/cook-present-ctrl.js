@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', 'StepCombinationService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, RecipeInstantiationService, StepCombinationService, $ionicPopover, $ionicModal) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal) {
 
   /*var player;
 
@@ -36,7 +36,7 @@ angular.module('main')
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
   };
-    RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
+  RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
     console.log("preingredient For Recipes: ", angular.copy(recipes));
@@ -46,9 +46,17 @@ angular.module('main')
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes);
+    if($scope.combinedRecipe) {
+      $scope.seasoningProfile = $scope.combinedRecipe.defaultSeasoningProfile;
+    }
     console.log("combined recipe: ", $scope.combinedRecipe);
     console.log("ingredientsForRecipes", $scope.ingredientsForRecipes);
   });
+  SeasoningProfileService.getSeasoningProfiles().then(function(response) {
+    $scope.seasoningProfiles = response.data;
+  });
+
+
 
   $scope.isSingleStep = function(step) {
     if(step.text) {
@@ -67,8 +75,13 @@ angular.module('main')
 
   //first have popup show both cases; then do automatic video play for video case
   $scope.showTip = function(step, event) {
-    if(step.hasTip || step.stepTips.length > 1) {
-      console.log(step);
+    if(step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile) {
+      $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
+        {scope: $scope}).then(function(popover) {
+        $scope.popover = popover;
+        $scope.popover.show(event);
+      });
+    } else if(step.hasTip || step.stepTips.length > 1) {
       $scope.stepTipStep = step;
       $scope.selectedTipArr = Array($scope.stepTipStep.stepTips.length).fill(false);
       $scope.selectedTipArr[0] = true;
@@ -79,9 +92,6 @@ angular.module('main')
         $scope.popover.show(event);
       });
     } else if(step.hasVideo) {
-      //video autoplay
-      //load youtube api
-      
       $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1";
       var autoplayTemplate = '<ion-modal-view>' + 
         '<iframe width="427" height="240" ng-src="{{autoplayURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>' +
@@ -139,6 +149,26 @@ angular.module('main')
       return true;
     } else {
        return false;
+    }
+  };
+
+  $scope.getSeasoningParts = function(profile) {
+    return profile.spices.join(', ');
+  };
+
+  $scope.seasoningProfilePopup = function(event) {
+    $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
+        {scope: $scope}).then(function(popover) {
+        $scope.popover = popover;
+        $scope.popover.show(event);
+    });
+  };
+  $scope.changeSeasoningProfile = function(profile) {
+    $scope.seasoningProfile = profile;
+    for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
+      if($scope.combinedRecipe.stepList[i].stepType === 'Season') {
+        SeasoningProfileTextService.addSeasoning($scope.combinedRecipe.stepList[i], $scope.seasoningProfile);
+      }
     }
   };
 }]);

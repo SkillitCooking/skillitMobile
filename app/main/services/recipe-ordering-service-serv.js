@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('RecipeOrderingService', ['_', 'CutStepCombinationService', function (_, CutStepCombinationService) {
+.factory('RecipeOrderingService', ['_', 'CutStepCombinationService', 'SeasoningProfileTextService', function (_, CutStepCombinationService, SeasoningProfileTextService) {
   var service = {};
 
   function isPrepStep(step) {
@@ -82,11 +82,17 @@ angular.module('main')
     }
   };
 
-  service.addToStepList = function(stepList, step) {
+  service.addToStepList = function(stepList, step, defaultSeasoningProfile) {
     //if cut, then find last cutstep in stepList and add
     if(step.stepType === 'Cut'){
       CutStepCombinationService.addCutStep(stepList, step);
     } else {
+      if(step.stepType === 'Season') {
+        //then attempt to add default seasoning
+        if(defaultSeasoningProfile) {
+          SeasoningProfileTextService.addSeasoning(step, defaultSeasoningProfile);
+        }
+      }
       stepList.push(step);
     }
   };

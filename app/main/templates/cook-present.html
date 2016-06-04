@@ -14,12 +14,17 @@
     <br/>
     <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
     <br/>
+    <div ng-if="combinedRecipe.canAddSeasoningProfile">
+      <button class="button button-balanced" ng-click="seasoningProfilePopup($event)">Choose Seasoning Profile</button>
+      <p>Current Seasoning: {{seasoningProfile.name}}</p>
+    </div>
     <ion-list class="list">
       <div ng-repeat="step in combinedRecipe.stepList">
         <ion-item class="recipe-instructions" ng-if="isSingleStep(step) && !step.isEmpty" ng-click="showTip(step, $event)">
           <p><b>Step {{step.stepNumber}}:</b> {{step.text}}</p>
           <i ng-if="step.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
           <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
+          <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-erlenmeyer-flask instruction-step-tip-icon"></i>
         </ion-item>
         <ion-item class="recipe-instructions" ng-if="!isSingleStep(step) && !step.isEmpty" ng-repeat="subStep in step.textArr" ng-click="showTip(subStep, $event)">
           <p><b>Step {{subStep.stepNumber}}:</b> {{subStep.text}}</p>

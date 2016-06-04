@@ -126,14 +126,23 @@ angular.module('main')
       
       //sort recipes
       recipes.sort(RecipeOrderingService.fullRecipeCmp);
+      //assign canAddSeasoningProfile if any of the recipes can
+      for (var i = recipes.length - 1; i >= 0; i--) {
+        if(recipes[i].canAddSeasoningProfile) {
+          combinedRecipe.canAddSeasoningProfile = true;
+          break;
+        }
+      }
       var recipe = recipes.pop();
+      //assign default seasoningProfile arbitrarily from first popped
+      combinedRecipe.defaultSeasoningProfile = recipe.defaultSeasoningProfile;
       while(hasSteps(recipe)) {
         var step = recipe.stepList.pop();
         recipe.totalTime -= step.stepDuration;
         if(isPrepStep(step)) {
           recipe.prepTime -= step.stepDuration;
         }
-        RecipeOrderingService.addToStepList(combinedRecipe.stepList, step);
+        RecipeOrderingService.addToStepList(combinedRecipe.stepList, step, combinedRecipe.defaultSeasoningProfile);
         //how to use comparison function for sortingIndex?
         recipes.binaryInsert(recipe, false, RecipeOrderingService.fullRecipeCmp);
         recipe = recipes.pop();
