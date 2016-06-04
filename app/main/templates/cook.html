@@ -1,9 +1,9 @@
 <ion-view view-title="What Do Ya Got?">
   <!-- do you want padding? -->
           
-    <ion-content class="padding cook-tab">
+  <ion-content class="padding cook-tab">
       <!-- content goes here -->
-      <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
+    <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
       <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
         <div class="wrap-class" ng-class="getWrapClass($index)">
           <h2 class="ingredient-type-heading">{{name}}</h2>
@@ -23,19 +23,8 @@
                      </div>
                    </label>
                   </div>
-              <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1">
-                Forms:
-                <div ng-repeat="form in ingredient.ingredientForms">
-                  {{form.name}}
-                  <label class="toggle toggle-royal">
-                   <input type="checkbox" ng-model="form.isSelected">
-                   <div class="track">
-                     <div class="handle"></div>
-                   </div>
-                 </label>
-                </div>
-              </ion-item>
-            </div>
+              </div>
+            </ion-item>
           </ion-list>
           <div class="bottom-nav-buttons-cook-tab">
             <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button button-balanced prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -43,7 +32,7 @@
             <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
           </div>
         </div>
-    </ion-slide>
-          </ion-slide-box>
-</ion-content>
+      </ion-slide>
+    </ion-slide-box>
+  </ion-content>
 </ion-view>
