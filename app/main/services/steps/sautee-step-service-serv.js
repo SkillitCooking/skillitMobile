@@ -158,7 +158,7 @@ angular.module('main')
           }
           break;
       }
-      stepText += sauteeDuration + ".";
+      stepText += " " + sauteeDuration + ".";
       step.text = stepText;
     }
   }

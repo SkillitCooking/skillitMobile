@@ -107,9 +107,9 @@ angular.module('main')
     $scope.modal.remove();
   });
 
-  $scope.$on('modal.removed', function() {
+  /*$scope.$on('modal.removed', function() {
     $scope.modal.remove();
-  });
+  });*/
 
   $scope.selectStepTip = function(index) {
     $scope.selectedTipArr.fill(false);

@@ -157,7 +157,7 @@ angular.module('main')
           }
           break;
       }
-      stepText += " in the " + step.steamingDish.name + steamingDuration;
+      stepText += " in the " + step.steamingDish.name + " " + steamingDuration;
       step.text = stepText;
     }
   }

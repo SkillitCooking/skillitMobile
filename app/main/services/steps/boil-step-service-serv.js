@@ -173,7 +173,7 @@ angular.module('main')
       if(cookAccordingToInstructions){
         stepText += " according to package instructions";
       } else if(boilingDuration){
-        stepText += boilingDuration;
+        stepText += " " + boilingDuration;
       } else {
         //no boiling duration and not according to instructions error
         console.log("boil step service error: no boiling duration where expected");
