@@ -11,14 +11,19 @@ angular.module('main')
           return type.typeName === input.key;
         });
         if(ingredientType) {
-          step.ingredientsToStir = ingredientType.ingredients;
-          if(!step.products) {
-            step.products = {};
+          if(ingredientType.ingredients.length > 0) {
+            step.ingredientsToStir = ingredientType.ingredients;
+            if(!step.products) {
+              step.products = {};
+            }
+            step.products[step.productKeys[0]] = {
+              ingredients: ingredientType.ingredients,
+              dishes: []
+            };
+            step.isEmpty = false;
+          } else {
+            step.isEmpty = true;
           }
-          step.products[step.productKeys[0]] = {
-            ingredients: ingredientType.ingredients,
-            dishes: []
-          };
         } else {
           //error: no ingredientType
           console.log("stirStepService error: ingredientType not found from input: ", input);
@@ -30,18 +35,23 @@ angular.module('main')
           return iterStep.stepId === input.sourceId;
         });
         if(referencedStep) {
-          if(referencedStep.products) {
-            step.ingredientsToStir = referencedStep.products[input.key].ingredients;
-            if(!products) {
-              step.products = {};
+          if(!referencedStep.isEmpty) {
+            if(referencedStep.products) {
+              step.ingredientsToStir = referencedStep.products[input.key].ingredients;
+              if(!products) {
+                step.products = {};
+              }
+              step.products[step.productKeys[0]] = {
+                ingredients: step.ingredientsToStir,
+                dishes: referencedStep.products[input.key].dishes
+              };
+              step.isEmpty = false;
+            } else {
+              //error - no products for found step
+              console.log("stirStepService error: no products for referencedStep: ", referencedStep);
             }
-            step.products[step.productKeys[0]] = {
-              ingredients: step.ingredientsToStir,
-              dishes: referencedStep.products[input.key].dishes
-            };
           } else {
-            //error - no products for found step
-            console.log("stirStepService error: no products for referencedStep: ", referencedStep);
+            step.isEmpty = true;
           }
         } else {
           //error - no step found
@@ -54,45 +64,49 @@ angular.module('main')
         console.log("stirStepService error: unexpected sourceType: ", input);
         break;
     }
-    StepTipService.setStepTipInfo(step, step.ingredientsToStir);
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, step.ingredientsToStir);
+    }
   }
 
   function constructStepText(step) {
-    var whenToStir = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "whenToStir";
-    }).val;
-    var stirType = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "stirType";
-    }).val;
-    var stepText = stirType;
-    switch(step.ingredientsToStir.length) {
-      case 0:
-        //error
-        stepText = "NO INGREDIENTS TO STIR";
-        console.log("stirStepService error: no ingredients to stir");
-        break;
+    if(!step.isEmpty) {
+      var whenToStir = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "whenToStir";
+      }).val;
+      var stirType = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "stirType";
+      }).val;
+      var stepText = stirType;
+      switch(step.ingredientsToStir.length) {
+        case 0:
+          //error
+          stepText = "NO INGREDIENTS TO STIR";
+          console.log("stirStepService error: no ingredients to stir");
+          break;
 
-      case 1:
-        stepText += " the " + step.ingredientsToStir[0].name;
-        break;
+        case 1:
+          stepText += " the " + step.ingredientsToStir[0].name;
+          break;
 
-      case 2:
-        stepText += " the " + step.ingredientsToStir[0].name + " and " + step.ingredientsToStir[1].name;
-        break;
+        case 2:
+          stepText += " the " + step.ingredientsToStir[0].name + " and " + step.ingredientsToStir[1].name;
+          break;
 
-      default:
-        stepText += " the ";
-        for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
-          if(i === 0) {
-            stepText += "and " + step.ingredientsToStir[i].name;
-          } else {
-            stepText += step.ingredientsToStir[i].name + ", ";
+        default:
+          stepText += " the ";
+          for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              stepText += "and " + step.ingredientsToStir[i].name;
+            } else {
+              stepText += step.ingredientsToStir[i].name + ", ";
+            }
           }
-        }
-        break;
+          break;
+      }
+      stepText += " " + whenToStir;
+      step.text = stepText;
     }
-    stepText += " " + whenToStir;
-    step.text = stepText;
   }
 
   service.fillInStep = function(recipe, stepIndex) {

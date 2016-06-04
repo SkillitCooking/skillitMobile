@@ -16,14 +16,16 @@ angular.module('main')
                 return type.typeName === input.key;
               });
               if(ingredientType){
-                step.ingredientsToBoil = step.ingredientsToBoil.concat(ingredientType.ingredients);
-                if(!step.products) {
-                  step.products = {};
-                  step.products[step.productKeys[0]] = {
-                    ingredients: []
-                  };
+                if(ingredientType.ingredients.length > 0) {
+                  step.ingredientsToBoil = step.ingredientsToBoil.concat(ingredientType.ingredients);
+                  if(!step.products) {
+                    step.products = {};
+                    step.products[step.productKeys[0]] = {
+                      ingredients: []
+                    };
+                  }
+                  step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
                 }
-                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
               } else {
                 //then ingredientType not found, throw error
                 console.log("Boil step service Error: no ingredientType found for input key", input);
@@ -35,18 +37,20 @@ angular.module('main')
                 return iterStep.stepId === input.sourceId;
               });
               if(referencedStep) {
-                if(referencedStep.products){
-                  step.ingredientsToBoil = step.ingredientsToBoil.concat(referencedStep.products[input.key].ingredients);
-                  if(!step.products) {
-                    step.products = {};
-                    step.products[step.productKeys[0]] = {
-                      ingredients: []
-                    };
+                if(!referencedStep.isEmpty) {
+                  if(referencedStep.products){
+                    step.ingredientsToBoil = step.ingredientsToBoil.concat(referencedStep.products[input.key].ingredients);
+                    if(!step.products) {
+                      step.products = {};
+                      step.products[step.productKeys[0]] = {
+                        ingredients: []
+                      };
+                    }
+                    step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
+                  } else {
+                    //then no products for referencedStep, throw error
+                    console.log("Boil step service Error: no products for referencedStep", referencedStep);
                   }
-                  step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
-                } else {
-                  //then no products for referencedStep, throw error
-                  console.log("Boil step service Error: no products for referencedStep", referencedStep);
                 }
               } else {
                 //then referenced step not found, throw error
@@ -54,6 +58,13 @@ angular.module('main')
               }
               break;
           }
+        }
+        if(step.ingredientsToBoil.length === 0){
+          //then no ingredients were picked up
+          step.isEmpty = true;
+        } else {
+          //then step is not empty
+          step.isEmpty = false;
         }
       } else if (inputName === "dishInput"){
         //do not expect IngredientList
@@ -83,19 +94,21 @@ angular.module('main')
               return iterStep.stepId === input.sourceId;
             });
             if(referencedStep) {
-              if(referencedStep.products) {
-                step.boilingDish = referencedStep.products[input.key].dishes[0];
-                //will possibly want to make more general in the future
-                if(!step.products){
-                  step.products = {};
-                  step.products[step.productKeys[0]] = {
-                    ingredients: []
-                  };
+              if(!referencedStep.isEmpty) {
+                if(referencedStep.products) {
+                  step.boilingDish = referencedStep.products[input.key].dishes[0];
+                  //will possibly want to make more general in the future
+                  if(!step.products){
+                    step.products = {};
+                    step.products[step.productKeys[0]] = {
+                      ingredients: []
+                    };
+                  }
+                  step.products[step.productKeys[0]].dishes = [step.boilingDish];
+                } else {
+                  //then no products for referencedStep, throw error
+                  console.log("Boil step service Error: no products for referencedStep", referencedStep);
                 }
-                step.products[step.productKeys[0]].dishes = [step.boilingDish];
-              } else {
-                //then no products for referencedStep, throw error
-                console.log("Boil step service Error: no products for referencedStep", referencedStep);
               }
             } else {
               //then step couldn't be found, throw error
@@ -112,53 +125,61 @@ angular.module('main')
         console.log("Boil step service error: unexpect inputName: ", inputName);
       }
     }
+    //isEmpty check
+    if(step.ingredientsToBoil.length === 0) {
+      step.isEmpty = true;
+    }
     //set StepTips
-    StepTipService.setStepTipInfo(step, step.ingredientsToBoil);
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, step.ingredientsToBoil);
+    }
   }
 
   function constructStepText(step) {
-    var boilingDuration = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "boilingDuration";
-    }).val;
-    var cookAccordingToInstructions = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "cookAccordingToInstructions";
-    }).val;
-    var stepText = "Boil the ";
-    switch (step.ingredientsToBoil.length){
-      case 0:
-        //error
-        stepText = "NO INGREDIENTS TO BOIL";
-        console.log("Boil step service Error: no ingredientsToBoil in step: ", step);
-        break;
+    if(!step.isEmpty) {
+      var boilingDuration = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "boilingDuration";
+      }).val;
+      var cookAccordingToInstructions = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "cookAccordingToInstructions";
+      }).val;
+      var stepText = "Boil the ";
+      switch (step.ingredientsToBoil.length){
+        case 0:
+          //error
+          stepText = "NO INGREDIENTS TO BOIL";
+          console.log("Boil step service Error: no ingredientsToBoil in step: ", step);
+          break;
 
-      case 1:
-        stepText += step.ingredientsToBoil[0].name;
-        break;
+        case 1:
+          stepText += step.ingredientsToBoil[0].name;
+          break;
 
-      case 2:
-        stepText += step.ingredientsToBoil[0].name + " and " + step.ingredientsToBoil[1].name;
-        break;
+        case 2:
+          stepText += step.ingredientsToBoil[0].name + " and " + step.ingredientsToBoil[1].name;
+          break;
 
-      default:
-        for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
-          if(i === 0) {
-            stepText += "and " + step.ingredientsToBoil[i].name;
-          } else {
-            stepText += step.ingredientsToBoil[i].name + ", ";
+        default:
+          for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              stepText += "and " + step.ingredientsToBoil[i].name;
+            } else {
+              stepText += step.ingredientsToBoil[i].name + ", ";
+            }
           }
-        }
-        break;
+          break;
+      }
+      stepText += " in the " + step.boilingDish.name;
+      if(cookAccordingToInstructions){
+        stepText += " according to package instructions";
+      } else if(boilingDuration){
+        stepText += boilingDuration;
+      } else {
+        //no boiling duration and not according to instructions error
+        console.log("boil step service error: no boiling duration where expected");
+      }
+      step.text = stepText;
     }
-    stepText += " in the " + step.boilingDish.name;
-    if(cookAccordingToInstructions){
-      stepText += " according to package instructions";
-    } else if(boilingDuration){
-      stepText += boilingDuration;
-    } else {
-      //no boiling duration and not according to instructions error
-      console.log("boil step service error: no boiling duration where expected");
-    }
-    step.text = stepText;
   }
   
 

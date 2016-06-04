@@ -1,25 +1,34 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', '$ionicPopover', function ($scope, $stateParams, RecipeService, RecipeInstantiationService, $ionicPopover) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'RecipeInstantiationService', 'StepCombinationService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, RecipeInstantiationService, StepCombinationService, $ionicPopover, $ionicModal) {
 
-  function getCombinedRecipe(recipes) {
-    //assign step numbers
-    var combinedRecipe = recipes[0];
-    var stepNumber = 1;
-    if(combinedRecipe) {
-      for (var i = 0; i < combinedRecipe.stepList.length; i++) {
-        if(combinedRecipe.stepList[i].textArr) {
-          for (var j = 0; j < combinedRecipe.stepList[i].textArr.length; j++) {
-            combinedRecipe.stepList[i].textArr[j].stepNumber = stepNumber;
-            stepNumber += 1;
-          }
-        } else {
-          combinedRecipe.stepList[i].stepNumber = stepNumber;
-          stepNumber += 1;
-        }
+  /*var player;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('popup-video');
+  }
+
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
+
+  function getIngredientsForRecipes(recipes) {
+    var ingredientsForRecipes = [];
+    for (var i = recipes.length - 1; i >= 0; i--) {
+      var ingredientsForRecipe = {};
+      ingredientsForRecipe.name = recipes[i].name;
+      ingredientsForRecipe.ingredients = [];
+      var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
+      for (var j = ingredientTypes.length - 1; j >= 0; j--) {
+        ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(ingredientTypes[j].ingredients);
       }
+      ingredientsForRecipe.ingredients = _.map(ingredientsForRecipe.ingredients, function(ingredient) {
+          return ingredient.name;
+        });
+      ingredientsForRecipes.push(ingredientsForRecipe);
     }
-    return combinedRecipe;
+    return ingredientsForRecipes;
   }
 
   $scope.recipeIds = $stateParams.recipeIds;
@@ -27,13 +36,18 @@ angular.module('main')
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
   };
-  RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
+    RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
+    console.log("preingredient For Recipes: ", angular.copy(recipes));
+    $scope.ingredientsForRecipes = getIngredientsForRecipes(recipes);
     RecipeInstantiationService.fillInSteps(recipes);
+    RecipeInstantiationService.setBackwardsIsEmptySteps(recipes);
+    RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
-    $scope.combinedRecipe = getCombinedRecipe(recipes);
-    console.log("recipe: ", $scope.combinedRecipe);
+    $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes);
+    console.log("combined recipe: ", $scope.combinedRecipe);
+    console.log("ingredientsForRecipes", $scope.ingredientsForRecipes);
   });
 
   $scope.isSingleStep = function(step) {
@@ -47,9 +61,13 @@ angular.module('main')
     }
   };
 
+  function autoPlayVideo(videoURL) {
+
+  }
+
   //first have popup show both cases; then do automatic video play for video case
   $scope.showTip = function(step, event) {
-    if(step.hasTip || step.hasVideo){
+    if(step.hasTip || step.stepTips.length > 1) {
       console.log(step);
       $scope.stepTipStep = step;
       $scope.selectedTipArr = Array($scope.stepTipStep.stepTips.length).fill(false);
@@ -60,8 +78,38 @@ angular.module('main')
         $scope.popover = popover;
         $scope.popover.show(event);
       });
+    } else if(step.hasVideo) {
+      //video autoplay
+      //load youtube api
+      
+      $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1";
+      var autoplayTemplate = '<ion-modal-view>' + 
+        '<iframe width="427" height="240" ng-src="{{autoplayURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>' +
+        '</ion-modal-view>';
+      $scope.modal = $ionicModal.fromTemplate(autoplayTemplate, {
+        scope: $scope,
+        animation: 'slide-in-up'
+      });
+      $scope.modal.show();
     }
   };
+
+  $scope.$on('$destroy', function() {
+    if($scope.popover) {
+      $scope.popover.remove();
+    }
+    if($scope.modal) {
+      $scope.modal.remove();
+    }
+  });
+
+  $scope.$on('modal.hidden', function() {
+    $scope.modal.remove();
+  });
+
+  $scope.$on('modal.removed', function() {
+    $scope.modal.remove();
+  });
 
   $scope.selectStepTip = function(index) {
     $scope.selectedTipArr.fill(false);

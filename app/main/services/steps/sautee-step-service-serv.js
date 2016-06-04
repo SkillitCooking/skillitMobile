@@ -17,14 +17,16 @@ angular.module('main')
             return type.typeName === input.key;
           });
           if(ingredientType) {
-            step.ingredientsToSautee = step.ingredientsToSautee.concat(ingredientType.ingredients);
-            if(!step.products) {
-              step.products = {};
-              step.products[step.productKeys[0]] = {
-                ingredients: []
-              };
+            if(ingredientType.ingredients.length > 0) {
+              step.ingredientsToSautee = step.ingredientsToSautee.concat(ingredientType.ingredients);
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
             }
-            step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
           } else {
             //error - no type found
             console.log("sauteeStepService error: could not find ingredientType for input: ", input);
@@ -36,18 +38,20 @@ angular.module('main')
             return iterStep.stepId === input.sourceId;
           });
           if(referencedStep) {
-            if(referencedStep.products){
-              step.ingredientsToSautee = step.ingredientsToSautee.concat(referencedStep.products[input.key].ingredients);
-              if(!step.products) {
-                step.products = {};
-                step.products[step.productKeys[0]] = {
-                  ingredients: []
-                };
+            if(!referencedStep.isEmpty) {
+              if(referencedStep.products){
+                step.ingredientsToSautee = step.ingredientsToSautee.concat(referencedStep.products[input.key].ingredients);
+                if(!step.products) {
+                  step.products = {};
+                  step.products[step.productKeys[0]] = {
+                    ingredients: []
+                  };
+                }
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
+              } else {
+                //error: no products for referenced step
+                console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
-            } else {
-              //error: no products for referenced step
-              console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
             }
           } else {
             //error: can't find referenced step
@@ -87,18 +91,20 @@ angular.module('main')
           return iterStep.stepId === dishInput.sourceId;
         });
         if(referencedStep) {
-          if(referencedStep.products){
-            step.sauteeDish = referencedStep.products[dishInput.key].dishes[0];
-            if(!step.products){
-              step.products = {};
-              step.products[step.productKeys[0]] = {
-                ingredients: []
-              };
+          if(!referencedStep.isEmpty) {
+            if(referencedStep.products){
+              step.sauteeDish = referencedStep.products[dishInput.key].dishes[0];
+              if(!step.products){
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].dishes = [step.sauteeDish];
+            } else {
+              //error - cannot find products for step
+              console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
             }
-            step.products[step.productKeys[0]].dishes = [step.sauteeDish];
-          } else {
-            //error - cannot find products for step
-            console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
           }
         } else {
           //error - cannot find step from input
@@ -109,47 +115,59 @@ angular.module('main')
       default:
         break;
     }
+    //set isEmpty condition
+    if(step.ingredientsToSautee.length === 0) {
+      step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
+    }
     //set StepTips
-    StepTipService.setStepTipInfo(step, step.ingredientsToSautee);
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, step.ingredientsToSautee);
+    }
   }
 
   function constructStepText(step) {
-    var sauteeDuration = _.find(step.stepSpecifics, function (specific) {
-      return specific.propName === "sauteeDuration";
-    }).val;
-    var stepText = "Sautee the ";
-    switch(step.ingredientsToSautee.length) {
-      case 0:
-        //error
-        console.log("sauteeStepService error: no ingredientsToSautee: ", step);
-        stepText = "NO INGREDIENTS TO SAUTEE";
-        break;
+    if(!step.isEmpty) {
+      var sauteeDuration = _.find(step.stepSpecifics, function (specific) {
+        return specific.propName === "sauteeDuration";
+      }).val;
+      var stepText = "Sautee the ";
+      switch(step.ingredientsToSautee.length) {
+        case 0:
+          //error
+          console.log("sauteeStepService error: no ingredientsToSautee: ", step);
+          stepText = "NO INGREDIENTS TO SAUTEE";
+          break;
 
-      case 1:
-        stepText += step.ingredientsToSautee[0].name;
-        break;
+        case 1:
+          stepText += step.ingredientsToSautee[0].name;
+          break;
 
-      case 2:
-        stepText += step.ingredientsToSautee[0].name + " and " + step.ingredientsToSautee[1].name;
-        break;
+        case 2:
+          stepText += step.ingredientsToSautee[0].name + " and " + step.ingredientsToSautee[1].name;
+          break;
 
-      default: 
-        for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
-          if(i === 0) {
-            stepText += "and " + step.ingredientsToSautee[i].name;
-          } else {
-            stepText += step.ingredientsToSautee[i].name + ", ";
+        default: 
+          for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              stepText += "and " + step.ingredientsToSautee[i].name;
+            } else {
+              stepText += step.ingredientsToSautee[i].name + ", ";
+            }
           }
-        }
-        break;
+          break;
+      }
+      stepText += sauteeDuration + ".";
+      step.text = stepText;
     }
-    stepText += sauteeDuration + ".";
-    step.text = stepText;
   }
 
   function constructAuxiliarySteps(step) {
-    for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
-      stirStepService.constructAuxiliaryStep(step.auxiliarySteps[i], step.ingredientsToSautee);
+    if(!step.isEmpty) {
+      for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
+        stirStepService.constructAuxiliaryStep(step.auxiliarySteps[i], step.ingredientsToSautee);
+      }
     }
   }
 

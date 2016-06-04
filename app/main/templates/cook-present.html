@@ -2,7 +2,15 @@
   <!-- do you want padding? -->
   <ion-content class="padding">
     <h1>{{combinedRecipe.name}}</h1>
-    <iframe width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+    <h3>Ingredient List</h3>
+    <div ng-repeat="recipeIngredients in ingredientsForRecipes">
+      <h5>{{recipeIngredients.name}}</h5>
+      <p ng-repeat="ingredient in recipeIngredients.ingredients">
+        {{ingredient}}
+      </p>
+    </div>
+    <iframe ng-if="combinedRecipe.mainVideoURL" width="427" height="240" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+    <iframe ng-if="combinedRecipe.mainVideoURLs" ng-repeat="videoURL in combinedRecipe.mainVideoURLs track by $index" width="427" height="240" ng-src="{{videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
     <br/>
     <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
     <br/>
@@ -12,11 +20,21 @@
           <p><b>Step {{step.stepNumber}}:</b> {{step.text}}</p>
           <i ng-if="step.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
           <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
+        <ion-item ng-if="isSingleStep(step) && !step.isEmpty" ng-click="showTip(step, $event)">
+          <h2>Step {{step.stepNumber}}</h2>
+          <p>{{step.text}}</p>
+          <i ng-if="step.hasTip" class="ion-information-circled"></i>
+          <i ng-if="step.hasVideo" class="ion-videocamera"></i>
         </ion-item>
         <ion-item class="recipe-instructions" ng-if="!isSingleStep(step)" ng-repeat="subStep in step.textArr" ng-click="showTip(subStep, $event)">
           <p><b>Step {{subStep.stepNumber}}:</b> {{subStep.text}}</p>
           <i ng-if="subStep.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
           <i ng-if="subStep.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
+        <ion-item ng-if="!isSingleStep(step) && !step.isEmpty" ng-repeat="subStep in step.textArr" ng-click="showTip(subStep, $event)">
+          <h2>Step {{subStep.stepNumber}}</h2>
+          <p>{{subStep.text}}</p>
+          <i ng-if="subStep.hasTip" class="ion-information-circled"></i>
+          <i ng-if="subStep.hasVideo" class="ion-videocamera"></i>
         </ion-item>
       </div>
     </ion-list>

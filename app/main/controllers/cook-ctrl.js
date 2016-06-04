@@ -5,6 +5,13 @@ angular.module('main')
   IngredientService.getIngredientsForSelection().then(function(response){
     console.log(response.data);
     $scope.ingredientCategories = response.data;
+    //set first form of all ingredients to selected
+    for(var category in $scope.ingredientCategories) {
+      var ingredients = $scope.ingredientCategories[category]
+      for (var i = ingredients.length - 1; i >= 0; i--) {
+        ingredients[i].ingredientForms[0].isSelected = true;
+      }
+    }
   }, function(response){
     console.log("Server Error: " + response.message);
   });
@@ -19,7 +26,7 @@ angular.module('main')
     } else {
       return '';
     }
-  }
+  };
 
   $scope.slideHasChanged = function(index) {
     console.log(index);
@@ -87,6 +94,5 @@ angular.module('main')
 
   $scope.test = function(ingredients){
     console.log("Ingredients: ", ingredients);
-
   };
 }]);

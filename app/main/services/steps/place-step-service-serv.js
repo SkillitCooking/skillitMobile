@@ -19,15 +19,17 @@ angular.module('main')
             return type.typeName === input.key;
           });
           if(ingredientType) {
-            step.ingredientsToPlace = step.ingredientsToPlace.concat(ingredientType.ingredients);
-            if(!step.products) {
-              step.products = {};
-              step.products[step.productKeys[0]] = {
-                ingredients: []
-              };
+            if(ingredientType.ingredients.length > 0) {
+              step.ingredientsToPlace = step.ingredientsToPlace.concat(ingredientType.ingredients);
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              //may need to instantiate ingredients...
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
             }
-            //may need to instantiate ingredients...
-            step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
           } else {
             //error: no ingredientType for the input
             console.log("placeStepService error: no ingredientType for input: ", input);
@@ -39,18 +41,20 @@ angular.module('main')
             return iterStep.stepId === input.sourceId;
           });
           if(referencedStep) {
-            if(referencedStep.products) {
-              step.ingredientsToPlace = step.ingredientsToPlace.concat(referencedStep.products[input.key].ingredients);
-              if(!step.products) {
-                step.products = {};
-                step.products[step.productKeys[0]] = {
-                  ingredients: []
-                };
+            if(!referencedStep.isEmpty) {
+              if(referencedStep.products) {
+                step.ingredientsToPlace = step.ingredientsToPlace.concat(referencedStep.products[input.key].ingredients);
+                if(!step.products) {
+                  step.products = {};
+                  step.products[step.productKeys[0]] = {
+                    ingredients: []
+                  };
+                }
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
+              } else {
+                //error: then no products for step
+                console.log("placeStepService error: no products for referenced step: ", referencedStep);
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
-            } else {
-              //error: then no products for step
-              console.log("placeStepService error: no products for referenced step: ", referencedStep);
             }
           } else {
             //error: then no step found
@@ -90,20 +94,22 @@ angular.module('main')
           return iterStep.stepId === dishProductInput.sourceId;
         });
         if(referencedStep) {
-          if(referencedStep.products){
-            step.dishToPlaceOn = referencedStep.products[dishProductInput.key].dishes[0];
-            step.alreadyPlacedIngredients = referencedStep.products[dishProductInput.key].ingredients;
-            if(!step.products) {
-              step.products = {};
-              step.products[step.productKeys[0]] = {
-                ingredients: []
-              };
+          if(!referencedStep.isEmpty) {
+            if(referencedStep.products){
+              step.dishToPlaceOn = referencedStep.products[dishProductInput.key].dishes[0];
+              step.alreadyPlacedIngredients = referencedStep.products[dishProductInput.key].ingredients;
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.alreadyPlacedIngredients);
+              step.products[step.productKeys[0]].dishes = [step.dishToPlaceOn];
+            } else {
+              //error - no products for step
+              console.log("placeStepService error: no products for referencedStep: ", referencedStep);
             }
-            step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.alreadyPlacedIngredients);
-            step.products[step.productKeys[0]].dishes = [step.dishToPlaceOn];
-          } else {
-            //error - no products for step
-            console.log("placeStepService error: no products for referencedStep: ", referencedStep);
           }
         } else {
           //error then step couldn't be located
@@ -112,71 +118,83 @@ angular.module('main')
         break;
 
       default:
+        //error - unexpected sourceType
+        console.log("placeStepService error: unexpected sourceType from input: ", dishProductInput);
         break;
+    }
+    //isEmpty condition
+    if(step.ingredientsToPlace.length === 0) {
+      step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set StepTips
     //Do we want to conflate the two types of ingredients for issuing a stepList?
-    StepTipService.setStepTipInfo(step, step.ingredientsToPlace.concat(step.alreadyPlacedIngredients));
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, step.ingredientsToPlace.concat(step.alreadyPlacedIngredients));
+    }
   }
 
   function constructStepText(step) {
-    var stepText = "Place the ";
-    switch(step.ingredientsToPlace.length) {
-      case 0:
-        //error
-        console.log("placeStepService error: no ingredientsToPlace: ", step);
-        break;
+    if(!step.isEmpty) {
+      var stepText = "Place the ";
+      switch(step.ingredientsToPlace.length) {
+        case 0:
+          //error
+          console.log("placeStepService error: no ingredientsToPlace: ", step);
+          break;
 
-      case 1:
-        stepText += step.ingredientsToPlace[0].name;
-        break;
+        case 1:
+          stepText += step.ingredientsToPlace[0].name;
+          break;
 
-      case 2:
-        stepText += step.ingredientsToPlace[0].name + " and " + step.ingredientsToPlace[1].name;
-        break;
+        case 2:
+          stepText += step.ingredientsToPlace[0].name + " and " + step.ingredientsToPlace[1].name;
+          break;
 
-      default:
-        for (var i = step.ingredientsToPlace.length - 1; i >= 0; i--) {
-          if(i === 0) {
-            stepText += "and " + step.ingredientsToPlace[i].name;
-          } else {
-            stepText += step.ingredientsToPlace[i].name + ", ";
+        default:
+          for (var i = step.ingredientsToPlace.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              stepText += "and " + step.ingredientsToPlace[i].name;
+            } else {
+              stepText += step.ingredientsToPlace[i].name + ", ";
+            }
           }
-        }
-        break;
-    }
-    stepText += " on ";
-    if(step.alreadyPlacedIngredients.length > 1) {
-      stepText += "the ";
-    } else {
-      stepText += "a ";
-    }
-    stepText += step.dishToPlaceOn.name;
-    switch(step.alreadyPlacedIngredients.length) {
-      case 0:
-        break;
+          break;
+      }
+      stepText += " on ";
+      if(step.alreadyPlacedIngredients.length > 1) {
+        stepText += "the ";
+      } else {
+        stepText += "a ";
+      }
+      stepText += step.dishToPlaceOn.name;
+      switch(step.alreadyPlacedIngredients.length) {
+        case 0:
+          break;
 
-      case 1:
-        stepText += " with " + step.alreadyPlacedIngredients[0].name;
-        break;
+        case 1:
+          stepText += " with " + step.alreadyPlacedIngredients[0].name;
+          break;
 
-      case 2:
-        stepText += " with " + step.alreadyPlacedIngredients[0].name + " and " +
-          step.alreadyPlacedIngredients[1].name;
-        break;
+        case 2:
+          stepText += " with " + step.alreadyPlacedIngredients[0].name + " and " +
+            step.alreadyPlacedIngredients[1].name;
+          break;
 
-      default:
-        stepText += " with ";
-        for (var i = step.alreadyPlacedIngredients.length - 1; i >= 0; i--) {
-          if(i === 0) {
-            stepText += "and " + step.alreadyPlacedIngredients[i].name;
-          } else {
-            stepText += step.alreadyPlacedIngredients[i].name + ", ";
+        default:
+          stepText += " with ";
+          for (var i = step.alreadyPlacedIngredients.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              stepText += "and " + step.alreadyPlacedIngredients[i].name;
+            } else {
+              stepText += step.alreadyPlacedIngredients[i].name + ", ";
+            }
           }
-        }
-        break;
+          break;
+      }
+      step.text = stepText;
     }
-    step.text = stepText;
   }
 
   service.fillInStep = function(recipe, stepIndex) {

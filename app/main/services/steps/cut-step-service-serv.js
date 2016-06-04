@@ -13,12 +13,18 @@ angular.module('main')
           return type.typeName === input.key;
         });
         if(ingredientType){
-          step.ingredientsToCut = ingredientType.ingredients;
-          step.products = {};
-          step.products[step.productKeys[0]] = {
-            ingredients: step.ingredientsToCut,
-            dishes: []
-          };
+          if(ingredientType.ingredients.length > 0) {
+            step.ingredientsToCut = ingredientType.ingredients;
+            step.products = {};
+            step.products[step.productKeys[0]] = {
+              ingredients: step.ingredientsToCut,
+              dishes: []
+            };
+            step.recipeCategory = recipe.recipeCategory;
+            step.isEmpty = false;
+          } else {
+            step.isEmpty = true;
+          }
         } else {
           //error
           console.log("cutStepService Error: no ingredientType found with input: ", input);
@@ -30,16 +36,22 @@ angular.module('main')
           return iterStep.stepId === input.sourceId;
         });
         if(referencedStep){
-          if(referencedStep.products){
-            step.ingredientsToCut = referencedStep.products[input.key].ingredients;
-            step.products = {};
-            step.products[step.productKeys[0]] = {
-              ingredients: step.ingredientsToCut,
-              dishes: []
-            };
+          if(!referencedStep.isEmpty) {
+            if(referencedStep.products){
+              step.ingredientsToCut = referencedStep.products[input.key].ingredients;
+              step.products = {};
+              step.products[step.productKeys[0]] = {
+                ingredients: step.ingredientsToCut,
+                dishes: []
+              };
+              step.recipeCategory = recipe.recipeCategory;
+              step.isEmpty = false;
+            } else {
+              //then no products for referencedStep, throw error
+              console.log("cutStepService Error: no proudcts for referencedStep: ", referencedStep);
+            }
           } else {
-            //then no products for referencedStep, throw error
-            console.log("cutStepService Error: no proudcts for referencedStep: ", referencedStep);
+            step.isEmpty = true;
           }
         } else {
           //can't find step - Error
@@ -52,25 +64,32 @@ angular.module('main')
         console.log("cutStepService Error: unexpected sourceType: ", input);
         break;
     }
+    //no "global" setting of a StepTip for CutStep, due to its textArr nature
   }
 
   function constructStepText(step) {
-    step.textArr = [];
-    var actionType = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "actionType";
-    }).val;
-    var actionModifier = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "actionModifier";
-    }).val;
-    for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
-      var arrElem = {};
-      arrElem.text = actionType;
-      arrElem.text += " the " + step.ingredientsToCut[i].name;
-      if(actionModifier){
-        arrElem.text += " " + actionModifier;
+    if(!step.isEmpty) {
+      step.textArr = [];
+      var actionType = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "actionType";
+      }).val;
+      var actionModifier = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "actionModifier";
+      }).val;
+      for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
+        var arrElem = {};
+        arrElem.recipeCategorys = [step.recipeCategory];
+        arrElem.actionType = actionType;
+        arrElem.ingredientName = step.ingredientsToCut[i].name;
+        arrElem.text = actionType;
+        arrElem.text += " the " + step.ingredientsToCut[i].name;
+        if(actionModifier){
+          arrElem.text += " " + actionModifier;
+          arrElem.actionModifier = actionModifier;
+        }
+        StepTipService.setTipForTextArrElem(arrElem, step.ingredientsToCut[i], step);
+        step.textArr.push(arrElem);
       }
-      StepTipService.setTipForTextArrElem(arrElem, step.ingredientsToCut[i], step);
-      step.textArr.push(arrElem);
     }
   }
 

@@ -10,15 +10,18 @@ angular.module('main')
     var ingredientInputs = step.stepInputs["ingredientInputs"];
     var dishInputs = step.stepInputs["dishInputs"];
     //ingredients
-    if(ingredientInputs) {
-      for (var i = ingredientInputs.length - 1; i >= 0; i--) {
-        var ingredientInput = ingredientInputs[i];
-        switch(ingredientInput.sourceType) {
-          case "IngredientList":
-            var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
-              return type.typeName === ingredientInput.key;
-            });
-            if(ingredientType) {
+    if(!ingredientInputs){
+      ingredientInputs = [];
+    }
+    for (var i = ingredientInputs.length - 1; i >= 0; i--) {
+      var ingredientInput = ingredientInputs[i];
+      switch(ingredientInput.sourceType) {
+        case "IngredientList":
+          var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
+            return type.typeName === ingredientInput.key;
+          });
+          if(ingredientType) {
+            if(ingredientType.ingredients.length > 0) {
               if(!step.products){
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -27,17 +30,19 @@ angular.module('main')
                 };
               }
               step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
-            } else {
-              //error
-              console.log("customStepService error: no type found for input: ", ingredientInput);
             }
-            break;
+          } else {
+            //error
+            console.log("customStepService error: no type found for input: ", ingredientInput);
+          }
+          break;
 
-          case "StepProduct":
-            var referencedStep = _.find(recipe.stepList, function(iterStep) {
-              return iterStep.stepId === ingredientInput.sourceId;
-            });
-            if(referencedStep) {
+        case "StepProduct":
+          var referencedStep = _.find(recipe.stepList, function(iterStep) {
+            return iterStep.stepId === ingredientInput.sourceId;
+          });
+          if(referencedStep) {
+            if(!referencedStep.isEmpty) {
               if(referencedStep.products) {
                 if(!step.products) {
                   step.products = {};
@@ -51,48 +56,48 @@ angular.module('main')
                 //error
                 console.log("customStepService error: no products for referencedStep: ", referencedStep);
               }
-            } else {
-              //error
-              console.log("customStepService error: no step found for input: ", ingredientInput);
             }
-            break;
-
-          default:
+          } else {
             //error
-            console.log("customStepService error: unexpected sourceType for ingredientInput: ", ingredientInput);
-            break;
-        }
+            console.log("customStepService error: no step found for input: ", ingredientInput);
+          }
+          break;
+
+        default:
+          //error
+          console.log("customStepService error: unexpected sourceType for ingredientInput: ", ingredientInput);
+          break;
       }
     }
     //dishes
-    if(dishInputs) {
-      for (var i = dishInputs.length - 1; i >= 0; i--) {
-        var dishInput = dishInputs[i];
-        switch(dishInput.sourceType) {
-          case "EquipmentList":
-            var dish = _.find(recipe.ingredientList.equipmentNeeded, function(dish) {
-              return dish.name === dishInput.key;
-            });
-            if(dish) {
-              if(!step.products) {
-                step.products = {};
-                step.products[step.productKeys[0]] = {
-                  ingredients: [],
-                  dishes: []
-                };
-              }
-              step.products[step.productKeys[0]].dishes.push(dish);
-            } else {
-              //error
-              console.log("customStepService error: no dish found for input: ", dishInput);
+    for (var i = dishInputs.length - 1; i >= 0; i--) {
+      var dishInput = dishInputs[i];
+      switch(dishInput.sourceType) {
+        case "EquipmentList":
+          var dish = _.find(recipe.ingredientList.equipmentNeeded, function(dish) {
+            return dish.name === dishInput.key;
+          });
+          if(dish) {
+            if(!step.products) {
+              step.products = {};
+              step.products[step.productKeys[0]] = {
+                ingredients: [],
+                dishes: []
+              };
             }
-            break;
+            step.products[step.productKeys[0]].dishes.push(dish);
+          } else {
+            //error
+            console.log("customStepService error: no dish found for input: ", dishInput);
+          }
+          break;
 
-          case "StepProduct":
-            var referencedStep = _.find(recipe.stepList, function(iterStep) {
-              return iterStep.stepId === dishInput.sourceId;
-            });
-            if(referencedStep) {
+        case "StepProduct":
+          var referencedStep = _.find(recipe.stepList, function(iterStep) {
+            return iterStep.stepId === dishInput.sourceId;
+          });
+          if(referencedStep) {
+            if(!referencedStep.isEmpty) {
               if(referencedStep.products) {
                 if(!step.products) {
                   step.products = {};
@@ -106,28 +111,40 @@ angular.module('main')
                 //error
                 console.log("customStepService error: no products for referencedStep: ", referencedStep);
               }
-            } else {
-              //error
-              console.log("customStepService error: no step found from input: ", dishInput);
             }
-            break;
+          } else {
+            //error
+            console.log("customStepService error: no step found from input: ", dishInput);
+          }
+          break;
 
-          default:
-            break;
-        }
+        default:
+          break;
+      }
+    }
+    //check for isEmpty condition
+    if(ingredientInputs && ingredientInputs.length > 0) {
+      if((!step.products || !step.products[step.productKeys[0]]) || (!step.products[step.productKeys[0]].ingredients || step.products[step.productKeys[0]].ingredients.length === 0)) {
+        step.isEmpty = true;
+      } else {
+        step.isEmpty = false;
       }
     }
 
     //assuming, for now, that there will be no ingredientTips that are
     //either general to all Steps or specific to the Custom type...
-    StepTipService.setStepTipInfo(step, []);
+    if(!step.isEmpty) {
+      StepTipService.setStepTipInfo(step, []);
+    }
   }
 
   function constructStepText(step) {
-    var stepText = _.find(step.stepSpecifics, function(specific) {
-      return specific.propName === "customStepText";
-    }).val;
-    step.text = stepText;
+    if(!step.isEmpty) {
+      var stepText = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "customStepText";
+      }).val;
+      step.text = stepText;
+    }
   }
 
   service.fillInStep = function(recipe, stepIndex) {

@@ -12,7 +12,7 @@
               <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
                 {{ingredient.name}}
               </ion-checkbox>
-              <ion-item ng-if="ingredient.isSelected" class="ingredient-form-items">  
+              <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1" class="ingredient-form-items">  
                 <div class="grouping-of-ingredient-forms">              
                   <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
                     <label class="checkbox checkbox-balanced">
@@ -23,6 +23,16 @@
                      </div>
                    </label>
                   </div>
+              <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1">
+                Forms:
+                <div ng-repeat="form in ingredient.ingredientForms">
+                  {{form.name}}
+                  <label class="toggle toggle-royal">
+                   <input type="checkbox" ng-model="form.isSelected">
+                   <div class="track">
+                     <div class="handle"></div>
+                   </div>
+                 </label>
                 </div>
               </ion-item>
             </div>
