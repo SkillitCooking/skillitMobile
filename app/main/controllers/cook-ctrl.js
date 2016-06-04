@@ -34,12 +34,10 @@ angular.module('main')
   };
 
   $scope.slidePrev = function() {
-    console.log("previous");
     $ionicSlideBoxDelegate.previous();
   };
 
   $scope.slideNext = function() {
-    console.log("next");
     $ionicSlideBoxDelegate.next();
   };
 
@@ -48,12 +46,10 @@ angular.module('main')
   };
 
   $scope.goToSlide = function(index) {
-    console.log("Index: ", index);
     $ionicSlideBoxDelegate.slide(index);
   };
 
   $scope.toRecipeSelection = function() {
-    console.log("to recipe selection");
     var selectedIngredients = [];
     for(var key in $scope.ingredientCategories){
       var ingredients = angular.copy($scope.ingredientCategories[key]);
@@ -90,6 +86,20 @@ angular.module('main')
     alertPopup.then(function(res) {
       console.log("alert closed");
     });
+  };
+
+  $scope.resetIngredientSelection = function() {
+    for(var key in $scope.ingredientCategories) {
+      for (var i = $scope.ingredientCategories[key].length - 1; i >= 0; i--) {
+        $scope.ingredientCategories[key][i].isSelected = false;
+        for (var j = $scope.ingredientCategories[key][i].ingredientForms.length - 1; j >= 0; j--) {
+          if(j > 0) {
+            $scope.ingredientCategories[key][i].ingredientForms[j].isSelected = false;
+          }
+        }
+      }
+    }
+    $scope.goToSlide(0);
   };
 
   $scope.test = function(ingredients){

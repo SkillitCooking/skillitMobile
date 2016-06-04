@@ -1,38 +1,41 @@
-<ion-view view-title="What Do Ya Got?">
-  <!-- do you want padding? -->
-          
-  <ion-content class="padding cook-tab">
-      <!-- content goes here -->
-    <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
-      <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
-        <div class="wrap-class" ng-class="getWrapClass($index)">
-          <h2 class="ingredient-type-heading">{{name}}</h2>
-          <ion-list>
-            <div ng-repeat="ingredient in ingredients">
-              <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
-                {{ingredient.name}}
-              </ion-checkbox>
-              <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1" class="ingredient-form-items">  
-                <div class="grouping-of-ingredient-forms">              
-                  <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
-                    <label class="checkbox checkbox-balanced">
-                    <span class="ingredient-form-name">{{form.name}}</span>
-                     <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
-                     <div class="track">
-                       <div class="handle"></div>
-                     </div>
-                   </label>
-                  </div>
+
+  <ion-view view-title="What Do Ya Got?">
+    <ion-nav-buttons side="secondary">
+      <button class="button" ng-click="resetIngredientSelection()">Reset</button>
+    </ion-nav-buttons>
+    <!-- do you want padding? -->
+    <ion-content class="has-header padding cook-tab">
+        <!-- content goes here -->
+      <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
+        <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
+          <div class="wrap-class" ng-class="getWrapClass($index)">
+            <h2 class="ingredient-type-heading">{{name}}</h2>
+            <ion-list>
+              <div ng-repeat="ingredient in ingredients">
+                <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
+                  {{ingredient.name}}
+                </ion-checkbox>
+                <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1" class="ingredient-form-items">  
+                  <div class="grouping-of-ingredient-forms">              
+                    <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
+                      <label class="checkbox checkbox-balanced">
+                      <span class="ingredient-form-name">{{form.name}}</span>
+                       <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
+                       <div class="track">
+                         <div class="handle"></div>
+                       </div>
+                     </label>
+                    </div>
+                </div>
+              </ion-item>
               </div>
-            </ion-item>
+            </ion-list>
+            <div class="bottom-nav-buttons-cook-tab">
+              <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button button-balanced prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+              <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+              <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
             </div>
-          </ion-list>
-          <div class="bottom-nav-buttons-cook-tab">
-            <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button button-balanced prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-            <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-            <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-          </div>
-      </ion-slide>
-    </ion-slide-box>
-  </ion-content>
-</ion-view>
+        </ion-slide>
+      </ion-slide-box>
+    </ion-content>
+  </ion-view>
