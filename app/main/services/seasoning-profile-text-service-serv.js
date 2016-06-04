@@ -6,6 +6,7 @@ angular.module('main')
   service.addSeasoning = function(step, profile) {
     //part 1: find insertion point
     //part 2: insert
+    console.log(step);
     var index = step.text.indexOf(". For seasoning you can use");
     if(index !== -1) {
       //slice

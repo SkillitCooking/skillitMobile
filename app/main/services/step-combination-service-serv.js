@@ -113,9 +113,13 @@ angular.module('main')
       combinedRecipe.prepTime = _.reduce(recipes, function(prepTime, recipe) {
         return prepTime + recipe.prepTime;
       }, 0);
+      //round prepTime to nearest 5 minutes
+      combinedRecipe.prepTime = 5 * Math.round(combinedRecipe.prepTime/5);
       combinedRecipe.totalTime = _.reduce(recipes, function(totalTime, recipe) {
         return totalTime + recipe.totalTime;
       }, 0);
+      //round totalTime to nearest 5 minutes
+      combinedRecipe.totalTime = 5 * Math.round(combinedRecipe.totalTime/5);
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
         return recipe.mainVideoURL;
       });
