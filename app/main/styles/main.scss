@@ -27,12 +27,18 @@ h2.ingredient-type-heading, h3.recipe-category {
 	font-size: 50px;
 	color: $balanced;
 }
+div, p, .individual-recipe-in-list h2, h1 {
+	font-family: 'Dosis', sans-serif;
+}
+.bar .title {
+	font-size:20px;
+	font-weight: bold;
+}
 
 /**********************************/
 /*BOTTOM NAV TABS*/
 .tab-nav.tabs {
 	color: $balanced;
-	border-color: $balanced;
 }
 
 /**********************************/
@@ -111,8 +117,8 @@ div.ingredient-form-selection {
 	white-space: nowrap;
 }
 .individual-recipe-in-list img {
-	width: 100px;
-	height: 100px;
+	width: 80px;
+	height: 80px;
 }
 .col-36 {
 	flex: 0 0 33.3333%;
@@ -124,7 +130,24 @@ div.ingredient-form-selection {
 .cook-recipe-selection .item {
 	padding: 2px;
 }
-
+.individual-recipe-in-list p {
+	font-size: 16px;
+}
+.item h2 {
+	font-size: 20px;
+}
+.recipe-description-time p:first-child {
+	margin-bottom: 10px;
+}
+.cook-recipe-selection h3:first-child {
+	margin-top: 20px;
+}
+.cook-recipe-selection .item-icon-right .icon {
+	position: static;
+}
+.individual-recipe-in-list {
+	margin: 10px 0;
+}
 /*recipe instructions page*/
 .recipe-instructions {
 	box-shadow: 0px 1px 3px #999999;
@@ -140,5 +163,25 @@ div.ingredient-form-selection {
 .recipe-instructions.item, .recipe-instructions.item p {
 	white-space: normal; 
 }
+.recipe-instructions p {
+	font-size: 18px;
+}
 
 
+/*popover*/
+.popover {
+	left: 5% !important;
+	top:25% !important;
+	height: 200px !important;
+	width: 300px !important;
+}
+.popover .scroll-content {
+	padding: 10px 20px;
+}
+.bar.bar-header {
+	border-bottom: 1px solid $balanced;
+}
+.popover p {
+	font-size: 20px;
+	line-height: 23px;
+}

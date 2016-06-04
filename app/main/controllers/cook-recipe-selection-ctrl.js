@@ -25,17 +25,17 @@ angular.module('main')
 
   $scope.getAlaCarteButtonClass = function() {
     if($scope.alaCarteSelected){
-      return "button button-energized";
+      return "button button-balanced";
     } else {
-      return "button button-outline button-energized";
+      return "button button-outline button-balanced";
     }
   };
 
   $scope.getCompleteButtonClass = function() {
     if($scope.alaCarteSelected){
-      return "button button-outline button-energized";
+      return "button button-outline button-balanced";
     } else {
-      return "button button-energized";
+      return "button button-balanced";
     }
   };
 

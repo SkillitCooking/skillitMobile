@@ -4,8 +4,7 @@
     <h1>{{combinedRecipe.name}}</h1>
     <iframe width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
     <br/>
-    <p><b>Prep Time</b>:{{combinedRecipe.prepTime}}</p>
-    <p><b>Total Time</b>: {{combinedRecipe.totalTime}}</p>
+    <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
     <br/>
     <ion-list class="list">
       <div ng-repeat="step in combinedRecipe.stepList">

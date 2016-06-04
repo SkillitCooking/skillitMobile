@@ -8,11 +8,26 @@
     <div ng-if="alaCarteSelected">
       <ion-list>
         <ion-item ng-repeat="recipe in alaCarteRecipes" class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
-          <img src="{{recipe.mainPictureURL}}">
-          <i class="icon ng-class: alaCarteClass($index);"></i>
-          <h2>{{recipe.name}}</h2>
-          <p><b>Prep Time</b>: {{recipe.prepTime}} minutes</p>
-          <p><b>Total Time</b>: {{recipe.totalTime}} minutes</p>
+          <img src="{{recipe.mainPictureURL}}">        
+          <div class="row">
+            <div class="col col-36">  
+              <img src="{{recipe.mainPictureURL}}">
+            </div>
+            <div class="col col-54 col-center">
+              <h2>{{recipe.name}}</h2>              
+            </div>
+            <div class="col col-10 col-center">
+              <i class="icon checkbox-balanced ng-class: alaCarteClass($index);"></i>              
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col">
+              <div class="recipe-description-time">
+                <p>{{recipe.description}}</p>
+                <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+              </div>
+            </div>
+          </div>
         </ion-item>
       </ion-list>
       <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-balanced">Let's Skillit!</button>
@@ -33,7 +48,7 @@
             <div class="col">
               <div class="recipe-description-time">
                 <p>{{recipe.description}}</p>
-                <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> | Total Time</b>: {{recipe.totalTime}} mins</p>
+                <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
               </div>
             </div>
           </div>
@@ -54,7 +69,7 @@
             <div class="col">
               <div class="recipe-description-time">
                 <p>{{recipe.description}}</p>
-                <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> | Total Time</b>: {{recipe.totalTime}} mins</p>
+                <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
               </div>
             </div>
           </div>
