@@ -137,7 +137,13 @@ angular.module('main')
 
   function constructStepText(step) {
     if(!step.isEmpty) {
-      var stepText = "Place the ";
+      var placeType = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "placeType";
+      }).val;
+      var placeModifier = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "placeModifier";
+      }).val;
+      var stepText = placeType + " the ";
       switch(step.ingredientsToPlace.length) {
         case 0:
           //error
@@ -192,6 +198,9 @@ angular.module('main')
             }
           }
           break;
+      }
+      if(placeModifier !== "") {
+        stepText += " and " + placeModifier;
       }
       step.text = stepText;
     }
