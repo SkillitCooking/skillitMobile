@@ -3,6 +3,9 @@
   "env": {
     "node": true
   },
+  globals: {
+    "Ionic": true
+  },
   "rules": {
     // overrides from 'recommended'
     "comma-dangle": 0,

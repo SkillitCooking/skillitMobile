@@ -100,6 +100,15 @@ angular.module('main', [
           }
         }
       })
+      .state('main.home', {
+        url: '/home',
+        views: {
+          'tab-home': {
+            templateUrl: 'main/templates/home.html',
+            controller: 'HomeCtrl as ctrl'
+          }
+        }
+      })
       .state('main.debug', {
         url: '/debug',
         views: {
