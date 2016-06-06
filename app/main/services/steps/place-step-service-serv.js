@@ -168,7 +168,22 @@ angular.module('main')
           }
           break;
       }
-      stepText += " on ";
+      switch(placeType) {
+        case "Add":
+          stepText += " to ";
+          break;
+        case "Combine":
+        case "Mix":
+          stepText += " with ";
+          break;
+        case "Place":
+          stepText += " on ";
+          break;
+        default:
+          //error - unexpected placeType
+          console.log("placeStepService error: unexpected placeType: ", placeType);
+          break;
+      }
       if(step.alreadyPlacedIngredients.length > 1) {
         stepText += "the ";
       } else {
