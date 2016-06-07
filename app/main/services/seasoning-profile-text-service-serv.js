@@ -6,13 +6,10 @@ angular.module('main')
   service.addSeasoning = function(step, profile) {
     //part 1: find insertion point
     //part 2: insert
-    var index = step.text.indexOf(". For seasoning you can use");
-    if(index !== -1) {
-      //slice
-      step.text = step.text.slice(0, index);
+    step.seasoningInfo = ["For " + profile.name + " seasoning:"];
+    for (var i = profile.spices.length - 1; i >= 0; i--) {
+      step.seasoningInfo.push(profile.spices[i]);
     }
-    step.text += ". For seasoning you can use " + profile.name + ": " + 
-      profile.spices.join(', ');
   };
 
   return service;

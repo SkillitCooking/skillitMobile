@@ -24,6 +24,7 @@
       <div ng-repeat="step in combinedRecipe.stepList">
         <ion-item class="recipe-instructions" ng-if="isSingleStep(step) && !step.isEmpty" ng-click="showTip(step, $event)">
           <p><b>Step {{step.stepNumber}}:</b> {{step.text}}</p>
+          <p ng-repeat="line in step.seasoningInfo">{{line}}</p>
           <i ng-if="step.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
           <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
           <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-erlenmeyer-flask instruction-step-tip-icon"></i>

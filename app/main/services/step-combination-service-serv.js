@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('StepCombinationService', ['_', 'RecipeOrderingService', function (_, RecipeOrderingService) {
+.factory('StepCombinationService', ['_', 'RecipeOrderingService', 'SeasoningProfileTextService', function (_, RecipeOrderingService, SeasoningProfileTextService) {
   var service = {};
 
   /* 
@@ -134,12 +134,11 @@ angular.module('main')
       for (var i = recipes.length - 1; i >= 0; i--) {
         if(recipes[i].canAddSeasoningProfile) {
           combinedRecipe.canAddSeasoningProfile = true;
+          combinedRecipe.defaultSeasoningProfile = recipe.defaultSeasoningProfile;
           break;
         }
       }
       var recipe = recipes.pop();
-      //assign default seasoningProfile arbitrarily from first popped
-      combinedRecipe.defaultSeasoningProfile = recipe.defaultSeasoningProfile;
       while(hasSteps(recipe)) {
         var step = recipe.stepList.pop();
         recipe.totalTime -= step.stepDuration;
@@ -154,6 +153,15 @@ angular.module('main')
       //expect combinedRecipe to order on basis of timeLeft
       return combinedRecipe;
     } else {
+      //set initial seasoning
+      if(recipes[0] && recipes[0].canAddSeasoningProfile){
+        for (var i = recipes[0].stepList.length - 1; i >= 0; i--) {
+          if(recipes[0].stepList[i].stepType === 'Season') {
+            //then add defaultSeasoningText
+            SeasoningProfileTextService.addSeasoning(recipes[0].stepList[i], recipes[0].defaultSeasoningProfile);
+          }
+        }
+      }
       return recipes[0];
     }
   }
