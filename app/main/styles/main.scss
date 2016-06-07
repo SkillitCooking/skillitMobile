@@ -159,6 +159,7 @@ div.ingredient-form-selection {
     bottom: 7px;
     right: 7px;
     color: $balanced;
+    font-size: 25px;
 }
 .recipe-instructions.item, .recipe-instructions.item p {
 	white-space: normal; 
@@ -166,14 +167,19 @@ div.ingredient-form-selection {
 .recipe-instructions p {
 	font-size: 18px;
 }
-
+.recipe-video {
+	margin: 0 auto;
+}
 
 /*popover*/
 .popover {
 	left: 5% !important;
-	top:25% !important;
-	height: 200px !important;
+	top: 25% !important;	
+	height: 300px !important;
 	width: 300px !important;
+}
+.popover p {
+	white-space: normal;
 }
 .popover .scroll-content {
 	padding: 10px 20px;
@@ -184,4 +190,8 @@ div.ingredient-form-selection {
 .popover p {
 	font-size: 20px;
 	line-height: 23px;
+}
+.popover.seasoning-selector-popup {
+	height: 500px !important;
+	top: 5% !important;
 }

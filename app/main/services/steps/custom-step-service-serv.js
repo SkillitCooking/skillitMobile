@@ -7,11 +7,18 @@ angular.module('main')
     //not doing anything with inputs currently...
     //instantiate later with more time
     //now, just set up products with a pass along
-    var ingredientInputs = step.stepInputs["ingredientInputs"];
-    var dishInputs = step.stepInputs["dishInputs"];
+    var ingredientInputs;
+    var dishInputs;
+    if(step) {
+      ingredientInputs = step.stepInputs["ingredientInputs"];
+      dishInputs = step.stepInputs["dishInputs"];
+    }
     //ingredients
     if(!ingredientInputs){
       ingredientInputs = [];
+    }
+    if(!dishInputs) {
+      dishInputs = [];
     }
     for (var i = ingredientInputs.length - 1; i >= 0; i--) {
       var ingredientInput = ingredientInputs[i];
