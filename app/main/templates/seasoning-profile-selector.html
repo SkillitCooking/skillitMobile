@@ -5,7 +5,7 @@
     <p><b>{{seasoningProfile.name}}: </b>{{getSeasoningParts(seasoningProfile)}}</p>
     <ion-list>
       <ion-radio class="individual-recipe-in-list" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
-        <h3><u>{{profile.name}}</u></h3>
+        <h3><u>{{profile.name}}</u>`</h3>
         <p><em>{{getSeasoningParts(profile)}}</em></p>
       </ion-radio>
     </ion-list>

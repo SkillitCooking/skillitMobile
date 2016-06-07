@@ -9,7 +9,7 @@ angular.module('main')
     //now, just set up products with a pass along
     var ingredientInputs;
     var dishInputs;
-    if(step) {
+    if(step && step.stepInputs) {
       ingredientInputs = step.stepInputs["ingredientInputs"];
       dishInputs = step.stepInputs["dishInputs"];
     }
