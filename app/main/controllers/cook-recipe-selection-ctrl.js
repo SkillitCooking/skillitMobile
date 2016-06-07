@@ -12,22 +12,26 @@ angular.module('main')
   };
   RecipeService.getRecipesWithIngredients(ingredientNames).then(function(response) {
     $scope.alaCarteRecipes = response.data.AlaCarte;
-    for (var i = $scope.alaCarteRecipes.length - 1; i >= 0; i--) {
-      $scope.alaCarteRecipes[i].prepTime = 5 * Math.round($scope.alaCarteRecipes[i].prepTime/5);
-      $scope.alaCarteRecipes[i].totalTime = 5 * Math.round($scope.alaCarteRecipes[i].totalTime/5);
-    }
     if($scope.alaCarteRecipes){
       $scope.alaCarteClickedArr = Array($scope.alaCarteRecipes.length).fill(false);
+      for (var i = $scope.alaCarteRecipes.length - 1; i >= 0; i--) {
+        $scope.alaCarteRecipes[i].prepTime = 5 * Math.round($scope.alaCarteRecipes[i].prepTime/5);
+        $scope.alaCarteRecipes[i].totalTime = 5 * Math.round($scope.alaCarteRecipes[i].totalTime/5);
+      }
     }
     $scope.fullRecipes = response.data.Full;
-    for (var i = $scope.fullRecipes.length - 1; i >= 0; i--) {   
-      $scope.fullRecipes[i].prepTime = 5 * Math.round($scope.fullRecipes[i].prepTime/5);
-      $scope.fullRecipes[i].totalTime = 5 * Math.round($scope.fullRecipes[i].totalTime/5);
+    if($scope.fullRecipes) {
+      for (var i = $scope.fullRecipes.length - 1; i >= 0; i--) {   
+        $scope.fullRecipes[i].prepTime = 5 * Math.round($scope.fullRecipes[i].prepTime/5);
+        $scope.fullRecipes[i].totalTime = 5 * Math.round($scope.fullRecipes[i].totalTime/5);
+      }
     }
     $scope.BYORecipes = response.data.BYO;
-    for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {   
-      $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
-      $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
+    if($scope.BYORecipes) {
+      for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {   
+        $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
+        $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
+      }
     }
   }, function(response){
     console.log("Server Error: " + response.message);
