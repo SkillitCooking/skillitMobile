@@ -8,10 +8,12 @@
     <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
     <h3>Ingredient List</h3>
     <div ng-repeat="recipeIngredients in ingredientsForRecipes">
-      <h5>{{recipeIngredients.name}}</h5>
-      <p ng-repeat="ingredient in recipeIngredients.ingredients">
-        {{ingredient}}
-      </p>
+      <div ng-if="recipeIngredients.ingredients && recipeIngredients.ingredients.length > 0">
+        <h5>{{recipeIngredients.name}}</h5>
+        <p ng-repeat="ingredient in recipeIngredients.ingredients">
+          {{ingredient}}
+        </p>
+      </div>
     </div>
     <br/>
     <div ng-if="combinedRecipe.canAddSeasoningProfile">
