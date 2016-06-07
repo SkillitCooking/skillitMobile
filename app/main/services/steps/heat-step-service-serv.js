@@ -43,10 +43,10 @@ angular.module('main')
     }).val;
     var stepText = "";
     if(heatsOil) {
-      stepText  = "Add oil to " + step.dishToHeat.name + " and heat over " +
+      stepText  = "Add oil to " + step.dishToHeat.name.toLowerCase() + " and heat over " +
         heatSetting + " heat";
     } else {
-      stepText = "Heat " + step.dishToHeat.name + " over " + heatSetting +
+      stepText = "Heat " + step.dishToHeat.name.toLowerCase() + " over " + heatSetting +
         " heat";
     }
     step.text = stepText;

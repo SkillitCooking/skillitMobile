@@ -151,19 +151,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToPlace[0].name;
+          stepText += step.ingredientsToPlace[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToPlace[0].name + " and " + step.ingredientsToPlace[1].name;
+          stepText += step.ingredientsToPlace[0].name.toLowerCase() + " and " + step.ingredientsToPlace[1].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToPlace.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToPlace[i].name;
+              stepText += "and " + step.ingredientsToPlace[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToPlace[i].name + ", ";
+              stepText += step.ingredientsToPlace[i].name.toLowerCase() + ", ";
             }
           }
           break;
@@ -189,27 +189,27 @@ angular.module('main')
       } else {
         stepText += "a ";
       }
-      stepText += step.dishToPlaceOn.name;
+      stepText += step.dishToPlaceOn.name.toLowerCase();
       switch(step.alreadyPlacedIngredients.length) {
         case 0:
           break;
 
         case 1:
-          stepText += " with " + step.alreadyPlacedIngredients[0].name;
+          stepText += " with " + step.alreadyPlacedIngredients[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += " with " + step.alreadyPlacedIngredients[0].name + " and " +
-            step.alreadyPlacedIngredients[1].name;
+          stepText += " with " + step.alreadyPlacedIngredients[0].name.toLowerCase() + " and " +
+            step.alreadyPlacedIngredients[1].name.toLowerCase();
           break;
 
         default:
           stepText += " with ";
           for (var i = step.alreadyPlacedIngredients.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.alreadyPlacedIngredients[i].name;
+              stepText += "and " + step.alreadyPlacedIngredients[i].name.toLowerCase();
             } else {
-              stepText += step.alreadyPlacedIngredients[i].name + ", ";
+              stepText += step.alreadyPlacedIngredients[i].name.toLowerCase() + ", ";
             }
           }
           break;

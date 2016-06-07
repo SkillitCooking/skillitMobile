@@ -86,20 +86,20 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += " the " + step.ingredientsToStir[0].name;
+          stepText += " the " + step.ingredientsToStir[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += " the " + step.ingredientsToStir[0].name + " and " + step.ingredientsToStir[1].name;
+          stepText += " the " + step.ingredientsToStir[0].name.toLowerCase() + " and " + step.ingredientsToStir[1].name.toLowerCase();
           break;
 
         default:
           stepText += " the ";
           for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToStir[i].name;
+              stepText += "and " + step.ingredientsToStir[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToStir[i].name + ", ";
+              stepText += step.ingredientsToStir[i].name.toLowerCase() + ", ";
             }
           }
           break;
@@ -133,19 +133,19 @@ angular.module('main')
         break;
 
       case 1:
-        auxStepText += ingredients[0].name;
+        auxStepText += ingredients[0].name.toLowerCase();
         break;
 
       case 2:
-        auxStepText += ingredients[0].name + " and " + ingredients[1].name;
+        auxStepText += ingredients[0].name.toLowerCase() + " and " + ingredients[1].name.toLowerCase();
         break;
 
       default:
         for (var i = ingredients.length - 1; i >= 0; i--) {
           if(i === 0) {
-            auxStepText += "and " + ingredients[i].name;
+            auxStepText += "and " + ingredients[i].name.toLowerCase();
           } else {
-            auxStepText += ingredients[i].name + ", ";
+            auxStepText += ingredients[i].name.toLowerCase() + ", ";
           }
         }
         break;

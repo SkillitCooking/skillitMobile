@@ -88,7 +88,7 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += " a " + step.dishesToPrep[0].name;
+          stepText += " a " + step.dishesToPrep[0].name.toLowerCase();
           break;
 
         default:
@@ -104,7 +104,7 @@ angular.module('main')
 
             case 1:
               var keys = _.keys(nameCounts);
-              stepText += " " + nameCounts[keys[0]] + " " + keys[0] + "s";
+              stepText += " " + nameCounts[keys[0]] + " " + keys[0].toLowerCase() + "s";
               break;
 
             case 2:
@@ -127,8 +127,8 @@ angular.module('main')
                 countKey2 = nameCounts[keys[0]];
                 nameKey2 = keys[1] + "s";
               }
-              stepText += " " + countKey1 + " " + nameKey1 + " and " +
-                countKey2 + " " + nameKey2;
+              stepText += " " + countKey1 + " " + nameKey1.toLowerCase() + " and " +
+                countKey2 + " " + nameKey2.toLowerCase();
               break;
 
               default:
@@ -149,9 +149,9 @@ angular.module('main')
                   console.log("nameKey: ", nameKey);
                   console.log("nameCounts: ", nameCounts);
                   if(count === numNames){
-                    stepText += " and " + countKey + " " + nameKey;
+                    stepText += " and " + countKey + " " + nameKey.toLowerCase();
                   } else {
-                    stepText += " " + countKey + " " + nameKey + ",";
+                    stepText += " " + countKey + " " + nameKey.toLowerCase() + ",";
                   }
                   count++;
                 }

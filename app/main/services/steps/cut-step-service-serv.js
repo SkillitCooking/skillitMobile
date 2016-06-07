@@ -82,7 +82,7 @@ angular.module('main')
         arrElem.actionType = actionType;
         arrElem.ingredientName = step.ingredientsToCut[i].name;
         arrElem.text = actionType;
-        arrElem.text += " the " + step.ingredientsToCut[i].name;
+        arrElem.text += " the " + step.ingredientsToCut[i].name.toLowerCase();
         if(actionModifier){
           arrElem.text += " " + actionModifier;
           arrElem.actionModifier = actionModifier;

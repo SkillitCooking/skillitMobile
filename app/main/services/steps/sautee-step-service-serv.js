@@ -141,19 +141,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSautee[0].name;
+          stepText += step.ingredientsToSautee[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSautee[0].name + " and " + step.ingredientsToSautee[1].name;
+          stepText += step.ingredientsToSautee[0].name.toLowerCase() + " and " + step.ingredientsToSautee[1].name.toLowerCase();
           break;
 
         default: 
           for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSautee[i].name;
+              stepText += "and " + step.ingredientsToSautee[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToSautee[i].name + ", ";
+              stepText += step.ingredientsToSautee[i].name.toLowerCase() + ", ";
             }
           }
           break;

@@ -81,19 +81,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToDry[0].name;
+          stepText += step.ingredientsToDry[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToDry[0].name + " and " + step.ingredientsToDry[1].name;
+          stepText += step.ingredientsToDry[0].name.toLowerCase() + " and " + step.ingredientsToDry[1].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToDry.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToDry[i].name;
+              stepText += "and " + step.ingredientsToDry[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToDry[i].name + ", ";
+              stepText += step.ingredientsToDry[i].name.toLowerCase() + ", ";
             }
           }
           break;

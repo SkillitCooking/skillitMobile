@@ -140,24 +140,24 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSteam[0].name;
+          stepText += step.ingredientsToSteam[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSteam[0].name + " and " + step.ingredientsToSteam[1].name;
+          stepText += step.ingredientsToSteam[0].name.toLowerCase() + " and " + step.ingredientsToSteam[1].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSteam.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSteam[i].name;
+              stepText += "and " + step.ingredientsToSteam[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToSteam[i].name + ", ";
+              stepText += step.ingredientsToSteam[i].name.toLowerCase() + ", ";
             }
           }
           break;
       }
-      stepText += " in the " + step.steamingDish.name + " " + steamingDuration;
+      stepText += " in the " + step.steamingDish.name.toLowerCase() + " " + steamingDuration;
       step.text = stepText;
     }
   }

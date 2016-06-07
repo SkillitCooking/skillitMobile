@@ -144,19 +144,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSeason[0].name;
+          stepText += step.ingredientsToSeason[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSeason[0].name + " and " + step.ingredientsToSeason[1].name;
+          stepText += step.ingredientsToSeason[0].name.toLowerCase() + " and " + step.ingredientsToSeason[1].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToSeason[i].name;
+              stepText += "and " + step.ingredientsToSeason[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToSeason[i].name + ", ";
+              stepText += step.ingredientsToSeason[i].name.toLowerCase() + ", ";
             }
           }
           break;

@@ -152,24 +152,24 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBoil[0].name;
+          stepText += step.ingredientsToBoil[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToBoil[0].name + " and " + step.ingredientsToBoil[1].name;
+          stepText += step.ingredientsToBoil[0].name.toLowerCase() + " and " + step.ingredientsToBoil[1].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToBoil[i].name;
+              stepText += "and " + step.ingredientsToBoil[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToBoil[i].name + ", ";
+              stepText += step.ingredientsToBoil[i].name.toLowerCase() + ", ";
             }
           }
           break;
       }
-      stepText += " in the " + step.boilingDish.name;
+      stepText += " in the " + step.boilingDish.name.toLowerCase();
       if(cookAccordingToInstructions){
         stepText += " according to package instructions";
       } else if(boilingDuration){
