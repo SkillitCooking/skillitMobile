@@ -2,13 +2,25 @@
 angular.module('main')
 .controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state) {
 
+  function alphabeticalCmp(a, b) {
+    if(a.name < b.name) {
+      return -1;
+    } else if(a.name > b.name) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   IngredientService.getIngredientsForSelection().then(function(response){
     console.log(response.data);
     $scope.ingredientCategories = response.data;
     //set first form of all ingredients to selected
     for(var category in $scope.ingredientCategories) {
-      var ingredients = $scope.ingredientCategories[category]
+      var ingredients = $scope.ingredientCategories[category];
+      ingredients.sort(alphabeticalCmp);
       for (var i = ingredients.length - 1; i >= 0; i--) {
+        //select form
         ingredients[i].ingredientForms[0].isSelected = true;
       }
     }
