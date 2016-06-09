@@ -95,7 +95,6 @@ angular.module('main')
     $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames});
   };
 
-  //TODO
   $scope.cookAlaCarte = function() {
     //provisional: "pull up" present-recipe page using first one selected
     var recipeIds = [];
