@@ -134,7 +134,7 @@ angular.module('main')
       for (var i = recipes.length - 1; i >= 0; i--) {
         if(recipes[i].canAddSeasoningProfile) {
           combinedRecipe.canAddSeasoningProfile = true;
-          combinedRecipe.defaultSeasoningProfile = recipe.defaultSeasoningProfile;
+          combinedRecipe.defaultSeasoningProfile = recipes[i].defaultSeasoningProfile;
           break;
         }
       }
