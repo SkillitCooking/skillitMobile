@@ -1,9 +1,9 @@
-<ion-view view-title="main module">
+<ion-view view-title="What Sounds Good?">
   <!-- do you want padding? -->
   <ion-content class="padding cook-recipe-selection">
     <div class="button-bar">
-      <a ng-class="getAlaCarteButtonClass()" ng-click="selectAlaCarte()">Ala Carte</a>
-      <a ng-class="getCompleteButtonClass()" ng-click="selectComplete()">Complete</a>
+      <a ng-class="getAlaCarteButtonClass()" ng-click="selectAlaCarte()">A La Carte</a>
+      <a ng-class="getCompleteButtonClass()" ng-click="selectComplete()">Full Dishes</a>
     </div>
     <div ng-if="alaCarteSelected">
       <ion-list>
@@ -74,6 +74,25 @@
                   <p>{{recipe.description}}</p>
                   <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
                 </div>
+          </div>
+        </ion-item>
+      </ion-list>
+      <h3 class="recipe-category">Full Recipes</h3>
+      <ion-list>
+        <ion-item ng-repeat="recipe in fullRecipes" class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+          <div class="row">
+            <div class="col col-36">  
+              <img src="{{recipe.mainPictureURL}}">
+            </div>
+            <div class="col col-center">
+              <h2>{{recipe.name}}</h2>
+            </div>
+          </div>  
+          <div class="row">
+            <div class="col">
+              <div class="recipe-description-time">
+                <p>{{recipe.description}}</p>
+                <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
               </div>
             </div>
           </ion-item>

@@ -1,6 +1,8 @@
-<ion-popover-view class="seasoning-selector-popup">
-  <ion-header-bar>Select Your Seasoning</ion-header-bar>
+<ion-popover-view class="seasoning-selector-popup image-modal transparent">
+  <ion-header-bar>Choose Your Seasoning</ion-header-bar>
   <ion-content>
+    <!--<h2>Current Seasoning</h2>
+    <p><b>{{seasoningProfile.name}}: </b>{{getSeasoningParts(seasoningProfile)}}</p>-->
     <ion-list>
       <ion-radio class="individual-recipe-in-list" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
         <h3><u>{{profile.name}}</u></h3>
