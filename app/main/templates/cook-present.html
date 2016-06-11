@@ -1,17 +1,19 @@
-<ion-view view-title="main module">
+<ion-view view-title="Let's Cook" class="cook-present-instructions">
   <!-- do you want padding? -->
   <ion-content class="padding">
     <h1>{{combinedRecipe.name}}</h1>
     <iframe ng-if="combinedRecipe.mainVideoURL" width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
-    <iframe ng-if="combinedRecipe.mainVideoURLs" ng-repeat="videoURL in combinedRecipe.mainVideoURLs track by $index" width="427" height="240" ng-src="{{videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>    
+    <iframe ng-if="combinedRecipe.mainVideoURLs" ng-repeat="videoURL in combinedRecipe.mainVideoURLs track by $index" width="300" height="169" ng-src="{{videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>    
     <br/>
     <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
     <h3>Ingredient List</h3>
     <div ng-repeat="recipeIngredients in ingredientsForRecipes">
-      <h5>{{recipeIngredients.name}}</h5>
-      <p ng-repeat="ingredient in recipeIngredients.ingredients">
-        {{ingredient}}
-      </p>
+      <h5 ng-if="combinedRecipe.mainVideoURLs">{{recipeIngredients.name}}</h5>
+      <ul> 
+        <li ng-repeat="ingredient in recipeIngredients.ingredients">
+          &nbsp;&nbsp;•{{ingredient}}
+        </li>
+      </ul>
     </div>
     <br/>
     <div ng-if="combinedRecipe.canAddSeasoningProfile">

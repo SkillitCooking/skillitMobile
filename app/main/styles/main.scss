@@ -11,8 +11,8 @@ $positive:                        #4a87ee !default;
 $calm:                            #43cee6 !default;
 $balanced:                        #ef4734 !default;
 $energized:                       #f0b840 !default;
-$assertive:                       #ef4e3a !default;
-$royal:                           #8a6de9 !default;
+$assertive:                       #0C7C59 !default;
+$royal:                           #0C7C59 !default;
 $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built & temporary main.css
 $ionicons-font-path: "../assets/fonts" !default;
@@ -22,16 +22,22 @@ $ionicons-font-path: "../assets/fonts" !default;
 
 /**********************************/
 /*FONTS*/
-h2.ingredient-type-heading, h3.recipe-category {
+h2.ingredient-type-heading, h3.recipe-category, .cook-present-instructions h3 {
 	font-family: 'Just Another Hand', cursive;
 	font-size: 50px;
 	color: $balanced;
 }
+.cook-present-instructions h3 {
+	font-size: 35px;
+}
 div, p, .individual-recipe-in-list h2, h1 {
-	font-family: 'Dosis', sans-serif;
+	font-family: 'Montserrat', sans-serif;
+}
+.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar {
+	font-family: 'Pompiere', sans-serif;
 }
 .bar .title {
-	font-size:20px;
+	font-size:16px;
 	font-weight: bold;
 }
 
@@ -68,14 +74,14 @@ div, p, .individual-recipe-in-list h2, h1 {
 .next-nav-button {
 	float: right;
 }
-.bottom-nav-buttons-cook-tab .button.button-balanced {
+.bottom-nav-buttons-cook-tab .button.button-royal {
 	border-radius: 50%;
-	color: $balanced;
+	color: $royal;
 	background-color: #ffffff;
-	border: 1px solid $balanced;
+	border: 1px solid $royal;
 }
-.bottom-nav-buttons-cook-tab .button.button-balanced:active {
-	background-color: $balanced;
+.bottom-nav-buttons-cook-tab .button.button-royal:active {
+	background-color: $royal;
 	color: #ffffff;
 }
 
@@ -131,10 +137,10 @@ div.ingredient-form-selection {
 	padding: 2px;
 }
 .individual-recipe-in-list p {
-	font-size: 16px;
+	font-size: 14px;
 }
 .item h2 {
-	font-size: 20px;
+	font-size: 22px;	
 }
 .recipe-description-time p:first-child {
 	margin-bottom: 10px;
@@ -165,24 +171,29 @@ div.ingredient-form-selection {
 	white-space: normal; 
 }
 .recipe-instructions p {
-	font-size: 18px;
+	font-size: 15px;
 }
 .recipe-video {
 	margin: 0 auto;
 }
+.cook-present-instructions ul {
+	list-style-type: disc;
+}
 
 /*popover*/
-.popover {
+
+/*.popover {
 	left: 5% !important;
 	top: 25% !important;	
 	height: 300px !important;
 	width: 300px !important;
-}
+}*/
 .popover p {
 	white-space: normal;
 }
 .popover .scroll-content {
 	padding: 10px 20px;
+	background-color: #ffffff;
 }
 .bar.bar-header {
 	border-bottom: 1px solid $balanced;
@@ -195,3 +206,14 @@ div.ingredient-form-selection {
 	height: 500px !important;
 	top: 5% !important;
 }
+.image-modal {
+    width: 100% !important;
+    height: 50%;
+    top: 25% !important;
+    left: 0 !important;
+}
+ 
+.transparent {
+    background: transparent !important;
+}
+
