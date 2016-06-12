@@ -2,7 +2,7 @@
   <ion-header-bar>
     <h1 class="title">{{displayStepTip.title}}</h1>
   </ion-header-bar>
-  <ion-content>
+  <ion-content overflow-scroll="true">
     <div ng-if="stepTipStep.stepTips.length > 1" class="button-bar">
       <a ng-repeat="stepTip in stepTipStep.stepTips" ng-class="getStepTipButtonClass($index)"
         ng-click="selectStepTip($index)"></a>

@@ -2,8 +2,10 @@
   <!-- do you want padding? -->
   <ion-content class="padding">
     <h1>{{combinedRecipe.name}}</h1>
-    <iframe ng-if="combinedRecipe.mainVideoURL" width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
-    <iframe ng-if="combinedRecipe.mainVideoURLs" ng-repeat="videoURL in combinedRecipe.mainVideoURLs track by $index" width="300" height="169" ng-src="{{videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>    
+    <div class="video-container">
+      <iframe ng-if="combinedRecipe.mainVideoURL" width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+      <iframe ng-if="combinedRecipe.mainVideoURLs" ng-repeat="videoURL in combinedRecipe.mainVideoURLs track by $index" width="300" height="169" ng-src="{{videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>    
+    </div>
     <br/>
     <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
     <h3>Ingredient List</h3>
@@ -17,8 +19,9 @@
     </div>
     <br/>
     <div ng-if="combinedRecipe.canAddSeasoningProfile">
-      <button class="button button-balanced" ng-click="seasoningProfilePopup($event)">Choose Seasoning Profile</button>
+      <h3>Seasoning</h3>
       <p>Current Seasoning: {{seasoningProfile.name}}</p>
+      <button class="button button-spice-up" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
     </div>
     <ion-list class="list">
       <div ng-repeat="step in combinedRecipe.stepList">
