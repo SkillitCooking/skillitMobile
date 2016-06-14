@@ -93,23 +93,24 @@ angular.module('main')
       });
     } else if(step.hasVideo) {
       $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1";
-      var autoplayTemplate = '<ion-modal-view>' + 
-        '<iframe width="427" height="240" ng-src="{{autoplayURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>' +
-        '</ion-modal-view>';
-      $scope.modal = $ionicModal.fromTemplate(autoplayTemplate, {
+      $scope.modal = $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.modal = modal;
+        $scope.modal.show();
       });
-      $scope.modal.show();
     }
+  };
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+    $scope.modal.remove();
   };
 
   $scope.$on('$destroy', function() {
     if($scope.popover) {
       $scope.popover.remove();
-    }
-    if($scope.modal) {
-      $scope.modal.remove();
     }
   });
 
