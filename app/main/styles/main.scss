@@ -33,11 +33,11 @@ h2.ingredient-type-heading, h3.recipe-category, .cook-present-instructions h3 {
 div, p, .individual-recipe-in-list h2, h1 {
 	font-family: 'Montserrat', sans-serif;
 }
-.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3 {
+.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title {
 	font-family: 'Pompiere', sans-serif;
 }
 .bar .title {
-	font-size:16px;
+	font-size:23px;
 	font-weight: bold;
 }
 
@@ -260,7 +260,7 @@ div.ingredient-form-selection {
 }
 
 .popover ion-content.scroll-content {
-	border-radius: 0;
+	border-radius: 0 !important;
 }
 
 /*seasoning profile selector*/

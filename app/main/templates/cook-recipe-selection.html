@@ -13,7 +13,8 @@
               <img ng-src="{{recipe.mainPictureURL}}">
             </div>
             <div class="col col-54 col-center">
-              <h2>{{recipe.name}}</h2>              
+              <h2>{{recipe.name}}</h2>    
+              <p class="recipe-description-time">{{recipe.description}}</p>          
             </div>
             <div class="col col-10 col-center">
               <i class="icon checkbox-balanced ng-class: alaCarteClass($index);"></i>              
@@ -22,7 +23,6 @@
           <div class="row">
             <div class="col">
               <div class="recipe-description-time">
-                <p>{{recipe.description}}</p>
                 <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
               </div>
             </div>
