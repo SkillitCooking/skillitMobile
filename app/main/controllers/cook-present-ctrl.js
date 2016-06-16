@@ -2,17 +2,6 @@
 angular.module('main')
 .controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal) {
 
-  /*var player;
-
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('popup-video');
-  }
-
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
-
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
     for (var i = recipes.length - 1; i >= 0; i--) {
@@ -69,10 +58,6 @@ angular.module('main')
     }
   };
 
-  function autoPlayVideo(videoURL) {
-
-  }
-
   //first have popup show both cases; then do automatic video play for video case
   $scope.showTip = function(step, event) {
     if(step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile) {
@@ -92,7 +77,7 @@ angular.module('main')
         $scope.popover.show(event);
       });
     } else if(step.hasVideo) {
-      $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1";
+      $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1&rel=0";
       $scope.modal = $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -104,6 +89,7 @@ angular.module('main')
   };
 
   $scope.closeModal = function() {
+    console.log("close modal");
     $scope.modal.hide();
     $scope.modal.remove();
   };
@@ -116,6 +102,10 @@ angular.module('main')
 
   $scope.$on('modal.hidden', function() {
     $scope.modal.remove();
+  });
+
+  $scope.$on("test", function(event, data) {
+    console.log("emit test: ", data);
   });
 
   /*$scope.$on('modal.removed', function() {
