@@ -154,12 +154,44 @@ angular.module('main')
         $scope.popover.show(event);
     });
   };
+
   $scope.changeSeasoningProfile = function(profile) {
     $scope.seasoningProfile = profile;
     for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
       if($scope.combinedRecipe.stepList[i].stepType === 'Season') {
         SeasoningProfileTextService.addSeasoning($scope.combinedRecipe.stepList[i], $scope.seasoningProfile);
       }
+    }
+  };
+
+  $scope.categoryNeedsOilOrButter = function() {
+    if($scope.combinedRecipe.recipeCategory) {
+      switch($scope.combinedRecipe.recipeCategory) {
+        case 'Scramble':
+        case 'Roast':
+        case 'Pasta':
+        case 'Hash':
+        case 'Rice':
+        case 'Quinoa':
+          return true;
+        default:
+          return false;
+      }
+    } else if($scope.combinedRecipe.recipeCategorys) {
+      for (var i = $scope.combinedRecipe.recipeCategorys.length - 1; i >= 0; i--) {
+        switch($scope.combinedRecipe.recipeCategorys[i]) {
+          case 'Scramble':
+          case 'Roast':
+          case 'Pasta':
+          case 'Hash':
+          case 'Rice':
+          case 'Quinoa':
+            return true;
+          default:
+            break;
+        }
+      }
+      return false;
     }
   };
 }]);

@@ -18,6 +18,28 @@ angular.module('main')
         $scope.alaCarteRecipes[i].prepTime = 5 * Math.round($scope.alaCarteRecipes[i].prepTime/5);
         $scope.alaCarteRecipes[i].totalTime = 5 * Math.round($scope.alaCarteRecipes[i].totalTime/5);
       }
+      //sort alaCarteRecipes according to ingredientCategory, then by ingredient
+      $scope.alaCarteRecipes.sort(function(a, b) {
+        console.log("a: ", a);
+        console.log("b: ", b);
+        if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
+          return -1;
+        } else if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory > b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
+          return 1;
+        } else {
+          //then same category, sort by ingredient
+          //assuming only one ingredientType and one ingredient for that ingredientType
+          //for all alaCarteRecipes
+          if(a.ingredientList.ingredientTypes[0].ingredients[0].name < b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+            return -1;
+          } else if(a.ingredientList.ingredientTypes[0].ingredients[0].name > b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+            return 1;
+          } else {
+            //then same ingredient
+            return 0;
+          }
+        }
+      });
     }
     $scope.fullRecipes = response.data.Full;
     if($scope.fullRecipes) {
@@ -38,6 +60,21 @@ angular.module('main')
   });
 
   $scope.alaCarteSelected = true;
+  $scope.currentAlaCarteHeader = "";
+
+  $scope.needsHeader = function(recipe) {
+    //if recipe has different header from alaCarteHeader
+    if(recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory !== $scope.currentAlaCarteHeader) {
+      $scope.currentAlaCarteHeader = recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.getHeader = function(recipe) {
+    return recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
+  };
 
   $scope.getAlaCarteButtonClass = function() {
     if($scope.alaCarteSelected){

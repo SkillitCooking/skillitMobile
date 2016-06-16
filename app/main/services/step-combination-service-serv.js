@@ -123,6 +123,11 @@ angular.module('main')
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
         return recipe.mainVideoURL;
       });
+      //set combinedRecipe recipeCategories
+      combinedRecipe.recipeCategorys = [];
+      for (var i = recipes.length - 1; i >= 0; i--) {
+        combinedRecipe.recipeCategorys.push(recipes[i].recipeCategory);
+      }
       //reverse recipe steps for popping
       for (var i = recipes.length - 1; i >= 0; i--) {
         _.reverse(recipes[i].stepList);
@@ -161,6 +166,11 @@ angular.module('main')
             SeasoningProfileTextService.addSeasoning(recipes[0].stepList[i], recipes[0].defaultSeasoningProfile);
           }
         }
+      }
+      //round cookTimes
+      if(recipes[0]) {
+        recipes[0].prepTime = 5 * Math.round(recipes[0].prepTime/5);
+        recipes[0].totalTime = 5 * Math.round(recipes[0].totalTime/5);
       }
       return recipes[0];
     }

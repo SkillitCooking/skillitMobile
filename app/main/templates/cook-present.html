@@ -13,7 +13,10 @@
       <h5 ng-if="combinedRecipe.mainVideoURLs">{{recipeIngredients.name}}</h5>
       <ul> 
         <li ng-repeat="ingredient in recipeIngredients.ingredients">
-          &nbsp;&nbsp;•{{ingredient}}
+          &nbsp;&nbsp;• {{ingredient}}
+        </li>
+        <li ng-if="categoryNeedsOilOrButter()">
+          &nbsp;&nbsp;• Oil or Butter
         </li>
       </ul>
     </div>
@@ -21,12 +24,18 @@
     <div ng-if="combinedRecipe.canAddSeasoningProfile">
       <h3>Seasoning</h3>
       <p>Current Seasoning: {{seasoningProfile.name}}</p>
+      <ul>
+        <li ng-repeat="spice in seasoningProfile.spices">
+          &nbsp;&nbsp;• {{spice}}
+        </li>
+      </ul>
       <button class="button button-spice-up" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
     </div>
     <ion-list class="list">
       <div ng-repeat="step in combinedRecipe.stepList">
         <ion-item class="recipe-instructions" ng-if="isSingleStep(step) && !step.isEmpty" ng-click="showTip(step, $event)">
           <p><b>Step {{step.stepNumber}}:</b> {{step.text}}</p>
+          <br ng-if="step.stepType === 'Season'"/>
           <p ng-repeat="line in step.seasoningInfo">{{line}}</p>
           <i ng-if="step.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
           <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>

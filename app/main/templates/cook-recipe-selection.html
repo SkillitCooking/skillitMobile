@@ -8,6 +8,9 @@
     <div ng-if="alaCarteSelected">
       <ion-list>
         <ion-item ng-repeat="recipe in alaCarteRecipes" class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
+          <div ng-if="needsHeader(recipe)">
+            <h3>{{getHeader(recipe)}}</h3>
+          </div>
           <div class="row">
             <div class="col col-36">  
               <img ng-src="{{recipe.mainPictureURL}}">
