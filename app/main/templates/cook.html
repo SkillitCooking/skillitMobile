@@ -1,15 +1,27 @@
 
   <ion-view view-title="What Do Ya Got?">
     <ion-nav-buttons side="secondary">
-      <button class="button" ng-click="resetIngredientSelection()">Reset</button>
+      <button class="button reset" ng-click="resetIngredientSelection()">Reset</button>
     </ion-nav-buttons>
+    <div class="top-nav-buttons-cook-tab row">   
+      <div class="col col-25">   
+        <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+      </div>
+      <div class="col col-50 center">
+        <h2 class="ingredient-type-heading">Vegetables</h2>
+      </div>
+      <div class="col col-25">
+        <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>      
+      </div>
+    </div>
     <!-- do you want padding? -->
     <ion-content class="has-header padding cook-tab">
         <!-- content goes here -->
       <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
         <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
           <div class="wrap-class" ng-class="getWrapClass($index)">
-            <h2 class="ingredient-type-heading">{{name}}</h2>
+            <!--<h2 class="ingredient-type-heading">{{name}}</h2>-->
             <ion-list>
               <div ng-repeat="ingredient in ingredients">
                 <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">

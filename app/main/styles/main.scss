@@ -27,10 +27,14 @@ h2.ingredient-type-heading, h3.recipe-category, .cook-present-instructions h3 {
 	font-size: 50px;
 	color: $balanced;
 }
+h2.ingredient-type-heading {
+	font-size: 45px;
+	margin-bottom: 0;
+}
 .cook-present-instructions h3 {
 	font-size: 35px;
 }
-div, p, .individual-recipe-in-list h2, h1 {
+div, p, .individual-recipe-in-list h2, h1, .button {
 	font-family: 'Palanquin', sans-serif;
 }
 .individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title {
@@ -56,6 +60,12 @@ ion-nav-back-button.button-clear {
 /**********************************/
 /*COOK TAB*/
 /*general*/
+.button.reset {
+	border-color: #ffffff;
+}
+.cook-tab.has-header {
+	top: 75px;
+}
 .padding.cook-tab {
 	padding-top: 0;
 }
@@ -63,6 +73,7 @@ ion-nav-back-button.button-clear {
 /*slider dots*/
 .slider-pager {
 	top: 2px;
+	display: none;
 	
 }
 .slider-pager .slider-pager-page {
@@ -70,8 +81,11 @@ ion-nav-back-button.button-clear {
 }
 
 /*next & prev buttons */
+.button {
+	min-height: 0;
+}
 .bottom-nav-buttons-cook-tab {
-	margin: 10px;
+	margin: 10px 0;
 	height: 47px;
 }
 .prev-nav-button {
@@ -79,6 +93,25 @@ ion-nav-back-button.button-clear {
 }
 .next-nav-button {
 	float: right;
+}
+.top-nav-buttons-cook-tab {
+    position: fixed;
+    top: 41px;
+    z-index: 5000;
+    width: 100%;
+    box-shadow: 2px 1px 5px #000000;
+    background-color: #ffffff;
+    padding: 2px 0 0 0;
+}
+.top-nav-buttons-cook-tab .col{
+	padding: 2px 0 0 0;
+}
+.top-nav-buttons-cook-tab .button {
+	border-color: $balanced;
+    background-color: transparent;
+    color: $balanced;
+    border-radius: 50%;
+    margin: 5px 10px 10px 10px;
 }
 .bottom-nav-buttons-cook-tab .button.button-balanced {
 	border-radius: 50%;
@@ -91,10 +124,14 @@ ion-nav-back-button.button-clear {
 	color: #ffffff;
 }
 
+
 /*ingredient input tabs*/
-.ingredient-type-heading {
-	margin-top: 20px !important;
+.cook-tab .wrap-class {
+	margin-top: 30px;
+}
+.ingredient-type-heading {	
 	color: $balanced;
+	text-align: center;
 }
 div.ingredient-form-selection {
 	display: inline;
@@ -221,14 +258,6 @@ div.ingredient-form-selection {
     width: 100%;
     height: 100%;
 }
-.step-video-modal.modal {
-	opacity: .7;
-}
-.step-video-modal-wrapper {
-	top: 25%;
-	position: absolute;
-	opacity: 1 !important;
-}
 
 
 /*popover*/
@@ -239,6 +268,16 @@ div.ingredient-form-selection {
 	height: 300px !important;
 	width: 300px !important;
 }*/
+.modal.video-step-tip {
+	background-color: rgba(255, 255, 255, 0.7);
+}
+#modal-player {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 30%;
+	margin: 0 auto;
+}
 .popover p {
 	white-space: normal;
 }
@@ -255,7 +294,7 @@ div.ingredient-form-selection {
 }
 .popover.seasoning-selector-popup {
 	height: 500px !important;
-	top: 5% !important;
+	top: 10% !important;
 }
 .image-modal {
     width: 100% !important;
@@ -263,15 +302,12 @@ div.ingredient-form-selection {
     top: 25% !important;
     left: 0 !important;
 }
- 
-.transparent {
-    background: transparent !important;
-}
-
 .popover ion-content.scroll-content {
 	border-radius: 0 !important;
 }
-
+.popover-arrow {
+	display: none !important;
+}
 /*seasoning profile selector*/
 .popover .bar h1.title, .seasoning-selector-popup h3 {
 	font-size: 23px;
