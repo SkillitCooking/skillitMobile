@@ -31,7 +31,7 @@ h2.ingredient-type-heading, h3.recipe-category, .cook-present-instructions h3 {
 	font-size: 35px;
 }
 div, p, .individual-recipe-in-list h2, h1 {
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Palanquin', sans-serif;
 }
 .individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title {
 	font-family: 'Pompiere', sans-serif;
@@ -80,14 +80,14 @@ ion-nav-back-button.button-clear {
 .next-nav-button {
 	float: right;
 }
-.bottom-nav-buttons-cook-tab .button.button-royal {
+.bottom-nav-buttons-cook-tab .button.button-balanced {
 	border-radius: 50%;
-	color: $royal;
+	color: $balanced;
 	background-color: #ffffff;
-	border: 1px solid $royal;
+	border: 1px solid $balanced;
 }
-.bottom-nav-buttons-cook-tab .button.button-royal:active {
-	background-color: $royal;
+.bottom-nav-buttons-cook-tab .button.button-balanced:active {
+	background-color: $balanced;
 	color: #ffffff;
 }
 
@@ -186,6 +186,7 @@ div.ingredient-form-selection {
 }
 .recipe-instructions p {
 	font-size: 15px;
+	max-width: 93%;
 }
 .recipe-video {
 	margin: 0 auto;
@@ -219,6 +220,14 @@ div.ingredient-form-selection {
     left: 0;
     width: 100%;
     height: 100%;
+}
+.step-video-modal.modal {
+	opacity: .7;
+}
+.step-video-modal-wrapper {
+	top: 25%;
+	position: absolute;
+	opacity: 1 !important;
 }
 
 
