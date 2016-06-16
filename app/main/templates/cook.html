@@ -5,10 +5,10 @@
     </ion-nav-buttons>
     <div class="top-nav-buttons-cook-tab row">   
       <div class="col col-25">   
-        <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        <button ng-click="slidePrev()" ng-disabled="isBeginningSlide()" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
       </div>
       <div class="col col-50 center">
-        <h2 class="ingredient-type-heading">Vegetables</h2>
+        <h2 class="ingredient-type-heading">{{getNavBarInputCategory()}}</h2>
       </div>
       <div class="col col-25">
         <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>

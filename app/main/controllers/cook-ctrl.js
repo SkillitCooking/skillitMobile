@@ -15,8 +15,10 @@ angular.module('main')
   IngredientService.getIngredientsForSelection().then(function(response){
     console.log(response.data);
     $scope.ingredientCategories = response.data;
+    $scope.inputCategoryArray = [];
     //set first form of all ingredients to selected
     for(var category in $scope.ingredientCategories) {
+      $scope.inputCategoryArray.push(category);
       var ingredients = $scope.ingredientCategories[category];
       ingredients.sort(alphabeticalCmp);
       for (var i = ingredients.length - 1; i >= 0; i--) {
@@ -55,6 +57,15 @@ angular.module('main')
 
   $scope.hasMoreSlides = function() {
     return $ionicSlideBoxDelegate.currentIndex() < Object.keys($scope.ingredientCategories).length - 1;
+  };
+
+  $scope.isBeginningSlide = function() {
+    return $ionicSlideBoxDelegate.currentIndex() === 0;
+  };
+
+  $scope.getNavBarInputCategory = function() {
+    var index = $ionicSlideBoxDelegate.currentIndex();
+    return $scope.inputCategoryArray[index];
   };
 
   $scope.goToSlide = function(index) {
