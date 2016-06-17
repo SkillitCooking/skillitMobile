@@ -27,10 +27,6 @@ h2.ingredient-type-heading, h3.recipe-category, .cook-present-instructions h3 {
 	font-size: 50px;
 	color: $balanced;
 }
-h2.ingredient-type-heading {
-	font-size: 45px;
-	margin-bottom: 0;
-}
 .cook-present-instructions h3 {
 	font-size: 35px;
 }
@@ -63,12 +59,6 @@ ion-nav-back-button.button-clear {
 .button.reset {
 	border-color: #ffffff;
 }
-.cook-tab.has-header {
-	top: 75px;
-}
-.padding.cook-tab {
-	padding-top: 0;
-}
 
 /*slider dots*/
 .slider-pager {
@@ -84,54 +74,36 @@ ion-nav-back-button.button-clear {
 .button {
 	min-height: 0;
 }
-.bottom-nav-buttons-cook-tab {
-	margin: 10px 0;
-	height: 47px;
-}
 .prev-nav-button {
 	float: left;
 }
 .next-nav-button {
 	float: right;
 }
-.top-nav-buttons-cook-tab {
+.bottom-nav-buttons-cook-tab {
     position: fixed;
-    top: 41px;
+    bottom: 48px;
     z-index: 5000;
     width: 100%;
-    box-shadow: 2px 1px 5px #000000;
-    background-color: #ffffff;
-    padding: 2px 0 0 0;
-}
-.top-nav-buttons-cook-tab .col{
-	padding: 2px 0 0 0;
-}
-.top-nav-buttons-cook-tab .button {
-	border-color: $balanced;
     background-color: transparent;
-    color: $balanced;
+}
+
+.bottom-nav-buttons-cook-tab .button {	
+    background-color: $balanced;
+    color: #ffffff;
     border-radius: 50%;
-    margin: 5px 10px 10px 10px;
+    min-width: 25px;
+    padding: 0 14px;
 }
-.bottom-nav-buttons-cook-tab .button.button-balanced {
-	border-radius: 50%;
-	color: $balanced;
-	background-color: #ffffff;
-	border: 1px solid $balanced;
-}
-.bottom-nav-buttons-cook-tab .button.button-balanced:active {
-	background-color: $balanced;
-	color: #ffffff;
-}
+
 
 
 /*ingredient input tabs*/
-.cook-tab .wrap-class {
-	margin-top: 30px;
+.padding.cook-tab {
+	padding-top: 10px;
 }
 .ingredient-type-heading {	
 	color: $balanced;
-	text-align: center;
 }
 div.ingredient-form-selection {
 	display: inline;
@@ -158,7 +130,19 @@ div.ingredient-form-selection {
 	border-left: none;
 	border-right: none;
 }
-
+.ingredient-checkbox-row {
+	margin: 0 20px;
+}
+.cook-tab .checkbox {
+	padding-left: 20px;
+}
+.cook-tab .item-content {
+	padding-left: 7px;
+}
+h2.ingredient-type-heading {
+	font-size: 45px;
+	margin:0 0 0 20px;
+}
 /*recipe selection tab*/
 .individual-recipe-in-list {
 	box-shadow: 0px 1px 3px #999999;
