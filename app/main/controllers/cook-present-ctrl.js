@@ -6,6 +6,7 @@ angular.module('main')
     var ingredientsForRecipes = [];
     for (var i = recipes.length - 1; i >= 0; i--) {
       var ingredientsForRecipe = {};
+      ingredientsForRecipe.recipeType = recipes[i].recipeType;
       ingredientsForRecipe.name = recipes[i].name;
       ingredientsForRecipe.ingredients = [];
       var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
@@ -17,6 +18,15 @@ angular.module('main')
         });
       ingredientsForRecipes.push(ingredientsForRecipe);
     }
+    ingredientsForRecipes.sort(function(a, b) {
+      if((a.recipeType === 'BYO' || a.recipeType === 'Full') && (b.recipeType === 'AlaCarte')) {
+        return -1;
+      }
+      if((b.recipeType === 'BYO' || b.recipeType === 'Full') && (a.recipeType === 'AlaCarte')) {
+        return 1;
+      }
+      return 0;
+    });
     return ingredientsForRecipes;
   }
 
