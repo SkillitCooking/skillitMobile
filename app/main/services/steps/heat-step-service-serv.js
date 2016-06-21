@@ -43,7 +43,7 @@ angular.module('main')
     }).val;
     var stepText = "";
     if(heatsOil) {
-      stepText  = "Add oil to " + step.dishToHeat.name.toLowerCase() + " and heat over " +
+      stepText  = "Add oil or butter to " + step.dishToHeat.name.toLowerCase() + " and heat over " +
         heatSetting + " heat";
     } else {
       stepText = "Heat " + step.dishToHeat.name.toLowerCase() + " over " + heatSetting +
