@@ -46,6 +46,13 @@ angular.module('main')
   $scope.recipeIds = $stateParams.recipeIds;
   $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
   $scope.alaCarteSelectedArr = $stateParams.alaCarteSelectedArr;
+  $scope.sidesExist = false;
+  for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
+    if($scope.alaCarteSelectedArr[i]) {
+      $scope.sidesExist = true;
+      break;
+    }
+  }
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
@@ -79,6 +86,14 @@ angular.module('main')
     } else {
       //error
       console.log("step has neither text nor textArr: ", step);
+    }
+  };
+
+  $scope.getAddSideText = function() {
+    if($scope.sidesExist) {
+      return 'Change Sides';
+    } else {
+      return 'Add a Side Dish';
     }
   };
 

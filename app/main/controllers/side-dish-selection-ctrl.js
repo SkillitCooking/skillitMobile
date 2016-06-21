@@ -62,6 +62,14 @@ angular.module('main')
     $state.go('main.cookPresent', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection});
   };
 
+  $scope.getCancelText = function() {
+    if($scope.hasChanged) {
+      return 'Cancel';
+    } else {
+      return 'No Changes';
+    }
+  };
+
   $scope.cancel = function() {
     if($scope.hasChanged) {
       for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
