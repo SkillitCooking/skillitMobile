@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', function (_, $scope, $stateParams, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate) {
 
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
@@ -20,7 +20,20 @@ angular.module('main')
     return ingredientsForRecipes;
   }
 
+  $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
+
+  if($stateParams.sidesAdded) {
+    $scope.numberBackToRecipeSelection -= 2;
+  }
+
+  $ionicNavBarDelegate.showBackButton(false);
+
+  if(!$scope.numberBackToRecipeSelection) {
+    $scope.numberBackToRecipeSelection = -1;
+  }
   $scope.recipeIds = $stateParams.recipeIds;
+  $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
+  $scope.alaCarteSelectedArr = $stateParams.alaCarteSelectedArr;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
@@ -28,24 +41,23 @@ angular.module('main')
   RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
-    console.log("preingredient For Recipes: ", angular.copy(recipes));
     $scope.ingredientsForRecipes = getIngredientsForRecipes(recipes);
     RecipeInstantiationService.fillInSteps(recipes);
     RecipeInstantiationService.setBackwardsIsEmptySteps(recipes);
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
-    $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes);
-    if($scope.combinedRecipe) {
+    $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
+    if($stateParams.currentSeasoningProfile) {
+      $scope.seasoningProfile = $stateParams.currentSeasoningProfile;
+    } else if($scope.combinedRecipe) {
+      //will need to set differently if currentSeasoningProfile being sent from
+      //side dish selection
       $scope.seasoningProfile = $scope.combinedRecipe.defaultSeasoningProfile;
     }
-    console.log("combined recipe: ", $scope.combinedRecipe);
-    console.log("ingredientsForRecipes", $scope.ingredientsForRecipes);
   });
   SeasoningProfileService.getSeasoningProfiles().then(function(response) {
     $scope.seasoningProfiles = response.data;
   });
-
-
 
   $scope.isSingleStep = function(step) {
     if(step.text) {
@@ -56,6 +68,10 @@ angular.module('main')
       //error
       console.log("step has neither text nor textArr: ", step);
     }
+  };
+
+  $scope.addSide = function() {
+    $state.go('main.cookAddSide', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
   };
 
   //first have popup show both cases; then do automatic video play for video case
@@ -162,6 +178,18 @@ angular.module('main')
         SeasoningProfileTextService.addSeasoning($scope.combinedRecipe.stepList[i], $scope.seasoningProfile);
       }
     }
+  };
+
+  $scope.navigateBack = function() {
+    //need to get timesclicked mechanism going here
+    console.log("numberback: ", $scope.numberBackToRecipeSelection);
+    for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
+      $scope.alaCarteSelectedArr.fill(false);
+    }
+    $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+  };
+  $scope.resetEverything = function() {
+    console.log("reset everything");
   };
 
   $scope.categoryNeedsOilOrButter = function() {

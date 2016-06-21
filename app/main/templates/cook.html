@@ -27,7 +27,7 @@
                 <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
                   {{ingredient.name}}
                 </ion-checkbox>
-                <ion-item ng-if="ingredient.isSelected && ingredient.ingredientForms.length > 1" class="ingredient-form-items">  
+                <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
                   <div class="grouping-of-ingredient-forms">              
                     <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
                       <label class="checkbox checkbox-balanced">
@@ -42,6 +42,7 @@
               </ion-item>
               </div>
             </ion-list>
+            </div>
             <div class="bottom-nav-buttons-cook-tab">
               <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button button-balanced prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
               <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>

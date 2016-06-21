@@ -70,7 +70,30 @@ angular.module('main', [
         },
         params: {
           recipeIds: null,
-          selectedIngredientNames: null
+          selectedIngredientNames: null,
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          sidesAdded: false,
+          numberBackToRecipeSelection: null
+        }
+      })
+      .state('main.cookAddSide', {
+        cache: false,
+        url: '/cook/addSide',
+        views: {
+          'tab-cook': {
+            templateUrl: 'main/templates/side-dish-selection.html',
+            controller: 'SideDishSelectionCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          numberBackToRecipeSelection: null
         }
       })
       .state('main.tips', {

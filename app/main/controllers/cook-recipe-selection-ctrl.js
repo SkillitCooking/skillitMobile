@@ -1,8 +1,10 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '_', function ($scope, $stateParams, $state, RecipeService, _) {
+.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
+
+  $ionicNavBarDelegate.showBackButton(true);
 
   _.forEach($scope.selectedIngredients, function(ingredient) {
     $scope.selectedIngredientNames.push(ingredient.name);
@@ -20,8 +22,6 @@ angular.module('main')
       }
       //sort alaCarteRecipes according to ingredientCategory, then by ingredient
       $scope.alaCarteRecipes.sort(function(a, b) {
-        console.log("a: ", a);
-        console.log("b: ", b);
         if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
           return -1;
         } else if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory > b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -59,7 +59,7 @@ angular.module('main')
     console.log("Server Error: " + response.message);
   });
 
-  $scope.alaCarteSelected = true;
+  $scope.alaCarteSelected = false;
   $scope.currentAlaCarteHeader = "";
 
   $scope.needsHeader = function(recipe) {
@@ -118,6 +118,10 @@ angular.module('main')
     });
   };
 
+  $scope.navigateBack = function() {
+    $ionicHistory.goBack();
+  };
+
   $scope.recipeSelected = function(recipe) {
     //"pull up" present-recipe page using first one selected
     var recipeIds = [recipe._id];
@@ -128,19 +132,17 @@ angular.module('main')
         }
       }
     }
-    console.log("selected in selectionctrl: ", $scope.selectedIngredientNames);
-    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames});
+    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
   };
 
   $scope.cookAlaCarte = function() {
     //provisional: "pull up" present-recipe page using first one selected
     var recipeIds = [];
-    console.log("selected ala in selectionctrl: ", $scope.selectedIngredientNames);
     for (var i = $scope.alaCarteClickedArr.length - 1; i >= 0; i--) {
       if($scope.alaCarteClickedArr[i]){
         recipeIds.push($scope.alaCarteRecipes[i]._id);
       }
     }
-    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames});
+    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
   };
 }]);

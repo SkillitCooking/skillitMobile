@@ -102,14 +102,47 @@ angular.module('main')
     }
   }
 
-  function combineRecipes(recipes) {
+  function getAlaCarteNames(recipeNames) {
+    switch(recipeNames.length) {
+      case 0:
+        //error case - expect at least one recipe name - otherwise, would have skipped this case
+        console.log("StepCombinationService error: expecting a recipe name, didn't get any");
+          break;
+      case 1:
+        return recipeNames[0];
+      case 2:
+        return recipeNames[0] + " and " + recipeNames[1];
+      default:
+        var retVal = "";
+        for (var i = recipeNames.length - 1; i >= 0; i--) {
+          if(i === 0) {
+            retVal += "and " + recipeNames[i];
+          } else {
+            retVal += recipeNames[i] + ", ";
+          }
+        }
+        return retVal;
+    }
+  }
+
+  function combineRecipes(recipes, currentSeasoningProfile) {
     //order with respect to time remaining for recipe
     if(recipes.length > 1) {
       var combinedRecipe = {};
       combinedRecipe.stepList = [];
-      combinedRecipe.name = _.join(_.map(recipes, function(recipe) {
-        return recipe.name;
-      }), ' + ');
+      var alaCarteRecipeNames = [];
+      for (var i = recipes.length - 1; i >= 0; i--) {
+        if(recipes[i].recipeType === 'Full' || recipes[i].recipeType === 'BYO') {
+          combinedRecipe.mainName = recipes[i].name;
+        } else if(recipes[i].recipeType === 'AlaCarte') {
+          alaCarteRecipeNames.push(recipes[i].name);
+        }
+      }
+      combinedRecipe.alaCarteNames = getAlaCarteNames(alaCarteRecipeNames);
+      //if no mainName set, then make combination of AlaCarte recipes mainName
+      if(!combinedRecipe.mainName) {
+        combinedRecipe.mainName = combinedRecipe.alaCarteNames;
+      }
       combinedRecipe.prepTime = _.reduce(recipes, function(prepTime, recipe) {
         return prepTime + recipe.prepTime;
       }, 0);
@@ -123,6 +156,7 @@ angular.module('main')
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
         return recipe.mainVideoURL;
       });
+      _.reverse(combinedRecipe.mainVideoURLs);
       //set combinedRecipe recipeCategories
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
@@ -139,7 +173,11 @@ angular.module('main')
       for (var i = recipes.length - 1; i >= 0; i--) {
         if(recipes[i].canAddSeasoningProfile) {
           combinedRecipe.canAddSeasoningProfile = true;
-          combinedRecipe.defaultSeasoningProfile = recipes[i].defaultSeasoningProfile;
+          if(currentSeasoningProfile) {
+            combinedRecipe.defaultSeasoningProfile = currentSeasoningProfile;
+          } else {
+            combinedRecipe.defaultSeasoningProfile = recipes[i].defaultSeasoningProfile;
+          }
           break;
         }
       }
@@ -176,8 +214,8 @@ angular.module('main')
     }
   }
 
-  service.getCombinedRecipe = function(recipes) {
-    var combinedRecipe = combineRecipes(recipes);
+  service.getCombinedRecipe = function(recipes, currentSeasoningProfile) {
+    var combinedRecipe = combineRecipes(recipes, currentSeasoningProfile);
     assignStepNumbers(combinedRecipe);
     return combinedRecipe;
   };

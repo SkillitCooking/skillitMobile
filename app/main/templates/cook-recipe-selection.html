@@ -1,93 +1,94 @@
-<ion-view view-title="What Sounds Good?">
-  <!-- do you want padding? -->
-  <ion-content class="padding cook-recipe-selection">
-    <div class="button-bar">
-      <a ng-class="getAlaCarteButtonClass()" ng-click="selectAlaCarte()">A La Carte</a>
-      <a ng-class="getCompleteButtonClass()" ng-click="selectComplete()">Full Dishes</a>
-    </div>
-    <div ng-if="alaCarteSelected">
-      <ion-list>
-        <ion-item ng-repeat="recipe in alaCarteRecipes" class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
-          <div ng-if="needsHeader(recipe)">
-            <h3>{{getHeader(recipe)}}</h3>
-          </div>
-          <div class="row">
-            <div class="col col-36">  
-              <img ng-src="{{recipe.mainPictureURL}}">
-            </div>
-            <div class="col col-54 col-center">
-              <h2>{{recipe.name}}</h2>    
-              <p class="recipe-description-time">{{recipe.description}}</p>          
-            </div>
-            <div class="col col-10 col-center">
-              <i class="icon checkbox-balanced ng-class: alaCarteClass($index);"></i>              
-            </div>
-          </div>  
-          <div class="row">
-            <div class="col">
-              <div class="recipe-description-time">
-                <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
-              </div>
-            </div>
-          </div>
-        </ion-item>
-      </ion-list>
-      <div class="row">
-        <div class="col col-50 col-center">
-          <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-balanced">Let's Cook!</button>
-        </div>
-        <div class="col col-50 col-center">
-          <button ng-click="selectComplete()" class="button button-balanced">Add Full Dish</button>
-        </div>
+
+  <ion-view view-title="What Sounds Good?">
+    <!-- do you want padding? -->
+    <ion-content class="padding cook-recipe-selection">
+      <div class="button-bar">
+        <a ng-class="getCompleteButtonClass()" ng-click="selectComplete()">Full Dishes</a>
+        <a ng-class="getAlaCarteButtonClass()" ng-click="selectAlaCarte()">A La Carte</a>
       </div>
-    </div>
-    <div ng-if="!alaCarteSelected">
-      <div ng-if="BYORecipes && BYORecipes.length > 0">
-        <h3 class="recipe-category">Build Your Own</h3>
+      <div ng-if="alaCarteSelected">
         <ion-list>
-          <ion-item ng-repeat="recipe in BYORecipes" class="item-thumbnail-left individual-recipe-in-list" ng-click="recipeSelected(recipe)">
-            <div class="row">
-              <div class="col col-36">  
-                <img ng-src="{{recipe.mainPictureURL}}">
-              </div>
-              <div class="col col-center">
-                <h2>{{recipe.name}}</h2>
-              </div>
-            </div>  
-            <div class="row">
-              <div class="col">
-                <div class="recipe-description-time">
-                  <p>{{recipe.description}}</p>
-                  <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+          <div ng-repeat="recipe in alaCarteRecipes">
+            <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
+            <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
+              <div class="row">
+                <div class="col col-36">  
+                  <img ng-src="{{recipe.mainPictureURL}}">
+                </div>
+                <div class="col col-54 col-center">
+                  <h2>{{recipe.name}}</h2>    
+                  <p class="recipe-description-time">{{recipe.description}}</p>          
+                </div>
+                <div class="col col-10 col-center">
+                  <i class="icon checkbox-balanced ng-class: alaCarteClass($index);"></i>              
+                </div>
+              </div>  
+              <div class="row">
+                <div class="col">
+                  <div class="recipe-description-time">
+                    <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ion-item>
+            </ion-item>
+          </div>
         </ion-list>
+        <div class="row">
+          <div class="col col-50 col-center">
+            <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-balanced">Let's Cook!</button>
+          </div>
+          <div class="col col-50 col-center">
+            <button ng-click="selectComplete()" class="button button-balanced">Add Full Dish</button>
+          </div>
+        </div>
       </div>
-      <div ng-if="fullRecipes && fullRecipes.length > 0">
-        <h3 class="recipe-category">Full Recipes</h3>
-        <ion-list>
-          <ion-item ng-repeat="recipe in fullRecipes" class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
-            <div class="row">
-              <div class="col col-36">  
-                <img ng-src="{{recipe.mainPictureURL}}">
-              </div>
-              <div class="col col-center">
-                <h2>{{recipe.name}}</h2>
-              </div>
-            </div>  
-            <div class="row">
-              <div class="col">
-                <div class="recipe-description-time">
-                  <p>{{recipe.description}}</p>
-                  <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
+      <div ng-if="!alaCarteSelected">
+        <div ng-if="BYORecipes && BYORecipes.length > 0">
+          <h3 class="recipe-category">Build Your Own</h3>
+          <ion-list>
+            <ion-item ng-repeat="recipe in BYORecipes" class="item-thumbnail-left individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+              <div class="row">
+                <div class="col col-36">  
+                  <img ng-src="{{recipe.mainPictureURL}}">
+                </div>
+                <div class="col col-center">
+                  <h2>{{recipe.name}}</h2>
+                </div>
+              </div>  
+              <div class="row">
+                <div class="col">
+                  <div class="recipe-description-time">
+                    <p>{{recipe.description}}</p>
+                    <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ion-item>
-        </ion-list>      
+            </ion-item>
+          </ion-list>
+        </div>
+        <div ng-if="fullRecipes && fullRecipes.length > 0">
+          <h3 class="recipe-category">Full Recipes</h3>
+          <ion-list>
+            <ion-item ng-repeat="recipe in fullRecipes" class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+              <div class="row">
+                <div class="col col-36">  
+                  <img ng-src="{{recipe.mainPictureURL}}">
+                </div>
+                <div class="col col-center">
+                  <h2>{{recipe.name}}</h2>
+                </div>
+              </div>  
+              <div class="row">
+                <div class="col">
+                  <div class="recipe-description-time">
+                    <p>{{recipe.description}}</p>
+                    <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
+                  </div>
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>      
+        </div>
       </div>
-    </div>
-  </ion-content>
-</ion-view>
+    </ion-content>
+  </ion-view>

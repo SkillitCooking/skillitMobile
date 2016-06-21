@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state) {
+.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$ionicHistory', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $ionicHistory) {
 
   function alphabeticalCmp(a, b) {
     if(a.name < b.name) {
@@ -56,7 +56,9 @@ angular.module('main')
   };
 
   $scope.hasMoreSlides = function() {
-    return $ionicSlideBoxDelegate.currentIndex() < Object.keys($scope.ingredientCategories).length - 1;
+    if($scope.ingredientCategories) {
+      return $ionicSlideBoxDelegate.currentIndex() < Object.keys($scope.ingredientCategories).length - 1;
+    }
   };
 
   $scope.isBeginningSlide = function() {
@@ -64,8 +66,12 @@ angular.module('main')
   };
 
   $scope.getNavBarInputCategory = function() {
-    var index = $ionicSlideBoxDelegate.currentIndex();
-    return $scope.inputCategoryArray[index];
+    if($scope.inputCategoryArray) {
+      var index = $ionicSlideBoxDelegate.currentIndex();
+      return $scope.inputCategoryArray[index];
+    } else {
+      return "";
+    }
   };
 
   $scope.goToSlide = function(index) {
@@ -123,6 +129,31 @@ angular.module('main')
       }
     }
     $scope.goToSlide(0);
+  };
+
+  $scope.canHaveForms = function(ingredient) {
+    if(ingredient.isSelected && ingredient.ingredientForms.length > 1) {
+      var curInputCategory = $scope.getNavBarInputCategory();
+      switch(curInputCategory) {
+        case 'Vegetables':
+        case 'Starches':
+          return false;
+
+        case 'Protein':
+          return 'true';
+
+        default:
+          //error
+          console.log("Cook controller error: unexpected inputCategory: ", curInputCategory);
+          return false;
+      }
+    } else {
+      return false;
+    }
+  };
+
+  $scope.navigateBack = function() {
+    $ionicHistory.goBack();
   };
 
   $scope.test = function(ingredients){
