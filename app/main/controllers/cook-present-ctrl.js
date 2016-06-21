@@ -20,13 +20,15 @@ angular.module('main')
     return ingredientsForRecipes;
   }
 
+  $scope.$on('$ionicView.enter', function(event, data) {
+    $ionicNavBarDelegate.showBackButton(false);
+  });
+
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
 
   if($stateParams.sidesAdded) {
     $scope.numberBackToRecipeSelection -= 2;
   }
-
-  $ionicNavBarDelegate.showBackButton(false);
 
   if(!$scope.numberBackToRecipeSelection) {
     $scope.numberBackToRecipeSelection = -1;
@@ -189,7 +191,12 @@ angular.module('main')
     $ionicHistory.goBack($scope.numberBackToRecipeSelection);
   };
   $scope.resetEverything = function() {
-    console.log("reset everything");
+    $ionicHistory.clearCache().then(function() {
+      $state.go('main.cook');
+    }, function() {
+      //error
+      console.log('error: failure to clear $ionicHistory clearCache');
+    });
   };
 
   $scope.categoryNeedsOilOrButter = function() {

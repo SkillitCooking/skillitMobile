@@ -12,7 +12,7 @@ angular.module('main', [
   RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
 
   // ROUTING with ui.router
-  $urlRouterProvider.otherwise('/main/list');
+  $urlRouterProvider.otherwise('/main/cook');
   $stateProvider
     // this state is placed in the <ion-nav-view> in the index.html
     .state('main', {
@@ -20,24 +20,6 @@ angular.module('main', [
       abstract: true,
       templateUrl: 'main/templates/tabs.html'
     })
-      .state('main.list', {
-        url: '/list',
-        views: {
-          'tab-list': {
-            templateUrl: 'main/templates/list.html',
-            // controller: 'SomeCtrl as ctrl'
-          }
-        }
-      })
-      .state('main.listDetail', {
-        url: '/list/detail',
-        views: {
-          'tab-list': {
-            templateUrl: 'main/templates/list-detail.html',
-            // controller: 'SomeCtrl as ctrl'
-          }
-        }
-      })
       //base screen of flow for cook tab
       .state('main.cook', {
         url: '/cook',
@@ -119,6 +101,24 @@ angular.module('main', [
         views: {
           'tab-learn': {
             templateUrl: 'main/templates/learn.html',
+            controller: 'LearnCtrl as ctrl'
+          }
+        }
+      })
+      .state('main.list', {
+        url: '/learn/list',
+        views: {
+          'tab-learn': {
+            templateUrl: 'main/templates/list.html',
+            controller: 'LearnCtrl as ctrl'
+          }
+        }
+      })
+      .state('main.listDetail', {
+        url: 'learn/list/detail',
+        views: {
+          'tab-learn': {
+            templateUrl: 'main/templates/list-detail.html',
             controller: 'LearnCtrl as ctrl'
           }
         }

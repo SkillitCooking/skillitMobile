@@ -1,5 +1,11 @@
 
   <ion-view view-title="What Sounds Good?">
+    <ion-nav-buttons side="primary">
+      <button class="button" ng-click="navigateBack()">Ingredients</button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+      <button class="button" ng-click="resetEverything()">Reset</button>
+    </ion-nav-buttons>
     <!-- do you want padding? -->
     <ion-content class="padding cook-recipe-selection">
       <div class="button-bar">

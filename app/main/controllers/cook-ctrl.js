@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$ionicHistory', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $ionicHistory) {
+.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$ionicHistory', '$ionicNavBarDelegate', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $ionicHistory, $ionicNavBarDelegate) {
 
   function alphabeticalCmp(a, b) {
     if(a.name < b.name) {
@@ -11,6 +11,9 @@ angular.module('main')
       return 0;
     }
   }
+  $scope.$on('$ionicView.enter', function(event, data){
+    $ionicNavBarDelegate.showBackButton(false);
+  });
 
   IngredientService.getIngredientsForSelection().then(function(response){
     console.log(response.data);

@@ -1,6 +1,10 @@
 'use strict';
 angular.module('main')
-.controller('SideDishSelectionCtrl', ['_', '$scope', '$stateParams', '$state', '$ionicHistory', function (_, $scope, $stateParams, $state, $ionicHistory) {
+.controller('SideDishSelectionCtrl', ['_', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicNavBarDelegate', function (_, $scope, $stateParams, $state, $ionicHistory, $ionicNavBarDelegate) {
+
+  $scope.$on('$ionicView.enter', function(event, data){
+    $ionicNavBarDelegate.showBackButton(false);
+  });
 
   $scope.hasChanged = false;
   $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;

@@ -4,7 +4,9 @@ angular.module('main')
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
 
-  $ionicNavBarDelegate.showBackButton(true);
+  $scope.$on('$ionicView.enter', function(event, data){
+    $ionicNavBarDelegate.showBackButton(false);
+  });
 
   _.forEach($scope.selectedIngredients, function(ingredient) {
     $scope.selectedIngredientNames.push(ingredient.name);
@@ -120,6 +122,15 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
+  };
+
+  $scope.resetEverything = function() {
+    $ionicHistory.clearCache().then(function() {
+      $state.go('main.cook');
+    }, function() {
+      //error
+      console.log('error: failure to clear $ionicHistory clearCache');
+    });
   };
 
   $scope.recipeSelected = function(recipe) {
