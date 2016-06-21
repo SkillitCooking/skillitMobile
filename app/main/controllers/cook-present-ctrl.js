@@ -174,6 +174,9 @@ angular.module('main')
   };
 
   $scope.changeSeasoningProfile = function(profile) {
+    if($scope.popover) {
+      setTimeout(function() {$scope.popover.remove()}, 200);
+    }
     $scope.seasoningProfile = profile;
     for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
       if($scope.combinedRecipe.stepList[i].stepType === 'Season') {

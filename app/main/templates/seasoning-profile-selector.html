@@ -6,10 +6,10 @@
     <!--<h2>Current Seasoning</h2>
     <p><b>{{seasoningProfile.name}}: </b>{{getSeasoningParts(seasoningProfile)}}</p>-->
     <ion-list>
-      <ion-radio class="individual-recipe-in-list" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
+      <ion-checkbox class="individual-recipe-in-list" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
         <h3>{{profile.name}}</h3>
         <p ng-repeat="spice in profile.spices"><em>•{{spice}}</em></p>
-      </ion-radio>
+      </ion-checkbox>
     </ion-list>
   </ion-content>
 </ion-popover-view>
