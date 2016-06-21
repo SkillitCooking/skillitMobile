@@ -59,7 +59,9 @@ angular.module('main')
   };
 
   $scope.hasMoreSlides = function() {
+    console.log("cats: ", $scope.ingredientCategories);
     if($scope.ingredientCategories) {
+      console.log("slidebox curr slide index: ", $ionicSlideBoxDelegate.currentIndex());
       return $ionicSlideBoxDelegate.currentIndex() < Object.keys($scope.ingredientCategories).length - 1;
     }
   };
@@ -112,8 +114,8 @@ angular.module('main')
 
   $scope.showInvalidPopup = function() {
     var alertPopup = $ionicPopup.alert({
-      title: 'You need Ingredients!',
-      template: 'Make sure that you select at least one ingredient and form!'
+      title: 'Surely You Have Something?',
+      template: '<p class="no-ingredient-popup">You need to select at least one ingredient</p>'
     });
     alertPopup.then(function(res) {
       console.log("alert closed");
