@@ -5,7 +5,7 @@
     </ion-nav-buttons>
     <div class="bottom-nav-buttons-cook-tab row">   
       <div class="col col-25">   
-        <button ng-click="slidePrev()" ng-disabled="isBeginningSlide()" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        <button ng-click="slidePrev()" ng-show="!isBeginningSlide()" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
       </div>
       <div class="col col-50 center">        
       </div>
@@ -44,10 +44,4 @@
         </ion-slide>
       </ion-slide-box>
     </ion-content>
-
-                     <!-- <div class="bottom-nav-buttons-cook-tab">
-              <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button button-balanced prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-              <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-              <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button button-balanced next-nav-button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-            </div>-->
   </ion-view>
