@@ -7,12 +7,11 @@
       <div class="col col-25">   
         <button ng-click="slidePrev()" ng-disabled="$index === 0" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
       </div>
-      <div class="col col-50 center">
-        <h2 class="ingredient-type-heading"></h2>
+      <div class="col col-50 center">        
       </div>
       <div class="col col-25">
-        <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-        <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>      
+        <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>      
       </div>
     </div>
     <!-- do you want padding? -->

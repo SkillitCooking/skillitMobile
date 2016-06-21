@@ -95,7 +95,13 @@ ion-nav-back-button.button-clear {
     min-width: 25px;
     padding: 0 14px;
 }
-
+.bottom-nav-buttons-cook-tab .button:active {	
+    background-color: #ffffff;
+    color: $balanced;
+}
+.float-right {
+	float: right;
+}
 
 
 /*ingredient input tabs*/
