@@ -47,10 +47,12 @@ angular.module('main')
   $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
   $scope.alaCarteSelectedArr = $stateParams.alaCarteSelectedArr;
   $scope.sidesExist = false;
-  for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
-    if($scope.alaCarteSelectedArr[i]) {
-      $scope.sidesExist = true;
-      break;
+  if($scope.alaCarteSelectedArr) {
+    for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
+      if($scope.alaCarteSelectedArr[i]) {
+        $scope.sidesExist = true;
+        break;
+      }
     }
   }
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
@@ -66,6 +68,15 @@ angular.module('main')
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
+    //mainVideo indicator array
+    $scope.mainVideoUrlIndicators = [];
+    if($scope.combinedRecipe) {
+      if($scope.combinedRecipe.mainVideoURLs) {
+        $scope.mainVideoUrlIndicators = Array($scope.combinedRecipe.mainVideoURLs.length).fill(false);
+        $scope.mainVideoUrlIndicators[0] = true;
+        $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[0];
+      }
+    }
     if($stateParams.currentSeasoningProfile) {
       $scope.seasoningProfile = $stateParams.currentSeasoningProfile;
     } else if($scope.combinedRecipe) {
@@ -154,6 +165,23 @@ angular.module('main')
   /*$scope.$on('modal.removed', function() {
     $scope.modal.remove();
   });*/
+
+  $scope.toggleMainVideo = function(index) {
+    //if false clicked, to true, and true to false
+    if(!$scope.mainVideoUrlIndicators[index]) {
+      $scope.mainVideoUrlIndicators.fill(false);
+      $scope.mainVideoUrlIndicators[index] = true;
+      $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[index];
+    }
+  };
+
+  $scope.getMainVideoDotClass = function(index) {
+    if($scope.mainVideoUrlIndicators[index]) {
+      return 'ion-ios-circle-filled';
+    } else {
+      return 'ion-ios-circle-outline';
+    }
+  };
 
   $scope.selectStepTip = function(index) {
     $scope.selectedTipArr.fill(false);

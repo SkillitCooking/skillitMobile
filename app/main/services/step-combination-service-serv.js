@@ -206,9 +206,9 @@ angular.module('main')
         }
       }
       //adjust mainVideoUrl
-      recipes[0].mainVideoUrl += '&rel=0';
       //round cookTimes
       if(recipes[0]) {
+        recipes[0].mainVideoUrl += '&rel=0';
         recipes[0].prepTime = 5 * Math.round(recipes[0].prepTime/5);
         recipes[0].totalTime = 5 * Math.round(recipes[0].totalTime/5);
       }

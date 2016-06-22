@@ -12,7 +12,10 @@
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3>
       <div class="video-container">
         <iframe ng-if="combinedRecipe.mainVideoURL" width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
-        <iframe ng-if="combinedRecipe.mainVideoURLs" ng-repeat="videoURL in combinedRecipe.mainVideoURLs track by $index" width="300" height="169" ng-src="{{videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>    
+        <iframe ng-if="combinedRecipe.mainVideoURLs" width="300" height="169" ng-src="{{playingVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div ng-if="combinedRecipe.mainVideoURLs" ng-repeat="indicator in mainVideoUrlIndicators track by $index">
+        <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
       </div>
       <br/>
       <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
