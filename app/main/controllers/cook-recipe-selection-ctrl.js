@@ -4,6 +4,16 @@ angular.module('main')
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
 
+  function recipeCategoryCmpFn(a, b) {
+    if(a.recipeCategory < b.recipeCategory) {
+      return -1;
+    }
+    if(a.recipeCategory > b.recipeCategory) {
+      return 1;
+    }
+    return 0;
+  }
+
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
       return -1;
@@ -51,6 +61,7 @@ angular.module('main')
         $scope.fullRecipes[i].prepTime = 5 * Math.round($scope.fullRecipes[i].prepTime/5);
         $scope.fullRecipes[i].totalTime = 5 * Math.round($scope.fullRecipes[i].totalTime/5);
       }
+      $scope.fullRecipes.sort(recipeCategoryCmpFn);
     }
     $scope.BYORecipes = response.data.BYO;
     if($scope.BYORecipes) {
@@ -58,7 +69,6 @@ angular.module('main')
         $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
         $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
       }
-      $scope.BYORecipes.sort(ingredientCategoryCmpFn);
     }
     if($scope.noFullDishes()) {
       $scope.fullSelected = false;
@@ -107,19 +117,33 @@ angular.module('main')
   $scope.BYOSelected = false;
   
   $scope.currentAlaCarteHeader = "";
+  $scope.currentFullHeader = "";
 
   $scope.needsHeader = function(recipe) {
     //if recipe has different header from alaCarteHeader
-    if(recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory !== $scope.currentAlaCarteHeader) {
-      $scope.currentAlaCarteHeader = recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
-      return true;
-    } else {
-      return false;
+    if(recipe.recipeType === 'AlaCarte') {
+      if(recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory !== $scope.currentAlaCarteHeader) {
+        $scope.currentAlaCarteHeader = recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
+        return true;
+      } else {
+        return false;
+      }
+    } else if(recipe.recipeType === 'Full') {
+      if(recipe.recipeCategory !== $scope.currentFullHeader) {
+        $scope.currentFullHeader = recipe.recipeCategory;
+        return true;
+      } else {
+        return false;
+      }
     }
   };
 
   $scope.getHeader = function(recipe) {
-    return recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
+    if(recipe.recipeType === 'AlaCarte') {
+      return recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
+    } else if(recipe.recipeType === 'Full') {
+      return recipe.recipeCategory;
+    }
   };
 
   $scope.getAlaCarteButtonClass = function() {

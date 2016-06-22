@@ -53,31 +53,33 @@
       <div ng-if="fullSelected">
         <h3 class="recipe-category">Full Recipes</h3>
         <ion-list>
-          <ion-item ng-repeat="recipe in fullRecipes" class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
-            <div class="row">
-              <div class="col col-36">  
-                <img ng-src="{{recipe.mainPictureURL}}">
-              </div>
-              <div class="col col-center">
-                <h2>{{recipe.name}}</h2>
-              </div>
-            </div>  
-            <div class="row">
-              <div class="col">
-                <div class="recipe-description-time">
-                  <p>{{recipe.description}}</p>
-                  <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
+          <div ng-repeat="recipe in fullRecipes">
+            <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
+            <ion-item class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+              <div class="row">
+                <div class="col col-36">  
+                  <img ng-src="{{recipe.mainPictureURL}}">
+                </div>
+                <div class="col col-center">
+                  <h2>{{recipe.name}}</h2>
+                </div>
+              </div>  
+              <div class="row">
+                <div class="col">
+                  <div class="recipe-description-time">
+                    <p>{{recipe.description}}</p>
+                    <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ion-item>
+            </ion-item>
+          </div>
         </ion-list> 
       </div>
       <div ng-if="BYOSelected">
         <h3 class="recipe-category">Build Your Own</h3>
         <ion-list>
           <div ng-repeat="recipe in BYORecipes">
-            <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
             <ion-item class="item-thumbnail-left individual-recipe-in-list" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
