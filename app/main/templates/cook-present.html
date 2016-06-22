@@ -1,6 +1,6 @@
   <ion-view view-title="Let's Cook" class="cook-present-instructions" ng-class="getOpacity()">
     <ion-nav-buttons side="primary">
-      <button ng-click="navigateBack()" class="button">Select Recipes</button>
+      <button ng-click="navigateBack()" class="button"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
       <button ng-click="resetEverything()" class="button">Reset</button>
@@ -29,16 +29,16 @@
         </ul>
       </div>
       <br/>
-      <button ng-click="addSide()" class="button button-default">{{getAddSideText()}}</button>
-      <div ng-if="combinedRecipe.canAddSeasoningProfile">
+      <button ng-click="addSide()" class="button button-spice-up-add-side">Add Side</button>
+      <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
         <h3>Seasoning</h3>
-        <p>Current Seasoning: {{seasoningProfile.name}}</p>
-        <ul>
+        <h5>Current Seasoning: {{seasoningProfile.name}}</h5>
+        <ul class="seasoning-spices-list">
           <li ng-repeat="spice in seasoningProfile.spices">
             &nbsp;&nbsp;• {{spice}}
           </li>
         </ul>
-        <button class="button button-spice-up" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
+        <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
       </div>
       <ion-list class="list">
         <div ng-repeat="step in combinedRecipe.stepList">
