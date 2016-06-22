@@ -4,6 +4,26 @@ angular.module('main')
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
 
+  function ingredientCategoryCmpFn(a, b) {
+    if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
+      return -1;
+    } else if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory > b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
+      return 1;
+    } else {
+      //then same category, sort by ingredient
+      //assuming only one ingredientType and one ingredient for that ingredientType
+      //for all alaCarteRecipes
+      if(a.ingredientList.ingredientTypes[0].ingredients[0].name < b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+        return -1;
+      } else if(a.ingredientList.ingredientTypes[0].ingredients[0].name > b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+        return 1;
+      } else {
+        //then same ingredient
+        return 0;
+      }
+    }
+  }
+
   $scope.$on('$ionicView.enter', function(event, data){
     $ionicNavBarDelegate.showBackButton(false);
   });
@@ -23,25 +43,7 @@ angular.module('main')
         $scope.alaCarteRecipes[i].totalTime = 5 * Math.round($scope.alaCarteRecipes[i].totalTime/5);
       }
       //sort alaCarteRecipes according to ingredientCategory, then by ingredient
-      $scope.alaCarteRecipes.sort(function(a, b) {
-        if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
-          return -1;
-        } else if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory > b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
-          return 1;
-        } else {
-          //then same category, sort by ingredient
-          //assuming only one ingredientType and one ingredient for that ingredientType
-          //for all alaCarteRecipes
-          if(a.ingredientList.ingredientTypes[0].ingredients[0].name < b.ingredientList.ingredientTypes[0].ingredients[0].name) {
-            return -1;
-          } else if(a.ingredientList.ingredientTypes[0].ingredients[0].name > b.ingredientList.ingredientTypes[0].ingredients[0].name) {
-            return 1;
-          } else {
-            //then same ingredient
-            return 0;
-          }
-        }
-      });
+      $scope.alaCarteRecipes.sort(ingredientCategoryCmpFn);
     }
     $scope.fullRecipes = response.data.Full;
     if($scope.fullRecipes) {
@@ -56,6 +58,7 @@ angular.module('main')
         $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
         $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
       }
+      $scope.BYORecipes.sort(ingredientCategoryCmpFn);
     }
     if($scope.noFullDishes()) {
       $scope.fullSelected = false;
