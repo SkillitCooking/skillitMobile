@@ -20,7 +20,15 @@ angular.module('main')
           });
           if(ingredientType) {
             if(ingredientType.ingredients.length > 0) {
-              step.ingredientsToPlace = step.ingredientsToPlace.concat(ingredientType.ingredients);
+              var concatIngredients;
+              if(recipe.recipeType !== 'BYO') {
+                concatIngredients = ingredientType.ingredients;
+              } else {
+                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
+                  return ingredient.useInRecipe;
+                });
+              }
+              step.ingredientsToPlace = step.ingredientsToPlace.concat(concatIngredients);
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -28,7 +36,7 @@ angular.module('main')
                 };
               }
               //may need to instantiate ingredients...
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(concatIngredients);
             }
           } else {
             //error: no ingredientType for the input

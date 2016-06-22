@@ -57,12 +57,13 @@ angular.module('main', [
           alaCarteSelectedArr: null,
           currentSeasoningProfile: null,
           sidesAdded: false,
+          ingredientsChanged: false,
           numberBackToRecipeSelection: null
         }
       })
       .state('main.cookAddSide', {
         cache: false,
-        url: '/cook/addSide',
+        url: '/cook/recipePresent/addSide',
         views: {
           'tab-cook': {
             templateUrl: 'main/templates/side-dish-selection.html',
@@ -76,6 +77,26 @@ angular.module('main', [
           previousRecipeIds: null,
           selectedIngredientNames: null,
           numberBackToRecipeSelection: null
+        }
+      })
+      .state('main.editBYOIngredients', {
+        cache: false,
+        url: 'cook/recipePresent/editIngredients',
+        views: {
+          'tab-cook': {
+            templateUrl: 'main/templates/edit-byo-ingredients.html',
+            controller: 'EditByoIngredientsCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          numberBackToRecipeSelection: null,
+          BYOIngredientTypes: null,
+          BYOName: null
         }
       })
       .state('main.tips', {

@@ -98,8 +98,15 @@ angular.module('main')
         var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
           return type.typeName === auxStep.ingredientTypeName;
         });
-        console.log("ingredientType: ", ingredientType);
-        stirStepService.constructAuxiliaryStep(auxStep, ingredientType.ingredients);
+        var auxStepIngredients;
+        if(recipe.recipeType === 'BYO') {
+          auxStepIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
+            return ingredient.useInRecipe;
+          });
+        } else {
+          auxStepIngredients = ingredientType.ingredients;
+        }
+        stirStepService.constructAuxiliaryStep(auxStep, auxStepIngredients);
       }
     }
   }

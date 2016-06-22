@@ -14,17 +14,30 @@ angular.module('main')
 
   service.cullIngredients = function(recipes, ingredientNames) {
     for (var i = recipes.length - 1; i >= 0; i--) {
-      if(recipes[i].recipeType !== "Full") {
+      //don't process full because we want full recipes to appear without full
+      //satisfaction, but we want them displayed as if they have full satisfaction
+      //AlaCartes will have only one ingredient for now (and in the future, will
+      //at least require full satisfaction of a small number of ingredients to appear)
+      //And so will not need any of their ingredients culled if they were able to be
+      //selected in the first place. Importantly, this allows for the simple removal
+      //of ingredients from ingredientNames when adjusting the BYO
+      if(recipes[i].recipeType !== "Full" && recipes[i].recipeType !== 'AlaCarte') {
         var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
         for (var j = ingredientTypes.length - 1; j >= 0; j--) {
           var ingredients = ingredientTypes[j].ingredients;
           for(var k = ingredients.length - 1; k >= 0; k--) {
             if(!ingredientNames.includes(ingredients[k].name)){
-              ingredients.splice(k, 1);
+              if(recipes[i].recipeType === 'BYO') {
+                ingredients[k].useInRecipe = false;
+              } else {
+                ingredients.splice(k, 1);
+              }
+            } else if(recipes[i].recipeType === 'BYO') {
+              ingredients[k].useInRecipe = true;
             }
           }
         }
-      }
+      } 
     }
   };
 
@@ -269,18 +282,15 @@ angular.module('main')
           }
           //preheat check - assumes only one preheatOven per recipe
           if(step.stepType === 'PreheatOven') {
-            console.log("Preheat detection");
             preheatIndex = j;
           }
           if(step.stepType === 'Bake' && !step.isEmpty) {
             //then preheat needed, set index to -1
-            console.log("Preheat needed");
             preheatIndex = -1;
           }
         }
         if(preheatIndex !== -1) {
           //then set preheat to empty
-          console.log("Preheat set to empty");
           stepList[preheatIndex].isEmpty = true;
         }
       }

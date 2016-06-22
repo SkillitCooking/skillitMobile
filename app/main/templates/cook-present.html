@@ -20,6 +20,9 @@
       <br/>
       <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
       <h3>Ingredient List</h3>
+      <!--the test with combinedRecipe.mainVideoURLs is a proxy for whether it is 
+      truly a combined recipe-->
+      <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-default">Edit Ingredients</button>
       <div ng-repeat="recipeIngredients in ingredientsForRecipes">
         <h5 ng-if="combinedRecipe.mainVideoURLs">{{recipeIngredients.name}}</h5>
         <ul> 

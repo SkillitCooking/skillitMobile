@@ -17,14 +17,22 @@ angular.module('main')
           });
           if(ingredientType) {
             if(ingredientType.ingredients.length > 0) {
-              step.ingredientsToSteam = step.ingredientsToSteam.concat(ingredientType.ingredients);
+              var concatIngredients;
+              if(recipe.recipeType !== 'BYO') {
+                concatIngredients = ingredientType.ingredients;
+              } else {
+                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
+                  return ingredient.useInRecipe;
+                });
+              }
+              step.ingredientsToSteam = step.ingredientsToSteam.concat(concatIngredients);
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
                   ingredients: []
                 };
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(ingredientType.ingredients);
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(concatIngredients);
             }
           } else {
             //error - no ingredientType found

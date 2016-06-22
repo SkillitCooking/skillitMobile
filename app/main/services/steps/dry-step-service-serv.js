@@ -13,7 +13,15 @@ angular.module('main')
         });
         if(ingredientType) {
           if(ingredientType.ingredients.length > 0) {
-            step.ingredientsToDry = ingredientType.ingredients;
+            var concatIngredients;
+            if(recipe.recipeType !== 'BYO') {
+              concatIngredients = ingredientType.ingredients;
+            } else {
+              concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
+                return ingredient.useInRecipe;
+              });
+            }
+            step.ingredientsToDry = concatIngredients;
             step.products = {};
             step.products[step.productKeys[0]] = {
               ingredients: step.ingredientsToDry,

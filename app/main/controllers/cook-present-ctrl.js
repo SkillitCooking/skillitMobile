@@ -11,7 +11,15 @@ angular.module('main')
       ingredientsForRecipe.ingredients = [];
       var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
       for (var j = ingredientTypes.length - 1; j >= 0; j--) {
-        ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(ingredientTypes[j].ingredients);
+        var concatIngredients;
+        if(ingredientsForRecipe.recipeType === 'BYO') {
+          concatIngredients = _.filter(ingredientTypes[j].ingredients, function(ingredient) {
+            return ingredient.useInRecipe;
+          });
+        } else {
+          concatIngredients = ingredientTypes[j].ingredients;
+        }
+        ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(concatIngredients);
       }
       ingredientsForRecipe.ingredients = _.map(ingredientsForRecipe.ingredients, function(ingredient) {
           return ingredient.name;
@@ -36,7 +44,7 @@ angular.module('main')
 
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
 
-  if($stateParams.sidesAdded) {
+  if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
   }
 
@@ -62,6 +70,13 @@ angular.module('main')
   RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
+    var BYORecipe = _.find(recipes, function(recipe) {
+      return recipe.recipeType === 'BYO';
+    });
+    if(BYORecipe) {
+      $scope.BYOIngredientTypes = BYORecipe.ingredientList.ingredientTypes;
+      $scope.BYOName = BYORecipe.name;
+    }
     $scope.ingredientsForRecipes = getIngredientsForRecipes(recipes);
     RecipeInstantiationService.fillInSteps(recipes);
     RecipeInstantiationService.setBackwardsIsEmptySteps(recipes);
@@ -110,6 +125,10 @@ angular.module('main')
 
   $scope.addSide = function() {
     $state.go('main.cookAddSide', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+  };
+
+  $scope.editBYOIngredients = function() {
+    $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName});
   };
 
   //first have popup show both cases; then do automatic video play for video case

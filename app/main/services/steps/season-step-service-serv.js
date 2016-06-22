@@ -14,7 +14,15 @@ angular.module('main')
         });
         if(ingredientType) {
           if(ingredientType.ingredients.length > 0) {
-            step.ingredientsToSeason = ingredientType.ingredients;
+            var concatIngredients;
+            if(recipe.recipeType !== 'BYO') {
+              concatIngredients = ingredientType.ingredients;
+            } else {
+              concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
+                return ingredient.useInRecipe;
+              });
+            }
+            step.ingredientsToSeason = concatIngredients;
             if(!step.products){
               step.products = {};
               step.products[step.productKeys[0]] = {};
