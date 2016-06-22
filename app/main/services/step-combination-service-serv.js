@@ -154,7 +154,7 @@ angular.module('main')
       //round totalTime to nearest 5 minutes
       combinedRecipe.totalTime = 5 * Math.round(combinedRecipe.totalTime/5);
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
-        return recipe.mainVideoURL;
+        return recipe.mainVideoURL + '&rel=0';
       });
       _.reverse(combinedRecipe.mainVideoURLs);
       //set combinedRecipe recipeCategories
@@ -205,6 +205,8 @@ angular.module('main')
           }
         }
       }
+      //adjust mainVideoUrl
+      recipes[0].mainVideoUrl += '&rel=0';
       //round cookTimes
       if(recipes[0]) {
         recipes[0].prepTime = 5 * Math.round(recipes[0].prepTime/5);
