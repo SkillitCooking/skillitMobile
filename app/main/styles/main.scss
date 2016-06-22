@@ -33,7 +33,7 @@ h2.ingredient-type-heading, h3.recipe-category, .cook-present-instructions h3 {
 div, p, .individual-recipe-in-list h2, h1, .button {
 	font-family: 'Palanquin', sans-serif;
 }
-.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title {
+.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5 {
 	font-family: 'Pompiere', sans-serif;
 }
 .bar .title {
@@ -52,6 +52,10 @@ div, p, .individual-recipe-in-list h2, h1, .button {
 ion-nav-back-button.button-clear {
 	border-color: #ffffff;
 	border-radius: 50%;
+}
+.bar .button  {
+	font-weight: bolder;
+	border-color: #ffffff;
 }
 /**********************************/
 /*COOK TAB*/
@@ -103,7 +107,7 @@ ion-nav-back-button.button-clear {
 	float: right;
 }
 
-
+/***********************/
 /*ingredient input tabs*/
 .padding.cook-tab {
 	padding-top: 10px;
@@ -149,7 +153,11 @@ h2.ingredient-type-heading {
 	font-size: 45px;
 	margin:0 0 0 20px;
 }
+/***********************/
 /*recipe selection tab*/
+.buttons-left .primary-buttons .fa-arrow-left {
+	font-size: 10px;
+}
 .individual-recipe-in-list {
 	box-shadow: 0px 1px 3px #999999;
 	margin-bottom: 10px;
@@ -195,6 +203,8 @@ h2.ingredient-type-heading {
 .cook-recipe-selection .col-50.col-center {
 	text-align: center;
 }
+
+/*************************/
 /*recipe instructions page*/
 .recipe-instructions {
 	box-shadow: 0px 1px 3px #999999;
@@ -221,7 +231,7 @@ h2.ingredient-type-heading {
 .cook-present-instructions ul {
 	list-style-type: disc;
 }
-.button-spice-up {
+.button-spice-up-add-side {
 	border-color: #ef4734;
     background-color: transparent;
     color: #ef4734;
@@ -248,8 +258,15 @@ h2.ingredient-type-heading {
     width: 100%;
     height: 100%;
 }
-
-
+.cook-present-instructions h5 {
+	font-size: 20px;
+}
+div.seasoning-section {
+	margin-bottom:10px;
+}
+ul.seasoning-spices-list {
+	margin-bottom:20px;
+}
 /*popover*/
 
 /*.popover {
@@ -304,7 +321,27 @@ h2.ingredient-type-heading {
 }
 
 
-
+/******************/
+/*side dish*/
+.add-side-dish-screen .item-thumbnail-left {
+	padding: 0;
+}
+.add-side-dish-screen p {
+	white-space: normal;
+}
+h3.side-dish-header {
+	color: $balanced;
+}
+.add-side-dish-screen .button {	
+    background-color: $balanced;
+    color: #ffffff;
+    min-width: 25px;
+    padding: 0 14px;
+}
+.add-side-dish-screen .button:active {	
+    background-color: #ffffff;
+    color: $balanced;
+}
 /**************************************/
 /*RESPONSIVE*/
 /*recipe selection tab*/

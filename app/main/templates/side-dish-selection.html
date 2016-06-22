@@ -2,12 +2,12 @@
   <ion-view view-title="main module">
 
     <ion-nav-buttons side="primary">
-      <button class="button" ng-click="navigateBack()">Back</button>
+      <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
     <ion-content class="padding">
 
-      <ion-list>
+      <ion-list class="add-side-dish-screen">
         <div ng-repeat="recipe in alaCarteRecipes">
           <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
           <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
@@ -33,8 +33,8 @@
           </ion-item>
         </div>
       </ion-list>
-      <button class="button button-default" ng-click="addSides()" ng-disabled="!selectionHasChanged()">Change Your Sides</button>
-      <button class="button button-default" ng-click="cancel()">Cancel</button>
+      <button class="button button-balanced side-dish-screen-button" ng-click="addSides()" ng-disabled="!selectionHasChanged()">Change Your Sides</button>
+      <button class="button button-balanced side-dish-screen-button float-right" ng-click="cancel()">Cancel</button>
 
     </ion-content>
   </ion-view>
