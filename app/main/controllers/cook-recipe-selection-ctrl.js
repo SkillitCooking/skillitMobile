@@ -57,11 +57,52 @@ angular.module('main')
         $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
       }
     }
+    if($scope.noFullDishes()) {
+      $scope.fullSelected = false;
+      if($scope.noBYODishes()) {
+        $scope.alaCarteSelected = true;
+        if($scope.noAlaCarteDishes()) {
+          //error - there should be at least one recipe available for some selection
+          //of ingredients
+          console.log("CookRecipeSelectionCtrl Error: no recipes");
+        }
+      } else {
+        $scope.BYOSelected = true;
+      }
+    }
   }, function(response){
     console.log("Server Error: " + response.message);
   });
 
+  $scope.noFullDishes = function() {
+    if(!$scope.fullRecipes || $scope.fullRecipes.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.noAlaCarteDishes = function() {
+    if(!$scope.alaCarteRecipes || $scope.alaCarteRecipes.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.noBYODishes = function() {
+    if(!$scope.BYORecipes || $scope.BYORecipes.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+
   $scope.alaCarteSelected = false;
+  $scope.fullSelected = true;
+  $scope.BYOSelected = false;
+  
   $scope.currentAlaCarteHeader = "";
 
   $scope.needsHeader = function(recipe) {
@@ -86,8 +127,16 @@ angular.module('main')
     }
   };
 
-  $scope.getCompleteButtonClass = function() {
-    if($scope.alaCarteSelected){
+  $scope.getFullButtonClass = function() {
+    if(!$scope.fullSelected){
+      return "button button-outline button-balanced";
+    } else {
+      return "button button-balanced";
+    }
+  };
+
+  $scope.getBYOButtonClass = function() {
+    if(!$scope.BYOSelected){
       return "button button-outline button-balanced";
     } else {
       return "button button-balanced";
@@ -96,10 +145,20 @@ angular.module('main')
 
   $scope.selectAlaCarte = function() {
     $scope.alaCarteSelected = true;
+    $scope.BYOSelected = false;
+    $scope.fullSelected = false;
   };
 
-  $scope.selectComplete = function() {
+  $scope.selectBYO = function() {
+    $scope.BYOSelected = true;
+    $scope.fullSelected = false;
     $scope.alaCarteSelected = false;
+  };
+
+  $scope.selectFull = function() {
+    $scope.alaCarteSelected = false;
+    $scope.BYOSelected = false;
+    $scope.fullSelected = true;
   };
 
   $scope.alaCarteItemClicked = function(index){

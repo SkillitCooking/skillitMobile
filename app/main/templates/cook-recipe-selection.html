@@ -9,11 +9,13 @@
     <!-- do you want padding? -->
     <ion-content class="padding cook-recipe-selection">
       <div class="button-bar">
-        <a ng-class="getCompleteButtonClass()" ng-click="selectComplete()">Full Dishes</a>
-        <a ng-class="getAlaCarteButtonClass()" ng-click="selectAlaCarte()">A La Carte</a>
+        <a ng-class="getFullButtonClass()" ng-disabled="noFullDishes()" ng-click="selectFull()">Full Dishes</a>
+        <a ng-class="getBYOButtonClass()" ng-disabled="noBYODishes()" ng-click="selectBYO()">Build Your Own</a>
+        <a ng-class="getAlaCarteButtonClass()" ng-disabled="noAlaCarteDishes()" ng-click="selectAlaCarte()">A La Carte</a>
       </div>
       <div ng-if="alaCarteSelected">
         <ion-list>
+          <h3 class="recipe-category">Ala Carte Dishes</h3>
           <div ng-repeat="recipe in alaCarteRecipes">
             <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
             <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
@@ -48,53 +50,51 @@
           </div>
         </div>
       </div>
-      <div ng-if="!alaCarteSelected">
-        <div ng-if="BYORecipes && BYORecipes.length > 0">
-          <h3 class="recipe-category">Build Your Own</h3>
-          <ion-list>
-            <ion-item ng-repeat="recipe in BYORecipes" class="item-thumbnail-left individual-recipe-in-list" ng-click="recipeSelected(recipe)">
-              <div class="row">
-                <div class="col col-36">  
-                  <img ng-src="{{recipe.mainPictureURL}}">
-                </div>
-                <div class="col col-center">
-                  <h2>{{recipe.name}}</h2>
-                </div>
-              </div>  
-              <div class="row">
-                <div class="col">
-                  <div class="recipe-description-time">
-                    <p>{{recipe.description}}</p>
-                    <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
-                  </div>
+      <div ng-if="fullSelected">
+        <h3 class="recipe-category">Full Recipes</h3>
+        <ion-list>
+          <ion-item ng-repeat="recipe in fullRecipes" class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+            <div class="row">
+              <div class="col col-36">  
+                <img ng-src="{{recipe.mainPictureURL}}">
+              </div>
+              <div class="col col-center">
+                <h2>{{recipe.name}}</h2>
+              </div>
+            </div>  
+            <div class="row">
+              <div class="col">
+                <div class="recipe-description-time">
+                  <p>{{recipe.description}}</p>
+                  <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
                 </div>
               </div>
-            </ion-item>
-          </ion-list>
-        </div>
-        <div ng-if="fullRecipes && fullRecipes.length > 0">
-          <h3 class="recipe-category">Full Recipes</h3>
-          <ion-list>
-            <ion-item ng-repeat="recipe in fullRecipes" class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
-              <div class="row">
-                <div class="col col-36">  
-                  <img ng-src="{{recipe.mainPictureURL}}">
-                </div>
-                <div class="col col-center">
-                  <h2>{{recipe.name}}</h2>
-                </div>
-              </div>  
-              <div class="row">
-                <div class="col">
-                  <div class="recipe-description-time">
-                    <p>{{recipe.description}}</p>
-                    <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
-                  </div>
+            </div>
+          </ion-item>
+        </ion-list> 
+      </div>
+      <div ng-if="BYOSelected">
+        <h3 class="recipe-category">Build Your Own</h3>
+        <ion-list>
+          <ion-item ng-repeat="recipe in BYORecipes" class="item-thumbnail-left individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+            <div class="row">
+              <div class="col col-36">  
+                <img ng-src="{{recipe.mainPictureURL}}">
+              </div>
+              <div class="col col-center">
+                <h2>{{recipe.name}}</h2>
+              </div>
+            </div>  
+            <div class="row">
+              <div class="col">
+                <div class="recipe-description-time">
+                  <p>{{recipe.description}}</p>
+                  <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
                 </div>
               </div>
-            </ion-item>
-          </ion-list>      
-        </div>
+            </div>
+          </ion-item>
+        </ion-list>
       </div>
     </ion-content>
   </ion-view>
