@@ -34,7 +34,7 @@
         </div>
       </ion-list>
       <button class="button button-balanced side-dish-screen-button" ng-click="addSides()" ng-disabled="!selectionHasChanged()">Change Your Sides</button>
-      <button class="button button-balanced side-dish-screen-button float-right" ng-click="cancel()">Cancel</button>
+      <button class="button button-balanced side-dish-screen-button float-right" ng-click="cancel()">{{getCancelText()}}</button>
 
     </ion-content>
   </ion-view>

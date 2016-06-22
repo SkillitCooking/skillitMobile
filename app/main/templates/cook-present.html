@@ -29,7 +29,7 @@
         </ul>
       </div>
       <br/>
-      <button ng-click="addSide()" class="button button-spice-up-add-side">Add Side</button>
+      <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
       <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
         <h3>Seasoning</h3>
         <h5>Current Seasoning: {{seasoningProfile.name}}</h5>
