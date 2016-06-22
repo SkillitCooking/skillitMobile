@@ -240,7 +240,6 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     //need to get timesclicked mechanism going here
-    console.log("numberback: ", $scope.numberBackToRecipeSelection);
     for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
       $scope.alaCarteSelectedArr.fill(false);
     }

@@ -59,9 +59,7 @@ angular.module('main')
   };
 
   $scope.hasMoreSlides = function() {
-    console.log("cats: ", $scope.ingredientCategories);
     if($scope.ingredientCategories) {
-      console.log("slidebox curr slide index: ", $ionicSlideBoxDelegate.currentIndex());
       return $ionicSlideBoxDelegate.currentIndex() < Object.keys($scope.ingredientCategories).length - 1;
     }
   };
@@ -103,11 +101,9 @@ angular.module('main')
       }
     }
     if(selectedIngredients.length > 0){
-      console.log("valid choosing");
       //go to next controller - but do we want to query for recipes here or there? Also, how are params accessed by the coming state?
       $state.go('main.cookRecipeSelection', {selectedIngredients: selectedIngredients});
     } else {
-      console.log("invalid choosing");
       $scope.showInvalidPopup();
     }
   };
@@ -159,6 +155,18 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
+  };
+
+  $scope.swipeLeft = function() {
+    if($scope.hasMoreSlides()) {
+      $ionicSlideBoxDelegate.next();
+    } else {
+      $scope.toRecipeSelection();
+    }
+  };
+
+  $scope.swipeRight = function() {
+    $ionicSlideBoxDelegate.previous();
   };
 
   $scope.test = function(ingredients){

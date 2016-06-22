@@ -157,11 +157,16 @@ angular.module('main')
     $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
   };
 
-  $scope.testRight = function() {
-    console.log("test right");
+  $scope.swipeRight = function() {
+    $ionicHistory.goBack();
   };
 
-  $scope.testLeft = function() {
-    console.log("test left");
+  $scope.swipeLeft = function() {
+    for (var i = $scope.alaCarteClickedArr.length - 1; i >= 0; i--) {
+      if($scope.alaCarteClickedArr[i]) {
+        $scope.cookAlaCarte();
+        break;
+      }
+    }
   };
 }]);
