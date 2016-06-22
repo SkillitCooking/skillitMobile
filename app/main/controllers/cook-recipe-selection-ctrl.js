@@ -156,4 +156,12 @@ angular.module('main')
     }
     $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
   };
+
+  $scope.testRight = function() {
+    console.log("test right");
+  };
+
+  $scope.testLeft = function() {
+    console.log("test left");
+  };
 }]);
