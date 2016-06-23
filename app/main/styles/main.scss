@@ -89,14 +89,16 @@ ion-nav-back-button.button-clear {
     bottom: 48px;
     z-index: 5000;
     width: 100%;
-    background-color: transparent;
+    background-color: #ffffff;
+    border-top: 1px solid $balanced;
 }
 
 .bottom-nav-buttons-cook-tab .button {	
-    background-color: $balanced;
+    background-color: #ef4734;
     color: #ffffff;
-    border-radius: 50%;
-    min-width: 25px;
+    border-radius: 10%;
+    min-width: 75px;
+    min-height: 40px;
     padding: 0 14px;
 }
 .bottom-nav-buttons-cook-tab .button:active {	
@@ -111,10 +113,11 @@ ion-nav-back-button.button-clear {
 /***********************/
 /*ingredient input tabs*/
 .cook-tab.scroll-content.ionic-scroll {
-	width: 84%;
+	/*width: 84%;
 	background: transparent;
 	margin: 0 auto;
-	z-index: 9999999;
+	z-index: 9999999;*/
+	height: 71%;
 }
 .padding.cook-tab {
 	padding-top: 10px;
