@@ -12,6 +12,7 @@ angular.module('main')
       case 'Sautee':
       case 'SlowCook':
       case 'Steam':
+      case 'Cook':
         return false;
 
       case 'BringToBoil':

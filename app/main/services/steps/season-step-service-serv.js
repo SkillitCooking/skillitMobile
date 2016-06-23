@@ -51,14 +51,11 @@ angular.module('main')
                 step.products[step.productKeys[0]] = {};
               }
               step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
-              step.isEmpty = false;
             } else {
               //error - no products for step
               console.log("seasonStepService error: no products for step: ", referencedStep);
             }
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //error - can't find step from input
           console.log("seasonStepService error: can't find step from input: ", ingredientInput);
@@ -117,6 +114,12 @@ angular.module('main')
         //error - unexpected sourceType
         console.log("seasonStepService error: unexpected sourceType: ", dishInput);
         break;
+    }
+    //set isEmpty
+    if(step.ingredientsToSeason.length === 0) {
+      step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set stepTips
     if(!step.isEmpty) {

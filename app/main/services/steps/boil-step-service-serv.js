@@ -136,6 +136,8 @@ angular.module('main')
     //isEmpty check
     if(step.ingredientsToBoil.length === 0) {
       step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set StepTips
     if(!step.isEmpty) {

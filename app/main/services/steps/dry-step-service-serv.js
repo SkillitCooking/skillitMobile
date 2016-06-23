@@ -27,10 +27,7 @@ angular.module('main')
               ingredients: step.ingredientsToDry,
               dishes: []
             };
-            step.isEmpty = false;
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //error: ingredientType could not be found via key
           console.log("dryStepService Error: no ingredientType found with input :", input);
@@ -50,14 +47,11 @@ angular.module('main')
                 ingredients: step.ingredientsToDry,
                 dishes: []
               };
-              step.isEmpty = false;
             } else {
               //error - no products on referencedStep
               console.log("dryStepService Error: cannot find products for referencedStep: ", referencedStep);
             }
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //error - can't find referencedStep
           console.log("dryStepService Error: cannot find step with input: ", input);
@@ -68,6 +62,12 @@ angular.module('main')
         //error for unexpected sourceType
         console.log("dryStepService error: unexpected sourceType: ", input);
         break;
+    }
+    //set is empty
+    if(step.ingredientsToDry.length === 0) {
+      step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //set stepTip
     if(!step.isEmpty) {

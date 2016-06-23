@@ -1,11 +1,10 @@
 'use strict';
 angular.module('main')
-.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService',
-  function (_, stirStepService, StepTipService) {
+.factory('cookStepService', ['_', 'StepTipService', function (_, StepTipService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
-    step.ingredientsToSautee = [];
+    step.ingredientsToCook =[];
     var ingredientInputs = step.stepInputs["ingredientInputs"];
     var dishInput = step.stepInputs["dishInput"];
     //get ingredients
@@ -22,11 +21,11 @@ angular.module('main')
               if(recipe.recipeType !== 'BYO') {
                 concatIngredients = ingredientType.ingredients;
               } else {
-                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
+                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
                   return ingredient.useInRecipe;
                 });
               }
-              step.ingredientsToSautee = step.ingredientsToSautee.concat(concatIngredients);
+              step.ingredientsToCook = step.ingredientsToCook.concat(concatIngredients);
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -37,18 +36,18 @@ angular.module('main')
             }
           } else {
             //error - no type found
-            console.log("sauteeStepService error: could not find ingredientType for input: ", input);
+            console.log("cookStepService error: could not find ingredientType for input: ", input);
           }
           break;
 
         case "StepProduct":
-          var referencedStep = _.find(recipe.stepList, function (iterStep) {
+          var referencedStep = _.find(recipe.stepList, function(iterStep) {
             return iterStep.stepId === input.sourceId;
           });
           if(referencedStep) {
             if(!referencedStep.isEmpty) {
-              if(referencedStep.products){
-                step.ingredientsToSautee = step.ingredientsToSautee.concat(referencedStep.products[input.key].ingredients);
+              if(referencedStep.products) {
+                step.ingredientsToCook = step.ingredientsToCook.concat(referencedStep.products[input.key].ingredients);
                 if(!step.products) {
                   step.products = {};
                   step.products[step.productKeys[0]] = {
@@ -58,19 +57,18 @@ angular.module('main')
                 step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
               } else {
                 //error: no products for referenced step
-                console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
+                console.log("cookStepService error: no products for referencedStep: ", referencedStep);
               }
             }
           } else {
-            //error: can't find referenced step
-            console.log("sauteeStepService error: can't find step from input: ", input);
+            //error - can't find referenced step
+            console.log("cookStepService error: can't find step from input: ", input);
           }
           break;
 
         default:
           //error - unexpected sourceType
-          console.log("sauteeStepService error: unexpected sourceType: ", input);
-          break;
+          console.log("cookStepService error: unexpected sourceType: ", dishInput);
       }
     }
     //dishInput
@@ -80,117 +78,120 @@ angular.module('main')
           return dish.name === dishInput.key;
         });
         if(dish) {
-          step.sauteeDish = dish;
+          step.cookingDish = dish;
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
               ingredients: []
             };
           }
-          step.products[step.productKeys[0]].dishes = [step.sauteeDish];
+          step.products[step.productKeys[0]].dishes = [step.cookingDish];
         } else {
           //error - dish not found
-          console.log("sauteeStepService error: dish not found for input: ", dishInput);
+          console.log("cookStepService error: dish not found for input: ", dishInput);
         }
         break;
-
+      
       case "StepProduct":
         var referencedStep = _.find(recipe.stepList, function(iterStep) {
           return iterStep.stepId === dishInput.sourceId;
         });
         if(referencedStep) {
           if(!referencedStep.isEmpty) {
-            if(referencedStep.products){
-              step.sauteeDish = referencedStep.products[dishInput.key].dishes[0];
-              if(!step.products){
+            if(referencedStep.products) {
+              step.cookingDish = referencedStep.products[dishInput.key].dishes[0];
+              if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
                   ingredients: []
                 };
               }
-              step.products[step.productKeys[0]].dishes = [step.sauteeDish];
+              step.products[step.productKeys[0]].dishes = [step.cookingDish];
             } else {
-              //error - cannot find products for step
-              console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
+              //error - no products for referencedStep
+              console.log("cookStepService error: no products for referencedStep: ", referencedStep);
             }
           }
         } else {
-          //error - cannot find step from input
-          console.log("sauteeStepService error: cannot find step from input: ", dishInput);
+          //error - cannot find referenced step from input
+          console.log("cookStepService error: cannot find step from input: ", dishInput);
         }
         break;
 
       default:
-        //error - unexpected input type
-        console.log("sauteeStepService error: unexpected dishInput type from input: ", dishInput);
+        //error - unexpected sourceType for dishInput
+        console.log("cookStepService error: unexpected sourceType for input: ", dishInput);
         break;
     }
     //set isEmpty condition
-    if(step.ingredientsToSautee.length === 0) {
+    if(step.ingredientsToCook.length === 0) {
       step.isEmpty = true;
     } else {
       step.isEmpty = false;
     }
     //set StepTips
     if(!step.isEmpty) {
-      StepTipService.setStepTipInfo(step, step.ingredientsToSautee);
+      StepTipService.setStepTipInfo(step, step.ingredientsToCook);
     }
   }
 
   function constructStepText(step) {
     if(!step.isEmpty) {
-      var sauteeDuration = _.find(step.stepSpecifics, function (specific) {
-        return specific.propName === "sauteeDuration";
+      var cookType = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "cookType";
       }).val;
-      var stepText = "Sautee the ";
-      switch(step.ingredientsToSautee.length) {
+      var cookDuration = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "cookDuration";
+      }).val;
+      var cookAccordingToInstructions = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "cookAccordingToInstructions";
+      }).val;
+
+      var stepText = cookType + " the ";
+      switch(step.ingredientsToCook.length) {
         case 0:
           //error
-          console.log("sauteeStepService error: no ingredientsToSautee: ", step);
-          stepText = "NO INGREDIENTS TO SAUTEE";
+          stepText = "NO INGREDIENTS TO COOK";
+          console.log("cookStepService error: no ingredientsToCook in step: ", step);
           break;
 
         case 1:
-          stepText += step.ingredientsToSautee[0].name.toLowerCase();
+          stepText += step.ingredientsToCook[0].name.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSautee[0].name.toLowerCase() + " and " + step.ingredientsToSautee[1].name.toLowerCase();
+          stepText += step.ingredientsToCook[0].name.toLowerCase() + " and " + step.ingredientsToCook[1].name.toLowerCase();
           break;
 
-        default: 
-          for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
+        default:
+          for (var i = step.ingredientsToCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSautee[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToCook[i].name.toLowerCase();
             } else {
-              stepText += step.ingredientsToSautee[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToCook[i].name.toLowerCase() + ", ";
             }
           }
           break;
       }
-      stepText += " " + sauteeDuration + ".";
-      step.text = stepText;
-    }
-  }
-
-  function constructAuxiliarySteps(step) {
-    if(!step.isEmpty) {
-      for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
-        stirStepService.constructAuxiliaryStep(step.auxiliarySteps[i], step.ingredientsToSautee);
+      stepText += " in the " + step.cookingDish.name.toLowerCase();
+      if(cookAccordingToInstructions) {
+        stepText += " according to package instructions";
+      } else if(cookDuration) {
+        stepText += " " + cookDuration;
+      } else {
+        //error - no cooking duration and not according to package instructions either
+        console.log("cookStepService error: no cookingDuration nor cookAccordingToInstructions");
       }
+      step.text = stepText;
     }
   }
 
   service.fillInStep = function(recipe, stepIndex) {
     var step = recipe.stepList[stepIndex];
-    //instantiate step
+    //instantiateStep
     instantiateStep(step, recipe);
-    //construct step
+    //constructStep
     constructStepText(step);
-    //auxiliary step handling
-    if(step.auxiliarySteps && step.auxiliarySteps.length > 0){
-      constructAuxiliarySteps(step);
-    }
   };
 
   return service;

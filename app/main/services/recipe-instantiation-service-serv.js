@@ -1,12 +1,12 @@
 'use strict';
 angular.module('main')
 .factory('RecipeInstantiationService', 
-  ['_', 'bakeStepService', 'boilStepService', 'bringToBoilStepService',
-  'customStepService', 'cutStepService', 'dryStepService',
+  ['_', 'bakeStepService', 'boilStepService', 'bringToBoilStepService', 
+  'cookStepService', 'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'placeStepService',
   'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
   'slowCookStepService', 'steamingStepService', 'stirStepService',
-  function (_, bakeStepService, boilStepService, bringToBoilStepService,
+  function (_, bakeStepService, boilStepService, bringToBoilStepService, cookStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
     heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
     seasonStepService, slowCookStepService, steamingStepService, stirStepService) {
@@ -56,6 +56,10 @@ angular.module('main')
 
           case "BringToBoil":
             bringToBoilStepService.fillInStep(recipes[i], j);
+            break;
+
+          case "Cook":
+            cookStepService.fillInStep(recipes[i], j);
             break;
 
           case "Custom":
@@ -126,6 +130,9 @@ angular.module('main')
       case "BringToBoil":
         return false;
 
+      case "Cook":
+        return true;
+
       case "Custom":
         return true;
 
@@ -179,6 +186,9 @@ angular.module('main')
         return step.stepInputs["dishInput"];
 
       case "BringToBoil":
+        return step.stepInputs["dishInput"];
+
+      case "Cook":
         return step.stepInputs["dishInput"];
 
       case "Custom":

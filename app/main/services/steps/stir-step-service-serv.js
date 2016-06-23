@@ -28,10 +28,7 @@ angular.module('main')
               ingredients: concatIngredients,
               dishes: []
             };
-            step.isEmpty = false;
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //error: no ingredientType
           console.log("stirStepService error: ingredientType not found from input: ", input);
@@ -53,14 +50,11 @@ angular.module('main')
                 ingredients: step.ingredientsToStir,
                 dishes: referencedStep.products[input.key].dishes
               };
-              step.isEmpty = false;
             } else {
               //error - no products for found step
               console.log("stirStepService error: no products for referencedStep: ", referencedStep);
             }
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //error - no step found
           console.log("stirStepService error: no step found for input: ", input);
@@ -72,6 +66,13 @@ angular.module('main')
         console.log("stirStepService error: unexpected sourceType: ", input);
         break;
     }
+    //set isEmpty
+    if(step.ingredientsToStir.length === 0) {
+      step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
+    }
+    //set tip
     if(!step.isEmpty) {
       StepTipService.setStepTipInfo(step, step.ingredientsToStir);
     }

@@ -29,10 +29,7 @@ angular.module('main')
               dishes: []
             };
             step.recipeCategory = recipe.recipeCategory;
-            step.isEmpty = false;
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //error
           console.log("cutStepService Error: no ingredientType found with input: ", input);
@@ -53,14 +50,11 @@ angular.module('main')
                 dishes: []
               };
               step.recipeCategory = recipe.recipeCategory;
-              step.isEmpty = false;
             } else {
               //then no products for referencedStep, throw error
               console.log("cutStepService Error: no proudcts for referencedStep: ", referencedStep);
             }
-          } else {
-            step.isEmpty = true;
-          }
+          } 
         } else {
           //can't find step - Error
           console.log("cutStepService Error: cannot find step referenced by input: ", input);
@@ -71,6 +65,12 @@ angular.module('main')
         //error for unexpected sourceType
         console.log("cutStepService Error: unexpected sourceType: ", input);
         break;
+    }
+    //set isEmpty
+    if(step.ingredientsToCut.length === 0) {
+      step.isEmpty = true;
+    } else {
+      step.isEmpty = false;
     }
     //no "global" setting of a StepTip for CutStep, due to its textArr nature
   }

@@ -8,11 +8,17 @@ angular.module('main')
       case "Cut":
         return ["Cut", "Chop", "Dice", "Slice", "Mince"];
 
+      case "Cook":
+        return ["Cook"];
+
       case "Dry":
         return ["Pat", "Rub"];
 
       case "EquipmentPrep":
         return ["Grease", "Line"];
+
+      case "Place":
+        return ["Place", "Add", "Combine", "Mix"];
 
       case "Stir":
         return ["Flip", "Stir"];
@@ -27,11 +33,17 @@ angular.module('main')
       case "Cut":
         return "actionType";
 
+      case "Cook":
+        return "cookType";
+
       case "Dry":
         return "dryMethod";
 
       case "EquipmentPrep":
         return "prepActionType";
+
+      case "Place":
+        return "placeType";
 
       case "Stir":
         return "stirType";
