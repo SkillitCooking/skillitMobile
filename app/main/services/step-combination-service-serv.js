@@ -143,6 +143,7 @@ angular.module('main')
       //if no mainName set, then make combination of AlaCarte recipes mainName
       if(!combinedRecipe.mainName) {
         combinedRecipe.mainName = combinedRecipe.alaCarteNames;
+        combinedRecipe.alaCarteNames = undefined;
       }
       combinedRecipe.prepTime = _.reduce(recipes, function(prepTime, recipe) {
         return prepTime + recipe.prepTime;
@@ -157,7 +158,6 @@ angular.module('main')
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
         return recipe.mainVideoURL + '&rel=0';
       });
-      //_.reverse(combinedRecipe.mainVideoURLs);
       //set combinedRecipe recipeCategories
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
