@@ -6,26 +6,32 @@
     <ion-nav-buttons side="secondary">
       <button class="button" ng-click="resetEverything()">Reset</button>
     </ion-nav-buttons>
+    <div ng-if="alaCarteSelected" class="row bottom-a-la-carte-buttons">
+      <div class="col">
+        <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-white">Let's Cook!</button>
+      </div>
+      <div class="col">
+        <button ng-click="selectFull()" class="button button-white">Add a Main</button>
+      </div>
+    </div>
     <!-- do you want padding? -->
     <ion-content class="padding cook-recipe-selection">
       <div class="button-bar">
-        <a ng-class="getFullButtonClass()" ng-disabled="noFullDishes()" ng-click="selectFull()">Full Dishes</a>
-        <a ng-class="getBYOButtonClass()" ng-disabled="noBYODishes()" ng-click="selectBYO()">Build Your Own</a>
-        <a ng-class="getAlaCarteButtonClass()" ng-disabled="noAlaCarteDishes()" ng-click="selectAlaCarte()">A La Carte</a>
+        <a ng-class="getFullButtonClass()" ng-disabled="noFullDishes()" ng-click="selectFull()">Mains</a>
+        <a ng-class="getBYOButtonClass()" ng-disabled="noBYODishes()" ng-click="selectBYO()">BYOs</a>
+        <a ng-class="getAlaCarteButtonClass()" ng-disabled="noAlaCarteDishes()" ng-click="selectAlaCarte()">Sides</a>
       </div>
       <div ng-if="alaCarteSelected">
         <ion-list>
-          <h3 class="recipe-category">Ala Carte Dishes</h3>
           <div ng-repeat="recipe in alaCarteRecipes">
-            <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
+            <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
             <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
               <div class="row">
                 <div class="col col-36">  
                   <img ng-src="{{recipe.mainPictureURL}}">
                 </div>
-                <div class="col col-54 col-center">
-                  <h2>{{recipe.name}}</h2>    
-                  <p class="recipe-description-time">{{recipe.description}}</p>          
+                <div class="col col-center">
+                  <h2>{{recipe.name}}</h2>                               
                 </div>
                 <div class="col col-10 col-center">
                   <i class="icon checkbox-balanced ng-class: alaCarteClass($index);"></i>              
@@ -34,6 +40,7 @@
               <div class="row">
                 <div class="col">
                   <div class="recipe-description-time">
+                    <p>{{recipe.description}}</p> 
                     <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
                   </div>
                 </div>
@@ -41,20 +48,19 @@
             </ion-item>
           </div>
         </ion-list>
-        <div class="row">
+        <!--<div class="row bottom-a-la-carte-buttons">
           <div class="col col-50 col-center">
             <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-balanced">Let's Cook!</button>
           </div>
           <div class="col col-50 col-center">
             <button ng-click="selectComplete()" class="button button-balanced">Add Full Dish</button>
           </div>
-        </div>
+        </div>-->
       </div>
-      <div ng-if="fullSelected">
-        <h3 class="recipe-category">Full Recipes</h3>
+      <div ng-if="fullSelected">        
         <ion-list>
           <div ng-repeat="recipe in fullRecipes">
-            <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
+            <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
             <ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
@@ -63,7 +69,10 @@
                 <div class="col col-center">
                   <h2>{{recipe.name}}</h2>
                 </div>
-              </div>  
+                <div class="col col-10 col-center">
+                  <i class="icon checkbox-balanced ng-class: fullRecipeClass($index);"></i>             
+                </div> 
+              </div> 
               <div class="row">
                 <div class="col">
                   <div class="recipe-description-time">
@@ -71,9 +80,6 @@
                     <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
                   </div>
                 </div>
-              </div>
-              <div class="col col-10 col-center">
-                <i class="icon checkbox-balanced ng-class: fullRecipeClass($index);"></i>             
               </div>
             </ion-item>
           </div>
@@ -83,13 +89,16 @@
         <h3 class="recipe-category">Build Your Own</h3>
         <ion-list>
           <div ng-repeat="recipe in BYORecipes">
-            <ion-item class="item-thumbnail-left individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+            <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
                   <img ng-src="{{recipe.mainPictureURL}}">
                 </div>
                 <div class="col col-center">
                   <h2>{{recipe.name}}</h2>
+                </div>
+                <div class="col col-10 col-center">
+                  <i class="icon checkbox-balanced ng-class: BYORecipeClass($index);"></i>             
                 </div>
               </div>  
               <div class="row">
@@ -99,9 +108,6 @@
                     <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
                   </div>
                 </div>
-              </div>
-              <div class="col col-10 col-center">
-                <i class="icon checkbox-balanced ng-class: BYORecipeClass($index);"></i>             
               </div>
             </ion-item>
           </div>

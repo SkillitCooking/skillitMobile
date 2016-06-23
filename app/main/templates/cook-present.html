@@ -14,15 +14,17 @@
         <iframe ng-if="combinedRecipe.mainVideoURL" width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
         <iframe ng-if="combinedRecipe.mainVideoURLs" width="300" height="169" ng-src="{{playingVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
       </div>
-      <div ng-if="combinedRecipe.mainVideoURLs" ng-repeat="indicator in mainVideoUrlIndicators track by $index">
-        <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
+      <div class="video-slider-dots" ng-if="combinedRecipe.mainVideoURLs"> 
+        <div ng-repeat="indicator in mainVideoUrlIndicators track by $index">
+          <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
+        </div>
       </div>
       <br/>
       <p><b>Prep Time</b>: {{combinedRecipe.prepTime}} mins <b>Total Time</b>: {{combinedRecipe.totalTime}} mins</p>
       <h3>Ingredient List</h3>
       <!--the test with combinedRecipe.mainVideoURLs is a proxy for whether it is 
       truly a combined recipe-->
-      <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-default">Edit Ingredients</button>
+      <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">Edit Ingredients</button>
       <div ng-repeat="recipeIngredients in ingredientsForRecipes">
         <h5 ng-if="combinedRecipe.mainVideoURLs">{{recipeIngredients.name}}</h5>
         <ul> 

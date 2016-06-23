@@ -102,6 +102,7 @@ ion-nav-back-button.button-clear {
 .bottom-nav-buttons-cook-tab .button:active {	
     background-color: #ffffff;
     color: $balanced;
+    border-color: $balanced;
 }
 .float-right {
 	float: right;
@@ -109,6 +110,12 @@ ion-nav-back-button.button-clear {
 
 /***********************/
 /*ingredient input tabs*/
+.cook-tab.scroll-content.ionic-scroll {
+	width: 84%;
+	background: transparent;
+	margin: 0 auto;
+	z-index: 9999999;
+}
 .padding.cook-tab {
 	padding-top: 10px;
 }
@@ -203,7 +210,27 @@ h2.ingredient-type-heading {
 .cook-recipe-selection .col-50.col-center {
 	text-align: center;
 }
-
+.bottom-a-la-carte-buttons {
+    position: fixed;
+    bottom: 48px;
+    z-index: 5000;
+    width: 100%;
+    background-color: #ffffff;
+    border-top: 1px solid $balanced;
+}
+.bottom-a-la-carte-buttons .button-white {
+	min-width: 117px;
+	display: block;
+	margin: 0 auto;
+	background-color: #ffffff;
+	border: 1px solid $balanced;
+	color: $balanced;
+}
+.bottom-a-la-carte-buttons .button-white:active {
+	background-color: $balanced;
+	border: 1px solid $balanced;
+	color: #ffffff;
+}
 /*************************/
 /*recipe instructions page*/
 .recipe-instructions {
@@ -239,7 +266,7 @@ h2.ingredient-type-heading {
     font-family: 'pompiere', sans-serif;
     font-size: 21px;
 }
-.button-spice-up:hover, .button-spice-up:active {
+.button-spice-up-add-side:hover, .button-spice-up-add-side:active {
 	border-color: #ef4734;
     background-color: #ef4734;
     color: #ffffff;
@@ -266,6 +293,14 @@ div.seasoning-section {
 }
 ul.seasoning-spices-list {
 	margin-bottom:20px;
+}
+.video-slider-dots div{
+	display: inline;
+	color: $balanced;
+}
+.video-slider-dots {
+	margin: 0 auto;
+	width: 80px;
 }
 /*popover*/
 
@@ -342,6 +377,22 @@ h3.side-dish-header {
     background-color: #ffffff;
     color: $balanced;
 }
+.add-side-dish-screen .item-icon-right .icon {
+	position: static;
+	color: $balanced;
+}
+
+/****************/
+/*edit byo ingredients*/
+.edit-byo .item {
+	border: none;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.edit-byo.scroll-content {
+	height: 73px;
+}
+
 /**************************************/
 /*RESPONSIVE*/
 /*recipe selection tab*/

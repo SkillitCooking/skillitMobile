@@ -3,17 +3,25 @@
   <ion-nav-buttons side="primary">
     <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
   </ion-nav-buttons>
+      <div class="row bottom-a-la-carte-buttons">
+      <div class="col">        
+        <button class="button button-white side-dish-screen-button" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged()">Let's Go!</button>
+      </div>
+      <div class="col">
+        <button class="button button-white side-dish-screen-button" ng-click="cancel()">{{getCancelText()}}</button>
+      </div>
+    </div>
   <!-- do you want padding? -->
-  <ion-content class="padding">
-    <h2>Edit Ingredients for {{BYOName}}</h2>
+  <ion-content class="padding edit-byo">
+    <!--<h2>Edit Ingredients for {{BYOName}}</h2>-->
     <div ng-repeat="type in BYOIngredientTypes">
-      <h4 ng-if="isNewDisplayName(type)">{{type.displayName}}</h4>
+      <h3 class="recipe-category" ng-if="isNewDisplayName(type)">{{type.displayName}}</h3>
       <p ng-if="isNewDisplayName(type)">Minimum Needed: {{type.minNeeded}}</p>
       <ion-list>
-        <ion-checkbox ng-repeat="ingredient in type.ingredients" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name}}</ion-checkbox>
+        <ion-checkbox class="checkbox-balanced" ng-repeat="ingredient in type.ingredients" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name}}</ion-checkbox>
       </ion-list>
     </div>
-    <button class="button button-default" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged()">Change Your Ingredients</button>
-    <button class="button button-default" ng-click="cancel()">{{getCancelText()}}</button>
+    <!--<button class="button button-default" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged()">Change Your Ingredients</button>
+    <button class="button button-default" ng-click="cancel()">{{getCancelText()}}</button>-->
   </ion-content>
 </ion-view>
