@@ -12,6 +12,9 @@ angular.module('main')
   $scope.originalBYOIngredientTypes = angular.copy($scope.BYOIngredientTypes);
   $scope.BYOName = $stateParams.BYOName;
 
+  //combine types with same displayName
+  $scope.combinedBYOTypes = angular.copy(source, destination)
+
   $scope.isCheckboxDisabled = function(type) {
     if(type.minNeeded !== '0') {
       var count = 0;
@@ -23,6 +26,18 @@ angular.module('main')
       return count <= type.minNeeded;
     } else {
       return false;
+    }
+  };
+
+  $scope.curDisplayName = "";
+
+  $scope.isNewDisplayName = function(type) {
+    //switch curDisplayName
+    if(type.displayName === $scope.curDisplayName) {
+      return false;
+    } else {
+      $scope.curDisplayName = type.displayName;
+      return true;
     }
   };
 

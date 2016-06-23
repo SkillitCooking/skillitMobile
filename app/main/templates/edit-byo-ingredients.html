@@ -7,8 +7,8 @@
   <ion-content class="padding">
     <h2>Edit Ingredients for {{BYOName}}</h2>
     <div ng-repeat="type in BYOIngredientTypes">
-      <h4>{{type.typeName}}</h4>
-      <p>Minimum Needed: {{type.minNeeded}}</p>
+      <h4 ng-if="isNewDisplayName(type)">{{type.displayName}}</h4>
+      <p ng-if="isNewDisplayName(type)">Minimum Needed: {{type.minNeeded}}</p>
       <ion-list>
         <ion-checkbox ng-repeat="ingredient in type.ingredients" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name}}</ion-checkbox>
       </ion-list>
