@@ -37,7 +37,7 @@ div, p, .individual-recipe-in-list h2, h1, .button {
 	font-family: 'Pompiere', sans-serif;
 }
 .bar .title {
-	font-size:23px;
+	font-size:22px;
 	font-weight: bold;
 }
 
@@ -130,7 +130,7 @@ div.ingredient-form-selection {
 	margin: 0 auto;
 }
 .ingredient-form-items {
-	padding: 0 5px;
+	padding: 0;
 }
 .ingredient-form-type {
 	opacity: 0.4;
@@ -151,7 +151,7 @@ div.ingredient-form-selection {
 	margin: 0 20px;
 }
 .cook-tab .checkbox {
-	padding-left: 20px;
+	padding-left: 0px;
 }
 .cook-tab .item-content {
 	padding-left: 7px;
@@ -159,6 +159,9 @@ div.ingredient-form-selection {
 h2.ingredient-type-heading {
 	font-size: 45px;
 	margin:0 0 0 20px;
+}
+.cook-tab .list .item-checkbox {
+	padding-left: 40px;
 }
 /***********************/
 /*recipe selection tab*/
