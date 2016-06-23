@@ -44,7 +44,9 @@ angular.module('main')
     } else {
       stepText += "water to boil ";
     }
-    stepText += "in a " + step.boilingDish.name.toLowerCase();
+    if(step.boilingDish.name !== 'Default') {
+      stepText += "in a " + step.boilingDish.name.toLowerCase();
+    }
     step.text = stepText;
   }
 

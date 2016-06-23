@@ -165,7 +165,10 @@ angular.module('main')
           }
           break;
       }
-      stepText += " in the " + step.steamingDish.name.toLowerCase() + " " + steamingDuration;
+      if(step.steamingDish.name !== 'Default') {
+        stepText += " in the " + step.steamingDish.name.toLowerCase();
+      }
+      stepText += " " + steamingDuration;
       step.text = stepText;
     }
   }

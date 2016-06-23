@@ -179,7 +179,9 @@ angular.module('main')
           }
           break;
       }
-      stepText += " in the " + step.boilingDish.name.toLowerCase();
+      if(step.boilingDish.name !== "Default") {
+        stepText += " in the " + step.boilingDish.name.toLowerCase();
+      }
       if(cookAccordingToInstructions){
         stepText += " according to package instructions";
       } else if(boilingDuration){
