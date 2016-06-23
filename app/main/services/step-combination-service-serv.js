@@ -157,7 +157,7 @@ angular.module('main')
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
         return recipe.mainVideoURL + '&rel=0';
       });
-      _.reverse(combinedRecipe.mainVideoURLs);
+      //_.reverse(combinedRecipe.mainVideoURLs);
       //set combinedRecipe recipeCategories
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
