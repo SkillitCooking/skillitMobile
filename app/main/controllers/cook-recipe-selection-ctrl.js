@@ -200,6 +200,22 @@ angular.module('main')
     }
   };
 
+  $scope.fullRecipeClass = function(index) {
+    if($scope.fullRecipes[index].isSelected) {
+      return "ion-checkmark-circled";
+    } else {
+      return "ion-ios-circle-outline";
+    }
+  };
+
+  $scope.BYORecipeClass = function(index) {
+    if($scope.BYORecipes[index].isSelected) {
+      return "ion-checkmark-circled";
+    } else {
+      return "ion-ios-circle-outline";
+    }
+  };
+
   $scope.noneSelected = function() {
     return !_.some($scope.alaCarteClickedArr, function(entry) {
       return entry;
@@ -221,6 +237,7 @@ angular.module('main')
 
   $scope.recipeSelected = function(recipe) {
     //"pull up" present-recipe page using first one selected
+    recipe.isSelected = true;
     var recipeIds = [recipe._id];
     if($scope.alaCarteClickedArr) {
       for (var i = $scope.alaCarteClickedArr.length - 1; i >= 0; i--) {
@@ -229,7 +246,12 @@ angular.module('main')
         }
       }
     }
-    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
+    setTimeout(function() {
+      recipe.isSelected = false;
+    }, 400);
+    setTimeout(function() {
+      $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
+    }, 200);
   };
 
   $scope.cookAlaCarte = function() {

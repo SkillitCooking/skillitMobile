@@ -55,7 +55,7 @@
         <ion-list>
           <div ng-repeat="recipe in fullRecipes">
             <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
-            <ion-item class="individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+            <ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
                   <img ng-src="{{recipe.mainPictureURL}}">
@@ -71,6 +71,9 @@
                     <p><b>Prep Time</b>: {{recipe.prepTime}} mins<b> Total Time</b>: {{recipe.totalTime}} mins</p>
                   </div>
                 </div>
+              </div>
+              <div class="col col-10 col-center">
+                <i class="icon checkbox-balanced ng-class: fullRecipeClass($index);"></i>             
               </div>
             </ion-item>
           </div>
@@ -96,6 +99,9 @@
                     <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
                   </div>
                 </div>
+              </div>
+              <div class="col col-10 col-center">
+                <i class="icon checkbox-balanced ng-class: BYORecipeClass($index);"></i>             
               </div>
             </ion-item>
           </div>
