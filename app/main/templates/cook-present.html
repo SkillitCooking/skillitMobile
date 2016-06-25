@@ -49,8 +49,9 @@
         <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
       </div>
       <ion-list class="list">
+      <h3>Instructions</h3>
         <div ng-repeat="step in combinedRecipe.stepList">
-          <ion-item class="recipe-instructions" ng-if="isSingleStep(step) && !step.isEmpty" ng-click="showTip(step, $event)">
+          <ion-item ng-class="clickableStep(step)" class="recipe-instructions" ng-if="isSingleStep(step) && !step.isEmpty" ng-click="showTip(step, $event)">
             <p><b>Step {{step.stepNumber}}:</b> {{step.text}}</p>
             <br ng-if="step.stepType === 'Season'"/>
             <p ng-repeat="line in step.seasoningInfo">{{line}}</p>
@@ -58,12 +59,13 @@
             <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
             <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-erlenmeyer-flask instruction-step-tip-icon"></i>
           </ion-item>
-          <ion-item class="recipe-instructions" ng-if="!isSingleStep(step) && !step.isEmpty" ng-repeat="subStep in step.textArr" ng-click="showTip(subStep, $event)">
+          <ion-item class="recipe-instructions" ng-if="!isSingleStep(step) && !step.isEmpty" ng-repeat="subStep in step.textArr" ng-class="clickableStep(subStep)" ng-click="showTip(subStep, $event)">
             <p><b>Step {{subStep.stepNumber}}:</b> {{subStep.text}}</p>
             <i ng-if="subStep.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
             <i ng-if="subStep.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
           </ion-item>
         </div>
       </ion-list>
+      <h3 class="center">Time to eat!</h3>
     </ion-content>
   </ion-view>

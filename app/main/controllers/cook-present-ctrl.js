@@ -303,4 +303,9 @@ angular.module('main')
       return false;
     }
   };
+  $scope.clickableStep = function(step) {
+    if((step.hasTip || step.hasVideo) || (step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile)) {
+      return 'clickableStepClass';
+    }
+  }
 }]);
