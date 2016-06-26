@@ -4,12 +4,12 @@
       <button class="button reset" ng-click="resetIngredientSelection()">Reset</button>
     </ion-nav-buttons>
     <div class="bottom-nav-buttons-cook-tab row">   
-      <div class="col col-25">   
+      <div class="col col-33">   
         <button ng-click="slidePrev()" ng-disabled="isBeginningSlide()" class="button prev-nav-button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
       </div>
-      <div class="col col-50 center">        
+      <div class="col col-33">        
       </div>
-      <div class="col col-25">
+      <div class="col col-33">
         <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>      
       </div>
