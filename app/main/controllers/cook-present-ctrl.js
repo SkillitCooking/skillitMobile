@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate) {
 
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
@@ -43,6 +43,7 @@ angular.module('main')
   });
 
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
+  $scope.cameFromHome = $stateParams.cameFromHome;
 
   if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
@@ -90,6 +91,15 @@ angular.module('main')
         $scope.mainVideoUrlIndicators = Array($scope.combinedRecipe.mainVideoURLs.length).fill(false);
         $scope.mainVideoUrlIndicators[0] = true;
         $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[0];
+      }
+      if(!$scope.selectedIngredientNames) {
+        $scope.selectedIngredientNames = [];
+        console.log("recipe", $scope.combinedRecipe);
+        for (var i = $scope.combinedRecipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
+          for (var j = $scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
+            $scope.selectedIngredientNames.push($scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j].name);
+          }
+        }
       }
     }
     if($stateParams.currentSeasoningProfile) {
@@ -262,7 +272,12 @@ angular.module('main')
     for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
       $scope.alaCarteSelectedArr.fill(false);
     }
-    $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+    if($scope.cameFromHome) {
+      //make below a constant
+      $ionicTabsDelegate.select(4);
+    } else { 
+      $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+    }
   };
   $scope.resetEverything = function() {
     $ionicHistory.clearCache().then(function() {

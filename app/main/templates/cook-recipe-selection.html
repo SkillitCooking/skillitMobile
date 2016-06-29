@@ -61,7 +61,8 @@
         <ion-list>
           <div ng-repeat="recipe in fullRecipes">
             <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
-            <ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
+            <recipe-item recipe="recipe" iconclass="fullRecipeClass($index)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
+            <!--ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
                   <img ng-src="{{recipe.mainPictureURL}}">
@@ -81,7 +82,7 @@
                   </div>
                 </div>
               </div>
-            </ion-item>
+            </ion-item-->
           </div>
         </ion-list> 
       </div>
@@ -89,7 +90,8 @@
         <h3 class="recipe-category">Build Your Own</h3>
         <ion-list>
           <div ng-repeat="recipe in BYORecipes">
-            <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+            <recipe-item recipe="recipe" iconclass="BYORecipeClass($index)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
+            <!--ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
                   <img ng-src="{{recipe.mainPictureURL}}">
@@ -109,7 +111,7 @@
                   </div>
                 </div>
               </div>
-            </ion-item>
+            </ion-item-->
           </div>
         </ion-list>
       </div>

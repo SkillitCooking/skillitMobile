@@ -1,0 +1,22 @@
+<ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list">
+  <div class="row">
+    <div class="col col-36">  
+      <img ng-src="{{recipe.mainPictureURL}}">
+    </div>
+    <div class="col col-center">
+      <h2>{{recipe.name}}</h2>
+    </div>
+    <div class="col col-10 col-center">
+      <i ng-class="iconclass"></i>             
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col">
+      <div class="recipe-description-time">
+        <p>{{recipe.description}}</p>
+        <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+        <p ng-if="showdatefeatured">Feature Date: {{recipe.dateFeatured}}</p>
+      </div>
+    </div>
+  </div>
+</ion-item>

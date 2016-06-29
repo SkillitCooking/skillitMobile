@@ -9,6 +9,9 @@ angular.module('main')
     },
     getRecipesWithIds: function(recipeIds) {
       return baseRecipes.customPOST(recipeIds, 'getRecipesWithIds');
+    },
+    getRecipesOfTheDay: function() {
+      return baseRecipes.customPOST({}, 'getRecipesOfTheDay');
     }
   };
 

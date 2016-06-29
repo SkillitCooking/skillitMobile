@@ -16,7 +16,6 @@ angular.module('main')
   });
 
   IngredientService.getIngredientsForSelection().then(function(response){
-    console.log(response.data);
     $scope.ingredientCategories = response.data;
     $scope.inputCategoryArray = [];
     //set first form of all ingredients to selected

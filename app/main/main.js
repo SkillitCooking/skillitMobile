@@ -58,7 +58,8 @@ angular.module('main', [
           currentSeasoningProfile: null,
           sidesAdded: false,
           ingredientsChanged: false,
-          numberBackToRecipeSelection: null
+          numberBackToRecipeSelection: null,
+          cameFromHome: false
         }
       })
       .state('main.cookAddSide', {
@@ -106,6 +107,9 @@ angular.module('main', [
             templateUrl: 'main/templates/tips.html',
             controller: 'TipsCtrl as ctrl'
           }
+        },
+        params: {
+          cameFromHome: false
         }
       })
       .state('main.recipes', {

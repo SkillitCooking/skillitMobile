@@ -1,10 +1,16 @@
 
-  <ion-view view-title="main module">
+  <ion-view view-title="Daily Dish">
     <!-- do you want padding? -->
     <ion-content class="padding">
-
-      <!-- content goes here -->
-      <h1>Home Stub</h1>
-
+      <h2>Recipe of the Day</h2>
+      <recipe-item recipe="displayRecipe" showdatefeatured="true" iconclass="getRecipeClass()" ng-click="recipeSelected()"></recipe-item>
+      <button class="button button-default" ng-click="nextRecipe()" ng-disabled="noNextRecipes()">Next Recipe</button>
+      <button class="button button-default" ng-click="prevRecipe()" ng-disabled="noPrevRecipes()">Previous Recipe</button>
+      <button class="button button-default" ng-click="goToRecipes()">See More Recipes</button>
+      <h2>Your Daily Tip</h2>
+      <daily-tip-item tip="displayDailyTip" showdatefeatured="true" minimizable="true"></daily-tip-item>
+      <button class="button button-default" ng-click="nextTip()" ng-disabled="noNextTips()">Next Tip</button>
+      <button class="button button-default" ng-click="prevTip()" ng-disabled="noPrevTips()">Previous Tip</button>
+      <button class="button button-default" ng-click="goToTips()">See More Tips</button>
     </ion-content>
   </ion-view>
