@@ -1,16 +1,40 @@
 
-  <ion-view view-title="Daily Dish">
+  <ion-view view-title="Skillit">
     <!-- do you want padding? -->
-    <ion-content class="padding">
-      <h2>Recipe of the Day</h2>
+    <ion-content class="padding cook-recipe-selection home-tab">
+      <h3 class="recipe-category">Daily Dish</h3>
       <recipe-item recipe="displayRecipe" showdatefeatured="true" iconclass="getRecipeClass()" ng-click="recipeSelected()"></recipe-item>
-      <button class="button button-default" ng-click="nextRecipe()" ng-disabled="noNextRecipes()">Next Recipe</button>
-      <button class="button button-default" ng-click="prevRecipe()" ng-disabled="noPrevRecipes()">Previous Recipe</button>
-      <button class="button button-default" ng-click="goToRecipes()">See More Recipes</button>
-      <h2>Your Daily Tip</h2>
-      <daily-tip-item tip="displayDailyTip" showdatefeatured="true" minimizable="true"></daily-tip-item>
+      <div class="row mg-bot-20" style="text-align: center">
+        <div class="col col-25">
+          <button class="button button-white-round prev-nav-button" ng-click="prevRecipe()" ng-disabled="noPrevRecipes()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        </div>
+        <div class="col col-50">
+          <button class="button button-center-rectangle" ng-click="goToRecipes()">More Recipes</button>
+        </div>
+        <div class="col col-25">          
+          <button class="button button-white-round next-nav-button" ng-click="nextRecipe()" ng-disabled="noNextRecipes()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>      
+        </div>
+      </div>
+      <h3 class="recipe-category">Tip of the Day</h3>
+      <daily-tip-item tip="displayDailyTip" showdatefeatured="true" minimizable="false"></daily-tip-item>  
+      <div class="row mg-bot-20" style="text-align: center">
+        <div class="col col-25">
+          <button class="button button-white-round prev-nav-button" ng-click="prevTip()" ng-disabled="noPrevTips()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        </div>
+        <div class="col col-50">
+          <button class="button button-center-rectangle" ng-click="goToTips()">More Tips</button>
+        </div>
+        <div class="col col-25">          
+          <button class="button button-white-round next-nav-button" ng-click="nextTip()" ng-disabled="noNextTips()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>      
+        </div>
+      </div>  
+      <div class="row get-cooking">
+        <div class="col" style="text-align: center">
+          <button class="button button-balanced" ng-click="goToTips()">Let's Get Cooking, Good Looking!</button>  
+        </div>
+      </div>
+      <!--<button class="button button-default" ng-click="prevTip()" ng-disabled="noPrevTips()">Previous Tip</button>
       <button class="button button-default" ng-click="nextTip()" ng-disabled="noNextTips()">Next Tip</button>
-      <button class="button button-default" ng-click="prevTip()" ng-disabled="noPrevTips()">Previous Tip</button>
-      <button class="button button-default" ng-click="goToTips()">See More Tips</button>
+      <button class="button button-default" ng-click="goToTips()">See More Tips</button>-->
     </ion-content>
   </ion-view>

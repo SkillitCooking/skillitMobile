@@ -60,6 +60,11 @@ ion-nav-back-button.button-clear {
 	font-weight: bolder;
 	border-color: #ffffff;
 }
+.button-balanced:active {
+	color: $balanced;
+	background: #ffffff;
+	border: 1px solid $balanced;
+}
 /**********************************/
 /*COOK TAB*/
 /*general*/
@@ -208,6 +213,9 @@ h2.ingredient-type-heading {
 .cook-recipe-selection .item-icon-right .icon {
 	position: static;
 	color: $balanced;
+}
+.cook-recipe-selection .col.col-10.col-center {
+	margin-right: 5px;
 }
 .individual-recipe-in-list {
 	margin: 10px 0;
@@ -418,4 +426,60 @@ h3.side-dish-header {
 		width: 100px;
 		height: 100px;
 	}
+}
+
+
+
+
+/**************/
+/*HOME TAB*/
+.button-white-round {
+	border-radius: 50%;
+	color: $balanced;
+	background: #ffffff;
+	border: 1px solid $balanced;
+}
+.button-white-round:active {
+	color: #ffffff;
+	background: $balanced;
+	border: none;
+}
+.button-center-rectangle {
+	border-radius: 5%;
+    color: $balanced;
+	background: #ffffff;
+	border: 1px solid $balanced;
+	min-width: 115px;
+
+}
+.button-center-rectangle:active {
+	color: #ffffff;
+	background: $balanced;
+	border: none;
+}
+.home-tab ion-item {
+	height: 230px;
+}
+.home-tab h3 {
+	margin-top:0 !important;
+}
+.home-tab .row.mg-bot-20 {
+	margin-bottom: 20px;
+}
+.list.card.individual-recipe-in-list {
+	margin-bottom: 20px;
+	height: 230px;
+}
+.list.card.individual-recipe-in-list h2 {
+	margin: 10px;
+}
+.home-tab p {
+	font-size: 14px;
+}
+.list.card.individual-recipe-in-list p {
+	padding: 0 10px;
+}
+.row.get-cooking .button.button-balanced{
+	margin-top: 10px;
+	font-size: 25px !important;
 }
