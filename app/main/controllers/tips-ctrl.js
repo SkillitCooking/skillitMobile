@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate) {
+.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService) {
 
   $scope.$on('$ionicView.enter', function(event, data){
     $ionicNavBarDelegate.showBackButton(true);
@@ -8,7 +8,15 @@ angular.module('main')
 
   $scope.cameFromHome = $stateParams.cameFromHome;
 
-  $scope.list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+  ItemCollectionService.getCollectionsForItemType('dailyTip').then(function(collections) {
+    $scope.tipCollections = collections.data;
+  }, function(response) {
+    console.log("Server Error: ", response);
+  });
+
+  $scope.getItemType = function() {
+    return 'dailyTip';
+  };
 
   $scope.navigateBack = function() {
     $ionicHistory.clearCache().then(function() {

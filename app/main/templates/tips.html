@@ -1,14 +1,6 @@
 <ion-view view-title="Tips">
-  <ion-nav-buttons side="primary">
-    <button  ng-if="cameFromHome" class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
-  </ion-nav-buttons>
   <!-- do you want padding? -->
   <ion-content class="padding">
-
-    <!-- content goes here -->
-    <ion-list>
-      <ion-item ng-repeat="number in list">N={{number}}</ion-item>
-    </ion-list>
-
+    <item-collections collections="tipCollections" item-type="'dailyTip'"item-collections>
   </ion-content>
 </ion-view>

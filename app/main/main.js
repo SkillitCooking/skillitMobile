@@ -112,6 +112,18 @@ angular.module('main', [
           cameFromHome: false
         }
       })
+      .state('main.tipsCollection', {
+        url: '/tips/collection',
+        views: {
+          'tab-tips': {
+            templateUrl: 'main/templates/tip-collection-page.html',
+            controller: 'TipCollectionPageCtrl as ctrl'
+          }
+        },
+        params: {
+          collection: null
+        }
+      })
       .state('main.recipes', {
         url: '/recipes',
         views: {
@@ -121,6 +133,18 @@ angular.module('main', [
           }
         }
       })
+      .state('main.recipesCollection', {
+        url: '/recipes/collection',
+        views: {
+          'tab-recipes': {
+            templateUrl: 'main/templates/recipe-collection-page.html',
+            controller: 'RecipeCollectionPageCtrl as ctrl'
+          }
+        },
+        params: {
+          collection: null
+        }
+      })
       .state('main.learn', {
         url: '/learn',
         views: {
@@ -128,6 +152,40 @@ angular.module('main', [
             templateUrl: 'main/templates/learn.html',
             controller: 'LearnCtrl as ctrl'
           }
+        }
+      })
+      .state('main.glossaryCollection', {
+        url: '/learn/glossary/collection',
+        views: {
+          'tab-learn': {
+            templateUrl: 'main/templates/glossary-collection-page.html',
+            controller: 'GlossaryCollectionPageCtrl as ctrl'
+          }
+        },
+        collection: null
+      })
+      .state('main.trainingVideoCollection', {
+        url: '/learn/trainingVideo/collection',
+        views: {
+          'tab-learn': {
+            templateUrl: 'main/templates/training-video-collection-page.html',
+            controller: 'TrainingVideoCollectionPageCtrl as ctrl'
+          }
+        },
+        params: {
+          collection: null
+        }
+      })
+      .state('main.howToShopCollection', {
+        url: '/learn/howToShop/collection',
+        views: {
+          'tab-learn': {
+            templateUrl: 'main/templates/how-to-shop-collection-page.html',
+            controller: 'HowToShopCollectionPageCtrl as ctrl'
+          }
+        },
+        params: {
+          collection: null
         }
       })
       .state('main.list', {

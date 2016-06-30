@@ -6,6 +6,9 @@ angular.module('main')
   return {
     getTipsOfTheDay: function() {
       return baseTips.customPOST({}, 'getTipsOfTheDay');
+    },
+    getTipsForCollection: function(collectionId) {
+      return baseTips.customPOST({collectionId: collectionId}, 'getTipsForCollection');
     }
   };
 
