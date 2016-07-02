@@ -1,7 +1,7 @@
-<ion-view view-title="main module">
+<ion-view view-title="Tips">
   <!-- do you want padding? -->
   <ion-content class="padding">
-    <h2>{{collection.name}}</h2>
+    <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
     <ion-list>
       <daily-tip-item ng-repeat="tip in tips" tip="tip" showdatefeatured="false" minimizable="true"></daily-tip-item>
     </ion-list>
