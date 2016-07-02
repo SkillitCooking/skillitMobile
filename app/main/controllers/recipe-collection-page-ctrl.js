@@ -22,7 +22,7 @@ angular.module('main')
     }, 200);
   };
 
-  RecipeService.getRecipesForCollection($scope.collection.id).then(function(recipes) {
+  RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
     $scope.recipes = recipes.data;
   }, function(response) {
     console.log("Server Error: ", response);
