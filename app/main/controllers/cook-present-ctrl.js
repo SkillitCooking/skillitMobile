@@ -2,6 +2,26 @@
 angular.module('main')
 .controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate) {
 
+  function ingredientCategoryCmpFn(a, b) {
+    if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
+      return -1;
+    } else if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory > b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
+      return 1;
+    } else {
+      //then same category, sort by ingredient
+      //assuming only one ingredientType and one ingredient for that ingredientType
+      //for all alaCarteRecipes
+      if(a.ingredientList.ingredientTypes[0].ingredients[0].name < b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+        return -1;
+      } else if(a.ingredientList.ingredientTypes[0].ingredients[0].name > b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+        return 1;
+      } else {
+        //then same ingredient
+        return 0;
+      }
+    }
+  }
+
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
     for (var i = recipes.length - 1; i >= 0; i--) {
@@ -53,14 +73,26 @@ angular.module('main')
     $scope.numberBackToRecipeSelection = -1;
   }
   $scope.recipeIds = $stateParams.recipeIds;
-  $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
-  $scope.alaCarteSelectedArr = $stateParams.alaCarteSelectedArr;
-  $scope.sidesExist = false;
-  if($scope.alaCarteSelectedArr) {
-    for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
-      if($scope.alaCarteSelectedArr[i]) {
-        $scope.sidesExist = true;
-        break;
+  if($stateParams.loadAlaCarte) {
+    RecipeService.getRecipesOfType('AlaCarte').then(function(recipes) {
+      recipes = recipes.data;
+      recipes.sort(ingredientCategoryCmpFn);
+      $scope.alaCarteRecipes = recipes;
+      $scope.alaCarteSelectedArr = Array($scope.alaCarteRecipes.length).fill(false);
+      $scope.sidesExist = false;
+    }, function(response) {
+      console.log("Server Error: ", response);
+    });
+  } else {
+    $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
+    $scope.alaCarteSelectedArr = $stateParams.alaCarteSelectedArr;
+    $scope.sidesExist = false;
+    if($scope.alaCarteSelectedArr) {
+      for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
+        if($scope.alaCarteSelectedArr[i]) {
+          $scope.sidesExist = true;
+          break;
+        }
       }
     }
   }
@@ -172,7 +204,6 @@ angular.module('main')
   };
 
   $scope.closeModal = function() {
-    console.log("close modal");
     $scope.modal.hide();
     $scope.modal.remove();
   };
@@ -275,6 +306,8 @@ angular.module('main')
     if($scope.cameFromHome) {
       //make below a constant
       $ionicTabsDelegate.select(4);
+    } else if($scope.cameFromRecipes) {
+      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName, cameFromRecipes: true});
     } else { 
       $ionicHistory.goBack($scope.numberBackToRecipeSelection);
     }

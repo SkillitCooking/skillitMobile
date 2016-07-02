@@ -1,16 +1,9 @@
 <ion-view view-title="main module">
   <!-- do you want padding? -->
   <ion-content class="padding">
-
-    <!-- content goes here -->
+    <h2>{{collection.name}}</h2>
     <ion-list>
-      <ion-item class="item item-divider">
-        This is your glossaryCollectionPage template!
-      </ion-item>
-      <ion-item class="item item-icon">
-        Yeiiii!
-      </ion-item>
+      <glossary-item ng-repeat="item in items" item="item" minimizable="true"></glossary-item>
     </ion-list>
-
   </ion-content>
 </ion-view>

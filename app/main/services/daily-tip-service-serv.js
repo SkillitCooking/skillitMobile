@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('DailyTipService', function (Restangular) {
+.factory('DailyTipService', function (Restangular) {
   var baseTips = Restangular.all('dailyTips');
 
   return {

@@ -9,6 +9,7 @@ angular.module('main')
       itemType: '='
     },
     link: function (scope, element, attrs) {
+      console.log('collections', scope.collections);
       scope.getItemTypeTitle = function() {
         switch(scope.itemType) {
           case 'dailyTip':
@@ -28,6 +29,8 @@ angular.module('main')
       };
 
       scope.goToCollection = function(collection) {
+        console.log('collection', collection);
+        console.log('itemType', scope.itemType);
         var stateName;
         switch(scope.itemType) {
           case 'dailyTip':

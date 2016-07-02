@@ -1,7 +1,11 @@
 'use strict';
 angular.module('main')
-.controller('HowToShopCollectionPageCtrl', function ($log) {
+.controller('HowToShopCollectionPageCtrl', ['$scope', '$stateParams', 'HowToShopService', function ($scope, $stateParams, HowToShopService) {
+  $scope.collection = $stateParams.collection;
 
-  $log.log('Hello from your Controller: HowToShopCollectionPageCtrl in module main:. This is your controller:', this);
-
-});
+  HowToShopService.getHowToShopForCollection($scope.collection._id).then(function(howToShops) {
+    $scope.items = howToShops.data;
+  }, function(response) {
+    console.log("Server Error: ", response);
+  });
+}]);

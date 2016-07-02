@@ -1,7 +1,11 @@
 'use strict';
 angular.module('main')
-.controller('TrainingVideoCollectionPageCtrl', function ($log) {
+.controller('TrainingVideoCollectionPageCtrl', ['$scope', '$stateParams', 'TrainingVideoService', function ($scope, $stateParams, TrainingVideoService) {
+  $scope.collection = $stateParams.collection;
 
-  $log.log('Hello from your Controller: TrainingVideoCollectionPageCtrl in module main:. This is your controller:', this);
-
-});
+  TrainingVideoService.getTrainingVideosForCollection($scope.collection._id).then(function(videos) {
+    $scope.videos = videos.data;
+  }, function(response) {
+    console.log("Server Error: ", response);
+  });
+}]);

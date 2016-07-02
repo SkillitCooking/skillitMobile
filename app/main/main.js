@@ -59,7 +59,9 @@ angular.module('main', [
           sidesAdded: false,
           ingredientsChanged: false,
           numberBackToRecipeSelection: null,
-          cameFromHome: false
+          cameFromHome: false,
+          cameFromRecipes: false,
+          loadAlaCarte: false
         }
       })
       .state('main.cookAddSide', {
@@ -97,7 +99,8 @@ angular.module('main', [
           selectedIngredientNames: null,
           numberBackToRecipeSelection: null,
           BYOIngredientTypes: null,
-          BYOName: null
+          BYOName: null,
+          cameFromRecipes: false
         }
       })
       .state('main.tips', {
@@ -162,7 +165,9 @@ angular.module('main', [
             controller: 'GlossaryCollectionPageCtrl as ctrl'
           }
         },
-        collection: null
+        params: {
+          collection: null
+        }
       })
       .state('main.trainingVideoCollection', {
         url: '/learn/trainingVideo/collection',

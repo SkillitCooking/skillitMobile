@@ -1,11 +1,33 @@
 'use strict';
 angular.module('main')
-.directive('trainingVideoItem', function () {
+.directive('trainingVideoItem', ['$ionicModal', function ($ionicModal) {
   return {
-    template: '<div></div>',
+    templateUrl: 'main/templates/training-video-item.html',
     restrict: 'E',
-    link: function postLink (scope, element, attrs) {
-      element.text('this is the trainingVideoItem directive', attrs);
+    scope: {
+      video: '='
+    },
+    link: function (scope, element, attrs) {
+      scope.autoplayURL = scope.video.video.url + "&autoplay=1&rel=0";
+
+      scope.getVideoModal = function() {
+        $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
+          scope: scope,
+          animation: 'slide-in-up'
+        }).then(function(modal) {
+          scope.modal = modal;
+          scope.modal.show();
+        });
+      };
+
+      scope.closeModal = function() {
+        scope.modal.hide();
+        scope.modal.remove();
+      };
+
+      scope.$on('modal.hidden', function() {
+        scope.modal.remove();
+      });
     }
   };
-});
+}]);

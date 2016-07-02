@@ -1,7 +1,13 @@
 'use strict';
 angular.module('main')
-.controller('GlossaryCollectionPageCtrl', function ($log) {
+.controller('GlossaryCollectionPageCtrl', ['$scope', '$stateParams', 'GlossaryService', function ($scope, $stateParams, GlossaryService) {
+  $scope.collection = $stateParams.collection;
 
-  $log.log('Hello from your Controller: GlossaryCollectionPageCtrl in module main:. This is your controller:', this);
+  console.log("params", $stateParams);
 
-});
+  GlossaryService.getGlossarysForCollection($scope.collection._id).then(function(items) {
+    $scope.items = items.data;
+  }, function(response) {
+    console.log("Server Error: ", response);
+  });
+}]);

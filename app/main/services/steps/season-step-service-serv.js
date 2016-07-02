@@ -4,11 +4,14 @@ angular.module('main')
   var service = {};
 
   function instantiateStep(step, recipe) {
+    console.log("step", step);
     var ingredientInput = step.stepInputs["ingredientInput"];
     var dishInput = step.stepInputs["dishInput"];
+    step.ingredientsToSeason = [];
     //ingredient instantiation
     switch(ingredientInput.sourceType) {
       case "IngredientList":
+        console.log("ingredientInput - list");
         var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
           return type.typeName === ingredientInput.key;
         });
@@ -39,9 +42,11 @@ angular.module('main')
         break;
 
       case "StepProduct":
+        console.log("ingredientInput: stepProduct");
         var referencedStep = _.find(recipe.stepList, function(iterStep) {
           return iterStep.stepId === ingredientInput.sourceId;
         });
+        console.log("referencedStep: ", referencedStep);
         if(referencedStep){
           if(!referencedStep.isEmpty){
             if(referencedStep.products){

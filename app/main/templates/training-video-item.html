@@ -1,16 +1,6 @@
-<ion-view view-title="main module">
-  <!-- do you want padding? -->
-  <ion-content class="padding">
-
-    <!-- content goes here -->
-    <ion-list>
-      <ion-item class="item item-divider">
-        This is your trainingVideoItem template!
-      </ion-item>
-      <ion-item class="item item-icon">
-        Yeiiii!
-      </ion-item>
-    </ion-list>
-
-  </ion-content>
-</ion-view>
+<ion-item class="item-thumbnail-left item-icon-right" ng-click="getVideoModal()">
+  <img ng-if="video.picture.url" ng-src="{{video.picture.url}}">
+  <i class="icon ion-videocamers"></i>
+  <h2>{{video.title}}</h2>
+  <p>{{video.video.caption}}</p>
+</ion-item>

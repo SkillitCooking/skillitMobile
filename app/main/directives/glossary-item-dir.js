@@ -2,10 +2,24 @@
 angular.module('main')
 .directive('glossaryItem', function () {
   return {
-    template: '<div></div>',
+    templateUrl: 'main/templates/glossary-item.html',
     restrict: 'E',
-    link: function postLink (scope, element, attrs) {
-      element.text('this is the glossaryItem directive', attrs);
+    scope: {
+      item: '=',
+      minimizable: '='
+    },
+    link: function (scope, element, attrs) {
+      if(scope.minimizable) {
+        scope.minimized = true;
+      } else {
+        scope.minimized = false;
+      }
+
+      scope.toggleMinimized = function() {
+        if(scope.minimizable) {
+          scope.minimized = !scope.minimized;
+        }
+      };
     }
   };
 });

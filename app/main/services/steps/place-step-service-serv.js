@@ -101,6 +101,7 @@ angular.module('main')
         var referencedStep = _.find(recipe.stepList, function(iterStep) {
           return iterStep.stepId === dishProductInput.sourceId;
         });
+        console.log("place referencedStep:", referencedStep);
         if(referencedStep) {
           if(!referencedStep.isEmpty) {
             if(referencedStep.products){
@@ -144,6 +145,7 @@ angular.module('main')
   }
 
   function constructStepText(step) {
+    console.log("place step", step);
     if(!step.isEmpty) {
       var placeType = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "placeType";
@@ -197,6 +199,7 @@ angular.module('main')
       } else {
         stepText += "a ";
       }
+      console.log("step text", stepText);
       stepText += step.dishToPlaceOn.name.toLowerCase();
       switch(step.alreadyPlacedIngredients.length) {
         case 0:

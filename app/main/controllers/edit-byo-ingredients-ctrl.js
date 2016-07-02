@@ -1,11 +1,12 @@
 'use strict';
 angular.module('main')
-.controller('EditByoIngredientsCtrl', ['$scope', '$stateParams', '$state', '$ionicNavBarDelegate', '$ionicHistory', '_', function ($scope, $stateParams, $state, $ionicNavBarDelegate, $ionicHistory, _) {
+.controller('EditByoIngredientsCtrl', ['$scope', '$stateParams', '$state', '$ionicNavBarDelegate', '$ionicHistory', '_', '$ionicTabsDelegate', function ($scope, $stateParams, $state, $ionicNavBarDelegate, $ionicHistory, _, $ionicTabsDelegate) {
   
   $scope.$on('$ionicView.enter', function(event, data) {
     $ionicNavBarDelegate.showBackButton(false);
   });
 
+  console.log("params", $stateParams);
   $scope.hasChanged = false;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.BYOIngredientTypes = $stateParams.BYOIngredientTypes;
@@ -49,7 +50,7 @@ angular.module('main')
         }
       }
     }
-    $state.go('main.cookPresent', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection});
+    $state.go('main.cookPresent', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, cameFromRecipes: $stateParams.cameFromRecipes});
   };
 
   $scope.selectionHasChanged = function() {
@@ -68,6 +69,9 @@ angular.module('main')
   };
 
   $scope.cancel = function() {
+    if($stateParams.cameFromRecipes) {
+      $ionicTabsDelegate.select(2);
+    }
     if($scope.hasChanged) {
       for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
         var curType = $scope.BYOIngredientTypes[i];
@@ -89,6 +93,9 @@ angular.module('main')
   };
 
   $scope.navigateBack = function() {
+    if($stateParams.cameFromRecipes) {
+      $ionicTabsDelegate.select(2);
+    }
     if($scope.hasChanged) {
       for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
         var curType = $scope.BYOIngredientTypes[i];

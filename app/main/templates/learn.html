@@ -1,19 +1,20 @@
 
-  <ion-view view-title="main module">
+  <ion-view view-title="Learn">
     <!-- do you want padding? -->
     <ion-content class="padding">
-
-      <!-- content goes here -->
-      <ion-list>
-        <ion-item class="item item-divider">
-          This is your learn template!
-        </ion-item>
-        <ion-item class="item item-icon">
-          Yeiiii!
-        </ion-item>
-      </ion-list>
-
-      <button class="button button-large button-energized" ng-click="goStuffGo()">Click</button>
-
+      <div class="button-bar">
+        <a ng-class="getTrainingVideoClass()" ng-click="selectTrainingVideo()">Videos</a>
+        <a ng-class="getHowToShopClass()" ng-click="selectHowToShop()">How To</a>
+        <a ng-class="getGlossaryClass()" ng-click="selectGlossary()">Glossary</a>
+      </div>
+      <div ng-if="trainingVideoSelected">
+        <item-collections collections="trainingVideoCollections" item-type="'trainingVideo'"></item-collections>
+      </div>
+      <div ng-if="howToShopSelected">
+        <item-collections collections="howToShopCollections" item-type="'howToShop'"></item-collections>
+      </div>
+      <div ng-if="glossarySelected">
+        <item-collections collections="glossaryCollections" item-type="'glossary'"></item-collections>
+      </div>
     </ion-content>
   </ion-view>

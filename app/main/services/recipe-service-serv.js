@@ -12,6 +12,12 @@ angular.module('main')
     },
     getRecipesOfTheDay: function() {
       return baseRecipes.customPOST({}, 'getRecipesOfTheDay');
+    },
+    getRecipesForCollection: function(collectionId) {
+      return baseRecipes.customPOST({collectionId: collectionId}, 'getRecipesForCollection');
+    },
+    getRecipesOfType: function(recipeType) {
+      return baseRecipes.customPOST({recipeType: recipeType}, 'getRecipesOfType');
     }
   };
 

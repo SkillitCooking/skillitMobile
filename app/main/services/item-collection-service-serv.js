@@ -6,6 +6,9 @@ angular.module('main')
   return {
     getCollectionsForItemType: function(itemType) {
       return baseItemCollections.customPOST({itemType: itemType}, 'getCollectionsForItemType');
+    },
+    getCollectionsForItemTypes: function(itemTypes) {
+      return baseItemCollections.customPOST({itemTypes: itemTypes}, 'getCollectionsForItemTypes');
     }
   };
 

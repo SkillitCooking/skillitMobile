@@ -1,16 +1,20 @@
-<ion-view view-title="main module">
-  <!-- do you want padding? -->
-  <ion-content class="padding">
-
-    <!-- content goes here -->
-    <ion-list>
-      <ion-item class="item item-divider">
-        This is your glossaryItem template!
-      </ion-item>
-      <ion-item class="item item-icon">
-        Yeiiii!
-      </ion-item>
-    </ion-list>
-
-  </ion-content>
-</ion-view>
+<ion-item ng-if="minimized" class="item-thumbnail-left item-icon-right" ng-click="toggleMinimized()">
+  <img ng-if="item.picture.url" ng-src="{{item.picture.url}}">
+  <i class="icon ion-plus-round"></i>
+  <h2>{{item.title}}</h2>
+  <p>{{item.text}}</p>
+  <!--<p ng-if="showdatefeatured">{{item.dateFeatured}}</p>-->
+</ion-item>
+<div ng-if="!minimized" class="list card individual-recipe-in-list" ng-click="toggleMinimized()">
+  <div class="item">
+    <h2>{{item.title}}</h2>
+  </div>
+  <div class="item item-body">
+    <iframe ng-if="item.video && item.video.url" width="300" height="169" ng-src="{{item.video.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+    <p class="subdued" ng-if="item.video.url">{{item.video.caption}}</p>
+    <img ng-if="item.picture && item.picture.url" ng-src={{item.picture.url}}>
+    <p class="subdued" ng-if="item.picture.url">{{item.picture.caption}}</p>
+    <p>{{item.text}}</p>
+    <i ng-if="minimizable" class="icon ion-minus-round"></i>
+  </div>
+</div>

@@ -1,16 +1,22 @@
-<ion-view view-title="main module">
-  <!-- do you want padding? -->
-  <ion-content class="padding">
+<ion-item ng-if="minimized" class="item-thumbnail-left item-icon-right" ng-click="toggleMinimized()">
+  <img ng-if="item.pictures && item.pictures.length > 0" ng-src="item.pictures[0].url">
+  <i class="icon ion-plus-round"></i>
+  <h2>{{item.title}}</h2>
+  <p>{{item.text}}</p>
+</ion-item>
 
-    <!-- content goes here -->
-    <ion-list>
-      <ion-item class="item item-divider">
-        This is your howToShopItem template!
-      </ion-item>
-      <ion-item class="item item-icon">
-        Yeiiii!
-      </ion-item>
-    </ion-list>
-
-  </ion-content>
-</ion-view>
+<div ng-if="!minimized" class="list card" ng-click="toggleMinimized()">
+  <div class="item">
+    <h2>{{item.title}}</h2>
+  </div>
+  <div class="item item-body">
+    <div ng-if="item.pictures && item.pictures.length > 0">
+      <img ng-src="{{displayPicture.url}}">
+      <p class="subdued">{{displayPicture.caption}}</p>
+      <button ng-disabled="noPrevPictures()" ng-click="prevPicture()">Prev</button>
+      <button ng-disabled="noNextPictures()" ng-click="nextPicture()">Next</button>
+    </div>
+    <p>{{item.text}}</p>
+    <i ng-if="minimizable" class="icon ion-minus-round"></i>
+  </div>
+</div>
