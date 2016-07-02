@@ -1,11 +1,23 @@
-<ion-item ng-if="minimized" class="item-thumbnail-left item-icon-right" ng-click="toggleMinimized()">
+<ion-item ng-if="minimized" class="item-icon-right individual-recipe-in-list education-item" ng-click="toggleMinimized()">
   <img ng-if="item.pictures && item.pictures.length > 0" ng-src="item.pictures[0].url">
   <i class="icon ion-plus-round"></i>
   <h2>{{item.title}}</h2>
   <p>{{item.text}}</p>
 </ion-item>
 
-<div ng-if="!minimized" class="list card" ng-click="toggleMinimized()">
+<ion-item ng-if="!minimized" class="item-icon-right individual-recipe-in-list education-item full-text-display" ng-click="toggleMinimized()">
+    <div ng-if="item.pictures && item.pictures.length > 0">
+      <img ng-src="{{displayPicture.url}}">
+      <p class="subdued">{{displayPicture.caption}}</p>
+      <button ng-disabled="noPrevPictures()" ng-click="prevPicture()">Prev</button>
+      <button ng-disabled="noNextPictures()" ng-click="nextPicture()">Next</button>
+    </div>
+  <i ng-if="minimizable" class="icon ion-minus-round"></i>
+  <h2>{{item.title}}</h2>
+  <p>{{item.text}}</p>
+</ion-item>
+
+<!--<div ng-if="!minimized" class="list card" ng-click="toggleMinimized()">
   <div class="item">
     <h2>{{item.title}}</h2>
   </div>
@@ -19,4 +31,4 @@
     <p>{{item.text}}</p>
     <i ng-if="minimizable" class="icon ion-minus-round"></i>
   </div>
-</div>
+</div>-->

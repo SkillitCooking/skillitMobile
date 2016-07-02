@@ -8,7 +8,7 @@
 
 
 <ion-item ng-if="!minimized" class="item-icon-right individual-recipe-in-list education-item full-text-display" ng-click="toggleMinimized()">
-  <img ng-if="tip.picture.url" ng-src={{tip.picture.url}}>
+  <img ng-if="tip.picture.url" ng-src="{{tip.picture.url}}">
   <p class="subdued" ng-if="tip.picture.url">{{tip.picture.caption}}</p>
   <i ng-if="minimizable" class="icon ion-minus-round"></i>
   <h2>{{tip.title}}</h2>

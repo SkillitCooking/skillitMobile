@@ -1,4 +1,4 @@
-<ion-view view-title="Edit Ingredients" on-swipe-right="navigateBack()">
+<ion-view view-title="Select Ingredients" on-swipe-right="navigateBack()">
   
   <ion-nav-buttons side="primary">
     <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
@@ -12,12 +12,11 @@
       </div>
   </div>
   <!-- do you want padding? -->
-  <ion-content class="padding">
-    <h2>Edit Ingredients for {{BYOName}}</h2>
+  <ion-content class="padding">    
     <div ng-repeat="type in BYOIngredientTypes">
       <h3 class="recipe-category" ng-if="isNewDisplayName(type)">{{type.displayName}}</h3>
       <p ng-if="isNewDisplayName(type)">Minimum Needed: {{type.minNeeded}}</p>
-      <ion-list>
+      <ion-list class="cook-tab">
         <ion-checkbox class="checkbox-balanced" ng-repeat="ingredient in type.ingredients" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name}}</ion-checkbox>
       </ion-list>
     </div>

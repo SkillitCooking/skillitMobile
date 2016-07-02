@@ -1,7 +1,7 @@
 <ion-view view-title="How To Shop">
   <!-- do you want padding? -->
   <ion-content class="padding">
-    <h2>{{collection.name}}</h2>
+    <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
     <ion-list>
       <how-to-shop-item ng-repeat="item in items" item="item" minimizable="true"></how-to-shop-item>
     </ion-list>

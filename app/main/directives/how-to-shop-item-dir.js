@@ -2,7 +2,7 @@
 angular.module('main')
 .directive('howToShopItem', function () {
   return {
-    template: 'main/templates/how-to-shop-item.html',
+    templateUrl: 'main/templates/how-to-shop-item.html',
     restrict: 'E',
     scope: {
       item: '=',
@@ -36,6 +36,12 @@ angular.module('main')
       scope.nextPicture = function() {
         scope.displayPictureIndex += 1;
         scope.displayPicture = scope.item.pictures[scope.displayPictureIndex];
+      };
+
+      scope.toggleMinimized = function() {
+        if(scope.minimizable) {
+          scope.minimized = !scope.minimized;
+        }
       };
 
     }

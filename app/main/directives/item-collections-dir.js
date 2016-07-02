@@ -13,15 +13,15 @@ angular.module('main')
       scope.getItemTypeTitle = function() {
         switch(scope.itemType) {
           case 'dailyTip':
-            return 'Daily Tip';
+            return 'Kitchen Tips';
           case 'trainingVideo':
-            return 'Training Video';
+            return 'Training Videos';
           case 'howToShop':
             return 'How To Shop';
           case 'glossary':
             return 'Glossary';
           case 'recipe':
-            return 'Recipe';
+            return 'Recipe Categories';
           default:
             //error
             console.log("itemCollections directive error: unexpected itemType: ", scope.itemType);

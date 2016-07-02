@@ -30,10 +30,10 @@ h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-presen
 .cook-present-instructions h3 {
 	font-size: 35px;
 }
-div, p, .individual-recipe-in-list h2, h1, .button {
+div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
 	font-family: 'Palanquin', sans-serif;
 }
-.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title {
+.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere {
 	font-family: 'Pompiere', sans-serif;
 }
 .bar .title {
@@ -45,6 +45,9 @@ div, p, .individual-recipe-in-list h2, h1, .button {
 }
 .no-bottom-margin {
 	margin-bottom: 0;
+}
+.bottom-margin-15 {
+	margin-bottom: 15px;
 }
 
 /**********************************/
@@ -211,7 +214,7 @@ h2.ingredient-type-heading {
 	margin-bottom: 10px;
 }
 .cook-recipe-selection h3:first-child {
-	margin-top: 20px;
+	margin-top: 10px;
 }
 .cook-recipe-selection .item-icon-right .icon {
 	position: static;
@@ -421,15 +424,6 @@ h3.side-dish-header {
 	height: 73px;
 }
 
-/**************************************/
-/*RESPONSIVE*/
-/*recipe selection tab*/
-@media (min-width: 374px) {
-	.individual-recipe-in-list img {
-		width: 100px;
-		height: 100px;
-	}
-}
 
 
 
@@ -533,4 +527,37 @@ h3.side-dish-header {
 }
 .full-text-display p {
 	white-space: normal !important
+}
+
+/****************LEARN TAB************/
+/*************************************/
+.learn-tab .button-bar {
+	margin-bottom: 12px;
+}
+.training-video-item h2, .training-video-item p {
+	white-space: normal;
+}
+img.video-thumbnail {
+	max-width: 128px !important;
+	max-height: 70px !important;
+	top: 16% !important;
+}
+.training-video-item.individual-recipe-in-list {
+	padding-left: 148px !important;
+	padding-right: 20px !important;
+}
+
+
+/**************************************/
+/*RESPONSIVE*/
+/*recipe selection tab*/
+@media (min-width: 374px) {
+	.individual-recipe-in-list img {
+		width: 100px;
+		height: 100px;
+	}
+    .video-thumbnail {
+	   max-width: 118px !important;
+	   max-height: 66px !important;
+    }
 }

@@ -1,7 +1,7 @@
-<ion-view view-title="main module">
+<ion-view view-title="Learn">
   <!-- do you want padding? -->
   <ion-content class="padding">
-    <h2>{{collection.name}}</h2>
+    <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
     <ion-list>
       <training-video-item ng-repeat="video in videos" video="video"></training-video-item> 
     </ion-list>
