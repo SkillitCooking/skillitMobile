@@ -12,7 +12,7 @@ angular.module('main', [
   RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
 
   // ROUTING with ui.router
-  $urlRouterProvider.otherwise('/main/cook');
+  $urlRouterProvider.otherwise('/main/home');
   $stateProvider
     // this state is placed in the <ion-nav-view> in the index.html
     .state('main', {
@@ -21,6 +21,15 @@ angular.module('main', [
       templateUrl: 'main/templates/tabs.html'
     })
       //base screen of flow for cook tab
+      .state('main.home', {
+        url: '/home',
+        views: {
+          'tab-home': {
+            templateUrl: 'main/templates/home.html',
+            controller: 'HomeCtrl as ctrl'
+          }
+        }
+      })
       .state('main.cook', {
         url: '/cook',
         views: {
@@ -208,15 +217,6 @@ angular.module('main', [
           'tab-learn': {
             templateUrl: 'main/templates/list-detail.html',
             controller: 'LearnCtrl as ctrl'
-          }
-        }
-      })
-      .state('main.home', {
-        url: '/home',
-        views: {
-          'tab-home': {
-            templateUrl: 'main/templates/home.html',
-            controller: 'HomeCtrl as ctrl'
           }
         }
       })
