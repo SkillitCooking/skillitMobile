@@ -1,13 +1,13 @@
 <ion-popover-view class="seasoning-selector-popup image-modal transparent">
   <ion-header-bar>
     <h1 class="title">Choose Your Seasoning</h1>
-    <button class="button" ng-click="closeSeasoningPopup()">X</button>
+    <button class="button close-x-button" ng-click="closeSeasoningPopup()">X</button>
   </ion-header-bar>
   <ion-content>
     <!--<h2>Current Seasoning</h2>
     <p><b>{{seasoningProfile.name}}: </b>{{getSeasoningParts(seasoningProfile)}}</p>-->
     <ion-list>
-      <ion-checkbox class="individual-recipe-in-list" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
+      <ion-checkbox class="individual-recipe-in-list checkbox-balanced" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
         <h3>{{profile.name}}</h3>
         <p ng-repeat="spice in profile.spices"><em>•{{spice}}</em></p>
       </ion-checkbox>
