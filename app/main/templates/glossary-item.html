@@ -12,7 +12,10 @@
     <img ng-if="item.picture && item.picture.url" ng-src={{item.picture.url}}>
     <p class="subdued" ng-if="item.picture.url">{{item.picture.caption}}</p>
     <h2>{{item.title}}</h2>
-    <p>{{item.text}}</p>
+    <div ng-repeat="line in item.lines">
+      <p><b ng-if="line.toBold">{{line.toBold}}:</b>{{line.copy}}</p>
+      <br />
+    </div>
     <i ng-if="minimizable" class="icon ion-minus-round"></i>
 </ion-item>
 

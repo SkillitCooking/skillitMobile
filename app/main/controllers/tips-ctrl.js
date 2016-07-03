@@ -20,7 +20,7 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     $ionicHistory.clearCache().then(function() {
-      $ionicTabsDelegate.select(4);
+      $ionicTabsDelegate.select(0);
     }, function(error) {
       console.log("$ionicHistory clearCache error", error);
     });

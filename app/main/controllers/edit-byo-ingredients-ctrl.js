@@ -70,7 +70,7 @@ angular.module('main')
 
   $scope.cancel = function() {
     if($stateParams.cameFromRecipes) {
-      $ionicTabsDelegate.select(2);
+      $ionicTabsDelegate.select(4);
     }
     if($scope.hasChanged) {
       for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
@@ -94,7 +94,7 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     if($stateParams.cameFromRecipes) {
-      $ionicTabsDelegate.select(2);
+      $ionicTabsDelegate.select(4);
     }
     if($scope.hasChanged) {
       for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {

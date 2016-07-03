@@ -12,6 +12,10 @@ angular.module('main')
 
   RecipeService.getRecipesOfTheDay().then(function (recipes) {
     $scope.recipesOfTheDay = recipes.data;
+    for (var i = $scope.recipesOfTheDay.length - 1; i >= 0; i--) {
+      $scope.recipesOfTheDay[i].prepTime = 5 * Math.round($scope.recipesOfTheDay[i].prepTime/5);
+      $scope.recipesOfTheDay[i].totalTime = 5 * Math.round($scope.recipesOfTheDay[i].totalTime/5);
+    }
     $scope.recipeIndex = 0;
     $scope.displayRecipe = $scope.recipesOfTheDay[$scope.recipeIndex];
   }, function(response) {
@@ -35,7 +39,8 @@ angular.module('main')
         recipeIds: [$scope.displayRecipe._id],
         alaCarteRecipes: [],
         alaCarteSelectedArr: [],
-        cameFromHome: true
+        cameFromHome: true,
+        loadAlaCarte: true
       }, 200);
     });
   };
@@ -94,6 +99,10 @@ angular.module('main')
 
   $scope.goToTips = function() {
     $state.go('main.tips', {cameFromHome: true});
+  };
+
+  $scope.goToCook = function() {
+    $state.go('main.cook');
   };
 
   $scope.navigateBack = function() {

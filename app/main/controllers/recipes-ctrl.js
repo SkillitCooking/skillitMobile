@@ -10,6 +10,12 @@ angular.module('main')
 
   RecipeService.getRecipesOfType('BYO').then(function(recipes) {
     $scope.BYORecipes = recipes.data;
+    if($scope.BYORecipes) {
+      for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {
+        $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
+        $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
+      }
+    }
   }, function(response) {
     console.log("Server Error: ", response);
   });

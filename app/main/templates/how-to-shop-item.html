@@ -14,7 +14,10 @@
     </div>
   <i ng-if="minimizable" class="icon ion-minus-round"></i>
   <h2>{{item.title}}</h2>
-  <p>{{item.text}}</p>
+  <div ng-repeat="line in item.lines">
+    <p><b ng-if="line.toBold">{{line.toBold}}:</b>{{line.copy}}</p>
+    <br />
+  </div>
 </ion-item>
 
 <!--<div ng-if="!minimized" class="list card" ng-click="toggleMinimized()">

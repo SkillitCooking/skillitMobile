@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('glossaryItem', function () {
+.directive('glossaryItem', ['ContentTextService', function (ContentTextService) {
   return {
     templateUrl: 'main/templates/glossary-item.html',
     restrict: 'E',
@@ -9,6 +9,9 @@ angular.module('main')
       minimizable: '='
     },
     link: function (scope, element, attrs) {
+      ContentTextService.processLineBreaks(scope.item);
+      ContentTextService.addBolding(scope.item);
+
       if(scope.minimizable) {
         scope.minimized = true;
       } else {
@@ -22,4 +25,4 @@ angular.module('main')
       };
     }
   };
-});
+}]);

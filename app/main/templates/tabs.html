@@ -1,9 +1,19 @@
 <ion-tabs class="tabs-icon-top tabs-light">
 
+  <!-- Home Tab -->
+  <ion-tab title="Home" icon-off="ion-ios-home-outline" icon-on="ion-ios-home" ui-sref="main.home">
+    <ion-nav-view name="tab-home"></ion-nav-view>
+  </ion-tab>
+
   <!-- Cook Tab -->
   <ion-tab title="Cook" icon-off="ion-ios-nutrition-outline" icon-on="ion-ios-nutrition" 
     ui-sref="main.cook">
     <ion-nav-view name="tab-cook"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Learn Tab -->
+  <ion-tab title="Learn" icon-off="ion-ios-lightbulb-outline" icon-on="ion-ios-lightbulb" ui-sref="main.learn">
+    <ion-nav-view name="tab-learn"></ion-nav-view>
   </ion-tab>
 
   <!-- Tips Tab -->
@@ -14,15 +24,6 @@
   <!-- Recipes Tab -->
   <ion-tab title="Recipes" icon-off="ion-compose" icon-on="ion-compose" ui-sref="main.recipes">
     <ion-nav-view name="tab-recipes"></ion-nav-view>
-  </ion-tab>
-
-  <!-- Learn Tab -->
-  <ion-tab title="Learn" icon-off="ion-ios-lightbulb-outline" icon-on="ion-ios-lightbulb" ui-sref="main.learn">
-    <ion-nav-view name="tab-learn"></ion-nav-view>
-  </ion-tab>
-
-  <ion-tab title="Home" icon-off="ion-ios-home-outline" icon-on="ion-ios-home" ui-sref="main.home">
-    <ion-nav-view name="tab-home"></ion-nav-view>
   </ion-tab>
 
 </ion-tabs>

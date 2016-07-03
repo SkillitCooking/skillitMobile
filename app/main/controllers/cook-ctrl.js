@@ -32,6 +32,10 @@ angular.module('main')
     console.log("Server Error: " + response.message);
   });
 
+  $scope.notBeginningSlide = function() {
+    return $ionicSlideBoxDelegate.currentIndex() !== 0;
+  };
+
   $scope.repeatDone = function() {
     $ionicSlideBoxDelegate.update();
   };

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('howToShopItem', function () {
+.directive('howToShopItem', ['ContentTextService', function (ContentTextService) {
   return {
     templateUrl: 'main/templates/how-to-shop-item.html',
     restrict: 'E',
@@ -9,6 +9,9 @@ angular.module('main')
       minimizable: '='
     },
     link: function (scope, element, attrs) {
+      ContentTextService.processLineBreaks(scope.item);
+      ContentTextService.addBolding(scope.item);
+
       if(scope.minimizable) {
         scope.minimized = true;
       } else {
@@ -46,4 +49,4 @@ angular.module('main')
 
     }
   };
-});
+}]);

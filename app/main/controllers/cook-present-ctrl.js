@@ -226,6 +226,26 @@ angular.module('main')
     $scope.modal.remove();
   });*/
 
+  $scope.incrementMainVideo = function() {
+    //indexOf true
+    var curIndex = $scope.mainVideoUrlIndicators.indexOf(true);
+    if(curIndex < $scope.mainVideoUrlIndicators.length - 1) {
+      $scope.mainVideoUrlIndicators.fill(false);
+      $scope.mainVideoUrlIndicators[curIndex+1] = true;
+      $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[curIndex+1];
+    }
+  };
+
+  $scope.decrementMainVideo = function() {
+    //indexOf true
+    var curIndex = $scope.mainVideoUrlIndicators.indexOf(true);
+    if(curIndex > 0) {
+      $scope.mainVideoUrlIndicators.fill(false);
+      $scope.mainVideoUrlIndicators[curIndex-1] = true;
+      $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[curIndex-1];
+    }
+  };
+
   $scope.toggleMainVideo = function(index) {
     //if false clicked, to true, and true to false
     if(!$scope.mainVideoUrlIndicators[index]) {
@@ -298,6 +318,12 @@ angular.module('main')
     }
   };
 
+  $scope.closeSeasoningPopup = function() {
+    if($scope.popover) {
+      setTimeout(function() {$scope.popover.remove()}, 100);
+    }
+  };
+
   $scope.navigateBack = function() {
     //need to get timesclicked mechanism going here
     for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
@@ -305,7 +331,7 @@ angular.module('main')
     }
     if($scope.cameFromHome) {
       //make below a constant
-      $ionicTabsDelegate.select(4);
+      $ionicTabsDelegate.select(0);
     } else if($scope.cameFromRecipes) {
       $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName, cameFromRecipes: true});
     } else { 
@@ -355,5 +381,10 @@ angular.module('main')
     if((step.hasTip || step.hasVideo) || (step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile)) {
       return 'clickableStepClass';
     }
-  }
+  };
+  $scope.isClickable = function(step) {
+    if((step.hasTip || step.hasVideo) || (step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile)) {
+      return true;
+    }
+  };
 }]);
