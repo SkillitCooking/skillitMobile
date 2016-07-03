@@ -1,6 +1,16 @@
-<ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list training-video-item" ng-click="getVideoModal()">
-  <img class="video-thumbnail" ng-if="video.picture.url" ng-src="{{video.picture.url}}">
-  <i class="icon ion-videocamers"></i>
-  <h2>{{video.title}}</h2>
-  <p>{{video.video.caption}}</p>
+<ion-item class="individual-recipe-in-list training-video-item" ng-click="getVideoModal()">
+  <div class="row">
+  	<div class="col col-50 col-center"> 
+  		<img class="video-thumbnail" ng-if="video.picture.url" ng-src="{{video.picture.url}}">
+  	</div>
+  	<div class="col col-50 col-center">  
+  		<h2>{{video.title}}</h2>
+  	</div>
+  </div>
+  <div class="row">
+  	<div class="col">
+  		<p>{{video.video.caption}}</p>
+  	</div>
+  </div>
+  <i class="icon ion-videocamers"></i>  
 </ion-item>

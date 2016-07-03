@@ -1,8 +1,9 @@
-<ion-item ng-if="minimized" class="item-icon-right individual-recipe-in-list education-item" ng-click="toggleMinimized()">
+<ion-item ng-if="minimized" class="item-icon-right individual-recipe-in-list education-item " ng-click="toggleMinimized()">
   <img ng-if="tip.picture.url" ng-src="{{tip.picture.url}}">
   <i class="icon ion-plus-round"></i>
-  <h2>{{tip.title}}</h2>
-  <p>{{tip.text}}</p>
+  <h2 class="padding-10">{{tip.title}}</h2>
+  <div class="home-tab-border-bottom"></div>
+  <p class="padding-10">{{tip.text}}</p>
   <!--<p ng-if="showdatefeatured">{{tip.dateFeatured}}</p>-->
 </ion-item>
 
@@ -11,8 +12,9 @@
   <img ng-if="tip.picture.url" ng-src="{{tip.picture.url}}">
   <p class="subdued" ng-if="tip.picture.url">{{tip.picture.caption}}</p>
   <i ng-if="minimizable" class="icon ion-minus-round"></i>
-  <h2>{{tip.title}}</h2>
-    <p>{{tip.text}}</p>
+  <h2 class="padding-10">{{tip.title}}</h2>
+  <div class="home-tab-border-bottom"></div>
+  <p class="padding-10">{{tip.text}}</p>
 </ion-item>
 
 <!--<div ng-if="!minimized" class="list card item-icon-right individual-recipe-in-list" ng-click="toggleMinimized()">

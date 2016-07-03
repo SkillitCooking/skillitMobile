@@ -49,6 +49,9 @@ div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
 .bottom-margin-15 {
 	margin-bottom: 15px;
 }
+.home-tab .padding-10 {
+	padding: 10px !important;
+}
 
 /**********************************/
 /*BOTTOM NAV TABS*/
@@ -126,12 +129,8 @@ ion-nav-back-button.button-clear {
 
 /***********************/
 /*ingredient input tabs*/
-.cook-tab.scroll-content.ionic-scroll {
-	/*width: 84%;
-	background: transparent;
-	margin: 0 auto;
-	z-index: 9999999;*/
-	height: 78%;
+.cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll {
+	height: 72%;
 }
 .padding.cook-tab {
 	padding-top: 10px;
@@ -420,8 +419,8 @@ h3.side-dish-header {
 	border-top: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
 }
-.edit-byo.scroll-content {
-	height: 73px;
+.edit-byo h3 {
+	margin-top: 10px;
 }
 
 
@@ -439,7 +438,7 @@ h3.side-dish-header {
 	border-radius: 50%;
 	color: $balanced;
 	background: #ffffff;
-	border: 1px solid $balanced;
+	border: 2px solid $balanced;
 }
 .button-white-round:active {
 	color: #ffffff;
@@ -485,6 +484,10 @@ h3.side-dish-header {
 	margin-top: 10px;
 	font-size: 25px !important;
 }
+.home-tab .home-tab-border-bottom {
+	border-bottom: 1px solid #dddddd;
+}
+
 
 
 /*********TIPS COLLECTION PAGE*****************/
@@ -506,7 +509,7 @@ h3.side-dish-header {
     color: $balanced;
     border: 2px solid $balanced;
     border-radius: 50%;
-    padding: 5px 10px 5px 11px;
+    padding: 4px 10px 5px 11px;
     width: 32px;
     height: 32px;
 }
@@ -523,10 +526,22 @@ h3.side-dish-header {
 	border: 2px solid $balanced;
 	border-radius: 50%;
 	max-height: 34px;
-    margin-top: 16px;
+    margin-top: 10px;
 }
 .full-text-display p {
 	white-space: normal !important
+}
+.tips-tab .home-tab-border-bottom {
+	display: none;
+}
+.tips-tab .item-icon-right {
+	padding-right: 15px;
+}
+.tips-tab h2 {
+	padding-right: 40px;
+}
+.tips-tab p {
+	margin-top: 4px;
 }
 
 /****************LEARN TAB************/
@@ -538,13 +553,8 @@ h3.side-dish-header {
 	white-space: normal;
 }
 img.video-thumbnail {
-	max-width: 128px !important;
-	max-height: 70px !important;
-	top: 16% !important;
-}
-.training-video-item.individual-recipe-in-list {
-	padding-left: 148px !important;
-	padding-right: 20px !important;
+	height: 66px;
+	width: auto;
 }
 
 
@@ -556,8 +566,11 @@ img.video-thumbnail {
 		width: 100px;
 		height: 100px;
 	}
-    .video-thumbnail {
-	   max-width: 118px !important;
-	   max-height: 66px !important;
+	img.video-thumbnail {
+		height: 80px;
+		width: auto;
+	}
+    .cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll {
+	   height: 78%;
     }
 }
