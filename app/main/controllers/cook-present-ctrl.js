@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicLoading', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicLoading) {
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -57,6 +57,10 @@ angular.module('main')
     });
     return ingredientsForRecipes;
   }
+
+  $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
 
   $scope.$on('$ionicView.enter', function(event, data) {
     $ionicNavBarDelegate.showBackButton(false);
@@ -141,6 +145,9 @@ angular.module('main')
       //side dish selection
       $scope.seasoningProfile = $scope.combinedRecipe.defaultSeasoningProfile;
     }
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, 500);
   });
   SeasoningProfileService.getSeasoningProfiles().then(function(response) {
     $scope.seasoningProfiles = response.data;

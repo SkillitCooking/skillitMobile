@@ -1,9 +1,19 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'ItemCollectionService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, ItemCollectionService) {
+.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, ItemCollectionService, $ionicLoading) {
+
+  $ionicLoading.show({
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  $scope.loadedArr = Array(2).fill(false);
   
   ItemCollectionService.getCollectionsForItemType('recipe').then(function(collections) {
     $scope.recipeCollections = collections.data;
+    $scope.loadedArr[0] = true;
+    if($scope.loadedArr[0] && $scope.loadedArr[1]) {
+      $ionicLoading.hide();
+    }
   }, function(response) {
     console.log("Server Error: ", response);
   });
@@ -15,6 +25,10 @@ angular.module('main')
         $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
         $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
       }
+    }
+    $scope.loadedArr[1] = true;
+    if($scope.loadedArr[0] && $scope.loadedArr[1]) {
+      $ionicLoading.hide();
     }
   }, function(response) {
     console.log("Server Error: ", response);

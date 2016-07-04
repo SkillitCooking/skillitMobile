@@ -1,8 +1,11 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate) {
+.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
+  $ionicLoading.show({
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
 
   function recipeCategoryCmpFn(a, b) {
     if(a.recipeCategory < b.recipeCategory) {
@@ -83,6 +86,9 @@ angular.module('main')
         $scope.BYOSelected = true;
       }
     }
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, 300);
   }, function(response){
     console.log("Server Error: " + response.message);
   });

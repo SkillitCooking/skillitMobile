@@ -1,15 +1,22 @@
 'use strict';
 angular.module('main')
-.controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', '$ionicNavBarDelegate', 'ItemCollectionService', function ($scope, $ionicHistory, $state, $ionicNavBarDelegate, ItemCollectionService) {
+.controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', '$ionicNavBarDelegate', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $state, $ionicNavBarDelegate, ItemCollectionService, $ionicLoading) {
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
   };
+
+  $ionicLoading.show({
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
 
   ItemCollectionService.getCollectionsForItemTypes(['trainingVideo', 'howToShop', 'glossary']).then(function(collections) {
     var collectionGroups = collections.data;
     $scope.trainingVideoCollections = collectionGroups['trainingVideo'];
     $scope.howToShopCollections = collectionGroups['howToShop'];
     $scope.glossaryCollections = collectionGroups['glossary'];
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, 200);
   }, function(response) {
     console.log("Server Error: ", response);
   });

@@ -1,8 +1,12 @@
 'use strict';
 angular.module('main')
-.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', function ($scope, $stateParams, $state, RecipeService) {
+.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', function ($scope, $stateParams, $state, RecipeService, $ionicLoading) {
 
   $scope.collection = $stateParams.collection;
+
+  $ionicLoading.show({
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
 
   $scope.recipeIconClass = function(index) {
     if($scope.recipes[index].isSelected) {
@@ -30,6 +34,9 @@ angular.module('main')
         $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
       }
     }
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, 200);
   }, function(response) {
     console.log("Server Error: ", response);
   });

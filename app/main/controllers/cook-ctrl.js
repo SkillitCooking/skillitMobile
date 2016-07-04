@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$ionicHistory', '$ionicNavBarDelegate', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $ionicHistory, $ionicNavBarDelegate) {
+.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $ionicHistory, $ionicNavBarDelegate, $ionicLoading) {
 
   function alphabeticalCmp(a, b) {
     if(a.name < b.name) {
@@ -11,6 +11,11 @@ angular.module('main')
       return 0;
     }
   }
+
+  $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
   $scope.$on('$ionicView.enter', function(event, data){
     $ionicNavBarDelegate.showBackButton(false);
   });
@@ -28,6 +33,9 @@ angular.module('main')
         ingredients[i].ingredientForms[0].isSelected = true;
       }
     }
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, 500);
   }, function(response){
     console.log("Server Error: " + response.message);
   });

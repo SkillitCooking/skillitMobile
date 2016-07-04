@@ -1,11 +1,24 @@
 'use strict';
 angular.module('main')
-.controller('HomeCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'DailyTipService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, DailyTipService) {
+.controller('HomeCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'DailyTipService', '$ionicLoading', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, DailyTipService, $ionicLoading) {
+
+  $ionicLoading.show({
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  $scope.isLoadedArr = Array(2).fill(false);
+
 
   DailyTipService.getTipsOfTheDay().then(function(tips) {
     $scope.tipsOfTheDay = tips.data;
     $scope.tipsOfTheDayIndex = 0;
     $scope.displayDailyTip = $scope.tipsOfTheDay[$scope.tipsOfTheDayIndex];
+    $scope.isLoadedArr[0] = true;
+    if($scope.isLoadedArr[0] && $scope.isLoadedArr[1]) {
+      setTimeout(function() {
+      $ionicLoading.hide();
+    }, 400);
+    }
   }, function(response) {
     console.log("Server Error: " + response.message);
   });
@@ -18,6 +31,12 @@ angular.module('main')
     }
     $scope.recipeIndex = 0;
     $scope.displayRecipe = $scope.recipesOfTheDay[$scope.recipeIndex];
+    $scope.isLoadedArr[1] = true;
+    if($scope.isLoadedArr[0] && $scope.isLoadedArr[1]) {
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, 400);
+    }
   }, function(response) {
     console.log("Server Error: " + response.message);
   });

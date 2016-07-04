@@ -1,6 +1,10 @@
 'use strict';
 angular.module('main')
-.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService) {
+.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService, $ionicLoading) {
+
+  $ionicLoading.show({
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
 
   $scope.$on('$ionicView.enter', function(event, data){
     $ionicNavBarDelegate.showBackButton(true);
@@ -10,6 +14,7 @@ angular.module('main')
 
   ItemCollectionService.getCollectionsForItemType('dailyTip').then(function(collections) {
     $scope.tipCollections = collections.data;
+    $ionicLoading.hide();
   }, function(response) {
     console.log("Server Error: ", response);
   });
