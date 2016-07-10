@@ -54,12 +54,10 @@ angular.module('main')
   $scope.recipeSelected = function() {
     $scope.isRecipeSelected = true;
     setTimeout(function () {
-      $state.go('main.cookPresent', {
+      $state.go('main.cookPresentHome', {
         recipeIds: [$scope.displayRecipe._id],
         alaCarteRecipes: [],
-        alaCarteSelectedArr: [],
-        cameFromHome: true,
-        loadAlaCarte: true
+        alaCarteSelectedArr: []
       }, 200);
     });
   };
@@ -129,7 +127,7 @@ angular.module('main')
   };
 
   $scope.$on("$ionicView.enter", function(event, data) {
-    $ionicNavBarDelegate.showBackButton(true);
+    $ionicNavBarDelegate.showBackButton(false);
     $scope.isRecipeSelected = false;
   });
 }]);

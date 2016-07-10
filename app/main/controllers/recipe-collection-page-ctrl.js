@@ -1,8 +1,12 @@
 'use strict';
 angular.module('main')
-.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', function ($scope, $stateParams, $state, RecipeService, $ionicLoading) {
+.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory',function ($scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory) {
 
   $scope.collection = $stateParams.collection;
+
+  $scope.$on('$ionicView.enter', function(event, data){
+    $ionicNavBarDelegate.showBackButton(false);
+  });
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -16,13 +20,17 @@ angular.module('main')
     }
   };
 
+  $scope.navigateBack = function() {
+    $ionicHistory.goBack();
+  };
+
   $scope.recipeSelected = function(recipe) {
     recipe.isSelected = true;
     setTimeout(function() {
       recipe.isSelected = false;
     }, 400);
     setTimeout(function() {
-      $state.go('main.cookPresent', {recipeIds: [recipe._id], selectedIngredientNames: [], alaCarteRecipes: [], alaCarteSelectedArr: [], loadAlaCarte: true});
+      $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: [], alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
     }, 200);
   };
 

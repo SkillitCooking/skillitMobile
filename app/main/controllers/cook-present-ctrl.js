@@ -68,6 +68,9 @@ angular.module('main')
 
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
   $scope.cameFromHome = $stateParams.cameFromHome;
+  $scope.cameFromRecipes = $stateParams.cameFromRecipes;
+  $scope.cameFromRecipeCollection = $stateParams.cameFromRecipeCollection;
+  console.log("came from recipe collection", $stateParams.cameFromRecipeCollection);
 
   if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
@@ -153,6 +156,10 @@ angular.module('main')
     $scope.seasoningProfiles = response.data;
   });
 
+  $scope.fromCookTab = function() {
+    return !$scope.cameFromHome && !$scope.cameFromRecipes && !$scope.cameFromRecipeCollection;
+  };
+
   $scope.isSingleStep = function(step) {
     if(step.text) {
       return true;
@@ -173,11 +180,25 @@ angular.module('main')
   };
 
   $scope.addSide = function() {
-    $state.go('main.cookAddSide', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+    if($scope.cameFromHome) {
+      $state.go('main.cookAddSideHome', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+    } else if($scope.cameFromRecipes) {
+      $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+    } else if($scope.cameFromRecipeCollection) {
+      $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, cameFromRecipes: false, cameFromRecipeCollection: true});
+    } else {
+      $state.go('main.cookAddSide', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+    }
   };
 
   $scope.editBYOIngredients = function() {
-    $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName});
+    if($scope.cameFromRecipes) {
+      $state.go('main.editBYOIngredientsRecipes', {
+        alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName
+      });
+    } else {
+      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName});
+    }
   };
 
   //first have popup show both cases; then do automatic video play for video case
@@ -333,18 +354,22 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     //need to get timesclicked mechanism going here
-    for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
-      $scope.alaCarteSelectedArr.fill(false);
-    }
-    if($scope.cameFromHome) {
-      //make below a constant
-      $ionicTabsDelegate.select(0);
-    } else if($scope.cameFromRecipes) {
-      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName, cameFromRecipes: true});
-    } else { 
-      $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+    if($scope.alaCarteSelectedArr) {
+      for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
+        $scope.alaCarteSelectedArr.fill(false);
+      }
+      if($scope.cameFromHome) {
+        $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+      } else if($scope.cameFromRecipes) {
+        $ionicHistory.goBack($scope.numberBackToRecipeSelection + 1);
+      } else if($scope.cameFromRecipeCollection) {
+        $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+      } else { 
+        $ionicHistory.goBack($scope.numberBackToRecipeSelection);
+      }
     }
   };
+
   $scope.resetEverything = function() {
     $ionicHistory.clearCache().then(function() {
       $state.go('main.cook');

@@ -227,7 +227,8 @@ angular.module('main')
     var cutIndex = _.findIndex(stepList, function(iterStep) {
       return iterStep.stepType === 'Cut'; 
     });
-    if(cutIndex !== -1) {
+    if(!step.isEmpty && cutIndex !== -1) {
+      console.log("cutStep:", step);
       for (var i = step.textArr.length - 1; i >= 0; i--) {
         var stepMatchIndex = _.findIndex(stepList, function(iterStep) {
           //iterStep's textArr has an element that has matching ingredient

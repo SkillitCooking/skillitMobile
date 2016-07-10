@@ -1,11 +1,15 @@
 'use strict';
 angular.module('main')
-.controller('TipCollectionPageCtrl', ['$scope', '$stateParams', 'DailyTipService', '$ionicLoading', function ($scope, $stateParams, DailyTipService, $ionicLoading) {
+.controller('TipCollectionPageCtrl', ['$scope', '$stateParams', 'DailyTipService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', function ($scope, $stateParams, DailyTipService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory) {
 
   $scope.collection = $stateParams.collection;
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  $scope.$on('$ionicView.enter', function(event, data){
+    $ionicNavBarDelegate.showBackButton(false);
   });
 
   DailyTipService.getTipsForCollection($scope.collection._id).then(function(tips) {
@@ -14,4 +18,8 @@ angular.module('main')
   }, function(response) {
     console.log("Server Error: ", response);
   });
+
+  $scope.navigateBack = function() {
+    $ionicHistory.goBack();
+  };
 }]);

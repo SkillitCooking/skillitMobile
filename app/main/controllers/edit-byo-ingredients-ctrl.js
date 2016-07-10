@@ -6,12 +6,12 @@ angular.module('main')
     $ionicNavBarDelegate.showBackButton(false);
   });
 
-  console.log("params", $stateParams);
   $scope.hasChanged = false;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.BYOIngredientTypes = $stateParams.BYOIngredientTypes;
   $scope.originalBYOIngredientTypes = angular.copy($scope.BYOIngredientTypes);
   $scope.BYOName = $stateParams.BYOName;
+  $scope.loadAlaCarte = $stateParams.loadAlaCarte;
 
   $scope.isCheckboxDisabled = function(type) {
     if(type.minNeeded !== '0') {
@@ -50,7 +50,11 @@ angular.module('main')
         }
       }
     }
-    $state.go('main.cookPresent', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, cameFromRecipes: $stateParams.cameFromRecipes, loadAlaCarte: $stateParams.cameFromRecipes});
+    if($stateParams.cameFromRecipes) {
+      $state.go('main.cookPresentRecipes', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames:$scope.selectedIngredientNames, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: $scope.loadAlaCarte});
+    } else {
+      $state.go('main.cookPresent', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, cameFromRecipes: $stateParams.cameFromRecipes});
+    }
   };
 
   $scope.selectionHasChanged = function() {
@@ -70,7 +74,8 @@ angular.module('main')
 
   $scope.cancel = function() {
     if($stateParams.cameFromRecipes) {
-      $ionicTabsDelegate.select(4);
+      //$ionicTabsDelegate.select(4);
+      $ionicHistory.goBack();
     }
     if($scope.hasChanged) {
       for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
@@ -94,7 +99,7 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     if($stateParams.cameFromRecipes) {
-      $ionicTabsDelegate.select(4);
+      $ionicHistory.goBack();
     }
     if($scope.hasChanged) {
       for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {

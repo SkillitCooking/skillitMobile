@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
 .controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', '$ionicNavBarDelegate', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $state, $ionicNavBarDelegate, ItemCollectionService, $ionicLoading) {
+
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
   };
@@ -68,6 +69,6 @@ angular.module('main')
   };
 
   $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(true);
+    $ionicNavBarDelegate.showBackButton(false);
   });
 }]);

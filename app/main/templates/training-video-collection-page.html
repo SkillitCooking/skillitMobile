@@ -1,5 +1,8 @@
 <ion-view view-title="Learn">
   <!-- do you want padding? -->
+  <ion-nav-buttons side="primary">
+    <button ng-click="navigateBack()" class="button"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
+  </ion-nav-buttons>
   <ion-content class="padding">
     <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
     <ion-list>

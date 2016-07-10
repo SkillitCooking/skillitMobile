@@ -39,7 +39,7 @@ angular.module('main')
   };
 
   $scope.$on('$ionicView.enter', function(event, data) {
-    $ionicNavBarDelegate.showBackButton(true);
+    $ionicNavBarDelegate.showBackButton(false);
   });
 
   $scope.fullSelected = true;
@@ -94,15 +94,14 @@ angular.module('main')
       }
     }
     setTimeout(function() {
-      $state.go('main.editBYOIngredients', {
+      $state.go('main.editBYOIngredientsRecipes', {
         alaCarteRecipes: [],
         alaCarteSelectedArr: [],
         previousRecipeIds: [recipe._id],
         selectedIngredientNames: [],
-        numberBackToRecipeSelection: 1,
         BYOIngredientTypes: ingredientTypes,
         BYOName: recipe.name,
-        cameFromRecipes: true
+        loadAlaCarte: true
       }, 200);
     });
   };

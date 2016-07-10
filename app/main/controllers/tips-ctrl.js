@@ -7,7 +7,7 @@ angular.module('main')
   });
 
   $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(true);
+    $ionicNavBarDelegate.showBackButton(false);
   });
 
   $scope.cameFromHome = $stateParams.cameFromHome;

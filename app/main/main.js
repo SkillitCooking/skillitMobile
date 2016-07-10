@@ -30,6 +30,69 @@ angular.module('main', [
           }
         }
       })
+      .state('main.cookPresentHome', {
+        url: '/home/recipePresent',
+        views: {
+          'tab-home': {
+            templateUrl: 'main/templates/cook-present.html',
+            controller: 'CookPresentCtrl as ctrl'
+          }
+        },
+        params: {
+          recipeIds: null,
+          selectedIngredientNames: null,
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          sidesAdded: false,
+          ingredientsChanged: false,
+          numberBackToRecipeSelection: null,
+          cameFromHome: true,
+          cameFromRecipes: false,
+          loadAlaCarte: true
+        }
+      })
+      .state('main.cookAddSideHome', {
+        cache: false,
+        url: '/home/recipePresent/addSide',
+        views: {
+          'tab-home': {
+            templateUrl: 'main/templates/side-dish-selection.html',
+            controller: 'SideDishSelectionCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          numberBackToRecipeSelection: null,
+          cameFromHome: true
+        }
+      })
+      .state('main.editBYOIngredientsHome', {
+        cache: false,
+        url: '/home/recipePresent/editIngredients',
+        views: {
+          'tab-home': {
+            templateUrl: 'main/templates/edit-byo-ingredients.html',
+            controller: 'EditByoIngredientsCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          numberBackToRecipeSelection: null,
+          BYOIngredientTypes: null,
+          BYOName: null,
+          cameFromRecipes: false,
+          cameFromHome: true
+        }
+      })
       .state('main.cook', {
         url: '/cook',
         views: {
@@ -93,7 +156,7 @@ angular.module('main', [
       })
       .state('main.editBYOIngredients', {
         cache: false,
-        url: 'cook/recipePresent/editIngredients',
+        url: '/cook/recipePresent/editIngredients',
         views: {
           'tab-cook': {
             templateUrl: 'main/templates/edit-byo-ingredients.html',
@@ -155,6 +218,71 @@ angular.module('main', [
         },
         params: {
           collection: null
+        }
+      })
+      .state('main.cookPresentRecipes', {
+        url: '/recipes/recipePresent',
+        views: {
+          'tab-recipes': {
+            templateUrl: 'main/templates/cook-present.html',
+            controller: 'CookPresentCtrl as ctrl'
+          }
+        },
+        params: {
+          recipeIds: null,
+          selectedIngredientNames: null,
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          sidesAdded: false,
+          ingredientsChanged: false,
+          numberBackToRecipeSelection: null,
+          cameFromHome: false,
+          cameFromRecipes: true,
+          cameFromRecipeCollection: false,
+          loadAlaCarte: true
+        }
+      })
+      .state('main.cookAddSideRecipes', {
+        cache: false,
+        url: '/recipes/recipePresent/addSide',
+        views: {
+          'tab-recipes': {
+            templateUrl: 'main/templates/side-dish-selection.html',
+            controller: 'SideDishSelectionCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          numberBackToRecipeSelection: null,
+          cameFromRecipes: true,
+          cameFromRecipeCollection: false
+        }
+      })
+      .state('main.editBYOIngredientsRecipes', {
+        cache: false,
+        url: '/recipes/recipePresent/editIngredients',
+        views: {
+          'tab-recipes': {
+            templateUrl: 'main/templates/edit-byo-ingredients.html',
+            controller: 'EditByoIngredientsCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          numberBackToRecipeSelection: null,
+          BYOIngredientTypes: null,
+          BYOName: null,
+          cameFromRecipes: true,
+          loadAlaCarte: false
         }
       })
       .state('main.learn', {
