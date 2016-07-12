@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
-.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService',
-  function (_, stirStepService, StepTipService) {
+.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService', 'DishInputService'
+  function (_, stirStepService, StepTipService, DishInputService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -112,6 +112,28 @@ angular.module('main')
             } else {
               //error - cannot find products for step
               console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
+            }
+          } else if(step.ingredientsToSautee && step.ingredientsToSautee.length > 0) {
+            var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
+            if(originalDishProducts) {
+              var dishKey = DishInputService.getDishKey(step.stepType);
+              if(originalDishProducts[dishKey]) {
+                step.sauteeDish = originalDishProducts[dishKey].dishes[0];
+              } else {
+                if(originalDishProducts.dishes && originalDishProducts.dishes.length) {
+                  step.sauteeDish = originalDishProducts.dishes[0];
+                }
+              }
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].dishes = [step.sauteeDish];
+            } else {
+              //error
+              console.log("sauteeStepService error: cannot trace sauteeDish: ", step);
             }
           }
         } else {

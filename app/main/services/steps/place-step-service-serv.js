@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('placeStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('placeStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
   var service = {};
 
   //ingredientInputs ==> ingredientsToPlace
@@ -101,7 +101,6 @@ angular.module('main')
         var referencedStep = _.find(recipe.stepList, function(iterStep) {
           return iterStep.stepId === dishProductInput.sourceId;
         });
-        console.log("place referencedStep:", referencedStep);
         if(referencedStep) {
           if(!referencedStep.isEmpty) {
             if(referencedStep.products){
@@ -119,6 +118,35 @@ angular.module('main')
               //error - no products for step
               console.log("placeStepService error: no products for referencedStep: ", referencedStep);
             }
+          } else if(step.ingredientsToPlace && step.ingredientsToPlace.length > 0) {
+            //dishInput check here
+            var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
+            if(originalDishProducts) {
+              var dishKey = DishInputService.getDishKey(step.stepType);
+              if(originalDishProducts[dishKey]) {
+                //then came from stepProduct
+                step.dishToPlaceOn = originalDishProducts[dishKey].dishes[0];
+                step.alreadyPlacedIngredients = originalDishProducts[dishKey].ingredients;
+              } else {
+                if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  //then came from equipmentList
+                  step.dishToPlaceOn = originalDishProducts.dishes[0];
+                  step.alreadyPlacedIngredients = originalDishProducts.ingredients;
+                } 
+              }
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.alreadyPlacedIngredients);
+              step.products[step.productKeys[0]].dishes = [step.dishToPlaceOn];
+            } else {
+              //error
+              console.log("PlaceStepService error: cannot trace dishToPlaceOn for step with ingredientsToPlace: ", step);
+            }
+            
           }
         } else {
           //error then step couldn't be located

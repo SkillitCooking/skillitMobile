@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('cookStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('cookStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -110,6 +110,28 @@ angular.module('main')
             } else {
               //error - no products for referencedStep
               console.log("cookStepService error: no products for referencedStep: ", referencedStep);
+            }
+          } else if(step.ingredientsToCook && step.ingredientsToCook.length > 0) {
+            var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
+            if(originalDishProducts) {
+              var dishKey = DishInputService.getDishKey(step.stepType);
+              if(originalDishProducts[dishKey]) {
+                step.cookingDish = originalDishProducts.dishes[0];
+              } else {
+                if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  step.cookingDish = originalDishProducts.dishes[0];
+                }
+              }
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].dishes = [step.cookingDish];
+            } else {
+              //error
+              console.log("cookStepService error: cannot trace cookingDish: ", step);
             }
           }
         } else {

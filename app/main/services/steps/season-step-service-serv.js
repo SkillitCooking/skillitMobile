@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('seasonStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('seasonStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -108,6 +108,28 @@ angular.module('main')
               //error - no products for step
               console.log("seasonStepService error: no products for step: ", referencedStep);
             }
+          } else if (step.ingredientsToSeason && step.ingredientsToSeason.length > 0) {
+            var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
+            if(originalDishProducts) {
+              var dishKey = DishInputService.getDishKey(step.stepType);
+              if(originalDishProducts[dishKey]) {
+                step.seasoningDish = originalDishProducts[dishKey].dishes[0];
+              } else {
+                if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  step.seasoningDish = originalDishProducts.dishes[0];
+                }
+              }
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].dishes = [step.seasoningDish];
+            } else {
+              //error
+              console.log("seasonStepService error: cannot trace seasoningDish for step: ", step);
+            }
           }
         } else {
           //error - no find step from input
@@ -122,8 +144,10 @@ angular.module('main')
     }
     //set isEmpty
     if(step.ingredientsToSeason.length === 0) {
+      console.log("season empty: ", step);
       step.isEmpty = true;
     } else {
+      console.log("season not empty: ", step);
       step.isEmpty = false;
     }
     //set stepTips

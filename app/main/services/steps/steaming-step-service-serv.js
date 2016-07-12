@@ -112,6 +112,28 @@ angular.module('main')
               //error - no products for step
               console.log("steamingStepService error: no products for referencedStep", dishInput);
             }
+          } else if(step.ingredientsToSteam && step.ingredientsToSteam.length > 0) {
+            var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
+            if(originalDishProducts) {
+              var dishKey = DishInputService.getDishKey(step.stepType);
+              if(originalDishProducts[dishKey]) {
+                step.steamingDish = originalDishProducts[dishKey].dishes[0];
+              } else {
+                if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  step.steamingDish = originalDishProducts.dishes[0];
+                }
+              }
+              if(!step.products) {
+                step.products = {};
+                step.products[step.productKeys[0]] = {
+                  ingredients: []
+                };
+              }
+              step.products[step.productKeys[0]].dishes = [step.steamingDish];
+            } else {
+              //error
+              console.log("steamingStepService error: cannot trace steamingDish for step: ", step);
+            }
           }
         } else {
           //error - no step found

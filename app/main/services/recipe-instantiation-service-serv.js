@@ -239,7 +239,10 @@ angular.module('main')
       var dishInputStep = _.find(stepList, function(step) {
         return step.stepId === dishInput.sourceId;
       });
-      dishInputStep.isEmpty = false;
+      //here is where offending isEmpty is getting called
+      if(!dishInputStep.isEmptyLink) {
+        dishInputStep.isEmpty = false;
+      }
       var newDishInput = getDishInput(dishInputStep);
       console.log("recursive dishInput: ", dishInputStep);
       if(newDishInput) {
@@ -260,10 +263,11 @@ angular.module('main')
         for (var j = recipes[i].stepList.length - 1; j >= 0; j--) {
           var step = recipes[i].stepList[j];
           if(!step.isEmpty && hasIngredientInput(step)) {
-            console.log("step not empty");
+            console.log("step not empty RI: ", step);
             var dishInput = getDishInput(step);
             if(dishInput) {
               console.log("positive dishInput: ", dishInput);
+              console.log("positive dishInput step: ", step);
               //check if dishInput is array, then handle accordingly
               if(Array.isArray(dishInput)) {
                 for (var k = dishInput.length - 1; k >= 0; k--) {

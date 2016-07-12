@@ -54,13 +54,18 @@ angular.module('main')
     var stepNumber = 1;
     if(combinedRecipe) {
       for (var i = 0; i < combinedRecipe.stepList.length; i++) {
+        console.log("step index: ", i);
+        console.log("step: ", combinedRecipe.stepList[i]);
         if(!combinedRecipe.stepList[i].isEmpty){
           if(combinedRecipe.stepList[i].textArr) {
             for (var j = 0; j < combinedRecipe.stepList[i].textArr.length; j++) {
+              console.log("subStep: ", combinedRecipe.stepList[i].textArr[j]);
               combinedRecipe.stepList[i].textArr[j].stepNumber = stepNumber;
+              console.log("step number: ", stepNumber);
               stepNumber += 1;
             }
           } else {
+            console.log("step number: ", stepNumber);
             combinedRecipe.stepList[i].stepNumber = stepNumber;
             stepNumber += 1;
           }
