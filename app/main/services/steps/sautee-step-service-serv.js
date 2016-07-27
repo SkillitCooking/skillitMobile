@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService', 'DishInputService'
+.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService', 'DishInputService',
   function (_, stirStepService, StepTipService, DishInputService) {
   var service = {};
 

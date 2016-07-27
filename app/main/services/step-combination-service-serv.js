@@ -225,6 +225,7 @@ angular.module('main')
   service.getCombinedRecipe = function(recipes, currentSeasoningProfile) {
     var combinedRecipe = combineRecipes(recipes, currentSeasoningProfile);
     assignStepNumbers(combinedRecipe);
+    console.log("combinedRecipe post step # assignment:", combinedRecipe);
     return combinedRecipe;
   };
 

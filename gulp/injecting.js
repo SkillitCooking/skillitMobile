@@ -1,6 +1,7 @@
 'use strict';
 // gulp
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var paths = gulp.paths;
 var options = gulp.options;
 // plugins
@@ -12,7 +13,6 @@ var mainBowerFiles = require('main-bower-files');
 // inject app/**/*.js, bower components, css into index.html
 // inject environment variables into config.js constant
 gulp.task('inject-all', ['styles', 'wiredep', 'bower-fonts', 'environment', 'build-vars'], function () {
-
   return gulp.src('app/index.html')
     .pipe(
       $.inject( // app/**/*.js files

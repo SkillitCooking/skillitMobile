@@ -35,7 +35,6 @@ angular.module('main')
     }
     switch(dishInput.sourceType) {
       case "EquipmentList":
-        console.log("step ---- equipmentList: ", step);
         var dish = _.find(equipmentList, function(dish) {
           return dish.name === dishInput.key;
         });
@@ -48,6 +47,8 @@ angular.module('main')
           //error
           console.log("DishInputService error: no dish found on equipmentList from input: ", dishInput);
         }
+        break;
+
       case "StepProduct":
         var prevStep = _.find(stepList, function(iterStep) {
           return iterStep.stepId === dishInput.sourceId;
@@ -67,6 +68,8 @@ angular.module('main')
           //error - cannot find prevStep
           console.log("DishInputService error: cannot find previous step from input: ", dishInput);
         }
+        break;
+        
       default:
         //error
         console.log("DishInputService error: unexpected sourceType: ", dishInput);
