@@ -100,6 +100,9 @@ angular.module('main', [
             templateUrl: 'main/templates/cook.html',
             controller: 'CookCtrl as ctrl'
           }
+        },
+        params: {
+          clearHistory: false
         }
       })
       .state('main.cookRecipeSelection', {

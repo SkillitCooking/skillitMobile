@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $ionicHistory, $ionicNavBarDelegate, $ionicLoading) {
+.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
 
   function alphabeticalCmp(a, b) {
     if(a.name < b.name) {
@@ -12,12 +12,18 @@ angular.module('main')
     }
   }
 
+
+
   $ionicLoading.show({
-      template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
   });
 
   $scope.$on('$ionicView.enter', function(event, data){
     $ionicNavBarDelegate.showBackButton(false);
+    if($stateParams.clearHistory) {
+      $ionicHistory.clearHistory();
+      $stateParams.clearHistory = false;
+    }
   });
 
   IngredientService.getIngredientsForSelection().then(function(response){
@@ -37,7 +43,7 @@ angular.module('main')
       $ionicLoading.hide();
     }, 500);
   }, function(response){
-    console.log("Server Error: " + response.message);
+    ErrorService.showErrorAlert();
   });
 
   $scope.notBeginningSlide = function() {
@@ -57,7 +63,6 @@ angular.module('main')
   };
 
   $scope.slideHasChanged = function(index) {
-    console.log(index);
     $ionicScrollDelegate.scrollTop();
   };
 
@@ -156,8 +161,13 @@ angular.module('main')
 
         default:
           //error
-          console.log("Cook controller error: unexpected inputCategory: ", curInputCategory);
-          return false;
+          //call error api
+          ErrorService.logError({
+            message: "Cook Controller ERROR: unexpected inputCategory in function 'canHaveForms'",
+            inputCategory: curInputCategory 
+          });
+          ErrorService.showErrorAlert();
+          break;
       }
     } else {
       return false;

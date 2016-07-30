@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('GlossaryService', function (Restangular) {
+.factory('GlossaryService', function (Restangular) {
   var baseGlossary = Restangular.all('glossaryEntries');
 
   return {

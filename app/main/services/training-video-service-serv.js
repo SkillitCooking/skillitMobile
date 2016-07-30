@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('TrainingVideoService', function (Restangular) {
+.factory('TrainingVideoService', function (Restangular) {
   var baseTrainingVideos = Restangular.all('trainingVideos');
 
   return {
