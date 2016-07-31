@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('HomeCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'DailyTipService', '$ionicLoading', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, DailyTipService, $ionicLoading) {
+.controller('HomeCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'DailyTipService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, DailyTipService, $ionicLoading, ErrorService) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -20,7 +20,7 @@ angular.module('main')
     }, 400);
     }
   }, function(response) {
-    console.log("Server Error: " + response.message);
+    ErrorService.showErrorAlert();
   });
 
   RecipeService.getRecipesOfTheDay().then(function (recipes) {
@@ -38,7 +38,7 @@ angular.module('main')
       }, 400);
     }
   }, function(response) {
-    console.log("Server Error: " + response.message);
+    ErrorService.showErrorAlert();
   });
 
   $scope.isRecipeSelected = false;

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory',function ($scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory) {
+.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', 'ErrorService', function ($scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory, ErrorService) {
 
   $scope.collection = $stateParams.collection;
 
@@ -46,6 +46,6 @@ angular.module('main')
       $ionicLoading.hide();
     }, 200);
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 }]);

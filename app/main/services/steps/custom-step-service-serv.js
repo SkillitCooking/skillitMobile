@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('customStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
+.factory('customStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
   var service = {};
 
   function instantiateStep (step, recipe) {
@@ -48,7 +48,13 @@ angular.module('main')
             }
           } else {
             //error
-            console.log("customStepService error: no type found for input: ", ingredientInput);
+            ErrorService.logError({
+              message: "Custom Step Service ERROR: no type found for input in function 'instantiateStep'",
+              ingredientInput: ingredientInput,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -70,17 +76,37 @@ angular.module('main')
               } else {
                 //error
                 console.log("customStepService error: no products for referencedStep: ", referencedStep);
+                ErrorService.logError({
+                  message: "Custom Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error
             console.log("customStepService error: no step found for input: ", ingredientInput);
+            ErrorService.logError({
+              message: "Custom Step Service ERROR: no step found for input in function 'instantiateStep'",
+              ingredientInput: ingredientInput,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error
-          console.log("customStepService error: unexpected sourceType for ingredientInput: ", ingredientInput);
+          ErrorService.logError({
+            message: "Boil Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+            ingredientInput: ingredientInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
           break;
       }
     }
@@ -104,6 +130,13 @@ angular.module('main')
           } else {
             //error
             console.log("customStepService error: no dish found for input: ", dishInput);
+            ErrorService.logError({
+              message: "Custom Step Service ERROR: no dish found for input in function 'instantiateStep'",
+              dishInput: dishInput,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -124,7 +157,13 @@ angular.module('main')
                 step.products[step.productKeys[0]].dishes.push(referencedStep.products[dishInput.key].dishes[0]);
               } else {
                 //error
-                console.log("customStepService error: no products for referencedStep: ", referencedStep);
+                ErrorService.logError({
+                  message: "Custom Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             } else if(step.products[step.productKeys[0]].ingredients && step.products[step.productKeys[0]].ingredients.length > 0) {
               var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
@@ -148,11 +187,24 @@ angular.module('main')
               } else {
                 //error
                 console.log("customStepService error: cannot trace dish input on custom step: ", step);
+                ErrorService.logError({
+                  message: "Custom Step Service ERROR: cannot trace dish input in function 'instantiateStep'",
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error
             console.log("customStepService error: no step found from input: ", dishInput);
+            ErrorService.logError({
+              message: "Custom Step Service ERROR: no step found from input in function 'instantiateStep'",
+              dishInput: dishInput,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 

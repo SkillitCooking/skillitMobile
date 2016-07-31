@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('slowCookStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('slowCookStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -36,7 +36,13 @@ angular.module('main')
             }
           } else {
             //error - no ingredientType found
-             console.log("slowCookStepService error: no ingredientType found for input: ", input);
+             ErrorService.logError({
+              message: "SlowCook Step Service ERROR: no ingredientType found for input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -58,18 +64,36 @@ angular.module('main')
                 step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
               } else {
                 //error - no product for step
-                console.log("slowCookStepService error: no products for referencedStep", referencedStep);
+                ErrorService.logError({
+                  message: "SlowCook Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error - can't find step
-            console.log("slowCookStepService error: can't find step from input: ", input);
+            ErrorService.logError({
+              message: "SlowCook Step Service ERROR: no can't find step from input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error - unexpected sourceType
-          console.log("slowCookStepService error: unexpected sourceType: ", input);
+          ErrorService.logError({
+            message: "SlowCook Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
           break;
       }
     }
@@ -98,6 +122,11 @@ angular.module('main')
           //error
           stepText = "NO INGREDIENTS TO SLOW COOK!";
           console.log("slowCookStepService error: no ingredientsToSlowCook");
+          ErrorService.logError({
+            message: "SlowCook Step Service ERROR: no ingredients to slow cook in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:

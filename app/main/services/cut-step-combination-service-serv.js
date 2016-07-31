@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('CutStepCombinationService', ['_', function (_) {
+.factory('CutStepCombinationService', ['_', 'ErrorService', function (_, ErrorService) {
   var service = {};
 
   function haveSameCutMethod(stepListStep, stepToPlace) {
@@ -32,13 +32,15 @@ angular.module('main')
       //need total length of both...
       receivingArrElem.recipeCategorys = receivingArrElem.recipeCategorys.concat(stepToAddArr[stepToAddIndex].recipeCategorys);
       var countedRecipes = _.countBy(receivingArrElem.recipeCategorys);
-      console.log("countedRecipes: ", countedRecipes);
       var countedRecipeKeys = Object.keys(countedRecipes);
-      console.log("countedRecipeKeys: ", countedRecipeKeys);
       switch(countedRecipeKeys.length) {
         case 0:
           //error - expecting recipeCategorys
-          console.log("CutStepCombinationService error: expected more than 0 recipeCategorys: ", receivingArrElem.recipeCategorys);
+          ErrorService.logError({
+            message: "CutStepCombination Service ERROR: expected more than 0 recipeCategorys in function 'addToStep'",
+            receivingArrElem: receivingArrElem
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -104,13 +106,15 @@ angular.module('main')
       receivingArrElem.text = receivingArrElem.text.slice(0, endIndex);
       receivingArrElem.recipeCategorys = receivingArrElem.recipeCategorys.concat(stepToAddArr[stepToAddIndex].recipeCategorys);
       var countedRecipes = _.countBy(receivingArrElem.recipeCategorys);
-      console.log("countedRecipes: ", countedRecipes);
       var countedRecipeKeys = Object.keys(countedRecipes);
-      console.log("countedRecipeKeys: ", countedRecipeKeys);
       switch(countedRecipeKeys.length) {
         case 0:
           //error - expecting recipeCategorys
-          console.log("CutStepCombinationService error: expected more than 0 recipeCategorys:", receivingArrElem.recipeCategorys);
+          ErrorService.logError({
+            message: "CutStepCombination Service ERROR: expected more than 0 recipeCategorys in function 'addToStep'",
+            receivingArrElem: receivingArrElem
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -187,7 +191,11 @@ angular.module('main')
       switch(receivingArrElem.otherActionTypes.length) {
         case 0:
           //error case
-          console.log("CutStepCombinationService error: was expecting elements in otherActionTypes:", receivingArrElem);
+          ErrorService.logError({
+            message: "CutStepCombination Service ERROR: was expecting elements in otherActionTypes in function 'amendStep'",
+            receivingArrElem: receivingArrElem
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -228,7 +236,6 @@ angular.module('main')
       return iterStep.stepType === 'Cut'; 
     });
     if(!step.isEmpty && cutIndex !== -1) {
-      console.log("cutStep:", step);
       for (var i = step.textArr.length - 1; i >= 0; i--) {
         var stepMatchIndex = _.findIndex(stepList, function(iterStep) {
           //iterStep's textArr has an element that has matching ingredient

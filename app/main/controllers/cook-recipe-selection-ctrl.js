@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading) {
+.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $ionicLoading.show({
@@ -80,7 +80,11 @@ angular.module('main')
         if($scope.noAlaCarteDishes()) {
           //error - there should be at least one recipe available for some selection
           //of ingredients
-          console.log("CookRecipeSelectionCtrl Error: no recipes");
+          ErrorService.logError({
+            message: "Cook Recipe Selection Controller ERROR: no recipes found for selected Ingredients",
+            ingredients: ingredientNames
+          });
+          ErrorService.showErrorAlert();
         }
       } else {
         $scope.BYOSelected = true;
@@ -90,7 +94,7 @@ angular.module('main')
       $ionicLoading.hide();
     }, 300);
   }, function(response){
-    console.log("Server Error: " + response.message);
+    ErrorService.showErrorAlert();
   });
 
   $scope.noFullDishes = function() {
@@ -235,9 +239,13 @@ angular.module('main')
   $scope.resetEverything = function() {
     $ionicHistory.clearCache().then(function() {
       $state.go('main.cook');
-    }, function() {
+    }, function(error) {
       //error
-      console.log('error: failure to clear $ionicHistory clearCache');
+      ErrorService.logError({
+        message: "Cook Recipe Selection Controller ERROR: failed to clear $ionicHistory cache",
+        error: error
+      });
+      ErrorService.showErrorAlert();
     });
   };
 

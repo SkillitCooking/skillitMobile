@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
-.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService', 'DishInputService',
-  function (_, stirStepService, StepTipService, DishInputService) {
+.factory('sauteeStepService', ['_', 'stirStepService', 'StepTipService', 'DishInputService', 'ErrorService', 
+  function (_, stirStepService, StepTipService, DishInputService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -38,6 +38,13 @@ angular.module('main')
           } else {
             //error - no type found
             console.log("sauteeStepService error: could not find ingredientType for input: ", input);
+            ErrorService.logError({
+              message: "Sautee Step Service ERROR: no ingredientType found for input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -58,18 +65,36 @@ angular.module('main')
                 step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
               } else {
                 //error: no products for referenced step
-                console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
+                ErrorService.logError({
+                  message: "Sautee Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error: can't find referenced step
-            console.log("sauteeStepService error: can't find step from input: ", input);
+            ErrorService.logError({
+              message: "Sautee Step Service ERROR: can't find step from input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error - unexpected sourceType
-          console.log("sauteeStepService error: unexpected sourceType: ", input);
+          ErrorService.logError({
+            message: "Sautee Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
           break;
       }
     }
@@ -90,7 +115,13 @@ angular.module('main')
           step.products[step.productKeys[0]].dishes = [step.sauteeDish];
         } else {
           //error - dish not found
-          console.log("sauteeStepService error: dish not found for input: ", dishInput);
+          ErrorService.logError({
+            message: "Dry Step Service ERROR: dish not found for input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -111,7 +142,13 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.sauteeDish];
             } else {
               //error - cannot find products for step
-              console.log("sauteeStepService error: no products for referencedStep: ", referencedStep);
+              ErrorService.logError({
+                message: "Sautee Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } else if(step.ingredientsToSautee && step.ingredientsToSautee.length > 0) {
             var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
@@ -133,18 +170,36 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.sauteeDish];
             } else {
               //error
-              console.log("sauteeStepService error: cannot trace sauteeDish: ", step);
+              ErrorService.logError({
+                message: "Sautee Step Service ERROR: cannot trace sauteeDish in function 'instantiateStep'",
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           }
         } else {
           //error - cannot find step from input
           console.log("sauteeStepService error: cannot find step from input: ", dishInput);
+          ErrorService.logError({
+            message: "Sautee Step Service ERROR: cannot find step from input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected input type
-        console.log("sauteeStepService error: unexpected dishInput type from input: ", dishInput);
+        ErrorService.logError({
+          message: "Sautee Step Service ERROR: unexpected dishInput type in function 'instantiateStep'",
+          dishInput: dishInput,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //set isEmpty condition
@@ -168,8 +223,11 @@ angular.module('main')
       switch(step.ingredientsToSautee.length) {
         case 0:
           //error
-          console.log("sauteeStepService error: no ingredientsToSautee: ", step);
-          stepText = "NO INGREDIENTS TO SAUTEE";
+          ErrorService.logError({
+            message: "Sautee Step Service ERROR: no ingredientType found for input key in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:

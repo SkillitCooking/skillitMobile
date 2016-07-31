@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('RecipeOrderingService', ['_', 'CutStepCombinationService', 'SeasoningProfileTextService', function (_, CutStepCombinationService, SeasoningProfileTextService) {
+.factory('RecipeOrderingService', ['_', 'CutStepCombinationService', 'SeasoningProfileTextService', 'ErrorService', function (_, CutStepCombinationService, SeasoningProfileTextService, ErrorService) {
   var service = {};
 
   function isPrepStep(step) {
@@ -28,7 +28,11 @@ angular.module('main')
 
       default:
         //error - unexpected step.stepType
-        console.log("RecipeOrderingService error: unrecognized stepType: ", step);
+        ErrorService.logError({
+          message: "RecipeOrdering Service ERROR: unrecognized stepType in function 'isPrepStep'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
         break;
     }
   }

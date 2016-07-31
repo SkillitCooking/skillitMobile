@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('heatStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.service('heatStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -22,13 +22,25 @@ angular.module('main')
           };
         } else {
           //error - couldn't find dish
-          console.log("heatStepService error: cannot find dish for input: ", input);
+          ErrorService.logError({
+            message: "Heat Step Service ERROR: cannot find dish for input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType
-        console.log("heatStepService error: unexpected sourceType: ", input);
+        ErrorService.logError({
+          message: "Dry Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          input: input,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     StepTipService.setStepTipInfo(step, []);

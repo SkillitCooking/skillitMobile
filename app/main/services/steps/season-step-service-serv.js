@@ -1,17 +1,15 @@
 'use strict';
 angular.module('main')
-.factory('seasonStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
+.factory('seasonStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
-    console.log("step", step);
     var ingredientInput = step.stepInputs["ingredientInput"];
     var dishInput = step.stepInputs["dishInput"];
     step.ingredientsToSeason = [];
     //ingredient instantiation
     switch(ingredientInput.sourceType) {
       case "IngredientList":
-        console.log("ingredientInput - list");
         var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
           return type.typeName === ingredientInput.key;
         });
@@ -37,16 +35,20 @@ angular.module('main')
           }
         } else {
           //error: no type found
-          console.log("seasonStepService error: no type found for input: ", ingredientInput);
+          ErrorService.logError({
+            message: "Season Step Service ERROR: no ingredientType found for input in function 'instantiateStep'",
+            ingredientInput: ingredientInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       case "StepProduct":
-        console.log("ingredientInput: stepProduct");
         var referencedStep = _.find(recipe.stepList, function(iterStep) {
           return iterStep.stepId === ingredientInput.sourceId;
         });
-        console.log("referencedStep: ", referencedStep);
         if(referencedStep){
           if(!referencedStep.isEmpty){
             if(referencedStep.products){
@@ -58,18 +60,38 @@ angular.module('main')
               step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
             } else {
               //error - no products for step
-              console.log("seasonStepService error: no products for step: ", referencedStep);
+              ErrorService.logError({
+                message: "Season Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } 
         } else {
           //error - can't find step from input
           console.log("seasonStepService error: can't find step from input: ", ingredientInput);
+          ErrorService.logError({
+            message: "Sautee Step Service ERROR: can't find step from input in function 'instantiateStep'",
+            ingredientInput: ingredientInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType
         console.log("seasonStepService error: unexpected sourceType: ", ingredientInput);
+        ErrorService.logError({
+          message: "Season Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          ingredientInput: ingredientInput,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //dish instantiation
@@ -87,7 +109,13 @@ angular.module('main')
           step.products[step.productKeys[0]].dishes = [step.seasoningDish];
         } else {
           //error
-          console.log("seasonStepService error: could not find dish from input", dishInput);
+          ErrorService.logError({
+            message: "Season Step Service ERROR: could not find dish from input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -106,7 +134,13 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.seasoningDish];    
             } else {
               //error - no products for step
-              console.log("seasonStepService error: no products for step: ", referencedStep);
+              ErrorService.logError({
+                message: "Season Step Service ERROR: no products for referenced step in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } else if (step.ingredientsToSeason && step.ingredientsToSeason.length > 0) {
             var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
@@ -128,26 +162,41 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.seasoningDish];
             } else {
               //error
-              console.log("seasonStepService error: cannot trace seasoningDish for step: ", step);
+              ErrorService.logError({
+                message: "Season Step Service ERROR: cannot trace seasoningDish in function 'instantiateStep'",
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           }
         } else {
           //error - no find step from input
-          console.log("seasonStepService error: can't find step for input: ", dishInput);
+          ErrorService.logError({
+            message: "Season Step Service ERROR: can't find step for input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType
-        console.log("seasonStepService error: unexpected sourceType: ", dishInput);
+        ErrorService.logError({
+          message: "Season Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+          dishInput: dishInput,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //set isEmpty
     if(step.ingredientsToSeason.length === 0) {
-      console.log("season empty: ", step);
       step.isEmpty = true;
     } else {
-      console.log("season not empty: ", step);
       step.isEmpty = false;
     }
     //set stepTips
@@ -173,14 +222,20 @@ angular.module('main')
         stepText += "Season ";
       } else {
         //error need oil OR season
-        stepText = "NEITHER OIL NOR SEASON";
-        console.log("seasonStepService error: neither oil nor season: ", step);
+        ErrorService.logError({
+          message: "Season Step Service ERROR: neither oil nor season in function 'constructStepText'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
       }
       switch(step.ingredientsToSeason.length) {
         case 0:
           //error
-          console.log("seasonStepService error: no ingredientsToSeason: ", step);
-          stepText += "NO INGREDIENTS TO SEASON";
+          ErrorService.logError({
+            message: "Season Step Service ERROR: no ingredients to season in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:

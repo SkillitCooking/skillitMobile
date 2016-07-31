@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
-.factory('bakeStepService', ['_', 'stirStepService', 'StepTipService', 
-  function (_, stirStepService, StepTipService) {
+.factory('bakeStepService', ['_', 'stirStepService', 'StepTipService', 'ErrorService',
+  function (_, stirStepService, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -29,7 +29,12 @@ angular.module('main')
                 step.isEmpty = false;
               } else {
                 //then no products for referencedStep, throw error
-                console.log("Baking step service Error: no products for referencedStep", referencedStep);
+                ErrorService.logError({
+                  message: "Baking Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             } else {
               //then referenced step contains nothing for this step
@@ -37,12 +42,23 @@ angular.module('main')
             }
           } else {
             //then step couldn't be found, throw error
-            console.log("Baking step service Error: step via sourceId couldn't be located");
+            ErrorService.logError({
+                  message: "Baking Step Service ERROR: step via sourceId couldn't be located in function 'instantiateStep'",
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
           }
           break;
 
         default:
-          console.log("Baking step service Error: unexpected sourceType: ", input.sourceType);
+          ErrorService.logError({
+            message: "Baking Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+            sourceType: input.sourceType,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
           break;
       }
     }
@@ -61,8 +77,11 @@ angular.module('main')
       switch(step.ingredientsToBake.length){
         case 0:
           //error case - we obviously expect ingredients to bake
-          stepText = "NO INGREDIENTS TO BAKE...";
-          console.log("Baking step service Error: constructing step text, and didn't find any ingredients to bake");
+          ErrorService.logError({
+            message: "Baking Step Service ERROR: no ingredients to bake in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -94,7 +113,6 @@ angular.module('main')
     if(!step.isEmpty) {
       for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
         var auxStep = step.auxiliarySteps[i];
-        console.log("auxStep: ", auxStep);
         var ingredientType = _.find(recipe.ingredientList.ingredientTypes, function(type) {
           return type.typeName === auxStep.ingredientTypeName;
         });

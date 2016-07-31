@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', '$ionicNavBarDelegate', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $state, $ionicNavBarDelegate, ItemCollectionService, $ionicLoading) {
+.controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', '$ionicNavBarDelegate', 'ItemCollectionService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $state, $ionicNavBarDelegate, ItemCollectionService, $ionicLoading, ErrorService) {
 
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
@@ -19,7 +19,7 @@ angular.module('main')
       $ionicLoading.hide();
     }, 200);
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 
   $scope.trainingVideoSelected = true;

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('StepCombinationService', ['_', 'RecipeOrderingService', 'SeasoningProfileTextService', function (_, RecipeOrderingService, SeasoningProfileTextService) {
+.factory('StepCombinationService', ['_', 'RecipeOrderingService', 'SeasoningProfileTextService', 'ErrorService', function (_, RecipeOrderingService, SeasoningProfileTextService, ErrorService) {
   var service = {};
 
   /* 
@@ -54,18 +54,13 @@ angular.module('main')
     var stepNumber = 1;
     if(combinedRecipe) {
       for (var i = 0; i < combinedRecipe.stepList.length; i++) {
-        console.log("step index: ", i);
-        console.log("step: ", combinedRecipe.stepList[i]);
         if(!combinedRecipe.stepList[i].isEmpty){
           if(combinedRecipe.stepList[i].textArr) {
             for (var j = 0; j < combinedRecipe.stepList[i].textArr.length; j++) {
-              console.log("subStep: ", combinedRecipe.stepList[i].textArr[j]);
               combinedRecipe.stepList[i].textArr[j].stepNumber = stepNumber;
-              console.log("step number: ", stepNumber);
               stepNumber += 1;
             }
           } else {
-            console.log("step number: ", stepNumber);
             combinedRecipe.stepList[i].stepNumber = stepNumber;
             stepNumber += 1;
           }
@@ -103,7 +98,11 @@ angular.module('main')
 
       default:
         //error - unexpected step.stepType
-        console.log("StepCombinationService error: unrecognized stepType: ", step);
+        ErrorService.logError({
+          message: "StepCombination Service ERROR: unrecognized stepType in function 'isPrepStep'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
         break;
     }
   }
@@ -112,8 +111,11 @@ angular.module('main')
     switch(recipeNames.length) {
       case 0:
         //error case - expect at least one recipe name - otherwise, would have skipped this case
-        console.log("StepCombinationService error: expecting a recipe name, didn't get any");
-          break;
+        ErrorService.logError({
+          message: "StepCombination Service ERROR: expected a recipe name; didnt' get one in function 'getAlaCarteNames'"
+        });
+        ErrorService.showErrorAlert();
+        break;
       case 1:
         return recipeNames[0];
       case 2:
@@ -225,7 +227,6 @@ angular.module('main')
   service.getCombinedRecipe = function(recipes, currentSeasoningProfile) {
     var combinedRecipe = combineRecipes(recipes, currentSeasoningProfile);
     assignStepNumbers(combinedRecipe);
-    console.log("combinedRecipe post step # assignment:", combinedRecipe);
     return combinedRecipe;
   };
 

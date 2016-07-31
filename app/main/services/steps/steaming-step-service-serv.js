@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('steamingStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('steamingStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -36,7 +36,13 @@ angular.module('main')
             }
           } else {
             //error - no ingredientType found
-            console.log("steamingStepService error: no ingredientType found with input: ", input);
+            ErrorService.logError({
+              message: "Steaming Step Service ERROR: no ingredientType found for input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -58,17 +64,37 @@ angular.module('main')
               } else {
                 //error - no products for referencedStep
                 console.log("steamingStepService error: no products for referencedStep: ", input);
+                ErrorService.logError({
+                  message: "Steaming Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error - couldn't find step
             console.log("steamingStepService error: can't find step for input: ", input);
+            ErrorService.logError({
+              message: "Steaming Step Service ERROR: can't find step for input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error - unexpected sourceType
-          console.log("steamingStepService error: unexpected sourceType: ", input);
+          ErrorService.logError({
+            message: "Steaming Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
           break;
       }
     }
@@ -89,7 +115,13 @@ angular.module('main')
           step.products[step.productKeys[0]].dishes = [step.steamingDish];
         } else {
           //error - no dish found
-          console.log("steamingStepService error: no dish for the input found: ", input);
+          ErrorService.logError({
+            message: "Steaming Step Service ERROR: no dish found from input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -111,6 +143,13 @@ angular.module('main')
             } else {
               //error - no products for step
               console.log("steamingStepService error: no products for referencedStep", dishInput);
+              ErrorService.logError({
+                message: "Steaming Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } else if(step.ingredientsToSteam && step.ingredientsToSteam.length > 0) {
             var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
@@ -132,18 +171,35 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.steamingDish];
             } else {
               //error
-              console.log("steamingStepService error: cannot trace steamingDish for step: ", step);
+              ErrorService.logError({
+                message: "Steaming Step Service ERROR: cannot trace steamingDish for step in function 'instantiateStep'",
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           }
         } else {
           //error - no step found
-          console.log("steamingStepService error: no step found for input ", dishInput);
+          ErrorService.logError({
+            message: "Steam Step Service ERROR: no step found for input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType
-        console.log("steamingStepService error: unexpected sourceType ", dishInput);
+        ErrorService.logError({
+          message: "Steaming Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+          dishInput: dishInput,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //check isEmpty condition
@@ -167,6 +223,11 @@ angular.module('main')
         case 0:
           //error - no ingredients
           stepText = "NO INGREDIENTS TO STEAM";
+          ErrorService.logError({
+            message: "Steaming Step Service ERROR: no ingredients to steam in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:

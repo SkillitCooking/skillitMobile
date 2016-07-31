@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('itemCollections', ['$state', function ($state) {
+.directive('itemCollections', ['$state', 'ErrorService', function ($state, ErrorService) {
   return {
     templateUrl: 'main/templates/item-collections.html',
     restrict: 'E',
@@ -9,7 +9,6 @@ angular.module('main')
       itemType: '='
     },
     link: function (scope, element, attrs) {
-      console.log('collections', scope.collections);
       scope.getItemTypeTitle = function() {
         switch(scope.itemType) {
           case 'dailyTip':
@@ -24,13 +23,15 @@ angular.module('main')
             return 'Recipe Categories';
           default:
             //error
-            console.log("itemCollections directive error: unexpected itemType: ", scope.itemType);
+            ErrorService.logError({
+              message: "Item Collections Directive ERROR: unexpected itemType in function 'getItemTypeTitle'",
+              itemType: scope.itemType
+            });
+            ErrorService.showErrorAlert();
         }
       };
 
       scope.goToCollection = function(collection) {
-        console.log('collection', collection);
-        console.log('itemType', scope.itemType);
         var stateName;
         switch(scope.itemType) {
           case 'dailyTip':
@@ -49,8 +50,11 @@ angular.module('main')
             stateName = 'main.recipesCollection';
             break;
           default:
-            console.log("itemCollections error: unexpected itemType: ", scope.itemType);
-            stateName = 'main.home';
+            ErrorService.logError({
+              message: "Item Collections Directive ERROR: unexpected itemType in function 'goToCollection'",
+              itemType: scope.itemType
+            });
+            ErrorService.showErrorAlert();
             break;
         }
         $state.go(stateName, {collection: collection});

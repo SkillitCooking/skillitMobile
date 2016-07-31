@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('DishInputService', ['_', function (_) {
+.factory('DishInputService', ['_', 'ErrorService', function (_, ErrorService) {
   var service = {};
 
   service.getDishKey = function(stepType) {
@@ -22,10 +22,14 @@ angular.module('main')
         return "dishProductInput";
       default:
         //error
-        console.log("DishInputService error: unexpected stepType: ", stepType);
+        ErrorService.logError({
+          message: "DishInput Service ERROR: unexpected stepType in function 'getDishKey'",
+          stepType: stepType
+        });
+        ErrorService.showErrorAlert();
         break;
     }
-  }
+  };
 
   service.findDishProduct = function(step, stepList, equipmentList) {
     var dishKey = service.getDishKey(step.stepType);
@@ -45,7 +49,11 @@ angular.module('main')
           };
         } else {
           //error
-          console.log("DishInputService error: no dish found on equipmentList from input: ", dishInput);
+          ErrorService.logError({
+            message: "DishInput Service ERROR: no dish found on equipmentList in function 'findDishProduct'",
+            dishInput: dishInput
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -61,18 +69,30 @@ angular.module('main')
               return prevStep.products[dishInput.key];
             } else {
               //error
-              console.log("DishInputService error: no products for previous step: ", prevStep);
+              ErrorService.logError({
+                message: "DishInput Service ERROR: no products for previous step in function 'findDishProduct'",
+                prevStep: prevStep
+              });
+              ErrorService.showErrorAlert();
             }
           }
         } else {
           //error - cannot find prevStep
-          console.log("DishInputService error: cannot find previous step from input: ", dishInput);
+          ErrorService.logError({
+            message: "DishInput Service ERROR: cannot find previous step from input in function 'findDishProduct'",
+            dishInput: dishInput
+          });
+          ErrorService.showErrorAlert();
         }
         break;
-        
+
       default:
         //error
-        console.log("DishInputService error: unexpected sourceType: ", dishInput);
+        ErrorService.logError({
+          message: "DishInput Service ERROR: unexpected sourceType from input in function 'findDishProduct'",
+          dishInput: dishInput
+        });
+        ErrorService.showErrorAlert();
         break;
     }
   };

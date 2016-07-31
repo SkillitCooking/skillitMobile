@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('equipmentPrepStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('equipmentPrepStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -24,7 +24,13 @@ angular.module('main')
             };
           } else {
             //error: dish couldn't be found
-            console.log("equipmentPrepStepService error: could not find dish from input: ", input);
+            ErrorService.logError({
+              message: "EquipmentPrep Step Service ERROR: could not find dish from input in function 'instantiateStep'",
+              input: inputs[i],
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -46,17 +52,38 @@ angular.module('main')
               } else {
                 //error: no products for step
                 console.log("equipmentPrepStepService error: no products for referencedStep: ", referencedStep);
+                ErrorService.logError({
+                  message: "EquipmentPrep Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error: could not find step
             console.log("equipmentPrepStepService error: could not find step from input: ", inputs[i]);
+            ErrorService.logError({
+              message: "EquipmentPrep Step Service ERROR: could not find step from input in function 'instantiateStep'",
+              input: inputs[i],
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error: unexpected sourceType
           console.log("equipmentPrepStepService error: unexpected sourceType for dishInputs: ", inputs[i]);
+          ErrorService.logError({
+            message: "EquipmentPrep Step Service ERROR: unexpected sourceType for dishInputs in function 'instantiateStep'",
+            input: inputs[i],
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
       }
     }
     //isEmpty condition
@@ -85,6 +112,11 @@ angular.module('main')
           //throw error
           stepText = "NO DISHES TO PREP";
           console.log("equipmentPrepStepService error: no dishes to prep in step", step);
+          ErrorService.logError({
+            message: "EquipmentPrep Step Service ERROR: no dishes to prep in step in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -99,7 +131,11 @@ angular.module('main')
           switch(numNames){
             case 0:
               //error
-              console.log("equipmentPrepStepService error: no namecounts. should not be here");
+              ErrorService.logError({
+                message: "EquipmentPrep Step Service ERROR: no nameCounts in function 'constructStepText'",
+                step: step
+              });
+              ErrorService.showErrorAlert();
               break;
 
             case 1:
@@ -137,17 +173,12 @@ angular.module('main')
                 var nameKey;
                 for(var name in nameCounts) {
                   if(nameCounts[name] === 1){
-                    console.log("nameCounts 1");
                     countKey = "a";
                     nameKey = name;
                   } else {
-                    console.log("nameCounts many");
                     countKey = nameCounts[name];
                     nameKey = name + "s";
                   }
-                  console.log("countKey: ", countKey);
-                  console.log("nameKey: ", nameKey);
-                  console.log("nameCounts: ", nameCounts);
                   if(count === numNames){
                     stepText += " and " + countKey + " " + nameKey.toLowerCase();
                   } else {

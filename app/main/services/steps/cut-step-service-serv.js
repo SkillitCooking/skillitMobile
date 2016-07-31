@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('cutStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('cutStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -32,7 +32,13 @@ angular.module('main')
           } 
         } else {
           //error
-          console.log("cutStepService Error: no ingredientType found with input: ", input);
+          ErrorService.logError({
+            message: "Cut Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -53,17 +59,37 @@ angular.module('main')
             } else {
               //then no products for referencedStep, throw error
               console.log("cutStepService Error: no proudcts for referencedStep: ", referencedStep);
+              ErrorService.logError({
+                message: "Cut Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } 
         } else {
           //can't find step - Error
-          console.log("cutStepService Error: cannot find step referenced by input: ", input);
+          ErrorService.logError({
+            message: "Cut Step Service ERROR: cannot find step referenced by input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error for unexpected sourceType
         console.log("cutStepService Error: unexpected sourceType: ", input);
+        ErrorService.logError({
+          message: "Cut Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          input: input,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //set isEmpty

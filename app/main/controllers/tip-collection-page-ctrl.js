@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('TipCollectionPageCtrl', ['$scope', '$stateParams', 'DailyTipService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', function ($scope, $stateParams, DailyTipService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory) {
+.controller('TipCollectionPageCtrl', ['$scope', '$stateParams', 'DailyTipService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', 'ErrorService', function ($scope, $stateParams, DailyTipService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory, ErrorService) {
 
   $scope.collection = $stateParams.collection;
 
@@ -16,7 +16,7 @@ angular.module('main')
     $scope.tips = tips.data;
     $ionicLoading.hide();
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 
   $scope.navigateBack = function() {

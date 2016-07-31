@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicLoading', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicLoading) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicLoading', 'ErrorService', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicLoading, ErrorService) {
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -88,7 +88,7 @@ angular.module('main')
       $scope.alaCarteSelectedArr = Array($scope.alaCarteRecipes.length).fill(false);
       $scope.sidesExist = false;
     }, function(response) {
-      console.log("Server Error: ", response);
+      ErrorService.showErrorAlert();
     });
   } else {
     $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
@@ -167,7 +167,11 @@ angular.module('main')
       return false;
     } else {
       //error
-      console.log("step has neither text nor textArr: ", step);
+      ErrorService.logError({
+        message: "Cook Present Controller ERROR: step has neither text nor textArr in function 'isSingleStep'",
+        step: step
+      });
+      ErrorService.showErrorAlert();
     }
   };
 
@@ -295,7 +299,6 @@ angular.module('main')
     $scope.selectedTipArr.fill(false);
     $scope.selectedTipArr[index] = true;
     $scope.displayStepTip = $scope.stepTipStep.stepTips[index];
-    console.log($scope.displayStepTip);
   };
 
   $scope.getStepTipButtonClass = function(index) {
@@ -373,9 +376,13 @@ angular.module('main')
   $scope.resetEverything = function() {
     $ionicHistory.clearCache().then(function() {
       $state.go('main.cook');
-    }, function() {
+    }, function(error) {
       //error
-      console.log('error: failure to clear $ionicHistory clearCache');
+      ErrorService.logError({
+        message: "Cook Present Controller ERROR: failed to clear $ionicHistory cache in function 'resetEverything'",
+        error: error
+      });
+      ErrorService.showErrorAlert();
     });
   };
 

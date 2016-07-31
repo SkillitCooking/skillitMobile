@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('bringToBoilStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('bringToBoilStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -21,13 +21,25 @@ angular.module('main')
           step.products[step.productKeys[0]].dishes = [step.boilingDish];
         } else {
           //error
-          console.log("bringToBoilStepService Error: cannot find dish from input", input);
+          ErrorService.logError({
+            message: "BringToBoil Step Service ERROR: cannot find dish from input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //then unexpected sourceType
-        console.log("bringToBoilStepService Error: unexpected sourceType: ", input.sourceType);
+        ErrorService.logError({
+          message: "BringToBoil Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          input: input,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //step tips

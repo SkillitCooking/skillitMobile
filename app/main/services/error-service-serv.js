@@ -19,6 +19,7 @@ angular.module('main')
       console.log(response.message);
     }, function(response) {
       //don't need to do anything here...
+      console.log('Logging error...', response);
     });
   };
 

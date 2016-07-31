@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('placeStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
+.factory('placeStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
   var service = {};
 
   //ingredientInputs ==> ingredientsToPlace
@@ -40,7 +40,13 @@ angular.module('main')
             }
           } else {
             //error: no ingredientType for the input
-            console.log("placeStepService error: no ingredientType for input: ", input);
+            ErrorService.logError({
+              message: "Place Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -61,18 +67,36 @@ angular.module('main')
                 step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
               } else {
                 //error: then no products for step
-                console.log("placeStepService error: no products for referenced step: ", referencedStep);
+                ErrorService.logError({
+                  message: "Place Step Service ERROR: no products for referenced step in function 'instantiateStep'",
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error: then no step found
-            console.log("placeStepService error: no step found for input: ", input);
+            ErrorService.logError({
+              message: "Place Step Service ERROR: no step found for input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error unexpected sourceType
-          console.log("placeStepService error: unexpected sourceType: ", input);
+          ErrorService.logError({
+            message: "Place Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
           break;
       }
     }
@@ -93,7 +117,13 @@ angular.module('main')
           step.products[step.productKeys[0]].dishes = [step.dishToPlaceOn];
         } else {
           //error: no dish found
-          console.log("placeStepService error: no dish found for input: ", dishProductInput);
+          ErrorService.logError({
+            message: "Place Step Service ERROR: no dish found for input in function 'instantiateStep'",
+            dishProductInput: dishProductInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -116,7 +146,13 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.dishToPlaceOn];
             } else {
               //error - no products for step
-              console.log("placeStepService error: no products for referencedStep: ", referencedStep);
+              ErrorService.logError({
+                message: "Place Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } else if(step.ingredientsToPlace && step.ingredientsToPlace.length > 0) {
             //dishInput check here
@@ -144,19 +180,36 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.dishToPlaceOn];
             } else {
               //error
-              console.log("PlaceStepService error: cannot trace dishToPlaceOn for step with ingredientsToPlace: ", step);
+              ErrorService.logError({
+                message: "Place Step Service ERROR: cannot trace dishToPlaceOn for step with ingredientsToPlace in function 'instantiateStep'",
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
-            
           }
         } else {
           //error then step couldn't be located
-          console.log("placeStepService error: step could not be found from input: ", dishProductInput);
+          ErrorService.logError({
+            message: "Place Step Service ERROR: step could not be found from input in function 'instantiateStep'",
+            dishProductInput: dishProductInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType
         console.log("placeStepService error: unexpected sourceType from input: ", dishProductInput);
+        ErrorService.logError({
+          message: "Place Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+          dishProductInput: dishProductInput,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //isEmpty condition
@@ -173,7 +226,6 @@ angular.module('main')
   }
 
   function constructStepText(step) {
-    console.log("place step", step);
     if(!step.isEmpty) {
       var placeType = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "placeType";
@@ -185,7 +237,11 @@ angular.module('main')
       switch(step.ingredientsToPlace.length) {
         case 0:
           //error
-          console.log("placeStepService error: no ingredientsToPlace: ", step);
+          ErrorService.logError({
+            message: "Place Step Service ERROR: ingredientsToPlace in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -219,7 +275,12 @@ angular.module('main')
           break;
         default:
           //error - unexpected placeType
-          console.log("placeStepService error: unexpected placeType: ", placeType);
+          ErrorService.logError({
+            message: "Place Step Service ERROR: unexpected placeType in function 'constructStepText'",
+            placeType: placeType,
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
       }
       if(step.alreadyPlacedIngredients.length > 1) {
@@ -227,7 +288,6 @@ angular.module('main')
       } else {
         stepText += "a ";
       }
-      console.log("step text", stepText);
       stepText += step.dishToPlaceOn.name.toLowerCase();
       switch(step.alreadyPlacedIngredients.length) {
         case 0:

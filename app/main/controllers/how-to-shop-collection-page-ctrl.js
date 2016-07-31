@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('HowToShopCollectionPageCtrl', ['$scope', '$stateParams', 'HowToShopService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', function ($scope, $stateParams, HowToShopService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory) {
+.controller('HowToShopCollectionPageCtrl', ['$scope', '$stateParams', 'HowToShopService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', 'ErrorService', function ($scope, $stateParams, HowToShopService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory, ErrorService) {
   $scope.collection = $stateParams.collection;
 
   $ionicLoading.show({
@@ -17,7 +17,7 @@ angular.module('main')
       $ionicLoading.hide();
     }, 200);
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 
   $scope.navigateBack = function() {

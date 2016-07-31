@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('stirStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.service('stirStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -31,7 +31,13 @@ angular.module('main')
           } 
         } else {
           //error: no ingredientType
-          console.log("stirStepService error: ingredientType not found from input: ", input);
+          ErrorService.logError({
+            message: "Stir Step Service ERROR: no ingredientType found for input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -53,17 +59,37 @@ angular.module('main')
             } else {
               //error - no products for found step
               console.log("stirStepService error: no products for referencedStep: ", referencedStep);
+              ErrorService.logError({
+                message: "Stir Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } 
         } else {
           //error - no step found
-          console.log("stirStepService error: no step found for input: ", input);
+          ErrorService.logError({
+            message: "Stir Step Service ERROR: no step found for input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType
         console.log("stirStepService error: unexpected sourceType: ", input);
+        ErrorService.logError({
+          message: "Stir Step Service ERROR: unexpected sourceType from input in function 'instantiateStep'",
+          input: input,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //set isEmpty
@@ -90,8 +116,11 @@ angular.module('main')
       switch(step.ingredientsToStir.length) {
         case 0:
           //error
-          stepText = "NO INGREDIENTS TO STIR";
-          console.log("stirStepService error: no ingredients to stir");
+          ErrorService.logError({
+            message: "Stir Step Service ERROR: no ingredients to stir in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -137,8 +166,11 @@ angular.module('main')
     switch(ingredients.length) {
       case 0:
         //error
-        auxStepText = "NO INGREDIENTS GIVEN FOR AUX STEP CONSTRUCTION";
-        console.log("stirStepService error: no ingredients for aux step construction");
+        ErrorService.logError({
+          message: "Stir Step Service ERROR: no ingredients for aux step construction in function 'constructAuxiliaryStep'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
         break;
 
       case 1:

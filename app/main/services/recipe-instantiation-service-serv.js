@@ -5,11 +5,11 @@ angular.module('main')
   'cookStepService', 'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'placeStepService',
   'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
-  'slowCookStepService', 'steamingStepService', 'stirStepService',
+  'slowCookStepService', 'steamingStepService', 'stirStepService', 'ErrorService',
   function (_, bakeStepService, boilStepService, bringToBoilStepService, cookStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
     heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
-    seasonStepService, slowCookStepService, steamingStepService, stirStepService) {
+    seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames) {
@@ -112,7 +112,11 @@ angular.module('main')
 
           default:
             //default error handling
-            console.log("RecipeInstantiationService error: unexpected stepType: ", stepList[j]);
+            ErrorService.logError({
+              message: "RecipeInstantiation Service ERROR: unexpected stepType in function 'fillInSteps'",
+              step: stepList[j]
+            });
+            ErrorService.showErrorAlert();
             break;
         }
       }
@@ -171,7 +175,11 @@ angular.module('main')
 
       default:
         //error - unanticipated stepType
-        console.log("RecipeInstantiationService error: unanticipated stepType: ", step);
+        ErrorService.logError({
+          message: "RecipeInstantiation Service ERROR: unanticipated stepType in function 'hasIngredientInput'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
     }
   }
 
@@ -230,7 +238,13 @@ angular.module('main')
 
       default: 
         //error - unanticipated stepType
-        console.log("RecipeInstantiationService error: unanticipated stepType: ", step); 
+        console.log("RecipeInstantiationService error: unanticipated stepType: ", step);
+        //error - expecting recipeCategorys
+        ErrorService.logError({
+          message: "RecipeInstantiation Service ERROR: unanticipated stepType in function 'getDishInput'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
     }
   }
 
@@ -244,7 +258,6 @@ angular.module('main')
         dishInputStep.isEmpty = false;
       }
       var newDishInput = getDishInput(dishInputStep);
-      console.log("recursive dishInput: ", dishInputStep);
       if(newDishInput) {
         if(Array.isArray(newDishInput)) {
           for (var i = newDishInput.length - 1; i >= 0; i--) {
@@ -263,11 +276,8 @@ angular.module('main')
         for (var j = recipes[i].stepList.length - 1; j >= 0; j--) {
           var step = recipes[i].stepList[j];
           if(!step.isEmpty && hasIngredientInput(step)) {
-            console.log("step not empty RI: ", step);
             var dishInput = getDishInput(step);
             if(dishInput) {
-              console.log("positive dishInput: ", dishInput);
-              console.log("positive dishInput step: ", step);
               //check if dishInput is array, then handle accordingly
               if(Array.isArray(dishInput)) {
                 for (var k = dishInput.length - 1; k >= 0; k--) {
@@ -291,7 +301,6 @@ angular.module('main')
         for (var j = stepList.length - 1; j >= 0; j--) {
           var step = stepList[j];
           if(!_.has(step, 'isEmpty')) {
-            console.log("---- Step has no isEmpty ---- ", step);
             step.isEmpty = true;
           }
           //preheat check - assumes only one preheatOven per recipe

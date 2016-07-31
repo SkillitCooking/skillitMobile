@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('cookStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
+.factory('cookStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -36,7 +36,13 @@ angular.module('main')
             }
           } else {
             //error - no type found
-            console.log("cookStepService error: could not find ingredientType for input: ", input);
+            ErrorService.logError({
+              message: "Cook Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
@@ -58,17 +64,38 @@ angular.module('main')
               } else {
                 //error: no products for referenced step
                 console.log("cookStepService error: no products for referencedStep: ", referencedStep);
+                ErrorService.logError({
+                  message: "Cook Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  input: input,
+                  referencedStep: referencedStep,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
             }
           } else {
             //error - can't find referenced step
-            console.log("cookStepService error: can't find step from input: ", input);
+            ErrorService.logError({
+              message: "Cook Step Service ERROR: can't find step from input in function 'instantiateStep'",
+              input: input,
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
         default:
           //error - unexpected sourceType
           console.log("cookStepService error: unexpected sourceType: ", dishInput);
+        ErrorService.logError({
+          message: "Cook Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          sourceType: input.sourceType,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
       }
     }
     //dishInput
@@ -89,6 +116,13 @@ angular.module('main')
         } else {
           //error - dish not found
           console.log("cookStepService error: dish not found for input: ", dishInput);
+          ErrorService.logError({
+            message: "Cook Step Service ERROR: dish not found for input in function 'instantiateStep'",
+            dishInput: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
       
@@ -109,7 +143,13 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.cookingDish];
             } else {
               //error - no products for referencedStep
-              console.log("cookStepService error: no products for referencedStep: ", referencedStep);
+              ErrorService.logError({
+                message: "Cook Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                referenced: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } else if(step.ingredientsToCook && step.ingredientsToCook.length > 0) {
             var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
@@ -131,18 +171,35 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.cookingDish];
             } else {
               //error
-              console.log("cookStepService error: cannot trace cookingDish: ", step);
+              ErrorService.logError({
+                message: "Cook Step Service ERROR: cannot trace cookingDish in function 'instantiateStep'",
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           }
         } else {
           //error - cannot find referenced step from input
-          console.log("cookStepService error: cannot find step from input: ", dishInput);
+          ErrorService.logError({
+            message: "Cook Step Service ERROR: cannot find step from input in function 'instantiateStep'",
+            input: dishInput,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default:
         //error - unexpected sourceType for dishInput
-        console.log("cookStepService error: unexpected sourceType for input: ", dishInput);
+        ErrorService.logError({
+          message: "Cook Step Service ERROR: unexpected sourceType for input in function 'instantiateStep'",
+          dishInput: dishInput,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //set isEmpty condition
@@ -174,7 +231,11 @@ angular.module('main')
         case 0:
           //error
           stepText = "NO INGREDIENTS TO COOK";
-          console.log("cookStepService error: no ingredientsToCook in step: ", step);
+          ErrorService.logError({
+            message: "Cook Step Service ERROR: no ingredients to cook in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -205,6 +266,11 @@ angular.module('main')
       } else {
         //error - no cooking duration and not according to package instructions either
         console.log("cookStepService error: no cookingDuration nor cookAccordingToInstructions");
+        ErrorService.logError({
+          message: "Cook Step Service ERROR: no cookingDuration nor cookAccordingToInstructions in function 'instantiateStep'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
       }
       step.text = stepText;
     }

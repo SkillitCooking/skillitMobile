@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('dryStepService', ['_', 'StepTipService', function (_, StepTipService) {
+.factory('dryStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -31,6 +31,13 @@ angular.module('main')
         } else {
           //error: ingredientType could not be found via key
           console.log("dryStepService Error: no ingredientType found with input :", input);
+          ErrorService.logError({
+            message: "Dry Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
@@ -49,18 +56,37 @@ angular.module('main')
               };
             } else {
               //error - no products on referencedStep
-              console.log("dryStepService Error: cannot find products for referencedStep: ", referencedStep);
+              ErrorService.logError({
+                message: "Dry Step Service ERROR: cannot find products for referencedStep in function 'instantiateStep'",
+                referencedStep: referencedStep,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
           } 
         } else {
           //error - can't find referencedStep
-          console.log("dryStepService Error: cannot find step with input: ", input);
+          ErrorService.logError({
+            message: "Dry Step Service ERROR: cannot find step with input in function 'instantiateStep'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+          ErrorService.showErrorAlert();
         }
         break;
 
       default: 
         //error for unexpected sourceType
         console.log("dryStepService error: unexpected sourceType: ", input);
+        ErrorService.logError({
+          message: "Dry Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          input: input,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
         break;
     }
     //set is empty
@@ -86,6 +112,11 @@ angular.module('main')
           //error
           stepText = "NO INGREDIENTS TO DRY";
           console.log("dryStepService error: no ingredientsToDry");
+          ErrorService.logError({
+            message: "Dry Step Service ERROR: no ingredients to dry in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:

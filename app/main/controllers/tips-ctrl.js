@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService, $ionicLoading) {
+.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService, $ionicLoading, ErrorService) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -16,7 +16,7 @@ angular.module('main')
     $scope.tipCollections = collections.data;
     $ionicLoading.hide();
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 
   $scope.getItemType = function() {
@@ -27,7 +27,11 @@ angular.module('main')
     $ionicHistory.clearCache().then(function() {
       $ionicTabsDelegate.select(0);
     }, function(error) {
-      console.log("$ionicHistory clearCache error", error);
+      ErrorService.logError({
+        message: "Tips Controller ERROR: $ionicHistory clearCache error",
+        error: error
+      });
+      ErrorService.showErrorAlert();
     });
   };
 }]);

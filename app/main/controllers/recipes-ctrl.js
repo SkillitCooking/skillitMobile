@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, ItemCollectionService, $ionicLoading) {
+.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, ItemCollectionService, $ionicLoading, ErrorService) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -15,7 +15,7 @@ angular.module('main')
       $ionicLoading.hide();
     }
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 
   RecipeService.getRecipesOfType('BYO').then(function(recipes) {
@@ -31,7 +31,7 @@ angular.module('main')
       $ionicLoading.hide();
     }
   }, function(response) {
-    console.log("Server Error: ", response);
+    ErrorService.showErrorAlert();
   });
 
   $scope.navigateBack = function() {

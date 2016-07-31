@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('boilStepService', ['_', 'StepTipService', 'DishInputService', function (_, StepTipService, DishInputService) {
+.factory('boilStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -36,7 +36,13 @@ angular.module('main')
                 }
               } else {
                 //then ingredientType not found, throw error
-                console.log("Boil step service Error: no ingredientType found for input key", input);
+                ErrorService.logError({
+                  message: "Boil Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+                  input: input,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
               break;
 
@@ -58,11 +64,24 @@ angular.module('main')
                   } else {
                     //then no products for referencedStep, throw error
                     console.log("Boil step service Error: no products for referencedStep", referencedStep);
+                    ErrorService.logError({
+                      message: "Boil Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                      referencedStep: referencedStep,
+                      step: step,
+                      recipeName: recipe.name
+                    });
+                    ErrorService.showErrorAlert();
                   }
                 }
               } else {
                 //then referenced step not found, throw error
                 console.log("boil step service Error: step via sourceId couldn't be located");
+                ErrorService.logError({
+                  message: "Boil Step Service ERROR: step via sourceId couldn't be located in function 'instantiateStep'",
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
               }
               break;
           }
@@ -93,7 +112,13 @@ angular.module('main')
               step.products[step.productKeys[0]].dishes = [step.boilingDish];
             } else {
               //then dish not found - throw error
-              console.log("Boil step service Error: dish not found in equipmentList", input);
+                ErrorService.logError({
+                  message: "Boil Step Service ERROR: dish not found in equipmentList in function 'instantiateStep'",
+                  input: input,
+                  step: step,
+                  recipeName: recipe.name
+                });
+                ErrorService.showErrorAlert();
             }
             break;
 
@@ -116,6 +141,13 @@ angular.module('main')
                 } else {
                   //then no products for referencedStep, throw error
                   console.log("Boil step service Error: no products for referencedStep", referencedStep);
+                  ErrorService.logError({
+                    message: "Boil Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                    referencedStep: referencedStep,
+                    step: step,
+                    recipeName: recipe.name
+                  });
+                  ErrorService.showErrorAlert();
                 }
               } else if(step.ingredientsToBoil && step.ingredientsToBoil.length > 0) {
                 var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
@@ -138,22 +170,47 @@ angular.module('main')
                   step.products[step.productKeys[0]].dishes = [step.boilingDish];
                 } else {
                   //error
-                  console.log("boilStepService error: cannot trace boilingDish", step);
+                  ErrorService.logError({
+                    message: "Boil Step Service ERROR: cannot trace boilingDish in function 'instantiateStep'",
+                    step: step,
+                    recipeName: recipe.name
+                  });
+                  ErrorService.showErrorAlert();
                 }
               }
             } else {
               //then step couldn't be found, throw error
               console.log("Boil step service Error: step via sourceId couldn't be located");
+              ErrorService.logError({
+                message: "Boil Step Service ERROR: step via sourceId couldn't be located in function 'instantiateStep'",
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
             }
             break;
 
           default: 
             //unexpected sourceType then
             console.log("Boil step service Error: unexpected sourceType for dishInput: ", input.sourceType);
+              ErrorService.logError({
+                message: "Boil Step Service ERROR: unexpected sourceType for dishInput in function 'instantiateStep'",
+                sourceType: input.sourceType,
+                step: step,
+                recipeName: recipe.name
+              });
+              ErrorService.showErrorAlert();
         }
       } else {
         //log error
         console.log("Boil step service error: unexpect inputName: ", inputName);
+        ErrorService.logError({
+          message: "Boil Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+          inputName: inputName,
+          step: step,
+          recipeName: recipe.name
+        });
+        ErrorService.showErrorAlert();
       }
     }
     //isEmpty check
@@ -180,8 +237,11 @@ angular.module('main')
       switch (step.ingredientsToBoil.length){
         case 0:
           //error
-          stepText = "NO INGREDIENTS TO BOIL";
-          console.log("Boil step service Error: no ingredientsToBoil in step: ", step);
+          ErrorService.logError({
+            message: "Boil Step Service ERROR: no ingredientsToBoil in function 'constructStepText'",
+            step: step
+          });
+          ErrorService.showErrorAlert();
           break;
 
         case 1:
@@ -212,6 +272,11 @@ angular.module('main')
       } else {
         //no boiling duration and not according to instructions error
         console.log("boil step service error: no boiling duration where expected");
+        ErrorService.logError({
+          message: "Boil Step Service ERROR: no boiling duration where expected in function 'constructStepText'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
       }
       step.text = stepText;
     }
