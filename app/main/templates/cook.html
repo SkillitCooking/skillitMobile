@@ -20,8 +20,8 @@
     <!-- do you want padding? -->
     <ion-content class="has-header padding cook-tab">
         <!-- content goes here -->
-      <ion-slide-box on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
-        <ion-slide ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
+      <ion-slide-box ng-init="lockSliding()" on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
+        <ion-slide on-swipe-left="slideNext()" on-swipe-right="slidePrev()" ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
           <div class="wrap-class" ng-class="getWrapClass($index)">
             <h2 class="ingredient-type-heading">{{name}}</h2>
             <ion-list>

@@ -46,11 +46,16 @@ angular.module('main')
     ErrorService.showErrorAlert();
   });
 
+  $scope.lockSliding = function() {
+    $ionicSlideBoxDelegate.enableSlide(false);
+  };
+
   $scope.notBeginningSlide = function() {
     return $ionicSlideBoxDelegate.currentIndex() !== 0;
   };
 
   $scope.repeatDone = function() {
+    console.log('upada');
     $ionicSlideBoxDelegate.update();
   };
 
