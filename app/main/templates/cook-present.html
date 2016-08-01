@@ -3,7 +3,7 @@
       <button ng-click="navigateBack()" class="button"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button">Reset</button>
+      <button ng-if="fromCookTab() && notBeginningSlide()" ng-click="resetEverything()" class="button">Reset</button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
     <ion-content class="padding">

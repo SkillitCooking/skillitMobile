@@ -135,17 +135,25 @@ angular.module('main')
   };
 
   $scope.resetIngredientSelection = function() {
-    for(var key in $scope.ingredientCategories) {
-      for (var i = $scope.ingredientCategories[key].length - 1; i >= 0; i--) {
-        $scope.ingredientCategories[key][i].isSelected = false;
-        for (var j = $scope.ingredientCategories[key][i].ingredientForms.length - 1; j >= 0; j--) {
-          if(j > 0) {
-            $scope.ingredientCategories[key][i].ingredientForms[j].isSelected = false;
+    var alertPopup = $ionicPopup.confirm({
+      title: 'Reset Ingredients?',
+      template: 'Do you want to reset your selection?'
+    });
+    alertPopup.then(function(res) {
+      if(res) {
+        for(var key in $scope.ingredientCategories) {
+          for (var i = $scope.ingredientCategories[key].length - 1; i >= 0; i--) {
+            $scope.ingredientCategories[key][i].isSelected = false;
+            for (var j = $scope.ingredientCategories[key][i].ingredientForms.length - 1; j >= 0; j--) {
+              if(j > 0) {
+                $scope.ingredientCategories[key][i].ingredientForms[j].isSelected = false;
+              }
+            }
           }
         }
+        $scope.goToSlide(0);
       }
-    }
-    $scope.goToSlide(0);
+    });
   };
 
   $scope.canHaveForms = function(ingredient) {

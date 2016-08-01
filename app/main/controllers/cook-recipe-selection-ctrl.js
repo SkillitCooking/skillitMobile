@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
+.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', '$ionicPopup', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading, $ionicPopup, ErrorService) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $ionicLoading.show({
@@ -237,6 +237,24 @@ angular.module('main')
   };
 
   $scope.resetEverything = function() {
+    var resetPopup = $ionicPopup.confirm({
+      title: 'Reset Everything?',
+      template: 'Do you want to start over with new ingredients?'
+    });
+    resetPopup.then(function(res) {
+      if(res) {
+        $ionicHistory.clearCache().then(function() {
+          $state.go('main.cook');
+        }, function(error) {
+          //error
+          ErrorService.logError({
+            message: "Cook Recipe Selection Controller ERROR: failed to clear $ionicHistory cache",
+            error: error
+          });
+          ErrorService.showErrorAlert();
+        });
+      }
+    });
     $ionicHistory.clearCache().then(function() {
       $state.go('main.cook');
     }, function(error) {

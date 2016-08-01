@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicLoading', 'ErrorService', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicLoading, ErrorService) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicLoading', '$ionicPopup', 'ErrorService', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicLoading, $ionicPopup, ErrorService) {
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -374,15 +374,23 @@ angular.module('main')
   };
 
   $scope.resetEverything = function() {
-    $ionicHistory.clearCache().then(function() {
-      $state.go('main.cook');
-    }, function(error) {
-      //error
-      ErrorService.logError({
-        message: "Cook Present Controller ERROR: failed to clear $ionicHistory cache in function 'resetEverything'",
-        error: error
-      });
-      ErrorService.showErrorAlert();
+    var resetPopup = $ionicPopup.confirm({
+      title: 'Reset Everything?',
+      template: 'Do you want to start over and choose new ingredients?'
+    });
+    resetPopup.then(function(res) {
+      if(res) {
+        $ionicHistory.clearCache().then(function() {
+          $state.go('main.cook');
+        }, function(error) {
+          //error
+          ErrorService.logError({
+            message: "Cook Present Controller ERROR: failed to clear $ionicHistory cache in function 'resetEverything'",
+            error: error
+          });
+          ErrorService.showErrorAlert();
+        });
+      }
     });
   };
 
