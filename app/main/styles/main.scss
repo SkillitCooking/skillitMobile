@@ -23,7 +23,7 @@ $ionicons-font-path: "../assets/fonts" !default;
 /**********************************/
 /*FONTS*/
 h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-present-instructions h3 {
-	font-family: 'Just Another Hand', cursive;
+	font-family: 'Pompiere', cursive;
 	font-size: 50px;
 	color: $balanced;
 }
@@ -235,6 +235,18 @@ h2.ingredient-type-heading {
 }
 .cook-recipe-selection .col.col-10.col-center {
 	margin-right: 5px;
+}
+.recipe-selection-arrow {
+	position: absolute;
+    right: 10px;
+    top: 35%;
+    color: $balanced;
+    border: 2px solid $balanced;
+    border-radius: 50%;
+    padding: 4px 10px 5px 11px;
+    width: 32px;
+    height: 32px;
+    font-size: 19px !important;
 }
 .individual-recipe-in-list {
 	margin: 10px 0;
