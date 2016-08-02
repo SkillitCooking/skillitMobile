@@ -18,12 +18,13 @@
       </div>
     </div>
     <!-- do you want padding? -->
-    <ion-content class="has-header padding cook-tab">
+    
         <!-- content goes here -->
-      <ion-slide-box ng-init="lockSliding()" on-slide-changed="slideHasChanged($index)" pager-click="goToSlide(index)" dynamic-height slide-child-class="my-wrap-class">
-        <ion-slide on-swipe-left="slideNext()" on-swipe-right="slidePrev()" ng-repeat="(name, ingredients) in ingredientCategories" repeat-done="repeatDone()">
+      <ion-slides options="slideOptions" slider="data.slider" on-slide-changed="slideHasChanged($index)">
+        <ion-slide-page ng-repeat="(name, ingredients) in ingredientCategories">
+          <ion-content class="has-header padding cook-tab" scroll=true>
           <div class="wrap-class" ng-class="getWrapClass($index)">
-            <h2 class="ingredient-type-heading">{{name}}</h2>
+            <h2 ng-click="logIngredients(ingredients)" class="ingredient-type-heading">{{name}}</h2>
             <ion-list>
               <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
                 <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
@@ -44,7 +45,7 @@
               </ion-item>
               </div>
             </ion-list>
-        </ion-slide>
-      </ion-slide-box>
-    </ion-content>
+            </ion-content>
+        </ion-slide-page>
+      </ion-slides>
   </ion-view>

@@ -46,60 +46,100 @@ angular.module('main')
     ErrorService.showErrorAlert();
   });
 
-  $scope.lockSliding = function() {
-    $ionicSlideBoxDelegate.enableSlide(false);
+  $scope.data = {};
+
+  $scope.logIngredients = function(ingredients) {
+    console.log("ingredients: ", ingredients);
   };
+
+  $scope.$watch("data.slider", function(nv, ov) {
+    $scope.slider = $scope.data.slider;
+  });
 
   $scope.notBeginningSlide = function() {
-    return $ionicSlideBoxDelegate.currentIndex() !== 0;
-  };
-
-  $scope.repeatDone = function() {
-    console.log('upada');
-    $ionicSlideBoxDelegate.update();
-  };
-
-  $scope.getWrapClass = function(index) {
-    if($ionicSlideBoxDelegate.currentIndex() === index){
-      return 'my-wrap-class-active';
-    } else {
-      return '';
+    if($scope.slider) {
+      return $scope.slider.activeIndex !== 0;
     }
   };
 
+  $scope.repeatDone = function() {
+    if($scope.slider) {
+      $scope.slider.update();
+    }
+  };
+
+  $scope.getWrapClass = function(index) {
+    if($scope.slider) {
+      if($scope.slider.activeIndex === index){
+        return 'my-wrap-class-active';
+      } else {
+        return '';
+      }
+    }
+  };
+
+  $scope.slideOptions = {
+    loop: false,
+    effect: 'fade',
+    fade: {crossFade: true},
+    speed: 500,
+    paginationClickable: true,
+    freeMode: true,
+    spaceBetween: 10,
+    onSlideChangeEnd: function(swiper) {
+      swiper.update();
+    },
+    scrollbarDraggable: true,
+    scrollbarHide: false
+  };
+
   $scope.slideHasChanged = function(index) {
-    $ionicScrollDelegate.scrollTop();
+    if($scope.slider) {
+      $scope.slider.update();
+    }
   };
 
   $scope.slidePrev = function() {
-    $ionicSlideBoxDelegate.previous();
+    if($scope.slider) {
+      $scope.slider.slidePrev();
+    }
   };
 
   $scope.slideNext = function() {
-    $ionicSlideBoxDelegate.next();
+    if($scope.slider) {
+      $scope.slider.slideNext();
+    }
   };
 
   $scope.hasMoreSlides = function() {
-    if($scope.ingredientCategories) {
-      return $ionicSlideBoxDelegate.currentIndex() < Object.keys($scope.ingredientCategories).length - 1;
+    if($scope.slider) {
+      if($scope.ingredientCategories) {
+        return $scope.slider.activeIndex < Object.keys($scope.ingredientCategories).length - 1;
+      }
     }
   };
 
   $scope.isBeginningSlide = function() {
-    return $ionicSlideBoxDelegate.currentIndex() === 0;
+    if($scope.slider) {
+      return $scope.slider.activeIndex === 0;
+    }
   };
 
   $scope.getNavBarInputCategory = function() {
-    if($scope.inputCategoryArray) {
-      var index = $ionicSlideBoxDelegate.currentIndex();
-      return $scope.inputCategoryArray[index];
-    } else {
-      return "";
+    if($scope.slider) {
+      if($scope.inputCategoryArray) {
+        var index = $scope.slider.activeIndex;
+        return $scope.inputCategoryArray[index];
+      } else {
+        return "";
+      }
     }
   };
 
   $scope.goToSlide = function(index) {
-    $ionicSlideBoxDelegate.slide(index);
+    if($scope.slider) {
+      $scope.slider.slideTo(index);
+    }
   };
 
   $scope.toRecipeSelection = function() {
@@ -192,15 +232,19 @@ angular.module('main')
   };
 
   $scope.swipeLeft = function() {
-    if($scope.hasMoreSlides()) {
-      $ionicSlideBoxDelegate.next();
-    } else {
-      $scope.toRecipeSelection();
+    if($scope.slider) {
+      if($scope.hasMoreSlides()) {
+        $scope.slider.slideNext();
+      } else {
+        $scope.toRecipeSelection();
+      }
     }
   };
 
   $scope.swipeRight = function() {
-    $ionicSlideBoxDelegate.previous();
+    if($scope.slider) {
+      $scope.slider.slidePrev();
+    }
   };
 
   $scope.test = function(ingredients){
