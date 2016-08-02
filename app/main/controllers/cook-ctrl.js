@@ -85,10 +85,23 @@ angular.module('main')
     speed: 300,
     paginationClickable: true,
     freeMode: false,
-    longSwipes: false,
+    shortSwipes: false,
     spaceBetween: 10,
     scrollbarDraggable: true,
-    scrollbarHide: false
+    scrollbarHide: false,
+    longSwipesRatio: 0.2,
+    longSwipesMs: 50,
+    onlyExternal: true,
+    onTouchMove: function(swiper, event){
+      if(slider.isEnd) {
+        $scope.toRecipeSelection();
+      } else {
+        swiper.slideNext();
+      }
+    },
+    onTouchMoveOpposite: function(swiper, event){
+      swiper.slidePrev();
+    }
   };
 
   $scope.slideHasChanged = function(index) {
