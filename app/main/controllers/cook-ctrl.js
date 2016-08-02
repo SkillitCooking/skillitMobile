@@ -82,9 +82,9 @@ angular.module('main')
     loop: false,
     effect: 'fade',
     fade: {crossFade: true},
-    speed: 500,
+    speed: 300,
     paginationClickable: true,
-    freeMode: true,
+    freeMode: false,
     spaceBetween: 10,
     scrollbarDraggable: true,
     scrollbarHide: false
