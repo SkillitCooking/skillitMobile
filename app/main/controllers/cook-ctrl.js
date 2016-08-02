@@ -85,6 +85,7 @@ angular.module('main')
     speed: 300,
     paginationClickable: true,
     freeMode: false,
+    longSwipes: false,
     spaceBetween: 10,
     scrollbarDraggable: true,
     scrollbarHide: false
