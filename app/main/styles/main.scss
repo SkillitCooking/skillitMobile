@@ -24,7 +24,7 @@ $ionicons-font-path: "../assets/fonts" !default;
 /*FONTS*/
 h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-present-instructions h3 {
 	font-family: 'Pompiere', cursive;
-	font-size: 50px;
+	font-size: 35px;
 	color: $balanced;
 }
 .cook-present-instructions h3 {
@@ -71,7 +71,13 @@ div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
 /*BOTTOM NAV TABS*/
 .tab-nav.tabs {
 	color: $balanced;
+	max-height: 37px;
 }
+.has-tabs {
+    bottom: 38px;
+}
+
+
 
 /***********************************/
 /*HEADER*/
@@ -93,6 +99,9 @@ ion-nav-back-button.button-clear {
 /*general*/
 .button.reset {
 	border-color: #ffffff;
+}
+.cook-tab.scroll-content.ionic-scroll {
+	height: 76%;
 }
 
 /*slider dots*/
@@ -117,7 +126,7 @@ ion-nav-back-button.button-clear {
 }
 .bottom-nav-buttons-cook-tab {
     position: fixed;
-    bottom: 48px;
+    bottom: 33px;
     z-index: 5000;
     width: 100%;
     background-color: #ffffff;
@@ -127,10 +136,11 @@ ion-nav-back-button.button-clear {
 .bottom-nav-buttons-cook-tab .button {	
     background-color: #ef4734;
     color: #ffffff;
-    border-radius: 10%;
-    min-width: 75px;
+    border-radius: 7%;
+    min-width: 105px;
     min-height: 40px;
     padding: 0 14px;
+    font-size: 270%;
 }
 .bottom-nav-buttons-cook-tab .button:active {	
     background-color: #ffffff;
@@ -143,9 +153,7 @@ ion-nav-back-button.button-clear {
 
 /***********************/
 /*ingredient input tabs*/
-.cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll {
-	height: 72%;
-}
+
 .padding.cook-tab {
 	padding-top: 10px;
 }
@@ -187,7 +195,7 @@ div.ingredient-form-selection {
 	padding-left: 7px;
 }
 h2.ingredient-type-heading {
-	font-size: 45px;
+	font-size: 35px;
 	margin:0 0 0 20px;
 }
 .cook-tab .list .item-checkbox {
@@ -552,7 +560,7 @@ h3.side-dish-header {
 	border: 2px solid $balanced;
 	border-radius: 50%;
 	max-height: 34px;
-    margin-top: 10px;
+    top: 25%;
 }
 .full-text-display p {
 	white-space: normal !important
@@ -596,7 +604,7 @@ img.video-thumbnail {
 		height: 80px;
 		width: auto;
 	}
-    .cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll {
-	   height: 78%;
-    }
+	.cook-tab.scroll-content.ionic-scroll {
+		height: 80%;
+	}	
 }
