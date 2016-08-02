@@ -63,9 +63,9 @@ angular.module('main')
   };
 
   $scope.repeatDone = function() {
-    if($scope.slider) {
+    /*if($scope.slider) {
       $scope.slider.update();
-    }
+    }*/
   };
 
   $scope.getWrapClass = function(index) {
@@ -86,17 +86,14 @@ angular.module('main')
     paginationClickable: true,
     freeMode: true,
     spaceBetween: 10,
-    onSlideChangeEnd: function(swiper) {
-      swiper.update();
-    },
     scrollbarDraggable: true,
     scrollbarHide: false
   };
 
   $scope.slideHasChanged = function(index) {
-    if($scope.slider) {
+    /*if($scope.slider) {
       $scope.slider.update();
-    }
+    }*/
   };
 
   $scope.slidePrev = function() {
