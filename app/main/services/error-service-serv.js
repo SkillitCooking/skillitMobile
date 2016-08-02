@@ -6,7 +6,8 @@ angular.module('main')
   service.showErrorAlert = function() {
     var alertPopup = $ionicPopup.alert({
       title: 'Oopsy Daisy',
-      template: 'Something unexpected happened that caused an error... we\'ll be looking into it!'
+      template: 'Something unexpected happened that caused an error... we\'ll be looking into it!',
+      cssClass: ''
     });
     alertPopup.then(function(res) {
       //navigate to cook
