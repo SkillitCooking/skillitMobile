@@ -426,14 +426,6 @@ angular.module('main')
     }
   };
 
-  $scope.logshit = function() {
-    console.log('recipe: ', $scope.combinedRecipe);
-  };
-
-  $scope.logish = function(subStep) {
-    console.log('subStep: ', subStep);
-  };
-
   $scope.getSubStepNumber = function(subStep, source) {
     return subStep.stepNumber;
   };
