@@ -10,26 +10,13 @@ angular.module('main')
   
   ItemCollectionService.getCollectionsForItemType('recipe').then(function(collections) {
     $scope.recipeCollections = collections.data;
-    $scope.loadedArr[0] = true;
-    if($scope.loadedArr[0] && $scope.loadedArr[1]) {
-      $ionicLoading.hide();
-    }
-  }, function(response) {
-    ErrorService.showErrorAlert();
-  });
-
-  RecipeService.getRecipesOfType('BYO').then(function(recipes) {
-    $scope.BYORecipes = recipes.data;
-    if($scope.BYORecipes) {
-      for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {
-        $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
-        $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
-      }
-    }
-    $scope.loadedArr[1] = true;
-    if($scope.loadedArr[0] && $scope.loadedArr[1]) {
-      $ionicLoading.hide();
-    }
+    $scope.recipeCollections.unshift({
+      description: 'Feeling a little creative? Take a look at these recipes that let you choose the ingredients that you want to use.',
+      name: 'Build Your Own',
+      itemType: 'recipe',
+      isBYOCollection: true
+    });
+    $ionicLoading.hide();
   }, function(response) {
     ErrorService.showErrorAlert();
   });
@@ -43,9 +30,9 @@ angular.module('main')
   });
 
   $scope.fullSelected = true;
-  $scope.BYOSelected = false;
+  //$scope.BYOSelected = false;
 
-  $scope.getFullButtonClass = function() {
+  /*$scope.getFullButtonClass = function() {
     if(!$scope.fullSelected){
       return "button button-outline button-balanced";
     } else {
@@ -104,5 +91,5 @@ angular.module('main')
         loadAlaCarte: true
       }, 200);
     });
-  };
+  };*/
 }]);

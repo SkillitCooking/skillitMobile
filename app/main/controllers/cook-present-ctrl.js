@@ -172,17 +172,19 @@ angular.module('main')
   };
 
   $scope.isSingleStep = function(step) {
-    if(step.text) {
-      return true;
-    } else if (step.textArr) {
-      return false;
-    } else {
-      //error
-      ErrorService.logError({
-        message: "Cook Present Controller ERROR: step has neither text nor textArr in function 'isSingleStep'",
-        step: step
-      });
-      ErrorService.showErrorAlert();
+    if(!step.isEmpty) {
+      if(step.text) {
+        return true;
+      } else if (step.textArr) {
+        return false;
+      } else {
+        //error
+        ErrorService.logError({
+          message: "Cook Present Controller ERROR: step has neither text nor textArr in function 'isSingleStep'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
+      }
     }
   };
 
