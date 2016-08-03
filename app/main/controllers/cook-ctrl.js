@@ -113,12 +113,18 @@ angular.module('main')
   $scope.slidePrev = function() {
     if($scope.slider) {
       $scope.slider.slidePrev();
+      setTimeout(function() {
+        $ionicScrollDelegate.scrollTop();
+      }, 500);
     }
   };
 
   $scope.slideNext = function() {
     if($scope.slider) {
       $scope.slider.slideNext();
+      setTimeout(function() {
+        $ionicScrollDelegate.scrollTop();
+      }, 500);
     }
   };
 
@@ -150,6 +156,9 @@ angular.module('main')
   $scope.goToSlide = function(index) {
     if($scope.slider) {
       $scope.slider.slideTo(index);
+      setTimeout(function() {
+        $ionicScrollDelegate.scrollTop();
+      }, 500);
     }
   };
 
@@ -247,6 +256,9 @@ angular.module('main')
     if($scope.slider) {
       if($scope.hasMoreSlides()) {
         $scope.slider.slideNext();
+        setTimeout(function() {
+          $ionicScrollDelegate.scrollTop();
+        }, 500);
       } else {
         $scope.toRecipeSelection();
       }
@@ -256,6 +268,9 @@ angular.module('main')
   $scope.swipeRight = function() {
     if($scope.slider) {
       $scope.slider.slidePrev();
+      setTimeout(function() {
+        $ionicScrollDelegate.scrollTop();
+      }, 500);
     }
   };
 

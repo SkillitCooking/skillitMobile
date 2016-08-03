@@ -24,28 +24,69 @@ angular.module('main')
     $ionicHistory.goBack();
   };
 
+  //BYO handling here too
   $scope.recipeSelected = function(recipe) {
     recipe.isSelected = true;
     setTimeout(function() {
       recipe.isSelected = false;
     }, 400);
-    setTimeout(function() {
-      $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: [], alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
-    }, 200);
+    if($scope.collection.isBYOCollection) {
+      var ingredientTypes = recipe.ingredientList.ingredientTypes;
+      for (var i = ingredientTypes.length - 1; i >= 0; i--) {
+        if(ingredientTypes[i].minNeeded == ingredientTypes[i].ingredients.length) {
+          for (var j = ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
+            ingredientTypes[i].ingredients[j].useInRecipe = true;
+          }
+        }
+      }
+      setTimeout(function() {
+        $state.go('main.editBYOIngredientsRecipes', {
+          alaCarteRecipes: [],
+          alaCarteSelectedArr: [],
+          previousRecipeIds: [recipe._id],
+          selectedIngredientNames: [],
+          BYOIngredientTypes: ingredientTypes,
+          BYOName: recipe.name,
+          loadAlaCarte: true
+        }, 200);
+      });
+    } else {
+      setTimeout(function() {
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: [], alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
+      }, 200);
+    }
   };
 
-  RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
-    $scope.recipes = recipes.data;
-    if($scope.recipes) {
-      for (var i = $scope.recipes.length - 1; i >= 0; i--) {
-        $scope.recipes[i].prepTime = 5 * Math.round($scope.recipes[i].prepTime/5);
-        $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
+  //BYO handling here
+  if($scope.collection.isBYOCollection){
+    RecipeService.getRecipesOfType('BYO').then(function(recipes) {
+      $scope.recipes = recipes.data;
+      if($scope.recipes) {
+        for (var i = $scope.recipes.length - 1; i >= 0; i--) {
+          $scope.recipes[i].prepTime = 5 * Math.round($scope.recipes[i].prepTime/5);
+          $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
+        }
       }
-    }
-    setTimeout(function() {
-      $ionicLoading.hide();
-    }, 200);
-  }, function(response) {
-    ErrorService.showErrorAlert();
-  });
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, 200);
+    }, function(response) {
+      ErrorService.showErrorAlert();
+    });
+  } else {
+    RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
+      $scope.recipes = recipes.data;
+      if($scope.recipes) {
+        for (var i = $scope.recipes.length - 1; i >= 0; i--) {
+          $scope.recipes[i].prepTime = 5 * Math.round($scope.recipes[i].prepTime/5);
+          $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
+        }
+      }
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, 200);
+    }, function(response) {
+      ErrorService.showErrorAlert();
+    });
+  }
 }]);

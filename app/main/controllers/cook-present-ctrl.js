@@ -41,6 +41,18 @@ angular.module('main')
         }
         ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(concatIngredients);
       }
+      ingredientsForRecipe.ingredients.sort(function(a, b) {
+        if(a.inputCategory === 'Starches')
+          return -1;
+        if(a.inputCategory === 'Protein' && b.inputCategory === 'Vegetables')
+          return -1;
+        if(b.inputCategory === 'Starches' && a.inputCategory !== 'Starches')
+          return 1;
+        if(b.inputCategory === 'Protein' && a.inputCategory === 'Vegetables')
+          return 1;
+
+        return 0;
+      });
       ingredientsForRecipe.ingredients = _.map(ingredientsForRecipe.ingredients, function(ingredient) {
           return ingredient.name;
         });
@@ -70,7 +82,6 @@ angular.module('main')
   $scope.cameFromHome = $stateParams.cameFromHome;
   $scope.cameFromRecipes = $stateParams.cameFromRecipes;
   $scope.cameFromRecipeCollection = $stateParams.cameFromRecipeCollection;
-  console.log("came from recipe collection", $stateParams.cameFromRecipeCollection);
 
   if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
@@ -161,17 +172,19 @@ angular.module('main')
   };
 
   $scope.isSingleStep = function(step) {
-    if(step.text) {
-      return true;
-    } else if (step.textArr) {
-      return false;
-    } else {
-      //error
-      ErrorService.logError({
-        message: "Cook Present Controller ERROR: step has neither text nor textArr in function 'isSingleStep'",
-        step: step
-      });
-      ErrorService.showErrorAlert();
+    if(!step.isEmpty) {
+      if(step.text) {
+        return true;
+      } else if (step.textArr) {
+        return false;
+      } else {
+        //error
+        ErrorService.logError({
+          message: "Cook Present Controller ERROR: step has neither text nor textArr in function 'isSingleStep'",
+          step: step
+        });
+        ErrorService.showErrorAlert();
+      }
     }
   };
 

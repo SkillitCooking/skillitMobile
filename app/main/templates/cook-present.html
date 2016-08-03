@@ -73,14 +73,14 @@
                 <p><b>Step {{getSubStepNumber(step, 'notclickable-single')}}:</b> {{step.text}}</p>
               </ion-item>
             </div>
-            <div ng-switch-default>
-              <div ng-repeat="subStep in step.textArr" ng-switch on="isClickable(subStep)">
+            <div ng-switch-default ng-repeat="subStep in step.textArr">
+              <div ng-switch on="isClickable(subStep)">
                 <ion-item ng-switch-when="true" class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)" ng-click="showTip(subStep, $event)">
                   <p><b>Step {{getSubStepNumber(subStep, 'clickable-notsingle')}}:</b> {{subStep.text}}</p>
                   <i ng-if="subStep.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
                   <i ng-if="subStep.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
                 </ion-item>
-                <ion-item ng-switch-default class="recipe-instructions" ng-if="!step.isEmpty" ng-repeat="subStep in step.textArr" ng-class="clickableStep(subStep)">
+                <ion-item ng-switch-default class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)">
                   <p><b>Step {{getSubStepNumber(subStep, 'not-clickable-notsingle')}}:</b> {{subStep.text}}</p>
                 </ion-item>
               </div>

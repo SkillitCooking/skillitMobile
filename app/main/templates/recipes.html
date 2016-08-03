@@ -2,20 +2,20 @@
   <ion-view view-title="Recipes">
     <!-- do you want padding? -->
     <ion-content class="padding">
-      <div class="button-bar bottom-margin-15">
+      <!--<div class="button-bar bottom-margin-15">
         <a ng-class="getFullButtonClass()" ng-click="selectFull()">Mains</a>
         <a ng-class="getBYOButtonClass()" ng-click="selectBYO()">BYOs</a>
-      </div>
+      </div>-->
       <div ng-if="fullSelected">
         <item-collections collections="recipeCollections" item-type="'recipe'"></item-collections>
       </div>
-      <div ng-if="BYOSelected">
+      <!--<div ng-if="BYOSelected">
         <h3 class="recipe-category no-bottom-margin">Build Your Own</h3>
         <ion-list>
           <div ng-repeat="recipe in BYORecipes" class="cook-recipe-selection">
             <recipe-item recipe="recipe" iconclass="BYORecipeClass($index)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
           </div>
-      </div>
+      </div>-->
     </ion-content>
   </ion-view>
 
