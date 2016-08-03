@@ -4,8 +4,11 @@
     <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
   </ion-nav-buttons>
   <div class="row bottom-a-la-carte-buttons">
-      <div class="col">        
-        <button class="button button-white side-dish-screen-button" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged()">Let's Go!</button>
+      <div class="col" ng-if="!cameFromRecipes()">        
+        <button class="button button-white side-dish-screen-button" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged('not-recipes') || inadequateIngredients('not-recipes')">Let's Go!</button>
+      </div>
+      <div class ="col" ng-if="cameFromRecipes()">
+        <button class="button button-white side-dish-screen-button" ng-click="changeIngredients()" ng-disabled="inadequateIngredients('recipes')">Let's Go!</button>
       </div>
       <div class="col">
         <button class="button button-white side-dish-screen-button" ng-click="cancel()">{{getCancelText()}}</button>

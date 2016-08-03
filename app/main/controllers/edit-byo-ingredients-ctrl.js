@@ -13,15 +13,30 @@ angular.module('main')
   $scope.BYOName = $stateParams.BYOName;
   $scope.loadAlaCarte = $stateParams.loadAlaCarte;
 
+  $scope.partOfDisplayGroup = function(type) {
+    var count = 0;
+    for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
+      if($scope.BYOIngredientTypes[i].displayName === type.displayName) {
+        count++;
+      }
+    }
+    if(count > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   $scope.isCheckboxDisabled = function(type) {
-    if(type.minNeeded !== '0') {
+    var minNeeded = parseInt(type.minNeeded, 10);
+    if(minNeeded !== 0 && !$scope.partOfDisplayGroup(type)) {
       var count = 0;
       for (var i = type.ingredients.length - 1; i >= 0; i--) {
         if(type.ingredients[i].useInRecipe) {
           count++;
         }
       }
-      return count <= type.minNeeded;
+      return count === minNeeded;
     } else {
       return false;
     }
@@ -57,14 +72,50 @@ angular.module('main')
     }
   };
 
-  $scope.selectionHasChanged = function() {
-    for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
-      var curType = $scope.BYOIngredientTypes[i];
-      var origType = $scope.originalBYOIngredientTypes[i];
-      for (var j = curType.ingredients.length - 1; j >= 0; j--) {
-        if(curType.ingredients[j].useInRecipe !== origType.ingredients[j].useInRecipe) {
-          $scope.hasChanged = true;
-          return true;
+  $scope.cameFromRecipes = function() {
+    return $stateParams.cameFromRecipes;
+  };
+
+  $scope.inadequateIngredients = function(source) {
+    //will need to groupby display names
+    var groupedIngredientTypes = _.groupBy($scope.BYOIngredientTypes, function(type) {
+      return type.displayName;
+    });
+    var retVal;
+    _.forIn(groupedIngredientTypes, function(types, name) {
+      //values will be arrays
+      //for each, sum over selected
+      //if non-zero, store value until final iteration, then check
+      if(!retVal) {
+        var minNeeded = 0;
+        var ingredientCount = 0;
+        for (var i = types.length - 1; i >= 0; i--) {
+          var typeMinNeeded = parseInt(types[i].minNeeded, 10);
+          if(typeMinNeeded > minNeeded) {
+            minNeeded = typeMinNeeded;
+          }
+          for (var j = types[i].ingredients.length - 1; j >= 0; j--) {
+            if(types[i].ingredients[j].useInRecipe) {
+              ingredientCount += 1;
+            }
+          }
+        }
+        retVal = ingredientCount < minNeeded;
+      }
+    });
+    return retVal;
+  };
+
+  $scope.selectionHasChanged = function(source) {
+    if($scope.BYOIngredientTypes) {
+      for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
+        var curType = $scope.BYOIngredientTypes[i];
+        var origType = $scope.originalBYOIngredientTypes[i];
+        for (var j = curType.ingredients.length - 1; j >= 0; j--) {
+          if(curType.ingredients[j].useInRecipe !== origType.ingredients[j].useInRecipe) {
+            $scope.hasChanged = true;
+            return true;
+          }
         }
       }
     }
@@ -90,7 +141,7 @@ angular.module('main')
   };
 
   $scope.getCancelText = function() {
-    if($scope.hasChanged) {
+    if($scope.hasChanged || $stateParams.cameFromRecipes) {
       return 'Cancel';
     } else {
       return 'No Changes';
