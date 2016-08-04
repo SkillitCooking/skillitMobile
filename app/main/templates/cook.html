@@ -24,9 +24,9 @@
         <ion-slide-page ng-repeat="(name, ingredients) in ingredientCategories">
           <ion-content class="has-header padding cook-tab" scroll=true>
           <div class="wrap-class" ng-class="getWrapClass($index)">
-            <h2 ng-click="logIngredients(ingredients)" class="ingredient-type-heading">{{name}}</h2>
+            <h2 class="ingredient-type-heading">{{name}}</h2>
             <ion-list>
-              <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
+              <div ng-if="!isError()" ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
                 <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
                   {{ingredient.name}}
                 </ion-checkbox>

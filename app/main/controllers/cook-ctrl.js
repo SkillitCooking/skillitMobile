@@ -20,6 +20,9 @@ angular.module('main')
 
   $scope.$on('$ionicView.enter', function(event, data){
     $ionicNavBarDelegate.showBackButton(false);
+    if($stateParams.fromError) {
+      ErrorService.toggleIsErrorAlready();
+    }
     if($stateParams.clearHistory) {
       $ionicHistory.clearHistory();
       $stateParams.clearHistory = false;
@@ -66,6 +69,10 @@ angular.module('main')
     /*if($scope.slider) {
       $scope.slider.update();
     }*/
+  };
+
+  $scope.isError = function() {
+    return ErrorService.isErrorAlready;
   };
 
   $scope.getWrapClass = function(index) {

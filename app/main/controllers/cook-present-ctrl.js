@@ -171,6 +171,10 @@ angular.module('main')
     return !$scope.cameFromHome && !$scope.cameFromRecipes && !$scope.cameFromRecipeCollection;
   };
 
+  $scope.isError = function() {
+    return ErrorService.isErrorAlready;
+  };
+
   $scope.isSingleStep = function(step) {
     if(!step.isEmpty) {
       if(step.text) {

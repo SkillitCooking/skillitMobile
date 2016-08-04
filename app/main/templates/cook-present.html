@@ -58,7 +58,7 @@
       </div>
       <ion-list class="list">
       <h3>Instructions</h3>
-        <div ng-repeat="step in combinedRecipe.stepList">
+        <div ng-if="!isError()" ng-repeat="step in combinedRecipe.stepList">
           <div ng-switch on="isSingleStep(step)">
             <div ng-switch-when="true" ng-switch on="isClickable(step)">
               <ion-item ng-switch-when="true" ng-class="clickableStep(step)" class="recipe-instructions" ng-if="!step.isEmpty" ng-click="showTip(step, $event)">

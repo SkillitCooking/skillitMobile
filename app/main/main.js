@@ -102,7 +102,8 @@ angular.module('main', [
           }
         },
         params: {
-          clearHistory: false
+          clearHistory: false,
+          fromError: false
         }
       })
       .state('main.cookRecipeSelection', {
