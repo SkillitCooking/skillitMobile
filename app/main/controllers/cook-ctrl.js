@@ -50,6 +50,9 @@ angular.module('main')
   });
 
   $scope.data = {};
+      //error test
+    var y;
+    var z = y.x;
 
   $scope.logIngredients = function(ingredients) {
     console.log("ingredients: ", ingredients);
@@ -243,7 +246,7 @@ angular.module('main')
         default:
           //error
           //call error api
-          ErrorService.logError({
+          ErrorService.logError({ 
             message: "Cook Controller ERROR: unexpected inputCategory in function 'canHaveForms'",
             inputCategory: curInputCategory 
           });

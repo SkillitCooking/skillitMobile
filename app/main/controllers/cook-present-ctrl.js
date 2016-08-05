@@ -402,7 +402,7 @@ angular.module('main')
           $state.go('main.cook');
         }, function(error) {
           //error
-          ErrorService.logError({
+          ErrorService.logError({ 
             message: "Cook Present Controller ERROR: failed to clear $ionicHistory cache in function 'resetEverything'",
             error: error
           });

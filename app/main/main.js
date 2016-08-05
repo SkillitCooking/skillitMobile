@@ -7,7 +7,24 @@ angular.module('main', [
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
-.config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
+.config(function ($stateProvider, $urlRouterProvider, RestangularProvider, $provide) {
+  //exception handler
+  $provide.decorator('$exceptionHandler', ['$delegate', '$injector', function($delegate, $injector){
+    return function(exception, cause) {
+      var ErrorService = $injector.get('ErrorService');
+      var stackTrace = exception.stack ? exception.stack : "no stack trace found";
+      var errInfo = {
+        message: 'EXCEPTION: ' + exception.message,
+        name: exception.name,
+        cause: cause,
+        stackTrace: stackTrace
+      };
+      ErrorService.logError(errInfo);
+      $delegate(exception, cause);
+      ErrorService.showErrorAlert();
+    };
+  }]);
+
   //Restangular setup
   RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
 

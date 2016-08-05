@@ -43,11 +43,11 @@ angular.module('main')
           } else {
             //then step couldn't be found, throw error
             ErrorService.logError({
-                  message: "Baking Step Service ERROR: step via sourceId couldn't be located in function 'instantiateStep'",
-                  step: step,
-                  recipeName: recipe.name
-                });
-                ErrorService.showErrorAlert();
+              message: "Baking Step Service ERROR: step via sourceId couldn't be located in function 'instantiateStep'",
+              step: step,
+              recipeName: recipe.name
+            });
+            ErrorService.showErrorAlert();
           }
           break;
 
