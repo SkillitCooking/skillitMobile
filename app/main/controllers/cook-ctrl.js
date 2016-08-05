@@ -50,9 +50,6 @@ angular.module('main')
   });
 
   $scope.data = {};
-      //error test
-    var y;
-    var z = y.x;
 
   $scope.logIngredients = function(ingredients) {
     console.log("ingredients: ", ingredients);
