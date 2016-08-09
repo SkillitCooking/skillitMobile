@@ -120,19 +120,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToDry[0].name.toLowerCase();
+          stepText += step.ingredientsToDry[0].name[step.ingredientsToDry[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToDry[0].name.toLowerCase() + " and " + step.ingredientsToDry[1].name.toLowerCase();
+          stepText += step.ingredientsToDry[0].name[step.ingredientsToDry[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToDry[1].name[step.ingredientsToDry[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToDry.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToDry[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToDry[i].name[step.ingredientsToDry[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToDry[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToDry[i].name[step.ingredientsToDry[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

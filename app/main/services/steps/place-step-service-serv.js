@@ -108,6 +108,7 @@ angular.module('main')
         });
         if(dish) {
           step.dishToPlaceOn = dish;
+          step.dishCameFromProduct = false;
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
@@ -136,6 +137,7 @@ angular.module('main')
             if(referencedStep.products){
               step.dishToPlaceOn = referencedStep.products[dishProductInput.key].dishes[0];
               step.alreadyPlacedIngredients = referencedStep.products[dishProductInput.key].ingredients;
+              step.dishCameFromProduct = true;
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -163,11 +165,13 @@ angular.module('main')
                 //then came from stepProduct
                 step.dishToPlaceOn = originalDishProducts[dishKey].dishes[0];
                 step.alreadyPlacedIngredients = originalDishProducts[dishKey].ingredients;
+                step.dishCameFromProduct = true;
               } else {
                 if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
                   //then came from equipmentList
                   step.dishToPlaceOn = originalDishProducts.dishes[0];
                   step.alreadyPlacedIngredients = originalDishProducts.ingredients;
+                  step.dishCameFromProduct = false;
                 } 
               }
               if(!step.products) {
@@ -245,19 +249,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToPlace[0].name.toLowerCase();
+          stepText += step.ingredientsToPlace[0].name[step.ingredientsToPlace[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToPlace[0].name.toLowerCase() + " and " + step.ingredientsToPlace[1].name.toLowerCase();
+          stepText += step.ingredientsToPlace[0].name[step.ingredientsToPlace[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToPlace[1].name[step.ingredientsToPlace[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToPlace.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToPlace[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToPlace[i].name[step.ingredientsToPlace[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToPlace[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToPlace[i].name[step.ingredientsToPlace[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
@@ -294,21 +298,21 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += " with " + step.alreadyPlacedIngredients[0].name.toLowerCase();
+          stepText += " with " + step.alreadyPlacedIngredients[0].name[step.alreadyPlacedIngredients[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += " with " + step.alreadyPlacedIngredients[0].name.toLowerCase() + " and " +
-            step.alreadyPlacedIngredients[1].name.toLowerCase();
+          stepText += " with " + step.alreadyPlacedIngredients[0].name[step.alreadyPlacedIngredients[0].nameFormFlag].toLowerCase() + " and " +
+            step.alreadyPlacedIngredients[1].name[step.alreadyPlacedIngredients[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           stepText += " with ";
           for (var i = step.alreadyPlacedIngredients.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.alreadyPlacedIngredients[i].name.toLowerCase();
+              stepText += "and " + step.alreadyPlacedIngredients[i].name[step.alreadyPlacedIngredients[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.alreadyPlacedIngredients[i].name.toLowerCase() + ", ";
+              stepText += step.alreadyPlacedIngredients[i].name[step.alreadyPlacedIngredients[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

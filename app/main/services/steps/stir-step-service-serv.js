@@ -124,20 +124,20 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += " the " + step.ingredientsToStir[0].name.toLowerCase();
+          stepText += " the " + step.ingredientsToStir[0].name[step.ingredientsToStir[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += " the " + step.ingredientsToStir[0].name.toLowerCase() + " and " + step.ingredientsToStir[1].name.toLowerCase();
+          stepText += " the " + step.ingredientsToStir[0].name[step.ingredientsToStir[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToStir[1].name[step.ingredientsToStir[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           stepText += " the ";
           for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToStir[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToStir[i].name[step.ingredientsToStir[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToStir[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToStir[i].name[step.ingredientsToStir[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
@@ -174,19 +174,19 @@ angular.module('main')
         break;
 
       case 1:
-        auxStepText += ingredients[0].name.toLowerCase();
+        auxStepText += ingredients[0].name[step.ingredients[0].nameFormFlag].toLowerCase();
         break;
 
       case 2:
-        auxStepText += ingredients[0].name.toLowerCase() + " and " + ingredients[1].name.toLowerCase();
+        auxStepText += ingredients[0].name[step.ingredients[0].nameFormFlag].toLowerCase() + " and " + ingredients[1].name[step.ingredients[0].nameFormFlag].toLowerCase();
         break;
 
       default:
         for (var i = ingredients.length - 1; i >= 0; i--) {
           if(i === 0) {
-            auxStepText += "and " + ingredients[i].name.toLowerCase();
+            auxStepText += "and " + ingredients[i].name[step.ingredients[i].nameFormFlag].toLowerCase();
           } else {
-            auxStepText += ingredients[i].name.toLowerCase() + ", ";
+            auxStepText += ingredients[i].name[step.ingredients[i].nameFormFlag].toLowerCase() + ", ";
           }
         }
         break;

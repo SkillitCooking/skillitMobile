@@ -106,6 +106,7 @@ angular.module('main')
         });
         if(dish) {
           step.sauteeDish = dish;
+          step.dishCameFromProduct = false;
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
@@ -133,6 +134,7 @@ angular.module('main')
           if(!referencedStep.isEmpty) {
             if(referencedStep.products){
               step.sauteeDish = referencedStep.products[dishInput.key].dishes[0];
+              step.dishCameFromProduct = true;
               if(!step.products){
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -155,10 +157,13 @@ angular.module('main')
             if(originalDishProducts) {
               var dishKey = DishInputService.getDishKey(step.stepType);
               if(originalDishProducts[dishKey]) {
+                //Then came from stepProduct
                 step.sauteeDish = originalDishProducts[dishKey].dishes[0];
+                step.dishCameFromProduct = true;
               } else {
                 if(originalDishProducts.dishes && originalDishProducts.dishes.length) {
                   step.sauteeDish = originalDishProducts.dishes[0];
+                  step.dishCameFromProduct = false;
                 }
               }
               if(!step.products) {
@@ -231,19 +236,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSautee[0].name.toLowerCase();
+          stepText += step.ingredientsToSautee[0].name[step.ingredientsToSautee[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSautee[0].name.toLowerCase() + " and " + step.ingredientsToSautee[1].name.toLowerCase();
+          stepText += step.ingredientsToSautee[0].name[step.ingredientsToSautee[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSautee[1].name[step.ingredientsToSautee[1].nameFormFlag].toLowerCase();
           break;
 
         default: 
           for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSautee[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToSautee[i].name[step.ingredientsToSautee[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSautee[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToSautee[i].name[step.ingredientsToSautee[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

@@ -106,6 +106,7 @@ angular.module('main')
         });
         if(dish) {
           step.cookingDish = dish;
+          step.dishCameFromProduct = false;
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
@@ -134,6 +135,7 @@ angular.module('main')
           if(!referencedStep.isEmpty) {
             if(referencedStep.products) {
               step.cookingDish = referencedStep.products[dishInput.key].dishes[0];
+              step.dishCameFromProduct = true;
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -156,10 +158,14 @@ angular.module('main')
             if(originalDishProducts) {
               var dishKey = DishInputService.getDishKey(step.stepType);
               if(originalDishProducts[dishKey]) {
+                //then came from StepProduct
                 step.cookingDish = originalDishProducts.dishes[0];
+                step.dishCameFromProduct = true;
               } else {
                 if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  //Then came from EquipmentList
                   step.cookingDish = originalDishProducts.dishes[0];
+                  step.dishCameFromProduct = false;
                 }
               }
               if(!step.products) {
@@ -239,25 +245,30 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToCook[0].name.toLowerCase();
+          stepText += step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToCook[0].name.toLowerCase() + " and " + step.ingredientsToCook[1].name.toLowerCase();
+          stepText += step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToCook[1].name[step.ingredientsToCook[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToCook[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToCook[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
       }
       if(step.cookingDish.name !== 'Default') {
-        stepText += " in the " + step.cookingDish.name.toLowerCase();
+        stepText += " in "
+        if(step.dishCameFromProduct) {
+         stepText += "the " + step.cookingDish.name.toLowerCase();
+        } else {
+          stepText += "a " + step.cookingDish.name.toLowerCase();
+        }
       }
       if(cookAccordingToInstructions) {
         stepText += " according to package instructions";

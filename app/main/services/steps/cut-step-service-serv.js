@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('cutStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.factory('cutStepService', ['_', 'StepTipService', 'ErrorService', 'NAME_FORM_FLAGS', function (_, StepTipService, ErrorService, NAME_FORM_FLAGS) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -21,8 +21,12 @@ angular.module('main')
               concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
                 return ingredient.useInRecipe;
               });
-            }   
-            step.ingredientsToCut = concatIngredients;
+            }
+            //adjust concatIngredients nameFormFlag here
+            
+            step.ingredientsToCut = _.forEach(concatIngredients, function(ingredient) {
+              ingredient.nameFormFlag = NAME_FORM_FLAGS.PLURAL;
+            });
             step.products = {};
             step.products[step.productKeys[0]] = {
               ingredients: step.ingredientsToCut,
@@ -49,7 +53,9 @@ angular.module('main')
         if(referencedStep){
           if(!referencedStep.isEmpty) {
             if(referencedStep.products){
-              step.ingredientsToCut = referencedStep.products[input.key].ingredients;
+              step.ingredientsToCut = _.forEach(referencedStep.products[input.key].ingredients, function(ingredient) {
+                ingredient.nameFormFlag = NAME_FORM_FLAGS.STANDARD;
+              });
               step.products = {};
               step.products[step.productKeys[0]] = {
                 ingredients: step.ingredientsToCut,
@@ -114,9 +120,9 @@ angular.module('main')
         var arrElem = {};
         arrElem.recipeCategorys = [step.recipeCategory];
         arrElem.actionType = actionType;
-        arrElem.ingredientName = step.ingredientsToCut[i].name;
+        arrElem.ingredientName = step.ingredientsToCut[i].name[];
         arrElem.text = actionType;
-        arrElem.text += " the " + step.ingredientsToCut[i].name.toLowerCase();
+        arrElem.text += " " + step.ingredientsToCut[i].name[step.ingredientsToCut[i].nameFormFlag].toLowerCase();
         if(actionModifier){
           arrElem.text += " " + actionModifier;
           arrElem.actionModifier = actionModifier;

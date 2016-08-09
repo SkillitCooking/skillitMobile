@@ -103,6 +103,7 @@ angular.module('main')
             });
             if(dish){
               step.boilingDish = dish;
+              step.dishCameFromProduct = false;
               if(!step.products){
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -130,6 +131,7 @@ angular.module('main')
               if(!referencedStep.isEmpty) {
                 if(referencedStep.products) {
                   step.boilingDish = referencedStep.products[input.key].dishes[0];
+                  step.dishCameFromProduct = true;
                   //will possibly want to make more general in the future
                   if(!step.products){
                     step.products = {};
@@ -154,11 +156,14 @@ angular.module('main')
                 if(originalDishProducts) {
                   var dishKey = DishInputService.getDishKey(step.stepType);
                   if(originalDishProducts[dishKey]) {
+                    //then came from a stepProduct
                     step.boilingDish = originalDishProducts[dishKey].dishes[0];
+                    step.dishCameFromProduct = true;
                   } else {
                     if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
                       //then came from equipmentList
                       step.boilingDish = originalDishProducts.dishes[0];
+                      step.dishCameFromProduct = false;
                     }
                   }
                   if (!step.products) {
@@ -245,26 +250,26 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBoil[0].name.toLowerCase();
+          stepText += step.ingredientsToBoil[0].name[step.ingredientsToBoil[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToBoil[0].name.toLowerCase() + " and " + step.ingredientsToBoil[1].name.toLowerCase();
+          stepText += step.ingredientsToBoil[0].name[step.ingredientsToBoil[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToBoil[1][step.ingredientsToBoil[1].nameFormFlag].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToBoil[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToBoil[i].name[step.ingredientsToBoil[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToBoil[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToBoil[i].name[step.ingredientsToBoil[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
       }
-      if(step.boilingDish.name !== "Default") {
+      /*if(step.boilingDish.name !== "Default") {
         stepText += " in the " + step.boilingDish.name.toLowerCase();
-      }
+      }*/
       if(cookAccordingToInstructions){
         stepText += " according to package instructions";
       } else if(boilingDuration){

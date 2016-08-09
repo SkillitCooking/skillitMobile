@@ -85,20 +85,20 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBake[0].name.toLowerCase() + " " + bakingTime;
+          stepText += step.ingredientsToBake[0].name[step.ingredientsToBake[0].nameFormFlag].toLowerCase() + " " + bakingTime;
           break;
 
         case 2:
-          stepText += step.ingredientsToBake[0].name.toLowerCase() + " and " + step.ingredientsToBake[1].name.toLowerCase() + " " + bakingTime;
+          stepText += step.ingredientsToBake[0].name[step.ingredientsToBake[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToBake[1].name[step.ingredientsToBake[1].nameFormFlag].toLowerCase() + " " + bakingTime;
           break;
 
         default:
           for (var i = step.ingredientsToBake.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToBake[i].name.toLowerCase() +
+              stepText += "and " + step.ingredientsToBake[i].name[step.ingredientsToBake[i].nameFormFlag].toLowerCase() +
                 " " + bakingTime;
             } else {
-              stepText += step.ingredientsToBake[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToBake[i].name[step.ingredientsToBake[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

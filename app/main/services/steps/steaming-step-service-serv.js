@@ -106,6 +106,7 @@ angular.module('main')
         });
         if(dish) {
           step.steamingDish = dish;
+          step.dishCameFromProduct = false;
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
@@ -133,6 +134,7 @@ angular.module('main')
           if(!referencedStep.isEmpty) {
             if(referencedStep.products) {
               step.steamingDish = referencedStep.products[dishInput.key].dishes[0];
+              step.dishCameFromProduct = true;
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
@@ -156,10 +158,14 @@ angular.module('main')
             if(originalDishProducts) {
               var dishKey = DishInputService.getDishKey(step.stepType);
               if(originalDishProducts[dishKey]) {
+                //then came from stepProduct
                 step.steamingDish = originalDishProducts[dishKey].dishes[0];
+                step.dishCameFromProduct = true;
               } else {
                 if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  //then came from EquipmentList
                   step.steamingDish = originalDishProducts.dishes[0];
+                  step.dishCameFromProduct = false;
                 }
               }
               if(!step.products) {
@@ -231,25 +237,29 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSteam[0].name.toLowerCase();
+          stepText += step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSteam[0].name.toLowerCase() + " and " + step.ingredientsToSteam[1].name.toLowerCase();
+          stepText += step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSteam[1].name[step.ingredientsToSteam[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSteam.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSteam[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSteam[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
       }
       if(step.steamingDish.name !== 'Default') {
-        stepText += " in the " + step.steamingDish.name.toLowerCase();
+        if(step.dishCameFromProduct) {
+          stepText += " in the " + step.steamingDish.name.toLowerCase();
+        } else {
+          stepText += " in a " + step.steamingDish.name.toLowerCase();
+        }
       }
       stepText += " " + steamingDuration;
       step.text = stepText;

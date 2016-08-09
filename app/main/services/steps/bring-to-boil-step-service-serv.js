@@ -50,14 +50,11 @@ angular.module('main')
     var waterAmount = _.find(step.stepSpecifics, function(specific) {
       return specific.propName === "waterAmount";
     }).val;
-    var stepText = "Bring ";
+    var stepText = "Fill a large pot with ";
     if(waterAmount && waterAmount !== ""){
-      stepText += waterAmount + " of water to boil ";
+      stepText += waterAmount + " of water and bring to a boil";
     } else {
-      stepText += "water to boil ";
-    }
-    if(step.boilingDish.name !== 'Default') {
-      stepText += "in a " + step.boilingDish.name.toLowerCase();
+      stepText += "water and bring to a boil";
     }
     step.text = stepText;
   }

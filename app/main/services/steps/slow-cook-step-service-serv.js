@@ -130,19 +130,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSlowCook[0].name.toLowerCase();
+          stepText += step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSlowCook[0].name.toLowerCase() + " and " + step.ingredientsToSlowCook[1].name.toLowerCase();
+          stepText += step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSlowCook[1].name[step.ingredientsToSlowCook[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSlowCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSlowCook[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSlowCook[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

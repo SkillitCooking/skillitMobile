@@ -102,6 +102,7 @@ angular.module('main')
         });
         if(dish) {
           step.seasoningDish = dish;
+          step.dishCameFromProduct = false;
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {};
@@ -127,6 +128,7 @@ angular.module('main')
           if(!referencedStep.isEmpty) {
             if(referencedStep.products){
               step.seasoningDish = referencedStep.products[dishInput.key].dishes[0];
+              step.dishCameFromProduct = true;
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {};
@@ -147,10 +149,14 @@ angular.module('main')
             if(originalDishProducts) {
               var dishKey = DishInputService.getDishKey(step.stepType);
               if(originalDishProducts[dishKey]) {
+                //then came from stepProduct
                 step.seasoningDish = originalDishProducts[dishKey].dishes[0];
+                step.dishCameFromProduct = true;
               } else {
                 if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
+                  //then came from EquipmentList
                   step.seasoningDish = originalDishProducts.dishes[0];
+                  step.dishCameFromProduct = false;
                 }
               }
               if(!step.products) {
@@ -239,19 +245,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSeason[0].name.toLowerCase();
+          stepText += step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSeason[0].name.toLowerCase() + " and " + step.ingredientsToSeason[1].name.toLowerCase();
+          stepText += step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSeason[1].name[step.ingredientsToSeason[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToSeason[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSeason[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
