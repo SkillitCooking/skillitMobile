@@ -72,9 +72,18 @@ div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
 .tab-nav.tabs {
 	color: $balanced;
 	max-height: 37px;
+	background-color: #fbfbfd;
 }
 .has-tabs {
     bottom: 38px;
+}
+/*TOP NAV BUTTONS*/
+.top-back-button-arrow {
+	font-size: 180%;
+}
+.button.top-back-button {
+	min-width: 60px;
+	border-radius: 29px;
 }
 
 
@@ -129,23 +138,22 @@ ion-nav-back-button.button-clear {
     bottom: 33px;
     z-index: 5000;
     width: 100%;
-    background-color: #ffffff;
-    border-top: 1px solid $balanced;
+    background-color: transparent;
 }
 
 .bottom-nav-buttons-cook-tab .button {	
-    background-color: #ef4734;
-    color: #ffffff;
-    border-radius: 7%;
-    min-width: 105px;
-    min-height: 40px;
-    padding: 0 14px;
-    font-size: 270%;
-}
-.bottom-nav-buttons-cook-tab .button:active {	
     background-color: #ffffff;
     color: $balanced;
+    border-radius: 256px;
+    min-width: 144px;
+    min-height: 0px;
+    padding: 0px 14px;
+    font-size: 270%;
     border-color: $balanced;
+}
+.bottom-nav-buttons-cook-tab .button:active {	
+    background-color: $balanced;
+    color: #ffffff;
 }
 .float-right {
 	float: right;
@@ -329,6 +337,7 @@ h2.ingredient-type-heading {
     margin-bottom: 10px;
     font-family: 'pompiere', sans-serif;
     font-size: 21px;
+    border-radius: 30px;
 }
 .button-spice-up-add-side:hover, .button-spice-up-add-side:active {
 	border-color: #ef4734;
