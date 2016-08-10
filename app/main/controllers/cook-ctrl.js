@@ -12,8 +12,6 @@ angular.module('main')
     }
   }
 
-
-
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
   });
@@ -22,6 +20,7 @@ angular.module('main')
     $ionicNavBarDelegate.showBackButton(false);
     if($stateParams.fromError) {
       ErrorService.toggleIsErrorAlready();
+      $scope.clearIngredients();
     }
     if($stateParams.clearHistory) {
       $ionicHistory.clearHistory();
@@ -51,8 +50,8 @@ angular.module('main')
 
   $scope.data = {};
 
-  $scope.logIngredients = function(ingredients) {
-    console.log("ingredients: ", ingredients);
+  $scope.logIngredient = function() {
+    
   };
 
   $scope.$watch("data.slider", function(nv, ov) {
@@ -214,19 +213,23 @@ angular.module('main')
     });
     alertPopup.then(function(res) {
       if(res) {
-        for(var key in $scope.ingredientCategories) {
-          for (var i = $scope.ingredientCategories[key].length - 1; i >= 0; i--) {
-            $scope.ingredientCategories[key][i].isSelected = false;
-            for (var j = $scope.ingredientCategories[key][i].ingredientForms.length - 1; j >= 0; j--) {
-              if(j > 0) {
-                $scope.ingredientCategories[key][i].ingredientForms[j].isSelected = false;
-              }
-            }
-          }
-        }
-        $scope.goToSlide(0);
+        $scope.clearIngredients();
       }
     });
+  };
+
+  $scope.clearIngredients = function() {
+    for(var key in $scope.ingredientCategories) {
+      for (var i = $scope.ingredientCategories[key].length - 1; i >= 0; i--) {
+        $scope.ingredientCategories[key][i].isSelected = false;
+        for (var j = $scope.ingredientCategories[key][i].ingredientForms.length - 1; j >= 0; j--) {
+          if(j > 0) {
+            $scope.ingredientCategories[key][i].ingredientForms[j].isSelected = false;
+          }
+        }
+      }
+    }
+    $scope.goToSlide(0);
   };
 
   $scope.canHaveForms = function(ingredient) {

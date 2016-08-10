@@ -372,6 +372,12 @@ angular.module('main')
     }
   };
 
+  $scope.closeTip = function() {
+    if($scope.popover) {
+      setTimeout(function() {$scope.popover.remove()}, 100);
+    }
+  };
+
   $scope.navigateBack = function() {
     //need to get timesclicked mechanism going here
     if($scope.alaCarteSelectedArr) {

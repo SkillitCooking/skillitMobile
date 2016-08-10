@@ -1,7 +1,7 @@
 <ion-popover-view class="image-modal">
   <ion-header-bar>
     <h1 class="title">{{displayStepTip.title}}</h1>
-    <button class="button close-x-button" ng-click="">X</button>
+    <button class="button close-x-button" ng-click="closeTip()">X</button>
   </ion-header-bar>
   <ion-content overflow-scroll="true">
     <div ng-if="stepTipStep.stepTips.length > 1" class="button-bar">

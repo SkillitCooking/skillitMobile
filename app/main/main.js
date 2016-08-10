@@ -22,6 +22,7 @@ angular.module('main', [
       ErrorService.logError(errInfo);
       $delegate(exception, cause);
       ErrorService.showErrorAlert();
+      ErrorService.toggleIsErrorAlready();
     };
   }]);
 
