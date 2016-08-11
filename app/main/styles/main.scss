@@ -83,10 +83,8 @@ div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
 }
 .button.top-back-button {
 	min-width: 60px;
-	border-radius: 29px;
+	border-radius: 8px;
 }
-
-
 
 /***********************************/
 /*HEADER*/
@@ -144,8 +142,8 @@ ion-nav-back-button.button-clear {
 .bottom-nav-buttons-cook-tab .button {	
     background-color: #ffffff;
     color: $balanced;
-    border-radius: 256px;
-    min-width: 144px;
+    border-radius: 8px;
+    min-width: 114px;
     min-height: 0px;
     padding: 0px 14px;
     font-size: 270%;
@@ -337,7 +335,7 @@ h2.ingredient-type-heading {
     margin-bottom: 10px;
     font-family: 'pompiere', sans-serif;
     font-size: 21px;
-    border-radius: 30px;
+    border-radius: 8px;
 }
 .button-spice-up-add-side:hover, .button-spice-up-add-side:active {
 	border-color: #ef4734;
@@ -615,5 +613,8 @@ img.video-thumbnail {
 	}
 	.cook-tab.scroll-content.ionic-scroll {
 		height: 80%;
-	}	
+	}
+	.bottom-nav-buttons-cook-tab .button {	
+	    min-width: 144px;
+	}		
 }
