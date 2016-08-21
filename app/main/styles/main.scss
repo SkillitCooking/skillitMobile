@@ -22,7 +22,7 @@ $ionicons-font-path: "../assets/fonts" !default;
 
 /**********************************/
 /*FONTS*/
-h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-present-instructions h3 {
+h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-present-instructions h3, .popup-head h3{
 	font-family: 'Pompiere', cursive;
 	font-size: 35px;
 	color: $balanced;
@@ -30,7 +30,7 @@ h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-presen
 .cook-present-instructions h3 {
 	font-size: 35px;
 }
-div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
+div, p, .individual-recipe-in-list h2, h1, .button, .palanquin, .popup-body {
 	font-family: 'Palanquin', sans-serif;
 }
 .individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere {
@@ -66,13 +66,28 @@ div, p, .individual-recipe-in-list h2, h1, .button, .palanquin {
     border: 1px solid $balanced;
     background-color: $balanced;
 }
-
+/***********************/
+/*POPUPS*/
+.popup-buttons .button {
+	border: 1px solid #000000;
+	border-radius: 8px;
+}
+.popup-buttons .button.button-positive {
+    border: none;
+    background-color: #0552d4;
+}
+.popup-body {
+	font-size: 120%;
+}
+.popup-head h3 {
+	font-size: 26px;
+}
 /**********************************/
 /*BOTTOM NAV TABS*/
 .tab-nav.tabs {
 	color: $balanced;
 	max-height: 37px;
-	background-color: #fbfbfd;
+	background-color: #fcfcfd;
 }
 .has-tabs {
     bottom: 38px;
@@ -107,7 +122,7 @@ ion-nav-back-button.button-clear {
 .button.reset {
 	border-color: #ffffff;
 }
-.cook-tab.scroll-content.ionic-scroll {
+.cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll, .add-side.scroll-content.ionic-scroll {
 	height: 76%;
 }
 
@@ -136,7 +151,7 @@ ion-nav-back-button.button-clear {
     bottom: 33px;
     z-index: 5000;
     width: 100%;
-    background-color: transparent;
+    background-color: #ffffff;
 }
 
 .bottom-nav-buttons-cook-tab .button {	
@@ -175,9 +190,6 @@ div.ingredient-form-selection {
 }
 .ingredient-form-items {
 	padding: 0;
-}
-.ingredient-form-type {
-	opacity: 0.4;
 }
 .grouping-of-ingredient-forms {
 	padding-left: 23px;
@@ -611,7 +623,7 @@ img.video-thumbnail {
 		height: 80px;
 		width: auto;
 	}
-	.cook-tab.scroll-content.ionic-scroll {
+	.cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll, .add-side.scroll-content.ionic-scroll {
 		height: 80%;
 	}
 	.bottom-nav-buttons-cook-tab .button {	
