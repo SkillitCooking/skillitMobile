@@ -152,8 +152,11 @@ ion-nav-back-button.button-clear {
     z-index: 5000;
     width: 100%;
     background-color: #ffffff;
+    padding-top: 0;
 }
-
+.bottom-nav-buttons-cook-tab .col {
+	padding-top: 0;
+}
 .bottom-nav-buttons-cook-tab .button {	
     background-color: #ffffff;
     color: $balanced;
