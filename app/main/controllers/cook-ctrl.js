@@ -209,7 +209,7 @@ angular.module('main')
     var alertPopup = $ionicPopup.confirm({
       title: 'Reset Ingredients?',
       template: 'Do you want to reset your selection?',
-      cssClass: ''
+      cssClass: 'popup-alerts'
     });
     alertPopup.then(function(res) {
       if(res) {
