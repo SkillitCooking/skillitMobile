@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('StepCombinationService', ['_', 'RecipeOrderingService', 'SeasoningProfileTextService', 'ErrorService', function (_, RecipeOrderingService, SeasoningProfileTextService, ErrorService) {
+.factory('StepCombinationService', ['_', 'RecipeOrderingService', 'SeasoningProfileTextService', 'STEP_TYPES', 'ErrorService', function (_, RecipeOrderingService, SeasoningProfileTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   /* 
@@ -190,13 +190,19 @@ angular.module('main')
         }
       }
       var recipe = recipes.pop();
+      var alreadyHasPreheatOven = false;
       while(hasSteps(recipe)) {
         var step = recipe.stepList.pop();
-        recipe.totalTime -= step.stepDuration;
-        if(isPrepStep(step)) {
-          recipe.prepTime -= step.stepDuration;
+        if(step.stepType !== STEP_TYPES.PREHEAT || !alreadyHasPreheatOven) {
+          if(step.stepType === STEP_TYPES.PREHEAT) {
+            alreadyHasPreheatOven = true;
+          }
+          recipe.totalTime -= step.stepDuration;
+          if(isPrepStep(step)) {
+            recipe.prepTime -= step.stepDuration;
+          }
+          RecipeOrderingService.addToStepList(combinedRecipe.stepList, step, combinedRecipe.defaultSeasoningProfile);
         }
-        RecipeOrderingService.addToStepList(combinedRecipe.stepList, step, combinedRecipe.defaultSeasoningProfile);
         //how to use comparison function for sortingIndex?
         recipes.binaryInsert(recipe, false, RecipeOrderingService.fullRecipeCmp);
         recipe = recipes.pop();

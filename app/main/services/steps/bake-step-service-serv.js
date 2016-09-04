@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
-.factory('bakeStepService', ['_', 'stirStepService', 'StepTipService', 'ErrorService',
-  function (_, stirStepService, StepTipService, ErrorService) {
+.factory('bakeStepService', ['_', 'stirStepService', 'StepTipService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService',
+  function (_, stirStepService, StepTipService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -22,9 +22,15 @@ angular.module('main')
                 step.bakingDish = referencedStep.products[input.key].dishes[0];
                 //will possibly want to make more general in the future
                 step.products = {};
+                var productIngredients = angular.copy(step.ingredientsToBake);
+                _.forEach(productIngredients, function(ingredient) {
+                  ingredient.transformationPrefix = "";
+                  ingredient.hasBeenUsed = true;
+                });
                 step.products[step.productKeys[0]] = {
-                  ingredients: step.ingredientsToBake,
-                  dishes: [step.bakingDish]
+                  ingredients: productIngredients,
+                  dishes: [step.bakingDish],
+                  sourceStepType: STEP_TYPES.BAKE
                 };
                 step.isEmpty = false;
               } else {
@@ -73,7 +79,13 @@ angular.module('main')
       var bakingTime = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "bakingTime";
       }).val;
-      var stepText = "Bake the ";
+      var stepText = "Bake ";
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToBake);
+      for (var i = step.ingredientsToBake.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToBake[i].nameFormFlag) {
+          step.ingredientsToBake[i].nameFormFlag = "standardForm";
+        }
+      }
       switch(step.ingredientsToBake.length){
         case 0:
           //error case - we obviously expect ingredients to bake
@@ -85,20 +97,20 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBake[0].name.toLowerCase() + " " + bakingTime;
+          stepText += step.ingredientsToBake[0].prefix + " " + step.ingredientsToBake[0].name[step.ingredientsToBake[0].nameFormFlag].toLowerCase() + " " + bakingTime;
           break;
 
         case 2:
-          stepText += step.ingredientsToBake[0].name.toLowerCase() + " and " + step.ingredientsToBake[1].name.toLowerCase() + " " + bakingTime;
+          stepText += step.ingredientsToBake[0].prefix + " " + step.ingredientsToBake[0].name[step.ingredientsToBake[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToBake[1].prefix + " " + step.ingredientsToBake[1].name[step.ingredientsToBake[1].nameFormFlag].toLowerCase() + " " + bakingTime;
           break;
 
         default:
           for (var i = step.ingredientsToBake.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToBake[i].name.toLowerCase() +
+              stepText += "and " + step.ingredientsToBake[i].prefix + " " + step.ingredientsToBake[i].name[step.ingredientsToBake[i].nameFormFlag].toLowerCase() +
                 " " + bakingTime;
             } else {
-              stepText += step.ingredientsToBake[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToBake[i].prefix + " " + step.ingredientsToBake[i].name[step.ingredientsToBake[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

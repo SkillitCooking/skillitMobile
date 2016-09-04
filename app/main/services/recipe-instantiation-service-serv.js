@@ -26,7 +26,7 @@ angular.module('main')
         for (var j = ingredientTypes.length - 1; j >= 0; j--) {
           var ingredients = ingredientTypes[j].ingredients;
           for(var k = ingredients.length - 1; k >= 0; k--) {
-            if(!ingredientNames.includes(ingredients[k].name)){
+            if(!ingredientNames.includes(ingredients[k].name.standardForm)){
               if(recipes[i].recipeType === 'BYO') {
                 ingredients[k].useInRecipe = false;
               } else {

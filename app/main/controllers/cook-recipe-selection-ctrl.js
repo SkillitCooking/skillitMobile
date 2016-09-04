@@ -26,9 +26,9 @@ angular.module('main')
       //then same category, sort by ingredient
       //assuming only one ingredientType and one ingredient for that ingredientType
       //for all alaCarteRecipes
-      if(a.ingredientList.ingredientTypes[0].ingredients[0].name < b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+      if(a.ingredientList.ingredientTypes[0].ingredients[0].name.standardForm < b.ingredientList.ingredientTypes[0].ingredients[0].name.standardForm) {
         return -1;
-      } else if(a.ingredientList.ingredientTypes[0].ingredients[0].name > b.ingredientList.ingredientTypes[0].ingredients[0].name) {
+      } else if(a.ingredientList.ingredientTypes[0].ingredients[0].name.standardForm > b.ingredientList.ingredientTypes[0].ingredients[0].name.standardForm) {
         return 1;
       } else {
         //then same ingredient
@@ -42,11 +42,12 @@ angular.module('main')
   });
 
   _.forEach($scope.selectedIngredients, function(ingredient) {
-    $scope.selectedIngredientNames.push(ingredient.name);
+    $scope.selectedIngredientNames.push(ingredient.name.standardForm);
   });
   var ingredientNames = {
     ingredientNames: $scope.selectedIngredientNames
   };
+  console.log(ingredientNames);
   RecipeService.getRecipesWithIngredients(ingredientNames).then(function(response) {
     $scope.alaCarteRecipes = response.data.AlaCarte;
     if($scope.alaCarteRecipes){

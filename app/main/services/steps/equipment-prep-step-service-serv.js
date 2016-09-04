@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('equipmentPrepStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.factory('equipmentPrepStepService', ['_', 'StepTipService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -20,7 +20,8 @@ angular.module('main')
             }
             step.products[step.productKeys[0]] = {
               ingredients: [],
-              dishes: step.dishesToPrep
+              dishes: step.dishesToPrep,
+              sourceStepType: STEP_TYPES.EQUIPMENTPREP
             };
           } else {
             //error: dish couldn't be found
@@ -47,7 +48,8 @@ angular.module('main')
                 }
                 step.products[step.productKeys[0]] = {
                   ingredients: [],
-                  dishes: step.dishesToPrep
+                  dishes: step.dishesToPrep,
+                  sourceStepType: STEP_TYPES.EQUIPMENTPREP
                 };
               } else {
                 //error: no products for step

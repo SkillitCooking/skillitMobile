@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('heatStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.service('heatStepService', ['_', 'StepTipService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -18,7 +18,8 @@ angular.module('main')
           }
           step.products[step.productKeys[0]] = {
             ingredients: [],
-            dishes: [step.dishToHeat]
+            dishes: [step.dishToHeat],
+            sourceStepType: STEP_TYPES.HEAT
           };
         } else {
           //error - couldn't find dish
@@ -35,7 +36,7 @@ angular.module('main')
       default:
         //error - unexpected sourceType
         ErrorService.logError({
-          message: "Dry Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
+          message: "Heat Step Service ERROR: unexpected sourceType in function 'instantiateStep'",
           input: input,
           step: step,
           recipeName: recipe.name
@@ -55,10 +56,10 @@ angular.module('main')
     }).val;
     var stepText = "";
     if(heatsOil) {
-      stepText  = "Add oil or butter to " + step.dishToHeat.name.toLowerCase() + " and heat over " +
+      stepText  = "Add oil or butter to a " + step.dishToHeat.name.toLowerCase() + " and heat over " +
         heatSetting + " heat";
     } else {
-      stepText = "Heat " + step.dishToHeat.name.toLowerCase() + " over " + heatSetting +
+      stepText = "Heat a " + step.dishToHeat.name.toLowerCase() + " over " + heatSetting +
         " heat";
     }
     step.text = stepText;

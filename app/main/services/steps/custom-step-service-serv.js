@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('customStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
+.factory('customStepService', ['_', 'StepTipService', 'DishInputService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep (step, recipe) {
@@ -33,7 +33,8 @@ angular.module('main')
                 step.products = {};
                 step.products[step.productKeys[0]] = {
                   ingredients: [],
-                  dishes: []
+                  dishes: [],
+                  sourceStepType: STEP_TYPES.CUSTOM
                 };
               }
               var concatIngredients;
@@ -44,7 +45,11 @@ angular.module('main')
                   return ingredient.useInRecipe;
                 });
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(concatIngredients);
+              var productIngredients = angular.copy(concatIngredients);
+              _.forEach(productIngredients, function(ingredient) {
+                ingredient.hasBeenUsed = true;
+              });
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
             }
           } else {
             //error
@@ -69,10 +74,15 @@ angular.module('main')
                   step.products = {};
                   step.products[step.productKeys[0]] = {
                     ingredients: [],
-                    dishes: []
+                    dishes: [],
+                    sourceStepType: STEP_TYPES.CUSTOM
                   };
                 }
-                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[ingredientInput.key].ingredients);
+                var productIngredients = angular.copy(referencedStep.products[ingredientInput.key].ingredients);
+                _.forEach(productIngredients, function(ingredient) {
+                  ingredient.hasBeenUsed = true;
+                });
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
               } else {
                 //error
                 console.log("customStepService error: no products for referencedStep: ", referencedStep);
@@ -123,7 +133,8 @@ angular.module('main')
               step.products = {};
               step.products[step.productKeys[0]] = {
                 ingredients: [],
-                dishes: []
+                dishes: [],
+                sourceStepType: STEP_TYPES.CUSTOM
               };
             }
             step.products[step.productKeys[0]].dishes.push(dish);
@@ -151,7 +162,8 @@ angular.module('main')
                   step.products = {};
                   step.products[step.productKeys[0]] = {
                     ingredients: [],
-                    dishes: []
+                    dishes: [],
+                    sourceStepType: STEP_TYPES.CUSTOM
                   };
                 }
                 step.products[step.productKeys[0]].dishes.push(referencedStep.products[dishInput.key].dishes[0]);
@@ -180,7 +192,8 @@ angular.module('main')
                 if(!step.products) {
                   step.products = {};
                   step.products[step.productKeys[0]] = {
-                    ingredients: []
+                    ingredients: [],
+                    sourceStepType: STEP_TYPES.CUSTOM
                   };
                 }
                 step.products[step.productKeys[0]].dishes = [dish];

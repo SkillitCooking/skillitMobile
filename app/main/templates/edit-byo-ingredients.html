@@ -20,7 +20,7 @@
       <h3 class="recipe-category" ng-if="isNewDisplayName(type)">{{type.displayName}}</h3>
       <p ng-if="isNewDisplayName(type)">Minimum Needed: {{type.minNeeded}}</p>
       <ion-list class="cook-tab">
-        <ion-checkbox class="checkbox-balanced" ng-repeat="ingredient in type.ingredients" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name}}</ion-checkbox>
+        <ion-checkbox class="checkbox-balanced" ng-repeat="ingredient in type.ingredients" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name.standardForm}}</ion-checkbox>
       </ion-list>
     </div>
     <!--<button class="button button-default" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged()">Change Your Ingredients</button>

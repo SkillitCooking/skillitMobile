@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('stirStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.service('stirStepService', ['_', 'StepTipService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -24,9 +24,13 @@ angular.module('main')
             if(!step.products) {
               step.products = {};
             }
+            var productIngredients = _.forEach(angular.copy(concatIngredients), function(ingredient) {
+              ingredient.hasBeenUsed = true;
+            });
             step.products[step.productKeys[0]] = {
-              ingredients: concatIngredients,
-              dishes: []
+              ingredients: productIngredients,
+              dishes: [],
+              sourceStepType: STEP_TYPES.STIR
             };
           } 
         } else {
@@ -49,12 +53,16 @@ angular.module('main')
           if(!referencedStep.isEmpty) {
             if(referencedStep.products) {
               step.ingredientsToStir = referencedStep.products[input.key].ingredients;
-              if(!products) {
+              if(!step.products) {
                 step.products = {};
               }
+              var productIngredients = _.forEach(angular.copy(step.ingredientsToStir), function(ingredient) {
+                ingredient.hasBeenUsed = true;
+              });
               step.products[step.productKeys[0]] = {
-                ingredients: step.ingredientsToStir,
-                dishes: referencedStep.products[input.key].dishes
+                ingredients: productIngredients,
+                dishes: referencedStep.products[input.key].dishes,
+                sourceStepType: STEP_TYPES.STIR
               };
             } else {
               //error - no products for found step
@@ -112,7 +120,14 @@ angular.module('main')
       var stirType = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "stirType";
       }).val;
-      var stepText = stirType;
+      var stepText = stirType + " ";
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToStir);
+      for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToStir[i].nameFormFlag) {
+          step.ingredientsToStir[i].nameFormFlag = "standardForm";
+        }
+      }
+
       switch(step.ingredientsToStir.length) {
         case 0:
           //error
@@ -124,20 +139,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += " the " + step.ingredientsToStir[0].name.toLowerCase();
+          stepText += step.ingredientsToStir[0].prefix + " " + step.ingredientsToStir[0].name[step.ingredientsToStir[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += " the " + step.ingredientsToStir[0].name.toLowerCase() + " and " + step.ingredientsToStir[1].name.toLowerCase();
+          stepText += step.ingredientsToStir[0].prefix + " " + step.ingredientsToStir[0].name[step.ingredientsToStir[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToStir[1].prefix + " " + step.ingredientsToStir[1].name[step.ingredientsToStir[1].nameFormFlag].toLowerCase();
           break;
 
         default:
-          stepText += " the ";
           for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToStir[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToStir[i].prefix + " " + step.ingredientsToStir[i].name[step.ingredientsToStir[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToStir[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToStir[i].prefix + " " + step.ingredientsToStir[i].name[step.ingredientsToStir[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
@@ -174,19 +188,19 @@ angular.module('main')
         break;
 
       case 1:
-        auxStepText += ingredients[0].name.toLowerCase();
+        auxStepText += ingredients[0].name[ingredients[0].nameFormFlag].toLowerCase();
         break;
 
       case 2:
-        auxStepText += ingredients[0].name.toLowerCase() + " and " + ingredients[1].name.toLowerCase();
+        auxStepText += ingredients[0].name[ingredients[0].nameFormFlag].toLowerCase() + " and " + ingredients[1].name[ingredients[0].nameFormFlag].toLowerCase();
         break;
 
       default:
         for (var i = ingredients.length - 1; i >= 0; i--) {
           if(i === 0) {
-            auxStepText += "and " + ingredients[i].name.toLowerCase();
+            auxStepText += "and " + ingredients[i].name[ingredients[i].nameFormFlag].toLowerCase();
           } else {
-            auxStepText += ingredients[i].name.toLowerCase() + ", ";
+            auxStepText += ingredients[i].name[ingredients[i].nameFormFlag].toLowerCase() + ", ";
           }
         }
         break;

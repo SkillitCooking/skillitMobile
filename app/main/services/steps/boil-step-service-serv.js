@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('boilStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
+.factory('boilStepService', ['_', 'StepTipService', 'DishInputService', 'STEP_TYPES', 'GeneralTextService', 'ErrorService', function (_, StepTipService, DishInputService, STEP_TYPES, GeneralTextService, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -25,14 +25,20 @@ angular.module('main')
                       return ingredient.useInRecipe;
                     });
                   }
+                  var productIngredients = angular.copy(concatIngredients);
+                  _.forEach(productIngredients, function(ingredient) {
+                    ingredient.transformationPrefix = "";
+                    ingredient.hasBeenUsed = true;
+                  });
                   step.ingredientsToBoil = step.ingredientsToBoil.concat(concatIngredients);
                   if(!step.products) {
                     step.products = {};
                     step.products[step.productKeys[0]] = {
-                      ingredients: []
+                      ingredients: [],
+                      sourceStepType: STEP_TYPES.BOIL
                     };
                   }
-                  step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
+                  step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
                 }
               } else {
                 //then ingredientType not found, throw error
@@ -53,14 +59,20 @@ angular.module('main')
               if(referencedStep) {
                 if(!referencedStep.isEmpty) {
                   if(referencedStep.products){
+                    var productIngredients = angular.copy(referencedStep.products[input.key].ingredients);
+                    _.forEach(productIngredients, function(ingredient) {
+                      ingredient.transformationPrefix = "";
+                      ingredient.hasBeenUsed = true;
+                    });
                     step.ingredientsToBoil = step.ingredientsToBoil.concat(referencedStep.products[input.key].ingredients);
                     if(!step.products) {
                       step.products = {};
                       step.products[step.productKeys[0]] = {
-                        ingredients: []
+                        ingredients: [],
+                        sourceStepType: STEP_TYPES.BOIL
                       };
                     }
-                    step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(step.ingredientsToBoil);
+                    step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
                   } else {
                     //then no products for referencedStep, throw error
                     console.log("Boil step service Error: no products for referencedStep", referencedStep);
@@ -103,10 +115,12 @@ angular.module('main')
             });
             if(dish){
               step.boilingDish = dish;
+              step.dishCameFromProduct = false;
               if(!step.products){
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.BOIL
                 };
               }
               step.products[step.productKeys[0]].dishes = [step.boilingDish];
@@ -130,11 +144,13 @@ angular.module('main')
               if(!referencedStep.isEmpty) {
                 if(referencedStep.products) {
                   step.boilingDish = referencedStep.products[input.key].dishes[0];
+                  step.dishCameFromProduct = true;
                   //will possibly want to make more general in the future
                   if(!step.products){
                     step.products = {};
                     step.products[step.productKeys[0]] = {
-                      ingredients: []
+                      ingredients: [],
+                      sourceStepType: STEP_TYPES.BOIL
                     };
                   }
                   step.products[step.productKeys[0]].dishes = [step.boilingDish];
@@ -154,17 +170,21 @@ angular.module('main')
                 if(originalDishProducts) {
                   var dishKey = DishInputService.getDishKey(step.stepType);
                   if(originalDishProducts[dishKey]) {
+                    //then came from a stepProduct
                     step.boilingDish = originalDishProducts[dishKey].dishes[0];
+                    step.dishCameFromProduct = true;
                   } else {
                     if(originalDishProducts.dishes && originalDishProducts.dishes.length > 0) {
                       //then came from equipmentList
                       step.boilingDish = originalDishProducts.dishes[0];
+                      step.dishCameFromProduct = false;
                     }
                   }
                   if (!step.products) {
                     step.products = {};
                     step.products[step.productKeys[0]] = {
-                      ingredients: []
+                      ingredients: [],
+                      sourceStepType: STEP_TYPES.BOIL
                     };
                   }
                   step.products[step.productKeys[0]].dishes = [step.boilingDish];
@@ -233,7 +253,14 @@ angular.module('main')
       var cookAccordingToInstructions = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "cookAccordingToInstructions";
       }).val;
-      var stepText = "Boil the ";
+      var stepText = "Boil ";
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToBoil);
+      for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToBoil[i].nameFormFlag) {
+          step.ingredientsToBoil[i].nameFormFlag = "standardForm";
+        }
+      }
+
       switch (step.ingredientsToBoil.length){
         case 0:
           //error
@@ -245,26 +272,26 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBoil[0].name.toLowerCase();
+          stepText += step.ingredientsToBoil[0].prefix + " " + step.ingredientsToBoil[0].name[step.ingredientsToBoil[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToBoil[0].name.toLowerCase() + " and " + step.ingredientsToBoil[1].name.toLowerCase();
+          stepText += step.ingredientsToBoil[0].prefix + " " + step.ingredientsToBoil[0].name[step.ingredientsToBoil[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToBoil[1].prefix + " " + step.ingredientsToBoil[1][step.ingredientsToBoil[1].nameFormFlag].name.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToBoil[i].name.toLowerCase();
+              stepText += "and " + step.ingredientsToBoil[i].prefix + " " + step.ingredientsToBoil[i].name[step.ingredientsToBoil[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToBoil[i].name.toLowerCase() + ", ";
+              stepText += step.ingredientsToBoil[i].prefix + " " + step.ingredientsToBoil[i].name[step.ingredientsToBoil[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
       }
-      if(step.boilingDish.name !== "Default") {
+      /*if(step.boilingDish.name !== "Default") {
         stepText += " in the " + step.boilingDish.name.toLowerCase();
-      }
+      }*/
       if(cookAccordingToInstructions){
         stepText += " according to package instructions";
       } else if(boilingDuration){

@@ -59,9 +59,9 @@ angular.module('main')
     for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
       var type = $scope.BYOIngredientTypes[i];
       for (var j = type.ingredients.length - 1; j >= 0; j--) {
-        _.pull($scope.selectedIngredientNames, type.ingredients[j].name);
+        _.pull($scope.selectedIngredientNames, type.ingredients[j].name.standardForm);
         if(type.ingredients[j].useInRecipe) {
-          $scope.selectedIngredientNames.push(type.ingredients[j].name);
+          $scope.selectedIngredientNames.push(type.ingredients[j].name.standardForm);
         }
       }
     }

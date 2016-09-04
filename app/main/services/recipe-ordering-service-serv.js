@@ -43,7 +43,8 @@ angular.module('main')
 
   //so higher values are at the back to be popped
   service.genericCmp = function(a, b) {
-    return a > b ? 1 : a < b ? -1 : 0;
+    //arbritrarily preference a on equality so can be used in recipes combinations
+    return a > b ? 1 : a < b ? -1 : 1;
   };
 
   service.fullRecipeCmp = function(a, b) {
@@ -62,7 +63,8 @@ angular.module('main')
     } else if(b.totalTime > a.totalTime) {
       return -1;
     } else {
-      return 0;
+      //arbitrarily preference a
+      return 1;
     }
   };
 
@@ -76,14 +78,16 @@ angular.module('main')
       } else if(isPrepStep(b.stepList[bLastStepIndex]) && !isPrepStep(a.stepList[aLastStepIndex])) {
         return -1;
       } else {
-        return 0;
+        //arbitrarily preference a, so don't have inappropriate equality down the line
+        return 1;
       }
     } else if(aLastStepIndex !== -1){
       return 1;
     } else if(bLastStepIndex !== -1) {
        return -1;
     } else {
-      return 0;
+      //arbitrarily preference a
+      return 1;
     }
   };
 

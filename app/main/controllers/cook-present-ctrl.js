@@ -24,6 +24,7 @@ angular.module('main')
 
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
+    var ingredientsUsed = [];
     for (var i = recipes.length - 1; i >= 0; i--) {
       var ingredientsForRecipe = {};
       ingredientsForRecipe.recipeType = recipes[i].recipeType;
@@ -39,6 +40,41 @@ angular.module('main')
         } else {
           concatIngredients = ingredientTypes[j].ingredients;
         }
+        //set multiple ingredients
+         for (var k = concatIngredients.length - 1; k >= 0; k--) {
+           var foundIngredient = _.find(ingredientsUsed, function(ingredient) {
+            return ingredient.standardName === concatIngredients[k].name.standardForm;
+           });
+           if(foundIngredient) {
+            if(!foundIngredient.hasBeenMarked) {
+              foundIngredient.hasBeenMarked = true;
+              var foundIngredients = recipes[foundIngredient.firstRecipeIndex].ingredientList.ingredientTypes[foundIngredient.typeIndex].ingredients;
+              var ingredientToMark = _.find(foundIngredients, function(ingred) {
+                return ingred.name.standardForm === foundIngredient.standardName;
+              });
+              if(ingredientToMark) {
+                ingredientToMark.isMultiple = true;
+                ingredientToMark.hasBeenUsed = false;
+              } else {
+                //error
+                ErrorService.logError({
+                  message: "Cook Present Controller ERROR: ingredientToMark not found in function 'getIngredientsForRecipes'",
+                  ingredients: concatIngredients
+                });
+                ErrorService.showErrorAlert();
+              }
+            }
+            concatIngredients[k].isMultiple = true;
+            concatIngredients[k].hasBeenUsed = false;
+           } else {
+            ingredientsUsed.push({
+              standardName: concatIngredients[k].name.standardForm,
+              firstRecipeIndex: i,
+              typeIndex: j,
+              hasBeenMarked: false
+            });
+           }
+         }
         ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(concatIngredients);
       }
       ingredientsForRecipe.ingredients.sort(function(a, b) {
@@ -54,8 +90,13 @@ angular.module('main')
         return 0;
       });
       ingredientsForRecipe.ingredients = _.map(ingredientsForRecipe.ingredients, function(ingredient) {
-          return ingredient.name;
-        });
+          return ingredient.name.standardForm;
+        }).reduce(function(a,b) {
+          if(a.indexOf(b) < 0) {
+            a.push(b);
+          }
+          return a;
+        },[]);
       ingredientsForRecipes.push(ingredientsForRecipe);
     }
     ingredientsForRecipes.sort(function(a, b) {
@@ -147,7 +188,7 @@ angular.module('main')
         console.log("recipe", $scope.combinedRecipe);
         for (var i = $scope.combinedRecipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
           for (var j = $scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
-            $scope.selectedIngredientNames.push($scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j].name);
+            $scope.selectedIngredientNames.push($scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j].name.standardForm);
           }
         }
       }
@@ -419,21 +460,9 @@ angular.module('main')
   };
 
   $scope.categoryNeedsOilOrButter = function() {
-    if($scope.combinedRecipe.recipeCategory) {
-      switch($scope.combinedRecipe.recipeCategory) {
-        case 'Scramble':
-        case 'Roast':
-        case 'Pasta':
-        case 'Hash':
-        case 'Rice':
-        case 'Quinoa':
-          return true;
-        default:
-          return false;
-      }
-    } else if($scope.combinedRecipe.recipeCategorys) {
-      for (var i = $scope.combinedRecipe.recipeCategorys.length - 1; i >= 0; i--) {
-        switch($scope.combinedRecipe.recipeCategorys[i]) {
+    if($scope.combinedRecipe) {
+      if($scope.combinedRecipe.recipeCategory) {
+        switch($scope.combinedRecipe.recipeCategory) {
           case 'Scramble':
           case 'Roast':
           case 'Pasta':
@@ -442,10 +471,24 @@ angular.module('main')
           case 'Quinoa':
             return true;
           default:
-            break;
+            return false;
         }
+      } else if($scope.combinedRecipe.recipeCategorys) {
+        for (var i = $scope.combinedRecipe.recipeCategorys.length - 1; i >= 0; i--) {
+          switch($scope.combinedRecipe.recipeCategorys[i]) {
+            case 'Scramble':
+            case 'Roast':
+            case 'Pasta':
+            case 'Hash':
+            case 'Rice':
+            case 'Quinoa':
+              return true;
+            default:
+              break;
+          }
+        }
+        return false;
       }
-      return false;
     }
   };
 
