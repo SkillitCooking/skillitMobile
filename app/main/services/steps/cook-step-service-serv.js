@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('cookStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
+.factory('cookStepService', ['_', 'StepTipService', 'DishInputService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -26,13 +26,19 @@ angular.module('main')
                 });
               }
               step.ingredientsToCook = step.ingredientsToCook.concat(concatIngredients);
+              var productIngredients = angular.copy(concatIngredients);
+                _.forEach(productIngredients, function(ingredient) {
+                  ingredient.transformationPrefix = "";
+                  ingredient.hasBeenUsed = true;
+                });
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.COOK
                 };
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(concatIngredients);
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
             }
           } else {
             //error - no type found
@@ -57,10 +63,16 @@ angular.module('main')
                 if(!step.products) {
                   step.products = {};
                   step.products[step.productKeys[0]] = {
-                    ingredients: []
+                    ingredients: [],
+                    sourceStepType: STEP_TYPES.COOK
                   };
                 }
-                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
+                var productIngredients = angular.copy(referencedStep.products[input.key].ingredients);
+                _.forEach(productIngredients, function(ingredient) {
+                  ingredient.transformationPrefix = "";
+                  ingredient.hasBeenUsed = true;
+                });
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
               } else {
                 //error: no products for referenced step
                 console.log("cookStepService error: no products for referencedStep: ", referencedStep);
@@ -110,7 +122,8 @@ angular.module('main')
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
-              ingredients: []
+              ingredients: [],
+              sourceStepType: STEP_TYPES.COOK
             };
           }
           step.products[step.productKeys[0]].dishes = [step.cookingDish];
@@ -139,7 +152,8 @@ angular.module('main')
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.COOK
                 };
               }
               step.products[step.productKeys[0]].dishes = [step.cookingDish];
@@ -171,7 +185,8 @@ angular.module('main')
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.COOK
                 };
               }
               step.products[step.productKeys[0]].dishes = [step.cookingDish];
@@ -232,7 +247,14 @@ angular.module('main')
         return specific.propName === "cookAccordingToInstructions";
       }).val;
 
-      var stepText = cookType + " the ";
+      var stepText = cookType + " ";
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToCook);
+      for (var i = step.ingredientsToCook.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToCook[i].nameFormFlag) {
+          step.ingredientsToCook[i].nameFormFlag = "standardForm";
+        }
+      }
+
       switch(step.ingredientsToCook.length) {
         case 0:
           //error
@@ -245,25 +267,25 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToCook[0].prefix + " " + step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToCook[1].name[step.ingredientsToCook[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToCook[0].prefix + " " + step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToCook[1].prefix + " " + step.ingredientsToCook[1].name[step.ingredientsToCook[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToCook[i].prefix + " " + step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToCook[i].prefix + " " + step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;
       }
       if(step.cookingDish.name !== 'Default') {
-        stepText += " in "
+        stepText += " in ";
         if(step.dishCameFromProduct) {
          stepText += "the " + step.cookingDish.name.toLowerCase();
         } else {

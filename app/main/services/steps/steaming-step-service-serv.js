@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('steamingStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.factory('steamingStepService', ['_', 'StepTipService', 'DishInputService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -29,10 +29,16 @@ angular.module('main')
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.STEAM
                 };
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(concatIngredients);
+              var productIngredients = angular.copy(concatIngredients);
+              _.forEach(productIngredients, function(ingredient) {
+                ingredient.transformationPrefix = "";
+                ingredient.hasBeenUsed = true;
+              });
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
             }
           } else {
             //error - no ingredientType found
@@ -57,10 +63,16 @@ angular.module('main')
                 if(!step.products) {
                   step.products = {};
                   step.products[step.productKeys[0]] = {
-                    ingredients: []
+                    ingredients: [],
+                    sourceStepType: STEP_TYPES.STEAM
                   };
                 }
-                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key]);
+                var productIngredients = angular.copy(referencedStep.products[input.key].ingredients);
+                _.forEach(productIngredients, function(ingredient) {
+                  ingredient.transformationPrefix = "";
+                  ingredient.hasBeenUsed = true;
+                });
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
               } else {
                 //error - no products for referencedStep
                 console.log("steamingStepService error: no products for referencedStep: ", input);
@@ -110,7 +122,8 @@ angular.module('main')
           if(!step.products) {
             step.products = {};
             step.products[step.productKeys[0]] = {
-              ingredients: []
+              ingredients: [],
+              sourceStepType: STEP_TYPES.STEAM
             };
           }
           step.products[step.productKeys[0]].dishes = [step.steamingDish];
@@ -138,7 +151,8 @@ angular.module('main')
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.STEAM
                 };
               }
               step.products[step.productKeys[0]].dishes = [step.steamingDish];
@@ -171,7 +185,8 @@ angular.module('main')
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.STEAM
                 };
               }
               step.products[step.productKeys[0]].dishes = [step.steamingDish];
@@ -224,7 +239,14 @@ angular.module('main')
       var steamingDuration = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "steamingDuration";
       }).val;
-      var stepText = "Steam the ";
+      var stepText = "Steam ";
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToSteam);
+      for (var i = step.ingredientsToSteam.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToSteam[i].nameFormFlag) {
+          step.ingredientsToSteam[i].nameFormFlag = "standardForm";
+        }
+      }
+
       switch(step.ingredientsToSteam.length) {
         case 0:
           //error - no ingredients
@@ -237,19 +259,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSteam[0].prefix + " " + step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSteam[1].name[step.ingredientsToSteam[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSteam[0].prefix + " " + step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSteam[1].prefix + " " + step.ingredientsToSteam[1].name[step.ingredientsToSteam[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSteam.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSteam[i].prefix + " " + step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSteam[i].prefix + " " + step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

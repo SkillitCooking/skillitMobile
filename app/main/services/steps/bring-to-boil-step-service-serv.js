@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('bringToBoilStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.factory('bringToBoilStepService', ['_', 'StepTipService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -16,7 +16,9 @@ angular.module('main')
           step.boilingDish = dish;
           if(!step.products) {
             step.products = {};
-            step.products[step.productKeys[0]] = {};
+            step.products[step.productKeys[0]] = {
+              sourceStepType: STEP_TYPES.BRINGTOBOIL
+            };
           }
           step.products[step.productKeys[0]].dishes = [step.boilingDish];
         } else {

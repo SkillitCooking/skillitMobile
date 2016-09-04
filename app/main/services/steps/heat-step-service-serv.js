@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.service('heatStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.service('heatStepService', ['_', 'StepTipService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -18,7 +18,8 @@ angular.module('main')
           }
           step.products[step.productKeys[0]] = {
             ingredients: [],
-            dishes: [step.dishToHeat]
+            dishes: [step.dishToHeat],
+            sourceStepType: STEP_TYPES.HEAT
           };
         } else {
           //error - couldn't find dish

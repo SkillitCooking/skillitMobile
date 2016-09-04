@@ -1,7 +1,34 @@
 'use strict';
 angular.module('main')
-.factory('cutStepService', ['_', 'StepTipService', 'ErrorService', 'NAME_FORM_FLAGS', function (_, StepTipService, ErrorService, NAME_FORM_FLAGS) {
+.factory('cutStepService', ['_', 'StepTipService', 'GeneralTextService', 'ErrorService', 'NAME_FORM_FLAGS', 'STEP_TYPES', 'CUT_STEP_NAMES', function (_, StepTipService, GeneralTextService, ErrorService, NAME_FORM_FLAGS, STEP_TYPES, CUT_STEP_NAMES) {
   var service = {};
+
+  function getTransformationPrefix(step) {
+    var actionType = _.find(step.stepSpecifics, function(specific) {
+        return specific.propName === "actionType";
+      }).val;
+    switch(actionType) {
+      case CUT_STEP_NAMES.CUT:
+        return CUT_STEP_NAMES.CUT;
+      case CUT_STEP_NAMES.DICE:
+        return CUT_STEP_NAMES.DICED;
+      case CUT_STEP_NAMES.CHOP:
+        return CUT_STEP_NAMES.CHOPPED;
+      case CUT_STEP_NAMES.MINCE:
+        return CUT_STEP_NAMES.MINCED;
+      case CUT_STEP_NAMES.SLICE:
+        return CUT_STEP_NAMES.SLICED;
+      default:
+        ErrorService.logError({
+            message: "Cut Step Service ERROR: unrecognized actionType in function 'getTransformationPrefix'",
+            input: input,
+            step: step,
+            recipeName: recipe.name
+          });
+        ErrorService.showErrorAlert();
+        break;
+    }
+  }
 
   function instantiateStep(step, recipe) {
     //only expect cutIngredientInput
@@ -23,14 +50,18 @@ angular.module('main')
               });
             }
             //adjust concatIngredients nameFormFlag here
-            
-            step.ingredientsToCut = _.forEach(concatIngredients, function(ingredient) {
-              ingredient.nameFormFlag = NAME_FORM_FLAGS.PLURAL;
-            });
+            //want standard during, plural after
+            step.ingredientsToCut = concatIngredients;
             step.products = {};
+            var productIngredients = angular.copy(step.ingredientsToCut);
             step.products[step.productKeys[0]] = {
-              ingredients: step.ingredientsToCut,
-              dishes: []
+              ingredients: _.forEach(productIngredients, function(ingredient) {
+                  ingredient.nameFormFlag = NAME_FORM_FLAGS.PLURAL;
+                  ingredient.transformationPrefix = getTransformationPrefix(step);
+                  ingredient.hasBeenUsed = true;
+              }),
+              dishes: [],
+              sourceStepType: STEP_TYPES.CUT
             };
             step.recipeCategory = recipe.recipeCategory;
           } 
@@ -53,13 +84,17 @@ angular.module('main')
         if(referencedStep){
           if(!referencedStep.isEmpty) {
             if(referencedStep.products){
-              step.ingredientsToCut = _.forEach(referencedStep.products[input.key].ingredients, function(ingredient) {
-                ingredient.nameFormFlag = NAME_FORM_FLAGS.STANDARD;
+              step.ingredientsToCut = referencedStep.products[input.key].ingredients;
+              var productIngredients = _.forEach(angular.copy(step.ingredientsToCut), function(ingredient) {
+                  ingredient.nameFormFlag = NAME_FORM_FLAGS.PLURAL;
+                  ingredient.transformationPrefix = getTransformationPrefix(step);
+                  ingredient.hasBeenUsed = true;
               });
               step.products = {};
               step.products[step.productKeys[0]] = {
-                ingredients: step.ingredientsToCut,
-                dishes: []
+                ingredients: productIngredients,
+                dishes: [],
+                sourceStepType: STEP_TYPES.CUT
               };
               step.recipeCategory = recipe.recipeCategory;
             } else {
@@ -116,13 +151,17 @@ angular.module('main')
       var actionModifier = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "actionModifier";
       }).val;
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToCut);
       for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
         var arrElem = {};
+        if(!step.ingredientsToCut[i].nameFormFlag) {
+          step.ingredientsToCut[i].nameFormFlag = NAME_FORM_FLAGS.STANDARD;
+        }
         arrElem.recipeCategorys = [step.recipeCategory];
         arrElem.actionType = actionType;
-        arrElem.ingredientName = step.ingredientsToCut[i].name[];
+        arrElem.ingredientName = step.ingredientsToCut[i].name[step.ingredientsToCut[i].nameFormFlag];
         arrElem.text = actionType;
-        arrElem.text += " " + step.ingredientsToCut[i].name[step.ingredientsToCut[i].nameFormFlag].toLowerCase();
+        arrElem.text += " " + step.ingredientsToCut[i].prefix + " " + step.ingredientsToCut[i].name[step.ingredientsToCut[i].nameFormFlag].toLowerCase();
         if(actionModifier){
           arrElem.text += " " + actionModifier;
           arrElem.actionModifier = actionModifier;

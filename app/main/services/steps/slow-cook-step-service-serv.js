@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('slowCookStepService', ['_', 'StepTipService', 'ErrorService', function (_, StepTipService, ErrorService) {
+.factory('slowCookStepService', ['_', 'StepTipService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -29,10 +29,16 @@ angular.module('main')
                 step.products = {};
                 step.products[step.productKeys[0]] = {
                   ingredients: [],
-                  dishes: []
+                  dishes: [],
+                  sourceStepType: STEP_TYPES.SLOWCOOK
                 };
               }
-              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(concatIngredients);
+              var productIngredients = angular.copy(concatIngredients);
+              _.forEach(productIngredients, function(ingredient) {
+                ingredient.transformationPrefix = "";
+                ingredient.hasBeenUsed = true;
+              });
+              step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
             }
           } else {
             //error - no ingredientType found
@@ -48,7 +54,7 @@ angular.module('main')
 
         case "StepProduct":
           var referencedStep = _.find(recipe.stepList, function(iterStep) {
-            return iterStep.stepId = input.sourceId;
+            return iterStep.stepId === input.sourceId;
           });
           if(referencedStep) {
             if(!referencedStep.isEmpty) {
@@ -58,10 +64,16 @@ angular.module('main')
                   step.products = {};
                   step.products[step.productKeys[0]] = {
                     ingredients: [],
-                    dishes: []
+                    dishes: [],
+                    sourceStepType: STEP_TYPES.SLOWCOOK
                   };
                 }
-                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(referencedStep.products[input.key].ingredients);
+                var productIngredients = angular.copy(referencedStep.products[input.key].ingredients);
+                _.forEach(productIngredients, function(ingredient) {
+                  ingredient.transformationPrefix = "";
+                  ingredient.hasBeenUsed = true;
+                });
+                step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
               } else {
                 //error - no product for step
                 ErrorService.logError({
@@ -116,7 +128,14 @@ angular.module('main')
       var tempSetting = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "tempSetting";
       }).val;
-      var stepText = "Slow cook the ";
+      var stepText = "Slow cook ";
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToSlowCook);
+      for (var i = step.ingredientsToSlowCook.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToSlowCook[i].nameFormFlag) {
+          step.ingredientsToSlowCook[i].nameFormFlag = "standardForm";
+        }
+      }
+
       switch(step.ingredientsToSlowCook.length) {
         case 0: 
           //error
@@ -130,19 +149,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSlowCook[0].prefix + " " + step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSlowCook[1].name[step.ingredientsToSlowCook[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSlowCook[0].prefix + " " + step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSlowCook[1].prefix + " " + step.ingredientsToSlowCook[1].name[step.ingredientsToSlowCook[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSlowCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSlowCook[i].prefix + " " + step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSlowCook[i].prefix + " " + step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

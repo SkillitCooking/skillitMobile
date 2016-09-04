@@ -3,9 +3,9 @@ angular.module('main')
 .controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
 
   function alphabeticalCmp(a, b) {
-    if(a.name < b.name) {
+    if(a.name.standardForm < b.name.standardForm) {
       return -1;
-    } else if(a.name > b.name) {
+    } else if(a.name.standardForm > b.name.standardForm) {
       return 1;
     } else {
       return 0;
@@ -100,7 +100,7 @@ angular.module('main')
     longSwipesMs: 50,
     onlyExternal: true,
     onTouchMove: function(swiper, event){
-      if(slider.isEnd) {
+      if(swiper.isEnd) {
         $scope.toRecipeSelection();
       } else {
         swiper.slideNext();

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('seasonStepService', ['_', 'StepTipService', 'DishInputService', 'ErrorService', function (_, StepTipService, DishInputService, ErrorService) {
+.factory('seasonStepService', ['_', 'StepTipService', 'DishInputService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep(step, recipe) {
@@ -26,9 +26,14 @@ angular.module('main')
             step.ingredientsToSeason = concatIngredients;
             if(!step.products){
               step.products = {};
-              step.products[step.productKeys[0]] = {};
+              step.products[step.productKeys[0]] = {
+                sourceStepType: STEP_TYPES.SEASON
+              };
             }
-            step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
+            var productIngredients = _.forEach(angular.copy(step.ingredientsToSeason), function(ingredient) {
+              ingredient.hasBeenUsed = true;
+            });
+            step.products[step.productKeys[0]].ingredients = productIngredients;
             step.isEmpty = false;
           } else {
             step.isEmpty = true;
@@ -55,9 +60,14 @@ angular.module('main')
               step.ingredientsToSeason = referencedStep.products[ingredientInput.key].ingredients;
               if (!step.products) {
                 step.products = {};
-                step.products[step.productKeys[0]] = {};
+                step.products[step.productKeys[0]] = {
+                  sourceStepType: STEP_TYPES.SEASON
+                };
               }
-              step.products[step.productKeys[0]].ingredients = step.ingredientsToSeason;
+              var productIngredients = _.forEach(angular.copy(step.ingredientsToSeason), function(ingredient) {
+                ingredient.hasBeenUsed = true;
+              });
+              step.products[step.productKeys[0]].ingredients = productIngredients;
             } else {
               //error - no products for step
               ErrorService.logError({
@@ -105,7 +115,9 @@ angular.module('main')
           step.dishCameFromProduct = false;
           if(!step.products) {
             step.products = {};
-            step.products[step.productKeys[0]] = {};
+            step.products[step.productKeys[0]] = {
+              sourceStepType: STEP_TYPES.SEASON
+            };
           }
           step.products[step.productKeys[0]].dishes = [step.seasoningDish];
         } else {
@@ -131,7 +143,9 @@ angular.module('main')
               step.dishCameFromProduct = true;
               if(!step.products) {
                 step.products = {};
-                step.products[step.productKeys[0]] = {};
+                step.products[step.productKeys[0]] = {
+                  sourceStepType: STEP_TYPES.SEASON
+                };
               }
               step.products[step.productKeys[0]].dishes = [step.seasoningDish];    
             } else {
@@ -162,7 +176,8 @@ angular.module('main')
               if(!step.products) {
                 step.products = {};
                 step.products[step.productKeys[0]] = {
-                  ingredients: []
+                  ingredients: [],
+                  sourceStepType: STEP_TYPES.SEASON
                 };
               }
               step.products[step.productKeys[0]].dishes = [step.seasoningDish];
@@ -234,6 +249,12 @@ angular.module('main')
         });
         ErrorService.showErrorAlert();
       }
+      GeneralTextService.assignIngredientPrefixes(step.ingredientsToSeason);
+      for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
+        if(!step.ingredientsToSeason[i].nameFormFlag) {
+          step.ingredientsToSeason[i].nameFormFlag = "standardForm";
+        }
+      }
       switch(step.ingredientsToSeason.length) {
         case 0:
           //error
@@ -245,19 +266,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSeason[0].prefix + " " + step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSeason[1].name[step.ingredientsToSeason[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSeason[0].prefix + " " + step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSeason[1].prefix + " " + step.ingredientsToSeason[1].name[step.ingredientsToSeason[1].nameFormFlag].toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSeason[i].prefix + " " + step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase();
             } else {
-              stepText += step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSeason[i].prefix + " " + step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase() + ", ";
             }
           }
           break;

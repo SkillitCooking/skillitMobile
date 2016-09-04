@@ -28,7 +28,7 @@
             <ion-list>
               <div ng-if="!isError()" ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
                 <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
-                  {{ingredient.name}}
+                  {{ingredient.name.standardForm}}
                 </ion-checkbox>
                 <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
                   <div class="grouping-of-ingredient-forms">              
