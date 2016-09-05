@@ -469,6 +469,7 @@ angular.module('main')
           case 'Hash':
           case 'Rice':
           case 'Quinoa':
+          case 'Easy Dinners':
             return true;
           default:
             return false;
@@ -482,6 +483,7 @@ angular.module('main')
             case 'Hash':
             case 'Rice':
             case 'Quinoa':
+            case 'Easy Dinners':
               return true;
             default:
               break;
