@@ -284,12 +284,14 @@ angular.module('main')
           }
           break;
       }
-      if(step.cookingDish.name !== 'Default') {
-        stepText += " in ";
-        if(step.dishCameFromProduct) {
-         stepText += "the " + step.cookingDish.name.toLowerCase();
-        } else {
-          stepText += "a " + step.cookingDish.name.toLowerCase();
+      if(!cookAccordingToInstructions) {
+        if(step.cookingDish.name !== 'Default') {
+          stepText += " in ";
+          if(step.dishCameFromProduct) {
+           stepText += "the " + step.cookingDish.name.toLowerCase();
+          } else {
+            stepText += "a " + step.cookingDish.name.toLowerCase();
+          }
         }
       }
       if(cookAccordingToInstructions) {

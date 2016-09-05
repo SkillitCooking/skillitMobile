@@ -257,16 +257,6 @@ angular.module('main')
         });
       }
     });
-    $ionicHistory.clearCache().then(function() {
-      $state.go('main.cook');
-    }, function(error) {
-      //error
-      ErrorService.logError({
-        message: "Cook Recipe Selection Controller ERROR: failed to clear $ionicHistory cache",
-        error: error
-      });
-      ErrorService.showErrorAlert();
-    });
   };
 
   $scope.recipeSelected = function(recipe) {
