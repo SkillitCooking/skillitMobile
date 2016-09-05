@@ -206,8 +206,18 @@ angular.module('main')
     }, 500);
   });
   SeasoningProfileService.getSeasoningProfiles().then(function(response) {
+    //adjust seasonings to reflect available here? will recipe be ready? Not necessarily...
+    //May have to move this service call to inside the getRecipesWithIds call...
+    //could try setting a combined $watch on the value of combinedRecipe to then update the profiles?
     $scope.seasoningProfiles = response.data;
   });
+
+  //watch for seasoningProfiles and combinedRecipe
+  $scope.$watch('seasoningProfiles', function(newValue, oldValue) {
+    console.log('seasonings new value', newValue);
+    console.log('seasonings old value', oldValue);
+  });
+  
 
   $scope.fromCookTab = function() {
     return !$scope.cameFromHome && !$scope.cameFromRecipes && !$scope.cameFromRecipeCollection;
