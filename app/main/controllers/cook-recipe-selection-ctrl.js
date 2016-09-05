@@ -47,7 +47,6 @@ angular.module('main')
   var ingredientNames = {
     ingredientNames: $scope.selectedIngredientNames
   };
-  console.log(ingredientNames);
   RecipeService.getRecipesWithIngredients(ingredientNames).then(function(response) {
     $scope.alaCarteRecipes = response.data.AlaCarte;
     if($scope.alaCarteRecipes){

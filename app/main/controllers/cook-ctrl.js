@@ -22,10 +22,6 @@ angular.module('main')
       ErrorService.toggleIsErrorAlready();
       $scope.clearIngredients();
     }
-    if($stateParams.clearHistory) {
-      $ionicHistory.clearHistory();
-      $stateParams.clearHistory = false;
-    }
   });
 
   IngredientService.getIngredientsForSelection().then(function(response){
@@ -201,6 +197,7 @@ angular.module('main')
       template: '<p class="no-ingredient-popup">You need to select at least one ingredient</p>'
     });
     alertPopup.then(function(res) {
+      $scope.goToSlide(0);
       console.log("alert closed");
     });
   };

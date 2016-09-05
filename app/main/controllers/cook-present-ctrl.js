@@ -124,13 +124,14 @@ angular.module('main')
   $scope.cameFromRecipes = $stateParams.cameFromRecipes;
   $scope.cameFromRecipeCollection = $stateParams.cameFromRecipeCollection;
 
+  if(!$scope.numberBackToRecipeSelection) {
+    $scope.numberBackToRecipeSelection = -1;
+  } 
+
   if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
   }
 
-  if(!$scope.numberBackToRecipeSelection) {
-    $scope.numberBackToRecipeSelection = -1;
-  }
   $scope.recipeIds = $stateParams.recipeIds;
   if($stateParams.loadAlaCarte) {
     RecipeService.getRecipesOfType('AlaCarte').then(function(recipes) {
@@ -421,6 +422,8 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     //need to get timesclicked mechanism going here
+    console.log('numberBackToRecipeSelection:', $scope.numberBackToRecipeSelection);
+    console.log('params', $stateParams);
     if($scope.alaCarteSelectedArr) {
       for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
         $scope.alaCarteSelectedArr.fill(false);

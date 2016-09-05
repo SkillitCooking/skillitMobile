@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('ErrorService', ['$state', '$ionicPopup', 'ErrorLoggingService', function ($state, $ionicPopup, ErrorLoggingService) {
+.factory('ErrorService', ['$state', '$ionicHistory', '$ionicPopup', 'ErrorLoggingService', function ($state, $ionicHistory, $ionicPopup, ErrorLoggingService) {
   var service = {};
 
   service.isErrorAlready = false;
@@ -14,8 +14,11 @@ angular.module('main')
         cssClass: ''
       });
       alertPopup.then(function(res) {
-        //navigate to cook
-        $state.go('main.cook', {clearHistory: true, fromError: true});
+        //clearHistory and cache and navigate to cook beginning
+        $ionicHistory.clearHistory();
+        $ionicHistory.clearCache().then(function() {
+          $state.go('main.cook', {fromError: true});
+        });
       });
     }
   };

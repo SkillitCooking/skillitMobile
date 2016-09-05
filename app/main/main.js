@@ -120,7 +120,6 @@ angular.module('main', [
           }
         },
         params: {
-          clearHistory: false,
           fromError: false
         }
       })
