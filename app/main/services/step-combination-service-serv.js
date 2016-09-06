@@ -178,6 +178,7 @@ angular.module('main')
       //sort recipes
       recipes.sort(RecipeOrderingService.fullRecipeCmp);
       //assign canAddSeasoningProfile if any of the recipes can
+      combinedRecipe.choiceSeasoningProfiles = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
         if(recipes[i].canAddSeasoningProfile) {
           combinedRecipe.canAddSeasoningProfile = true;
@@ -186,9 +187,10 @@ angular.module('main')
           } else {
             combinedRecipe.defaultSeasoningProfile = recipes[i].defaultSeasoningProfile;
           }
-          break;
+          combinedRecipe.choiceSeasoningProfiles = combinedRecipe.choiceSeasoningProfiles.concat(recipes[i].choiceSeasoningProfiles);
         }
       }
+      combinedRecipe.choiceSeasoningProfiles = _.uniqBy(combinedRecipe.choiceSeasoningProfiles, '_id');
       var recipe = recipes.pop();
       var alreadyHasPreheatOven = false;
       while(hasSteps(recipe)) {

@@ -7,7 +7,12 @@
     <!--<h2>Current Seasoning</h2>
     <p><b>{{seasoningProfile.name}}: </b>{{getSeasoningParts(seasoningProfile)}}</p>-->
     <ion-list>
-      <ion-checkbox class="individual-recipe-in-list checkbox-balanced" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
+      <ion-checkbox class="individual-recipe-in-list checkbox-balanced" ng-repeat="profile in combinedRecipe.choiceSeasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
+        <h3>{{profile.name}}</h3>
+        <p ng-repeat="spice in profile.spices"><em>•{{spice}}</em></p>
+      </ion-checkbox>
+      <button class="button" ng-if="!showOtherProfiles()" ng-click="showMoreSeasonings()">More Seasonings</button>
+      <ion-checkbox ng-if="showOtherProfiles()" class="individual-recipe-in-list checkbox-balanced" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfileOther(profile)">
         <h3>{{profile.name}}</h3>
         <p ng-repeat="spice in profile.spices"><em>•{{spice}}</em></p>
       </ion-checkbox>

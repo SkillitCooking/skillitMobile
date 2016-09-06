@@ -126,7 +126,15 @@ angular.module('main')
 
   if(!$scope.numberBackToRecipeSelection) {
     $scope.numberBackToRecipeSelection = -1;
-  } 
+  }
+
+  function amendSeasonings() {
+    for (var i = $scope.combinedRecipe.choiceSeasoningProfiles.length - 1; i >= 0; i--) {
+      _.remove($scope.seasoningProfiles, function(profile) {
+        return profile._id === $scope.combinedRecipe.choiceSeasoningProfiles[i]._id;
+      });
+    }
+  }
 
   if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
@@ -179,6 +187,9 @@ angular.module('main')
     //mainVideo indicator array
     $scope.mainVideoUrlIndicators = [];
     if($scope.combinedRecipe) {
+      if($stateParams.sidesAdded && $scope.seasoningProfiles) {
+        amendSeasonings();
+      }
       if($scope.combinedRecipe.mainVideoURLs) {
         $scope.mainVideoUrlIndicators = Array($scope.combinedRecipe.mainVideoURLs.length).fill(false);
         $scope.mainVideoUrlIndicators[0] = true;
@@ -206,16 +217,32 @@ angular.module('main')
     }, 500);
   });
   SeasoningProfileService.getSeasoningProfiles().then(function(response) {
-    //adjust seasonings to reflect available here? will recipe be ready? Not necessarily...
-    //May have to move this service call to inside the getRecipesWithIds call...
-    //could try setting a combined $watch on the value of combinedRecipe to then update the profiles?
     $scope.seasoningProfiles = response.data;
   });
 
   //watch for seasoningProfiles and combinedRecipe
-  $scope.$watch('seasoningProfiles', function(newValue, oldValue) {
-    console.log('seasonings new value', newValue);
-    console.log('seasonings old value', oldValue);
+  var deregistrationSeasoning = $scope.$watch('seasoningProfiles', function(newValue, oldValue) {
+    if(newValue && newValue.length) {
+      if($scope.combinedRecipeLoaded) {
+        //take out seasonings
+        amendSeasonings();
+        deregistrationSeasoning();
+      } else {
+        $scope.seasoningProfilesLoaded = true;
+      }
+    }
+  });
+
+  var deregistrationRecipe = $scope.$watch('combinedRecipe', function(newValue, oldValue) {
+    if(newValue && newValue.ingredientList) {
+      if($scope.seasoningProfilesLoaded) {
+        //take out seasonings
+        amendSeasonings();
+        deregistrationRecipe();
+      } else {
+        $scope.combinedRecipeLoaded = true;
+      }
+    } 
   });
   
 
@@ -406,10 +433,37 @@ angular.module('main')
     });
   };
 
+  $scope.showMoreProfiles = false;
+  $scope.showMoreSeasonings = function() {
+    $scope.showMoreProfiles = true;
+  };
+
+  $scope.showOtherProfiles = function() {
+    return $scope.showMoreProfiles;
+  };
+
+  $scope.changeSeasoningProfileOther = function(profile) {
+    if($scope.popover) {
+      setTimeout(function() {$scope.popover.remove()}, 200);
+    }
+    $scope.showMoreProfiles = false;
+    $scope.combinedRecipe.choiceSeasoningProfiles.push(profile);
+    _.remove($scope.seasoningProfiles, function(season) {
+      return profile._id === season._id;
+    });
+    $scope.seasoningProfile = profile;
+    for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
+      if($scope.combinedRecipe.stepList[i].stepType === 'Season') {
+        SeasoningProfileTextService.addSeasoning($scope.combinedRecipe.stepList[i], $scope.seasoningProfile);
+      }
+    }
+  };
+
   $scope.changeSeasoningProfile = function(profile) {
     if($scope.popover) {
       setTimeout(function() {$scope.popover.remove()}, 200);
     }
+    $scope.showMoreProfiles = false;
     $scope.seasoningProfile = profile;
     for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
       if($scope.combinedRecipe.stepList[i].stepType === 'Season') {
