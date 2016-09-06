@@ -14,7 +14,7 @@
     <div class="col">
       <div class="recipe-description-time">
         <p>{{recipe.description}}</p>
-        <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+        <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
         <!--<p ng-if="showdatefeatured">Feature Date: {{recipe.dateFeatured}}</p>-->
       </div>
     </div>

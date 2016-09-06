@@ -157,11 +157,27 @@ angular.module('main')
       }, 0);
       //round prepTime to nearest 5 minutes
       combinedRecipe.prepTime = 5 * Math.round(combinedRecipe.prepTime/5);
+      combinedRecipe.manActiveTime = _.reduce(recipes, function(activeTime, recipe) {
+        if(!recipe.manActiveTime || recipe.manActiveTime === "") {
+          return activeTime += recipe.prepTime;
+        } else {
+          return activeTime += recipe.manActiveTime;
+        }
+      }, 0);
+      combinedRecipe.manActiveTime = 5 * Math.round(combinedRecipe.manActiveTime/5);
       combinedRecipe.totalTime = _.reduce(recipes, function(totalTime, recipe) {
         return totalTime + recipe.totalTime;
       }, 0);
       //round totalTime to nearest 5 minutes
       combinedRecipe.totalTime = 5 * Math.round(combinedRecipe.totalTime/5);
+      combinedRecipe.manTotalTime = _.reduce(recipes, function(totalTime, recipe) {
+        if(!recipe.manTotalTime || recipe.manTotalTime === "") {
+          return totalTime += recipe.totalTime;
+        } else {
+          return totalTime += recipe.manTotalTime;
+        }
+      }, 0);
+      combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
         return recipe.mainVideoURL + '&rel=0';
       });

@@ -391,6 +391,26 @@ angular.module('main')
     }
   };
 
+  $scope.getRecipeActiveTime = function() {
+    if($scope.combinedRecipe) {
+      if($scope.combinedRecipe.manActiveTime && $scope.combinedRecipe.manActiveTime !== '') {
+        return $scope.combinedRecipe.manActiveTime;
+      } else {
+        return $scope.combinedRecipe.prepTime;
+      }
+    }
+  };
+
+  $scope.getRecipeTotalTime = function() {
+    if($scope.combinedRecipe) {
+      if($scope.combinedRecipe.manTotalTime && $scope.combinedRecipe.manTotalTime !== '') {
+        return $scope.combinedRecipe.manTotalTime;
+      } else {
+        return $scope.combinedRecipe.totalTime;
+      }
+    }
+  };
+
   $scope.selectStepTip = function(index) {
     $scope.selectedTipArr.fill(false);
     $scope.selectedTipArr[index] = true;

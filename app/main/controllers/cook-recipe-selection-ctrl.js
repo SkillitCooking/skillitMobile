@@ -210,6 +210,22 @@ angular.module('main')
     }
   };
 
+  $scope.getRecipeActiveTime = function(recipe) {
+    if(recipe.manActiveTime && recipe.manActiveTime !== "") {
+      return recipe.manActiveTime;
+    } else {
+      return recipe.prepTime;
+    }
+  };
+
+  $scope.getRecipeTotalTime = function(recipe) {
+    if(recipe.manTotalTime && recipe.manTotalTime !== "") {
+      return recipe.manTotalTime;
+    } else {
+      return recipe.totalTime;
+    }
+  };
+
   $scope.fullRecipeClass = function(index) {
     if($scope.fullRecipes[index].isSelected) {
       return "ion-checkmark-circled";

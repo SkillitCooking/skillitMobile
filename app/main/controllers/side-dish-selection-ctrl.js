@@ -40,6 +40,22 @@ angular.module('main')
     }
   };
 
+  $scope.getRecipeActiveTime = function(recipe) {
+    if(recipe.manActiveTime && recipe.manActiveTime !== "") {
+      return 5 * Math.round(recipe.manActiveTime/5);
+    } else {
+      return 5 * Math.round(recipe.prepTime/5);
+    }
+  };
+
+  $scope.getRecipeTotalTime = function(recipe) {
+    if(recipe.manTotalTime && recipe.manTotalTime !== "") {
+      return 5 * Math.round(recipe.manTotalTime/5);
+    } else {
+      return 5 * Math.round(recipe.totalTime/5);
+    }
+  };
+
   $scope.selectionHasChanged = function() {
     if($scope.alaCarteSelectedArr) {
       for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
