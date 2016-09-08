@@ -241,11 +241,7 @@ angular.module('main')
       }).val;
       var stepText = "Steam ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToSteam);
-      for (var i = step.ingredientsToSteam.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToSteam[i].nameFormFlag) {
-          step.ingredientsToSteam[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToSteam);
 
       switch(step.ingredientsToSteam.length) {
         case 0:
@@ -259,19 +255,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSteam[0].prefix + " " + step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSteam[0].prefix + " " + step.ingredientsToSteam[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSteam[0].prefix + " " + step.ingredientsToSteam[0].name[step.ingredientsToSteam[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSteam[1].prefix + " " + step.ingredientsToSteam[1].name[step.ingredientsToSteam[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSteam[0].prefix + " " + step.ingredientsToSteam[0].displayName.toLowerCase() + " and " + step.ingredientsToSteam[1].prefix + " " + step.ingredientsToSteam[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSteam.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSteam[i].prefix + " " + step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSteam[i].prefix + " " + step.ingredientsToSteam[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToSteam[i].prefix + " " + step.ingredientsToSteam[i].name[step.ingredientsToSteam[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSteam[i].prefix + " " + step.ingredientsToSteam[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

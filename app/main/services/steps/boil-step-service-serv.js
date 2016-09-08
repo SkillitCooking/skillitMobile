@@ -255,11 +255,7 @@ angular.module('main')
       }).val;
       var stepText = "Boil ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToBoil);
-      for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToBoil[i].nameFormFlag) {
-          step.ingredientsToBoil[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToBoil);
 
       switch (step.ingredientsToBoil.length){
         case 0:
@@ -272,19 +268,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBoil[0].prefix + " " + step.ingredientsToBoil[0].name[step.ingredientsToBoil[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToBoil[0].prefix + " " + step.ingredientsToBoil[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToBoil[0].prefix + " " + step.ingredientsToBoil[0].name[step.ingredientsToBoil[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToBoil[1].prefix + " " + step.ingredientsToBoil[1][step.ingredientsToBoil[1].nameFormFlag].name.toLowerCase();
+          stepText += step.ingredientsToBoil[0].prefix + " " + step.ingredientsToBoil[0].displayName.toLowerCase() + " and " + step.ingredientsToBoil[1].prefix + " " + step.ingredientsToBoil[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToBoil.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToBoil[i].prefix + " " + step.ingredientsToBoil[i].name[step.ingredientsToBoil[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToBoil[i].prefix + " " + step.ingredientsToBoil[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToBoil[i].prefix + " " + step.ingredientsToBoil[i].name[step.ingredientsToBoil[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToBoil[i].prefix + " " + step.ingredientsToBoil[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

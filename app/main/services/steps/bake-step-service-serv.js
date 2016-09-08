@@ -81,11 +81,7 @@ angular.module('main')
       }).val;
       var stepText = "Bake ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToBake);
-      for (var i = step.ingredientsToBake.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToBake[i].nameFormFlag) {
-          step.ingredientsToBake[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToBake);
       switch(step.ingredientsToBake.length){
         case 0:
           //error case - we obviously expect ingredients to bake
@@ -97,20 +93,20 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToBake[0].prefix + " " + step.ingredientsToBake[0].name[step.ingredientsToBake[0].nameFormFlag].toLowerCase() + " " + bakingTime;
+          stepText += step.ingredientsToBake[0].prefix + " " + step.ingredientsToBake[0].displayName.toLowerCase() + " " + bakingTime;
           break;
 
         case 2:
-          stepText += step.ingredientsToBake[0].prefix + " " + step.ingredientsToBake[0].name[step.ingredientsToBake[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToBake[1].prefix + " " + step.ingredientsToBake[1].name[step.ingredientsToBake[1].nameFormFlag].toLowerCase() + " " + bakingTime;
+          stepText += step.ingredientsToBake[0].prefix + " " + step.ingredientsToBake[0].displayName.toLowerCase() + " and " + step.ingredientsToBake[1].prefix + " " + step.ingredientsToBake[1].displayName.toLowerCase() + " " + bakingTime;
           break;
 
         default:
           for (var i = step.ingredientsToBake.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToBake[i].prefix + " " + step.ingredientsToBake[i].name[step.ingredientsToBake[i].nameFormFlag].toLowerCase() +
+              stepText += "and " + step.ingredientsToBake[i].prefix + " " + step.ingredientsToBake[i].displayName.toLowerCase() +
                 " " + bakingTime;
             } else {
-              stepText += step.ingredientsToBake[i].prefix + " " + step.ingredientsToBake[i].name[step.ingredientsToBake[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToBake[i].prefix + " " + step.ingredientsToBake[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

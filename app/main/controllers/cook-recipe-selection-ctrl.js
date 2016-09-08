@@ -3,6 +3,7 @@ angular.module('main')
 .controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', '$ionicPopup', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading, $ionicPopup, ErrorService) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
+  $scope.selectedIngredientIds = [];
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
   });
@@ -43,11 +44,15 @@ angular.module('main')
 
   _.forEach($scope.selectedIngredients, function(ingredient) {
     $scope.selectedIngredientNames.push(ingredient.name.standardForm);
+    $scope.selectedIngredientIds.push({
+      _id: ingredient._id,
+      formIds: _.map(ingredient.ingredientForms, '_id') 
+    });
   });
-  var ingredientNames = {
-    ingredientNames: $scope.selectedIngredientNames
+  var ingredientIds = {
+    ingredientIds: $scope.selectedIngredientIds
   };
-  RecipeService.getRecipesWithIngredients(ingredientNames).then(function(response) {
+  RecipeService.getRecipesWithIngredients(ingredientIds).then(function(response) {
     $scope.alaCarteRecipes = response.data.AlaCarte;
     if($scope.alaCarteRecipes){
       $scope.alaCarteClickedArr = Array($scope.alaCarteRecipes.length).fill(false);
@@ -82,7 +87,7 @@ angular.module('main')
           //of ingredients
           ErrorService.logError({
             message: "Cook Recipe Selection Controller ERROR: no recipes found for selected Ingredients",
-            ingredients: ingredientNames
+            ingredients: ingredientIds
           });
           ErrorService.showErrorAlert();
         }
@@ -289,7 +294,7 @@ angular.module('main')
       recipe.isSelected = false;
     }, 400);
     setTimeout(function() {
-      $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
+      $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
     }, 200);
   };
 
@@ -301,7 +306,7 @@ angular.module('main')
         recipeIds.push($scope.alaCarteRecipes[i]._id);
       }
     }
-    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
+    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
   };
 
   $scope.swipeRight = function() {

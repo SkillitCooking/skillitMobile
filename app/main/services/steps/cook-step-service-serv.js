@@ -249,11 +249,7 @@ angular.module('main')
 
       var stepText = cookType + " ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToCook);
-      for (var i = step.ingredientsToCook.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToCook[i].nameFormFlag) {
-          step.ingredientsToCook[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToCook);
 
       switch(step.ingredientsToCook.length) {
         case 0:
@@ -267,19 +263,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToCook[0].prefix + " " + step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToCook[0].prefix + " " + step.ingredientsToCook[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToCook[0].prefix + " " + step.ingredientsToCook[0].name[step.ingredientsToCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToCook[1].prefix + " " + step.ingredientsToCook[1].name[step.ingredientsToCook[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToCook[0].prefix + " " + step.ingredientsToCook[0].displayName.toLowerCase() + " and " + step.ingredientsToCook[1].prefix + " " + step.ingredientsToCook[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToCook[i].prefix + " " + step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToCook[i].prefix + " " + step.ingredientsToCook[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToCook[i].prefix + " " + step.ingredientsToCook[i].name[step.ingredientsToCook[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToCook[i].prefix + " " + step.ingredientsToCook[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

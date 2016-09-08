@@ -130,11 +130,7 @@ angular.module('main')
       }).val;
       var stepText = "Slow cook ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToSlowCook);
-      for (var i = step.ingredientsToSlowCook.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToSlowCook[i].nameFormFlag) {
-          step.ingredientsToSlowCook[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToSlowCook);
 
       switch(step.ingredientsToSlowCook.length) {
         case 0: 
@@ -149,19 +145,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSlowCook[0].prefix + " " + step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSlowCook[0].prefix + " " + step.ingredientsToSlowCook[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSlowCook[0].prefix + " " + step.ingredientsToSlowCook[0].name[step.ingredientsToSlowCook[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSlowCook[1].prefix + " " + step.ingredientsToSlowCook[1].name[step.ingredientsToSlowCook[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSlowCook[0].prefix + " " + step.ingredientsToSlowCook[0].displayName.toLowerCase() + " and " + step.ingredientsToSlowCook[1].prefix + " " + step.ingredientsToSlowCook[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSlowCook.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSlowCook[i].prefix + " " + step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSlowCook[i].prefix + " " + step.ingredientsToSlowCook[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToSlowCook[i].prefix + " " + step.ingredientsToSlowCook[i].name[step.ingredientsToSlowCook[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSlowCook[i].prefix + " " + step.ingredientsToSlowCook[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

@@ -165,12 +165,13 @@ angular.module('main')
     }
   }
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
+  $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
   };
   RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
-    RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames);
+    RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames, $scope.selectedIngredientIds);
     var BYORecipe = _.find(recipes, function(recipe) {
       return recipe.recipeType === 'BYO';
     });
@@ -195,14 +196,38 @@ angular.module('main')
         $scope.mainVideoUrlIndicators[0] = true;
         $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[0];
       }
-      if(!$scope.selectedIngredientNames) {
-        $scope.selectedIngredientNames = [];
-        console.log("recipe", $scope.combinedRecipe);
+      if((!$scope.selectedIngredientNames || $scope.selectedIngredientNames.length < 1) || (!$scope.selectedIngredientIds || $scope.selectedIngredientIds.length < 1)) {
+        console.log('here');
+        var resetNames, resetIds = false;
+        if(!$scope.selectedIngredientNames) {
+          $scope.selectedIngredientNames = [];
+        }
+        if($scope.selectedIngredientNames.length === 0) {
+          resetNames = true;
+          console.log('resetNames');
+        }
+        if(!$scope.selectedIngredientIds) {
+          $scope.selectedIngredientIds = [];
+        }
+        if($scope.selectedIngredientIds.length === 0) {
+          resetIds = true;
+          console.log('resetIds');
+        }
         for (var i = $scope.combinedRecipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
           for (var j = $scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
-            $scope.selectedIngredientNames.push($scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j].name.standardForm);
+            if(resetNames) {
+              $scope.selectedIngredientNames.push($scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j].name.standardForm);
+            }
+            if(resetIds) {
+              $scope.selectedIngredientIds.push({
+                _id: $scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j]._id,
+                formIds: _.map($scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients[j].ingredientForms, '_id')
+              });
+            }
           }
         }
+        console.log('post reset names', angular.copy($scope.selectedIngredientNames));
+        console.log('post reset ids', angular.copy($scope.selectedIngredientIds));
       }
     }
     if($stateParams.currentSeasoningProfile) {
@@ -281,23 +306,23 @@ angular.module('main')
 
   $scope.addSide = function() {
     if($scope.cameFromHome) {
-      $state.go('main.cookAddSideHome', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+      $state.go('main.cookAddSideHome', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
     } else if($scope.cameFromRecipes) {
-      $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+      $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
     } else if($scope.cameFromRecipeCollection) {
-      $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, cameFromRecipes: false, cameFromRecipeCollection: true});
+      $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, cameFromRecipes: false, cameFromRecipeCollection: true});
     } else {
-      $state.go('main.cookAddSide', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+      $state.go('main.cookAddSide', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
     }
   };
 
   $scope.editBYOIngredients = function() {
     if($scope.cameFromRecipes) {
       $state.go('main.editBYOIngredientsRecipes', {
-        alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName
+        alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName
       });
     } else {
-      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName});
+      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName});
     }
   };
 

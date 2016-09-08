@@ -116,11 +116,7 @@ angular.module('main')
       }).val;
       var stepText = dryMethod + " dry ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToDry);
-      for (var i = step.ingredientsToDry.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToDry[i].nameFormFlag) {
-          step.ingredientsToDry[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToDry);
 
       switch(step.ingredientsToDry.length) {
         case 0:
@@ -135,19 +131,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToDry[0].prefix + " " + step.ingredientsToDry[0].name[step.ingredientsToDry[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToDry[0].prefix + " " + step.ingredientsToDry[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToDry[0].prefix + " " + step.ingredientsToDry[0].name[step.ingredientsToDry[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToDry[1].prefix + " " + step.ingredientsToDry[1].name[step.ingredientsToDry[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToDry[0].prefix + " " + step.ingredientsToDry[0].displayName.toLowerCase() + " and " + step.ingredientsToDry[1].prefix + " " + step.ingredientsToDry[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToDry.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToDry[i].prefix + " " + step.ingredientsToDry[i].name[step.ingredientsToDry[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToDry[i].prefix + " " + step.ingredientsToDry[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToDry[i].prefix + " " + step.ingredientsToDry[i].name[step.ingredientsToDry[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToDry[i].prefix + " " + step.ingredientsToDry[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

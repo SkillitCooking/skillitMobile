@@ -250,11 +250,7 @@ angular.module('main')
         ErrorService.showErrorAlert();
       }
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToSeason);
-      for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToSeason[i].nameFormFlag) {
-          step.ingredientsToSeason[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToSeason);
       switch(step.ingredientsToSeason.length) {
         case 0:
           //error
@@ -266,19 +262,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSeason[0].prefix + " " + step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSeason[0].prefix + " " + step.ingredientsToSeason[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSeason[0].prefix + " " + step.ingredientsToSeason[0].name[step.ingredientsToSeason[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSeason[1].prefix + " " + step.ingredientsToSeason[1].name[step.ingredientsToSeason[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSeason[0].prefix + " " + step.ingredientsToSeason[0].displayName.toLowerCase() + " and " + step.ingredientsToSeason[1].prefix + " " + step.ingredientsToSeason[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToSeason.length - 1; i >= 0; i--) {
             if(i === 0){
-              stepText += "and " + step.ingredientsToSeason[i].prefix + " " + step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSeason[i].prefix + " " + step.ingredientsToSeason[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToSeason[i].prefix + " " + step.ingredientsToSeason[i].name[step.ingredientsToSeason[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSeason[i].prefix + " " + step.ingredientsToSeason[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

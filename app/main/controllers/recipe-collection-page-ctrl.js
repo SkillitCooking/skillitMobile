@@ -24,6 +24,24 @@ angular.module('main')
     $ionicHistory.goBack();
   };
 
+  function setSelected(names, ids, recipe) {
+    for (var i = recipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
+      var type = recipe.ingredientList.ingredientTypes[i];
+      for (var j = type.ingredients.length - 1; j >= 0; j--) {
+        var ingredient = type.ingredients[j];
+        names.push(ingredient.name.standardForm);
+        var formIds = [];
+        for (var k = ingredient.ingredientForms.length - 1; k >= 0; k--) {
+          formIds.push(ingredient.ingredientForms[k]._id);
+        }
+        ids.push({
+            _id: ingredient._id,
+            formIds: formIds
+          });
+      }
+    }
+  }
+
   //BYO handling here too
   $scope.recipeSelected = function(recipe) {
     recipe.isSelected = true;
@@ -33,26 +51,34 @@ angular.module('main')
     if($scope.collection.isBYOCollection) {
       var ingredientTypes = recipe.ingredientList.ingredientTypes;
       for (var i = ingredientTypes.length - 1; i >= 0; i--) {
-        if(ingredientTypes[i].minNeeded == ingredientTypes[i].ingredients.length) {
-          for (var j = ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
+        for (var j = ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
+          if(ingredientTypes[i].minNeeded == ingredientTypes[i].ingredients.length) {
             ingredientTypes[i].ingredients[j].useInRecipe = true;
           }
+          //so we get a checked form, if forms are displayable, immediately when
+          //an ingredient is selected on the editBYO screen
+          ingredientTypes[i].ingredients[j].ingredientForms[0].useInRecipe = true;
         }
       }
+      console.log('byo types: ', ingredientTypes);
       setTimeout(function() {
         $state.go('main.editBYOIngredientsRecipes', {
           alaCarteRecipes: [],
           alaCarteSelectedArr: [],
           previousRecipeIds: [recipe._id],
           selectedIngredientNames: [],
+          selectedIngredientIds: [],
           BYOIngredientTypes: ingredientTypes,
           BYOName: recipe.name,
           loadAlaCarte: true
         }, 200);
       });
     } else {
+      //set initial ingredients and names
+      var selectedNames = [], selectedIds = [];
+      setSelected(selectedNames, selectedIds, recipe);
       setTimeout(function() {
-        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: [], alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
       }, 200);
     }
   };

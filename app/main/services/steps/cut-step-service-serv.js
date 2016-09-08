@@ -152,16 +152,14 @@ angular.module('main')
         return specific.propName === "actionModifier";
       }).val;
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToCut);
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToCut);
       for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
         var arrElem = {};
-        if(!step.ingredientsToCut[i].nameFormFlag) {
-          step.ingredientsToCut[i].nameFormFlag = NAME_FORM_FLAGS.STANDARD;
-        }
         arrElem.recipeCategorys = [step.recipeCategory];
         arrElem.actionType = actionType;
-        arrElem.ingredientName = step.ingredientsToCut[i].name[step.ingredientsToCut[i].nameFormFlag];
+        arrElem.ingredientName = step.ingredientsToCut[i].displayName;
         arrElem.text = actionType;
-        arrElem.text += " " + step.ingredientsToCut[i].prefix + " " + step.ingredientsToCut[i].name[step.ingredientsToCut[i].nameFormFlag].toLowerCase();
+        arrElem.text += " " + step.ingredientsToCut[i].prefix + " " + step.ingredientsToCut[i].displayName.toLowerCase();
         if(actionModifier){
           arrElem.text += " " + actionModifier;
           arrElem.actionModifier = actionModifier;

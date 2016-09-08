@@ -13,6 +13,7 @@ angular.module('main')
   $scope.alaCarteSelectedArr = $stateParams.alaCarteSelectedArr;
   $scope.originalSelectedArr = angular.copy($scope.alaCarteSelectedArr);
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
+  $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
 
   $scope.needsHeader = function(recipe) {
     //if recipe has different header from alaCarteHeader
@@ -69,22 +70,43 @@ angular.module('main')
     return false;
   };
 
+  function addNewIngredients(recipes) {
+    for (var i = recipes.length - 1; i >= 0; i--) {
+      var types = recipes[i].ingredientList.ingredientTypes;
+      for (var j = types.length - 1; j >= 0; j--) {
+        for (var k = types[j].ingredients.length - 1; k >= 0; k--) {
+          $scope.selectedIngredientNames.push(types[j].ingredients[k].name.standardForm);
+          $scope.selectedIngredientIds.push({
+            _id: types[j].ingredients[k]._id,
+            formIds: _.map(types[j].ingredients[k].ingredientForms, '_id')
+          });
+        }
+      }
+    }
+    $scope.selectedIngredientNames = _.uniq($scope.selectedIngredientNames);
+    $scope.selectedIngredientIds = _.uniqBy($scope.selectedIngredientIds, '_id');
+  }
+
   $scope.addSides = function() {
+    var selectedRecipes = [];
     for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
       if($scope.alaCarteSelectedArr[i]) {
         $scope.previousRecipeIds.push($scope.alaCarteRecipes[i]._id);
+        selectedRecipes.push($scope.alaCarteRecipes[i]);
       } else if($scope.originalSelectedArr[i]) {
         _.pull($scope.previousRecipeIds, $scope.alaCarteRecipes[i]._id);
       }
     }
     if($stateParams.cameFromHome) {
-      $state.go('main.cookPresentHome', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false});
+      $state.go('main.cookPresentHome', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false});
     } else if($stateParams.cameFromRecipes) {
-      $state.go('main.cookPresentRecipes', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false});
+      addNewIngredients(selectedRecipes);
+      $state.go('main.cookPresentRecipes', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false});
     } else if($stateParams.cameFromRecipeCollection) {
-      $state.go('main.cookPresentRecipes', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false, cameFromRecipes: false, cameFromRecipeCollection: true});
+      addNewIngredients(selectedRecipes);
+      $state.go('main.cookPresentRecipes', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false, cameFromRecipes: false, cameFromRecipeCollection: true});
     } else {
-      $state.go('main.cookPresent', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection});
+      $state.go('main.cookPresent', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection});
     }
   };
 

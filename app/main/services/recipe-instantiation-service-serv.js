@@ -12,7 +12,7 @@ angular.module('main')
     seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
   var service = {};
 
-  service.cullIngredients = function(recipes, ingredientNames) {
+  service.cullIngredients = function(recipes, ingredientNames, ingredientIds) {
     for (var i = recipes.length - 1; i >= 0; i--) {
       //don't process full because we want full recipes to appear without full
       //satisfaction, but we want them displayed as if they have full satisfaction
@@ -21,7 +21,7 @@ angular.module('main')
       //And so will not need any of their ingredients culled if they were able to be
       //selected in the first place. Importantly, this allows for the simple removal
       //of ingredients from ingredientNames when adjusting the BYO
-      if(recipes[i].recipeType !== "Full" && recipes[i].recipeType !== 'AlaCarte') {
+      if(/*recipes[i].recipeType !== "Full" && recipes[i].recipeType !== 'AlaCarte'*/true) {
         var ingredientTypes = recipes[i].ingredientList.ingredientTypes;
         for (var j = ingredientTypes.length - 1; j >= 0; j--) {
           var ingredients = ingredientTypes[j].ingredients;
@@ -29,12 +29,28 @@ angular.module('main')
             if(!ingredientNames.includes(ingredients[k].name.standardForm)){
               if(recipes[i].recipeType === 'BYO') {
                 ingredients[k].useInRecipe = false;
+                //reset forms
+                for (var l = ingredients[k].ingredientForms.length - 1; l >= 1; l--) {
+                  ingredients[k].ingredientForms[l].useInRecipe = false;
+                }
+                ingredients[k].ingredientForms[0].useInRecipe = true;
               } else {
                 ingredients.splice(k, 1);
               }
-            } else if(recipes[i].recipeType === 'BYO') {
+            } else {
               ingredients[k].useInRecipe = true;
-            }
+              //set forms to true/false
+              var ingredId = _.find(ingredientIds, function(id) {
+                return ingredients[k]._id === id._id;
+              });
+              for (var m = ingredients[k].ingredientForms.length - 1; m >= 0; m--) {
+                if(ingredId.formIds.includes(ingredients[k].ingredientForms[m]._id)) {
+                  ingredients[k].ingredientForms[m].useInRecipe = true;
+                } else {
+                  ingredients[k].ingredientForms[m].useInRecipe = false;
+                }
+              }
+            } 
           }
         }
       } 

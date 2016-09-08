@@ -122,11 +122,7 @@ angular.module('main')
       }).val;
       var stepText = stirType + " ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToStir);
-      for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToStir[i].nameFormFlag) {
-          step.ingredientsToStir[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToStir);
 
       switch(step.ingredientsToStir.length) {
         case 0:
@@ -139,19 +135,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToStir[0].prefix + " " + step.ingredientsToStir[0].name[step.ingredientsToStir[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToStir[0].prefix + " " + step.ingredientsToStir[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToStir[0].prefix + " " + step.ingredientsToStir[0].name[step.ingredientsToStir[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToStir[1].prefix + " " + step.ingredientsToStir[1].name[step.ingredientsToStir[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToStir[0].prefix + " " + step.ingredientsToStir[0].displayName.toLowerCase() + " and " + step.ingredientsToStir[1].prefix + " " + step.ingredientsToStir[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToStir.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToStir[i].prefix + " " + step.ingredientsToStir[i].name[step.ingredientsToStir[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToStir[i].prefix + " " + step.ingredientsToStir[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToStir[i].prefix + " " + step.ingredientsToStir[i].name[step.ingredientsToStir[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToStir[i].prefix + " " + step.ingredientsToStir[i].displayName.toLowerCase() + ", ";
             }
           }
           break;
@@ -177,6 +173,7 @@ angular.module('main')
       return specific.propName === "stirType";
     }).val;
     var auxStepText = stirType + " the ";
+    GeneralTextService.assignIngredientDisplayNames(ingredients);
     switch(ingredients.length) {
       case 0:
         //error
@@ -188,19 +185,19 @@ angular.module('main')
         break;
 
       case 1:
-        auxStepText += ingredients[0].name[ingredients[0].nameFormFlag].toLowerCase();
+        auxStepText += ingredients[0].displayName.toLowerCase();
         break;
 
       case 2:
-        auxStepText += ingredients[0].name[ingredients[0].nameFormFlag].toLowerCase() + " and " + ingredients[1].name[ingredients[0].nameFormFlag].toLowerCase();
+        auxStepText += ingredients[0].displayName.toLowerCase() + " and " + ingredients[1].displayName.toLowerCase();
         break;
 
       default:
         for (var i = ingredients.length - 1; i >= 0; i--) {
           if(i === 0) {
-            auxStepText += "and " + ingredients[i].name[ingredients[i].nameFormFlag].toLowerCase();
+            auxStepText += "and " + ingredients[i].displayName.toLowerCase();
           } else {
-            auxStepText += ingredients[i].name[ingredients[i].nameFormFlag].toLowerCase() + ", ";
+            auxStepText += ingredients[i].displayName.toLowerCase() + ", ";
           }
         }
         break;

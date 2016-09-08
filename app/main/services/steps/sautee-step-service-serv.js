@@ -241,11 +241,7 @@ angular.module('main')
       }).val;
       var stepText = "Sautee ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToSautee);
-      for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToSautee[i].nameFormFlag) {
-          step.ingredientsToSautee[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToSautee);
 
       switch(step.ingredientsToSautee.length) {
         case 0:
@@ -258,19 +254,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToSautee[0].prefix + " " + step.ingredientsToSautee[0].name[step.ingredientsToSautee[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSautee[0].prefix + " " + step.ingredientsToSautee[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToSautee[0].prefix + " " + step.ingredientsToSautee[0].name[step.ingredientsToSautee[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToSautee[1].prefix + " " + step.ingredientsToSautee[1].name[step.ingredientsToSautee[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToSautee[0].prefix + " " + step.ingredientsToSautee[0].displayName.toLowerCase() + " and " + step.ingredientsToSautee[1].prefix + " " + step.ingredientsToSautee[1].displayName.toLowerCase();
           break;
 
         default: 
           for (var i = step.ingredientsToSautee.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToSautee[i].prefix + " " + step.ingredientsToSautee[i].name[step.ingredientsToSautee[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToSautee[i].prefix + " " + step.ingredientsToSautee[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToSautee[i].prefix + " " + step.ingredientsToSautee[i].name[step.ingredientsToSautee[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToSautee[i].prefix + " " + step.ingredientsToSautee[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

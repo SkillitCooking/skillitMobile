@@ -4,8 +4,8 @@ angular.module('main')
   var baseRecipes = Restangular.all('recipes');
 
   return {
-    getRecipesWithIngredients: function(ingredientNames) {
-      return baseRecipes.customPOST(ingredientNames, 'getRecipesWithIngredients');
+    getRecipesWithIngredients: function(ingredientIds) {
+      return baseRecipes.customPOST(ingredientIds, 'getRecipesWithIngredients');
     },
     getRecipesWithIds: function(recipeIds) {
       return baseRecipes.customPOST(recipeIds, 'getRecipesWithIds');

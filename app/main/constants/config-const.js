@@ -33,4 +33,9 @@ angular.module('main')
     'SLICED' : 'Sliced',
     'MINCE' : 'Mince',
     'MINCED' : 'Minced'
+  }).constant('INGREDIENT_CATEGORIES', {
+    'VEGETABLES': 'Vegetables',
+    'PROTEIN': 'Protein',
+    'STARCH': 'Starches',
+    'OTHER': 'Other'
   });

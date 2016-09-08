@@ -264,11 +264,8 @@ angular.module('main')
       }).val;
       var stepText = placeType + " ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToPlace);
-      for (var i = step.ingredientsToPlace.length - 1; i >= 0; i--) {
-        if(!step.ingredientsToPlace[i].nameFormFlag) {
-          step.ingredientsToPlace[i].nameFormFlag = "standardForm";
-        }
-      }
+      GeneralTextService.assignIngredientDisplayNames(step.ingredientsToPlace);
+      GeneralTextService.assignIngredientDisplayNames(step.alreadyPlacedIngredients);
 
       switch(step.ingredientsToPlace.length) {
         case 0:
@@ -281,19 +278,19 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += step.ingredientsToPlace[0].prefix + " " + step.ingredientsToPlace[0].name[step.ingredientsToPlace[0].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToPlace[0].prefix + " " + step.ingredientsToPlace[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += step.ingredientsToPlace[0].prefix + " " + step.ingredientsToPlace[0].name[step.ingredientsToPlace[0].nameFormFlag].toLowerCase() + " and " + step.ingredientsToPlace[1].prefix + " " + step.ingredientsToPlace[1].name[step.ingredientsToPlace[1].nameFormFlag].toLowerCase();
+          stepText += step.ingredientsToPlace[0].prefix + " " + step.ingredientsToPlace[0].displayName.toLowerCase() + " and " + step.ingredientsToPlace[1].prefix + " " + step.ingredientsToPlace[1].displayName.toLowerCase();
           break;
 
         default:
           for (var i = step.ingredientsToPlace.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.ingredientsToPlace[i].prefix + " " + step.ingredientsToPlace[i].name[step.ingredientsToPlace[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.ingredientsToPlace[i].prefix + " " + step.ingredientsToPlace[i].displayName.toLowerCase();
             } else {
-              stepText += step.ingredientsToPlace[i].prefix + " " + step.ingredientsToPlace[i].name[step.ingredientsToPlace[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.ingredientsToPlace[i].prefix + " " + step.ingredientsToPlace[i].displayName.toLowerCase() + ", ";
             }
           }
           break;
@@ -335,21 +332,21 @@ angular.module('main')
           break;
 
         case 1:
-          stepText += " with the " + step.alreadyPlacedIngredients[0].name[step.alreadyPlacedIngredients[0].nameFormFlag].toLowerCase();
+          stepText += " with the " + step.alreadyPlacedIngredients[0].displayName.toLowerCase();
           break;
 
         case 2:
-          stepText += " with the " + step.alreadyPlacedIngredients[0].name[step.alreadyPlacedIngredients[0].nameFormFlag].toLowerCase() + " and " +
-            step.alreadyPlacedIngredients[1].name[step.alreadyPlacedIngredients[1].nameFormFlag].toLowerCase();
+          stepText += " with the " + step.alreadyPlacedIngredients[0].displayName.toLowerCase() + " and " +
+            step.alreadyPlacedIngredients[1].displayName.toLowerCase();
           break;
 
         default:
           stepText += " with the ";
           for (var i = step.alreadyPlacedIngredients.length - 1; i >= 0; i--) {
             if(i === 0) {
-              stepText += "and " + step.alreadyPlacedIngredients[i].name[step.alreadyPlacedIngredients[i].nameFormFlag].toLowerCase();
+              stepText += "and " + step.alreadyPlacedIngredients[i].displayName.toLowerCase();
             } else {
-              stepText += step.alreadyPlacedIngredients[i].name[step.alreadyPlacedIngredients[i].nameFormFlag].toLowerCase() + ", ";
+              stepText += step.alreadyPlacedIngredients[i].displayName.toLowerCase() + ", ";
             }
           }
           break;

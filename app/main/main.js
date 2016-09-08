@@ -59,6 +59,7 @@ angular.module('main', [
         params: {
           recipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           alaCarteRecipes: null,
           alaCarteSelectedArr: null,
           currentSeasoningProfile: null,
@@ -85,6 +86,7 @@ angular.module('main', [
           currentSeasoningProfile: null,
           previousRecipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           numberBackToRecipeSelection: null,
           cameFromHome: true
         }
@@ -104,6 +106,7 @@ angular.module('main', [
           currentSeasoningProfile: null,
           previousRecipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           numberBackToRecipeSelection: null,
           BYOIngredientTypes: null,
           BYOName: null,
@@ -146,6 +149,7 @@ angular.module('main', [
         params: {
           recipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           alaCarteRecipes: null,
           alaCarteSelectedArr: null,
           currentSeasoningProfile: null,
@@ -172,6 +176,7 @@ angular.module('main', [
           currentSeasoningProfile: null,
           previousRecipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           numberBackToRecipeSelection: null
         }
       })
@@ -190,6 +195,7 @@ angular.module('main', [
           currentSeasoningProfile: null,
           previousRecipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           numberBackToRecipeSelection: null,
           BYOIngredientTypes: null,
           BYOName: null,
@@ -252,6 +258,7 @@ angular.module('main', [
         params: {
           recipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           alaCarteRecipes: null,
           alaCarteSelectedArr: null,
           currentSeasoningProfile: null,
@@ -279,6 +286,7 @@ angular.module('main', [
           currentSeasoningProfile: null,
           previousRecipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           numberBackToRecipeSelection: null,
           cameFromRecipes: true,
           cameFromRecipeCollection: false
@@ -299,6 +307,7 @@ angular.module('main', [
           currentSeasoningProfile: null,
           previousRecipeIds: null,
           selectedIngredientNames: null,
+          selectedIngredientIds: null,
           numberBackToRecipeSelection: null,
           BYOIngredientTypes: null,
           BYOName: null,
