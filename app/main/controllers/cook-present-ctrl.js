@@ -197,21 +197,18 @@ angular.module('main')
         $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[0];
       }
       if((!$scope.selectedIngredientNames || $scope.selectedIngredientNames.length < 1) || (!$scope.selectedIngredientIds || $scope.selectedIngredientIds.length < 1)) {
-        console.log('here');
         var resetNames, resetIds = false;
         if(!$scope.selectedIngredientNames) {
           $scope.selectedIngredientNames = [];
         }
         if($scope.selectedIngredientNames.length === 0) {
           resetNames = true;
-          console.log('resetNames');
         }
         if(!$scope.selectedIngredientIds) {
           $scope.selectedIngredientIds = [];
         }
         if($scope.selectedIngredientIds.length === 0) {
           resetIds = true;
-          console.log('resetIds');
         }
         for (var i = $scope.combinedRecipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
           for (var j = $scope.combinedRecipe.ingredientList.ingredientTypes[i].ingredients.length - 1; j >= 0; j--) {
@@ -226,8 +223,6 @@ angular.module('main')
             }
           }
         }
-        console.log('post reset names', angular.copy($scope.selectedIngredientNames));
-        console.log('post reset ids', angular.copy($scope.selectedIngredientIds));
       }
     }
     if($stateParams.currentSeasoningProfile) {
@@ -531,8 +526,6 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     //need to get timesclicked mechanism going here
-    console.log('numberBackToRecipeSelection:', $scope.numberBackToRecipeSelection);
-    console.log('params', $stateParams);
     if($scope.alaCarteSelectedArr) {
       for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
         $scope.alaCarteSelectedArr.fill(false);

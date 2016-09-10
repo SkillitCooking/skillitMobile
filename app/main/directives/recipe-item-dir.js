@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('recipeItem', function () {
+.directive('recipeItem', ['RECIPE_TYPES', 'RECIPE_DISCLAIMERS', function (RECIPE_TYPES, RECIPE_DISCLAIMERS) {
   return {
     templateUrl: 'main/templates/recipe-item.html',
     restrict: 'E',
@@ -27,6 +27,21 @@ angular.module('main')
           }
         };
       };
+
+      scope.showRecipeDisclaimer = function() {
+        if(scope.recipe.recipeType === RECIPE_TYPES.FULL) {
+          if(scope.recipe.setModifiedDisclaimer) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      scope.getRecipeDisclaimer = function() {
+        if(scope.recipe.setModifiedDisclaimer) {
+          return RECIPE_DISCLAIMERS.MODIFIED;
+        }
+      };
     }
   };
-});
+}]);

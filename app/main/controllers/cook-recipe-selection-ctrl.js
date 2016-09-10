@@ -279,9 +279,26 @@ angular.module('main')
     });
   };
 
+  function addMissingIngredients(recipe) {
+    var newNames = _.map(recipe.missingIngredients, function(ingred) {
+      return ingred.nameObj.standardForm;
+    });
+    var newIds = _.map(recipe.missingIngredients, function(ingred) {
+      return {
+        _id: ingred._id, 
+        formIds: ingred.formIds
+      };
+    })
+    $scope.selectedIngredientNames = $scope.selectedIngredientNames.concat(newNames);
+    $scope.selectedIngredientIds = $scope.selectedIngredientIds.concat(newIds);
+  }
+
   $scope.recipeSelected = function(recipe) {
     //"pull up" present-recipe page using first one selected
     recipe.isSelected = true;
+    if(recipe.missingIngredients && recipe.missingIngredients.length !== 0) {
+      addMissingIngredients(recipe);
+    }
     var recipeIds = [recipe._id];
     if($scope.alaCarteClickedArr) {
       for (var i = $scope.alaCarteClickedArr.length - 1; i >= 0; i--) {
@@ -289,6 +306,8 @@ angular.module('main')
           recipeIds.push($scope.alaCarteRecipes[i]._id);
         }
       }
+    } else {
+      $scope.alaCarteClickedArr = [];
     }
     setTimeout(function() {
       recipe.isSelected = false;

@@ -38,4 +38,10 @@ angular.module('main')
     'PROTEIN': 'Protein',
     'STARCH': 'Starches',
     'OTHER': 'Other'
+  }).constant('RECIPE_TYPES', {
+    'FULL': 'Full',
+    'BYO': 'BYO',
+    'ALACARTE': 'AlaCarte'
+  }).constant('RECIPE_DISCLAIMERS', {
+    'MODIFIED': 'Recipe has been modified to fit your ingredient selection'
   });

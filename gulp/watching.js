@@ -41,7 +41,7 @@ gulp.task('reload-browser', function() {
 });
 
 // WATCH
-gulp.task('watch', ['inject-all'], function () {
+gulp.task('watch', ['unset-localhost', 'inject-all'], function () {
 
   // browser sync server
   bsInit(['app', '.tmp']);
@@ -74,6 +74,18 @@ gulp.task('watch', ['inject-all'], function () {
     'app/main/constants/env-*.json',
     'app/*/constants/*config-const.js'
   ], ['environment']);
+});
+
+gulp.task('unset-localhost', function() {
+  return process.env.USE_LOCALHOST = false;
+});
+
+gulp.task('set-localhost', function() {
+  return process.env.USE_LOCALHOST = true;
+});
+
+gulp.task('localhost-watch', ['set-localhost', 'watch'], function() {
+
 });
 
 // WATCH-BUILD
