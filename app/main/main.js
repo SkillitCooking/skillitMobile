@@ -22,7 +22,6 @@ angular.module('main', [
       ErrorService.logError(errInfo);
       $delegate(exception, cause);
       ErrorService.showErrorAlert();
-      ErrorService.toggleIsErrorAlready();
     };
   }]);
   RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
