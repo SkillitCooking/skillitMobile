@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
+.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -14,6 +14,31 @@ angular.module('main')
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  //catch resize event
+  ionic.on('resize', function() {
+    $rootScope.redrawSlides = true;
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function() {
+    if($scope.slider) {
+      if($rootScope.redrawSlides) {
+        //Could stand to refactor this out into some sort of service...
+        //Would also be to see if listener for 'resize' could be put out of
+        //controller as well
+        for (var i = $scope.slider.slides.length - 1; i >= 0; i--) {
+          var offset = $scope.slider.slides[i].swiperSlideSize * i;
+          $scope.slider.slides[i].swiperSlideOffset = offset;
+          var translate3d = "translate3d(" + "-" + offset +"px,0px,0px)";
+          $scope.slider.slides[i].style.transform = translate3d;
+          if(i === $scope.slider.slides.length - 1) {
+            $scope.slider.slides[i].style.opacity = "1";
+          }
+        }
+        $rootScope.redrawSlides = false;
+      }
+    }
   });
 
   $scope.$on('$ionicView.enter', function(event, data){
@@ -53,6 +78,8 @@ angular.module('main')
   $scope.$watch("data.slider", function(nv, ov) {
     $scope.slider = $scope.data.slider;
   });
+
+
 
   $scope.notBeginningSlide = function() {
     if($scope.slider) {
@@ -103,6 +130,9 @@ angular.module('main')
     },
     onTouchMoveOpposite: function(swiper, event){
       swiper.slidePrev();
+    },
+    onSetTranslate: function(swiper, translate) {
+
     }
   };
 
