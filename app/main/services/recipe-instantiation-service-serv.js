@@ -27,16 +27,19 @@ angular.module('main')
           var ingredients = ingredientTypes[j].ingredients;
           for(var k = ingredients.length - 1; k >= 0; k--) {
             if(!ingredientNames.includes(ingredients[k].name.standardForm)){
-              if(recipes[i].recipeType === 'BYO') {
+              if(recipes[i].recipeType !== 'AlaCarte') {
+                if(recipes[i].recipeType === 'Full') {
+                  //then mark recipe, ingredientType
+                  recipes[i].notFullySatisfied = true;
+                  ingredientTypes[j].notFullySatisfied = true;
+                }
                 ingredients[k].useInRecipe = false;
                 //reset forms
                 for (var l = ingredients[k].ingredientForms.length - 1; l >= 1; l--) {
                   ingredients[k].ingredientForms[l].useInRecipe = false;
                 }
                 ingredients[k].ingredientForms[0].useInRecipe = true;
-              } else {
-                ingredients.splice(k, 1);
-              }
+              } 
             } else {
               ingredients[k].useInRecipe = true;
               //set forms to true/false

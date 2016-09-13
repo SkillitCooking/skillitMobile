@@ -78,6 +78,10 @@ angular.module('main')
         ingredientsForRecipe.ingredients = ingredientsForRecipe.ingredients.concat(concatIngredients);
       }
       ingredientsForRecipe.ingredients.sort(function(a, b) {
+        if(a.useInRecipe && !b.useInRecipe)
+          return -1;
+        if(!a.useInRecipe && b.useInRecipe)
+          return 1;
         if(a.inputCategory === 'Starches')
           return -1;
         if(a.inputCategory === 'Protein' && b.inputCategory === 'Vegetables')
@@ -90,7 +94,10 @@ angular.module('main')
         return 0;
       });
       ingredientsForRecipe.ingredients = _.map(ingredientsForRecipe.ingredients, function(ingredient) {
-          return ingredient.name.standardForm;
+          return {
+            name: ingredient.name.standardForm,
+            useInRecipe: ingredient.useInRecipe
+          };
         }).reduce(function(a,b) {
           if(a.indexOf(b) < 0) {
             a.push(b);
@@ -178,6 +185,19 @@ angular.module('main')
     if(BYORecipe) {
       $scope.BYOIngredientTypes = BYORecipe.ingredientList.ingredientTypes;
       $scope.BYOName = BYORecipe.name;
+    }
+    var notFullySatisfiedRecipe = _.find(recipes, function(recipe) {
+      return recipe.notFullySatisfied;
+    });
+    if(notFullySatisfiedRecipe) {
+      $scope.notFullySatisfiedRecipeName = notFullySatisfiedRecipe.name;
+      $scope.BYOIngredientTypes = [];
+      for (var i = notFullySatisfiedRecipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
+        if(notFullySatisfiedRecipe.ingredientList.ingredientTypes[i].notFullySatisfied) {
+          $scope.BYOIngredientTypes.push(notFullySatisfiedRecipe
+            .ingredientList.ingredientTypes[i]);
+        }
+      }
     }
     $scope.ingredientsForRecipes = getIngredientsForRecipes(recipes);
     RecipeInstantiationService.fillInSteps(recipes);
@@ -311,13 +331,29 @@ angular.module('main')
     }
   };
 
+  $scope.getEditIngredientsButtonText = function() {
+    //use BYOName as proxy for BYO recipe presence
+    if($scope.BYOName) {
+      return 'Edit Ingredients';
+    } else {
+      //then we have a minNeeded < type.ingredients.length Full
+      return 'Modify Recipe';
+    }
+  };
+
   $scope.editBYOIngredients = function() {
+    var recipeName;
+    if($scope.notFullySatisfiedRecipeName) {
+      recipeName = $scope.notFullySatisfiedRecipeName;
+    } else if($scope.BYOName) {
+      recipeName = $scope.BYOName;
+    }
     if($scope.cameFromRecipes) {
       $state.go('main.editBYOIngredientsRecipes', {
-        alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName
+        alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: recipeName
       });
     } else {
-      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: $scope.BYOName});
+      $state.go('main.editBYOIngredients', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: recipeName});
     }
   };
 

@@ -32,12 +32,14 @@
       <h3>Ingredient List</h3>
       <!--the test with combinedRecipe.mainVideoURLs is a proxy for whether it is 
       truly a combined recipe-->
-      <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">Edit Ingredients</button>
+      <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
       <div ng-repeat="recipeIngredients in ingredientsForRecipes">
         <h5 ng-if="combinedRecipe.mainVideoURLs">{{recipeIngredients.name}}</h5>
         <ul> 
           <li ng-repeat="ingredient in recipeIngredients.ingredients">
-            &nbsp;&nbsp;• {{ingredient}}
+          <!--ingredients such that ingredient.useInRecipe === false should only come through with Fulls-->
+            &nbsp;&nbsp;• <span ng-if="ingredient.useInRecipe">{{ingredient.name}}</span>
+            <s ng-if="!ingredient.useInRecipe">{{ingredient.name}}</s>
           </li>
           <li ng-if="categoryNeedsOilOrButter()">
             &nbsp;&nbsp;• Oil or Butter

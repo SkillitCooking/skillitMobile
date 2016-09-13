@@ -17,14 +17,9 @@ angular.module('main')
           });
           if(ingredientType) {
             if(ingredientType.ingredients.length > 0) {
-              var concatIngredients;
-              if(recipe.recipeType !== 'BYO') {
-                concatIngredients = ingredientType.ingredients;
-              } else {
-                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
-                  return ingredient.useInRecipe;
-                });
-              }
+              var concatIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
+                return ingredient.useInRecipe;
+              });
               step.ingredientsToCook = step.ingredientsToCook.concat(concatIngredients);
               var productIngredients = angular.copy(concatIngredients);
                 _.forEach(productIngredients, function(ingredient) {

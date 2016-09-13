@@ -20,14 +20,9 @@ angular.module('main')
           });
           if(ingredientType) {
             if(ingredientType.ingredients.length > 0) {
-              var concatIngredients;
-              if(recipe.recipeType !== 'BYO') {
-                concatIngredients = ingredientType.ingredients;
-              } else {
-                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
-                  return ingredient.useInRecipe;
-                });
-              }
+              var concatIngredients = _.filter(ingredientType.ingredients, function(ingredient){
+                return ingredient.useInRecipe;
+              });
               step.ingredientsToPlace = step.ingredientsToPlace.concat(concatIngredients);
               if(!step.products) {
                 step.products = {};

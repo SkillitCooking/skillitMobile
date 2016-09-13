@@ -37,14 +37,9 @@ angular.module('main')
                   sourceStepType: STEP_TYPES.CUSTOM
                 };
               }
-              var concatIngredients;
-              if(recipe.recipeType !== 'BYO') {
-                concatIngredients = ingredientType.ingredients;
-              } else {
-                concatIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
-                  return ingredient.useInRecipe;
-                });
-              }
+              var concatIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
+                return ingredient.useInRecipe;
+              });
               var productIngredients = angular.copy(concatIngredients);
               _.forEach(productIngredients, function(ingredient) {
                 ingredient.hasBeenUsed = true;

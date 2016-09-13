@@ -13,6 +13,7 @@ angular.module('main')
   $scope.originalBYOIngredientTypes = angular.copy($scope.BYOIngredientTypes);
   $scope.BYOName = $stateParams.BYOName;
   $scope.loadAlaCarte = $stateParams.loadAlaCarte;
+  console.log('ByOTypes', $scope.BYOIngredientTypes);
 
   //on entering, if no selectedIngredientIds, then select first form of each ingredient
   //if selectedIngredientIds, then forms already going through?
@@ -39,6 +40,9 @@ angular.module('main')
         if(type.ingredients[i].useInRecipe) {
           count++;
         }
+      }
+      if(minNeeded < type.ingredients.length) {
+        return false;
       }
       return count === minNeeded;
     } else {
@@ -70,6 +74,9 @@ angular.module('main')
   $scope.curDisplayName = "";
 
   $scope.isNewDisplayName = function(type) {
+    if($scope.BYOIngredientTypes.length === 1) {
+      return true;
+    }
     //switch curDisplayName
     if(type.displayName === $scope.curDisplayName) {
       return false;

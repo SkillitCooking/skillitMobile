@@ -17,8 +17,10 @@
   <!-- do you want padding? -->
   <ion-content class="padding edit-byo">    
     <div ng-repeat="type in BYOIngredientTypes">
-      <h3 class="recipe-category" ng-if="isNewDisplayName(type)">{{type.displayName}}</h3>
-      <p ng-if="isNewDisplayName(type)">Minimum Needed: {{type.minNeeded}}</p>
+      <div ng-if="isNewDisplayName(type)">
+        <h3 class="recipe-category">{{type.displayName}}</h3>
+        <p>Minimum Needed: {{type.minNeeded}}</p>
+      </div>
       <ion-list class="cook-tab">
         <div ng-repeat="ingredient in type.ingredients" class="ingredient-checkbox-row">
           <ion-checkbox class="checkbox-balanced" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name.standardForm}}</ion-checkbox>
