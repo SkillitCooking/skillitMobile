@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, ErrorService, EXIT_POPUP) {
+.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, ErrorService, EXIT_POPUP, INPUTCATEGORIES) {
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -81,11 +81,14 @@ angular.module('main')
     //set first form of all ingredients to selected
     for(var category in $scope.ingredientCategories) {
       $scope.inputCategoryArray.push(category);
-      var ingredients = $scope.ingredientCategories[category];
-      ingredients.sort(alphabeticalCmp);
-      for (var i = ingredients.length - 1; i >= 0; i--) {
-        //select form
-        ingredients[i].ingredientForms[0].isSelected = true;
+      var subCategories = $scope.ingredientCategories[category];
+      for(var subCategory in subCategories) {
+        var ingredients = subCategories[subCategory];
+        ingredients.sort(alphabeticalCmp);
+        for (var i = ingredients.length - 1; i >= 0; i--) {
+          //select form
+          ingredients[i].ingredientForms[0].isSelected = true;
+        }
       }
     }
     setTimeout(function() {
@@ -119,6 +122,10 @@ angular.module('main')
 
   $scope.isError = function() {
     return ErrorService.isErrorAlready;
+  };
+
+  $scope.showSubCategoryName = function(name) {
+    return name !== INPUTCATEGORIES.NOSUBCATEGORY;
   };
 
   $scope.getWrapClass = function(index) {

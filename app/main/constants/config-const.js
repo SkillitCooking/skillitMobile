@@ -61,6 +61,8 @@ angular.module('main')
     'HOWTOSHOP': 'howToShop',
     'GLOSSARY': 'glossary',
     'TRAININGVIDEO': 'trainingVideo'
+  }).constant('INPUTCATEGORIES', {
+    'NOSUBCATEGORY': 'None'
   }).constant('EXIT_POPUP', {
     'TITLE': 'Exit Skillit?',
     'TEXT': 'Do you want to close and exit Skillit?'

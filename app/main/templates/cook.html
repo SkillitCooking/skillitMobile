@@ -21,31 +21,34 @@
     
         <!-- content goes here -->
       <ion-slides options="slideOptions" slider="data.slider" on-slide-changed="slideHasChanged($index)">
-        <ion-slide-page ng-repeat="(name, ingredients) in ingredientCategories">
+        <ion-slide-page ng-repeat="(name, ingredientSubCategories) in ingredientCategories">
           <ion-content class="has-header padding cook-tab" scroll=true>
           <div class="wrap-class" ng-class="getWrapClass($index)">
             <h2 class="ingredient-type-heading">{{name}}</h2>
             <ion-list>
-              <div ng-if="!isError()" ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
-                <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
-                  {{ingredient.name.standardForm}}
-                </ion-checkbox>
-                <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
-                  <div class="grouping-of-ingredient-forms">              
-                    <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
-                      <label class="checkbox checkbox-balanced">
-                      <span class="ingredient-form-name">{{form.name}}</span>
-                       <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
-                       <div class="track">
-                         <div class="handle"></div>
-                       </div>
-                     </label>
+              <div ng-if="!isError()" ng-repeat="(subCatName, ingredients) in ingredientSubCategories">
+                <h4 ng-if="showSubCategoryName(subCatName)">{{subCatName}}</h4>
+                <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
+                  <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
+                    {{ingredient.name.standardForm}}
+                  </ion-checkbox>
+                  <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
+                    <div class="grouping-of-ingredient-forms">              
+                      <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
+                        <label class="checkbox checkbox-balanced">
+                        <span class="ingredient-form-name">{{form.name}}</span>
+                         <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
+                         <div class="track">
+                           <div class="handle"></div>
+                         </div>
+                        </label>
+                      </div>
                     </div>
+                  </ion-item>
                 </div>
-              </ion-item>
               </div>
             </ion-list>
-            </ion-content>
+          </ion-content>
         </ion-slide-page>
       </ion-slides>
   </ion-view>
