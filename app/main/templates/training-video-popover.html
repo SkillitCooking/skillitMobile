@@ -1,0 +1,11 @@
+<ion-popover-view>
+  <!-- do you want padding? -->
+  <ion-header-bar>
+  <h1 class="title">{{video.title}}</h1>
+  <button class="button close-x-button" ng-click="closeItemPopover()">X</button>
+  </ion-header-bar>
+  <ion-content overflow-scroll="true">
+    <iframe width="300" height="169" ng-src="{{video.video.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+    <p>{{video.video.caption}}</p>
+  </ion-content>
+</ion-popover-view>

@@ -1,10 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('SideDishSelectionCtrl', ['_', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicNavBarDelegate', function (_, $scope, $stateParams, $state, $ionicHistory, $ionicNavBarDelegate) {
-
-  $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(false);
-  });
+.controller('SideDishSelectionCtrl', ['_', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicPlatform', function (_, $scope, $stateParams, $state, $ionicHistory, $ionicPlatform) {
 
   $scope.hasChanged = false;
   $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
@@ -14,6 +10,14 @@ angular.module('main')
   $scope.originalSelectedArr = angular.copy($scope.alaCarteSelectedArr);
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $scope.navigateBack();
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
+  });
 
   $scope.needsHeader = function(recipe) {
     //if recipe has different header from alaCarteHeader

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', '$ionicNavBarDelegate', 'ItemCollectionService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $state, $ionicNavBarDelegate, ItemCollectionService, $ionicLoading, ErrorService) {
+.controller('LearnCtrl', ['$scope', '$ionicHistory', '$state', 'ItemCollectionService', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', function ($scope, $ionicHistory, $state, ItemCollectionService, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP) {
 
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
@@ -8,6 +8,22 @@ angular.module('main')
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    $ionicPopup.confirm({
+      title: EXIT_POPUP.TITLE,
+      text: EXIT_POPUP.TEXT
+    }).then(function(res) {
+      if(res) {
+        ionic.Platform.exitApp();
+      }
+    });
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
   });
 
   ItemCollectionService.getCollectionsForItemTypes(['trainingVideo', 'howToShop', 'glossary']).then(function(collections) {
@@ -68,7 +84,4 @@ angular.module('main')
     $scope.trainingVideoSelected = false;
   };
 
-  $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(false);
-  });
 }]);

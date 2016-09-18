@@ -1,9 +1,18 @@
 'use strict';
 angular.module('main')
-.controller('HomeCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'DailyTipService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, DailyTipService, $ionicLoading, ErrorService) {
+.controller('HomeCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'DailyTipService', '$ionicLoading', '$ionicPlatform', 'ErrorService', function ($scope, $ionicHistory, $state, RecipeService, DailyTipService, $ionicLoading, $ionicPlatform, ErrorService) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    $scope.navigateBack();
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
   });
 
   $scope.isLoadedArr = Array(2).fill(false);
@@ -126,8 +135,4 @@ angular.module('main')
     $ionicHistory.goBack();
   };
 
-  $scope.$on("$ionicView.enter", function(event, data) {
-    $ionicNavBarDelegate.showBackButton(false);
-    $scope.isRecipeSelected = false;
-  });
 }]);

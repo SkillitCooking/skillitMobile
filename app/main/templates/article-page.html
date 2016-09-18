@@ -1,0 +1,60 @@
+<ion-view hide-back-button="true" view-title="Learn">
+  <!-- do you want padding? -->
+  <ion-nav-buttons side="primary">
+    <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
+  </ion-nav-buttons>
+  <ion-content class="padding">
+  <h2>{{article.title}}</h2>
+    <div ng-repeat="section in article.contentSections">
+      <h4 ng-if="hasSubtitle(section)">{{section.subTitle}}</h4>
+      <div ng-repeat="piece in section.contentArray" ng-switch on="piece.type">
+        <div ng-switch-when="text">
+          <span ng-repeat="chunk in piece.textChunks">
+            <span ng-if="!chunk.isList">
+              <span ng-if="!containsLink(chunk)">{{chunk.text}}</span>
+              <a ng-if="containsLink(chunk)" ng-click="followItemLink(chunk, $event)">{{chunk.text}}</a>
+            </span>
+            <span ng-if="chunk.isList">
+              <ol ng-if="chunk.isOrdered">
+                <li ng-repeat="point in chunk.bulletPoints">
+                  <span ng-if="point.hasParts" ng-repeat="part in point.lineParts">
+                    <span ng-if="!containsLink(part)">{{part.text}}</span>
+                    <a ng-if="containsLink(part)" ng-click="followItemLink(point, $event)">{{part.text}}</a>
+                  </span>
+                  <span ng-if="!point.hasParts">
+                    <span ng-if="!containsLink(point)">{{point.text}}</span>
+                    <a ng-if="containsLink(point)" ng-click="followItemLink(point, $event)">{{point.text}}</a>
+                  </span>                  
+                </li>
+              </ol>
+              <ul ng-if="!chunk.isOrdered">
+                <li ng-repeat="point in chunk.bulletPoints">
+                  <span ng-if="point.hasParts" ng-repeat="part in point.lineParts">
+                    <span ng-if="!containsLink(part)">{{part.text}}</span>
+                    <a ng-if="containsLink(part)" ng-click="followItemLink(point, $event)">{{part.text}}</a>
+                  </span>
+                  <span ng-if="!point.hasParts">
+                    <span ng-if="!containsLink(point)">{{point.text}}</span>
+                    <a ng-if="containsLink(point)" ng-click="followItemLink(point, $event)">{{point.text}}</a>
+                  </span>
+                </li>
+              </ul>
+            </span>
+          </span>
+          <br/><br/>
+        </div>
+        <div ng-switch-when="picture">
+          <img ng-if="piece.url" ng-src="{{piece.url}}">
+          <p class="subdued" ng-if="piece.url">{{piece.caption}}</p>
+        </div>
+        <div ng-switch-when="video">
+          <iframe ng-if="piece.url" width="300" height="169" ng-src="{{piece.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+          <p class="subdued" ng-if="piece.url">{{piece.caption}}</p>
+        </div>
+        <div ng-switch-default>
+          <pre>{{piece.type}}</pre>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

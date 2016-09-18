@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicLoading', '$ionicPopup', 'ErrorService', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicLoading, $ionicPopup, ErrorService) {
+.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', 'ErrorService', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, ErrorService) {
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -122,8 +122,33 @@ angular.module('main')
       template: '<p>Loading...</p><ion-spinner></ion-spinner>'
   });
 
-  $scope.$on('$ionicView.enter', function(event, data) {
-    $ionicNavBarDelegate.showBackButton(false);
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    var navigateBack = true;
+    if($scope.resetPopup && $scope.resetPopup.pending) {
+      $scope.resetPopup.pending = false;
+      navigateBack = false;
+      $scope.resetPopup.close();
+    }
+    if($scope.seasonPopover && $scope.seasonPopover.isShown()) {
+      $scope.seasonPopover.remove();
+      navigateBack = false;
+    }
+    if($scope.stepTipPopver && $scope.stepTipPopver.isShown()) {
+      $scope.stepTipPopver.remove();
+      navigateBack = false;
+    }
+    if($scope.videoModal && $scope.videoModal.isShown()) {
+      $scope.videoModal.remove();
+      navigateBack = false;
+    }
+    if(navigateBack) {
+      $scope.navigateBack();
+    }
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
   });
 
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
@@ -362,8 +387,8 @@ angular.module('main')
     if(step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile) {
       $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
         {scope: $scope}).then(function(popover) {
-        $scope.popover = popover;
-        $scope.popover.show(event);
+        $scope.seasonPopover = popover;
+        $scope.seasonPopover.show(event);
       });
     } else if(step.hasTip || step.stepTips.length > 1) {
       $scope.stepTipStep = step;
@@ -372,38 +397,40 @@ angular.module('main')
       $scope.displayStepTip = $scope.stepTipStep.stepTips[0];
       $ionicPopover.fromTemplateUrl('main/templates/step-tip-popover.html', 
         {scope: $scope}).then(function(popover) {
-        $scope.popover = popover;
-        $scope.popover.show(event);
+        $scope.stepTipPopver = popover;
+        $scope.stepTipPopver.show(event);
       });
     } else if(step.hasVideo) {
       $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1&rel=0";
-      $scope.modal = $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
+      $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
       }).then(function(modal) {
-        $scope.modal = modal;
-        $scope.modal.show();
+        $scope.videoModal = modal;
+        $scope.videoModal.show();
       });
     }
   };
 
   $scope.closeModal = function() {
-    $scope.modal.hide();
-    $scope.modal.remove();
+    $scope.videoModal.hide();
+    $scope.videoModal.remove();
   };
 
   $scope.$on('$destroy', function() {
-    if($scope.popover) {
-      $scope.popover.remove();
+    if($scope.seasonPopover) {
+      $scope.seasonPopover.remove();
+    }
+    if($scope.stepTipPopver) {
+      $scope.stepTipPopver.remove();
+    }
+    if($scope.videoModal) {
+      $scope.videoModal.remove();
     }
   });
 
   $scope.$on('modal.hidden', function() {
-    $scope.modal.remove();
-  });
-
-  $scope.$on("test", function(event, data) {
-    console.log("emit test: ", data);
+    $scope.videoModal.remove();
   });
 
   /*$scope.$on('modal.removed', function() {
@@ -504,8 +531,8 @@ angular.module('main')
   $scope.seasoningProfilePopup = function(event) {
     $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
         {scope: $scope}).then(function(popover) {
-        $scope.popover = popover;
-        $scope.popover.show(event);
+        $scope.seasonPopover = popover;
+        $scope.seasonPopover.show(event);
     });
   };
 
@@ -519,8 +546,8 @@ angular.module('main')
   };
 
   $scope.changeSeasoningProfileOther = function(profile) {
-    if($scope.popover) {
-      setTimeout(function() {$scope.popover.remove()}, 200);
+    if($scope.seasonPopover) {
+      setTimeout(function() {$scope.seasonPopover.remove()}, 200);
     }
     $scope.showMoreProfiles = false;
     $scope.combinedRecipe.choiceSeasoningProfiles.push(profile);
@@ -536,8 +563,8 @@ angular.module('main')
   };
 
   $scope.changeSeasoningProfile = function(profile) {
-    if($scope.popover) {
-      setTimeout(function() {$scope.popover.remove()}, 200);
+    if($scope.seasonPopover) {
+      setTimeout(function() {$scope.seasonPopover.remove()}, 200);
     }
     $scope.showMoreProfiles = false;
     $scope.seasoningProfile = profile;
@@ -549,14 +576,14 @@ angular.module('main')
   };
 
   $scope.closeSeasoningPopup = function() {
-    if($scope.popover) {
-      setTimeout(function() {$scope.popover.remove()}, 100);
+    if($scope.seasonPopover) {
+      setTimeout(function() {$scope.seasonPopover.remove()}, 100);
     }
   };
 
   $scope.closeTip = function() {
-    if($scope.popover) {
-      setTimeout(function() {$scope.popover.remove()}, 100);
+    if($scope.stepTipPopver) {
+      setTimeout(function() {$scope.stepTipPopver.remove()}, 100);
     }
   };
 
@@ -579,12 +606,14 @@ angular.module('main')
   };
 
   $scope.resetEverything = function() {
-    var resetPopup = $ionicPopup.confirm({
+    $scope.resetPopup = $ionicPopup.confirm({
       title: 'Reset Everything?',
       template: 'Do you want to start over and choose new ingredients?',
       cssClass: ''
     });
-    resetPopup.then(function(res) {
+    $scope.resetPopup.pending = true;
+    $scope.resetPopup.then(function(res) {
+      $scope.resetPopup.pending = false;
       if(res) {
         $ionicHistory.clearCache().then(function() {
           $state.go('main.cook');

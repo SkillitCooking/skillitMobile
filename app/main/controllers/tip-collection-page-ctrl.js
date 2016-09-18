@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('TipCollectionPageCtrl', ['$scope', '$stateParams', 'DailyTipService', '$ionicLoading', '$ionicNavBarDelegate', '$ionicHistory', 'ErrorService', function ($scope, $stateParams, DailyTipService, $ionicLoading, $ionicNavBarDelegate, $ionicHistory, ErrorService) {
+.controller('TipCollectionPageCtrl', ['$scope', '$stateParams', 'DailyTipService', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'ErrorService', function ($scope, $stateParams, DailyTipService, $ionicLoading, $ionicHistory, $ionicPlatform, ErrorService) {
 
   $scope.collection = $stateParams.collection;
 
@@ -8,8 +8,13 @@ angular.module('main')
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
   });
 
-  $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(false);
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    $scope.navigateBack();
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
   });
 
   DailyTipService.getTipsForCollection($scope.collection._id).then(function(tips) {

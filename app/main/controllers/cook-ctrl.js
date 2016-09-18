@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicNavBarDelegate', '$ionicLoading', 'ErrorService', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicNavBarDelegate, $ionicLoading, ErrorService) {
+.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, ErrorService, EXIT_POPUP) {
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -11,6 +11,35 @@ angular.module('main')
       return 0;
     }
   }
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    var showExitConfirm = true;
+    if($scope.invalidPopup && $scope.invalidPopup.pending) {
+      $scope.invalidPopup.pending = false;
+      showExitConfirm = false;
+      $scope.invalidPopup.close();
+    }
+    if($scope.resetPopup && $scope.resetPopup.pending) {
+      $scope.resetPopup.pending = false;
+      showExitConfirm = false;
+      $scope.resetPopup.close();
+    }
+    if(showExitConfirm) {
+      $ionicPopup.confirm({
+        title: EXIT_POPUP.TITLE,
+        text: EXIT_POPUP.TEXT
+      }).then(function(res) {
+        if(res) {
+          ionic.Platform.exitApp();
+        }
+      });
+    }
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
+  });
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -32,17 +61,14 @@ angular.module('main')
           $scope.slider.slides[i].swiperSlideOffset = offset;
           var translate3d = "translate3d(" + "-" + offset +"px,0px,0px)";
           $scope.slider.slides[i].style.transform = translate3d;
-          if(i === $scope.slider.slides.length - 1) {
-            $scope.slider.slides[i].style.opacity = "1";
-          }
         }
+        $scope.slider.slides[$scope.slider.activeIndex].style.opacity = "1";
         $rootScope.redrawSlides = false;
       }
     }
   });
 
   $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(false);
     if($stateParams.fromError) {
       ErrorService.toggleIsErrorAlready();
       $scope.clearIngredients();
@@ -78,8 +104,6 @@ angular.module('main')
   $scope.$watch("data.slider", function(nv, ov) {
     $scope.slider = $scope.data.slider;
   });
-
-
 
   $scope.notBeginningSlide = function() {
     if($scope.slider) {
@@ -222,23 +246,26 @@ angular.module('main')
   };
 
   $scope.showInvalidPopup = function() {
-    var alertPopup = $ionicPopup.alert({
+    $scope.invalidPopup = $ionicPopup.alert({
       title: 'Surely You Have Something?',
       template: '<p class="no-ingredient-popup">You need to select at least one ingredient</p>'
     });
-    alertPopup.then(function(res) {
+    $scope.invalidPopup.pending = true;
+    $scope.invalidPopup.then(function(res) {
       $scope.goToSlide(0);
-      console.log("alert closed");
+      $scope.invalidPopup.pending = false;
     });
   };
 
   $scope.resetIngredientSelection = function() {
-    var alertPopup = $ionicPopup.confirm({
+    $scope.resetPopup = $ionicPopup.confirm({
       title: 'Reset Ingredients?',
       template: 'Do you want to reset your selection?',
       cssClass: 'popup-alerts'
     });
-    alertPopup.then(function(res) {
+    $scope.resetPopup.pending = true;
+    $scope.resetPopup.then(function(res) {
+      $scope.resetPopup.pending = false;
       if(res) {
         $scope.clearIngredients();
       }
@@ -268,7 +295,10 @@ angular.module('main')
           return false;
 
         case 'Protein':
-          return 'true';
+          if(ingredient.name.standardForm === 'Chicken') {
+            return false;
+          }
+          return true;
 
         default:
           //error

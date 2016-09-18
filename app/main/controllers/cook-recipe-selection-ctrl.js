@@ -1,11 +1,28 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicNavBarDelegate', '$ionicLoading', '$ionicPopup', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicNavBarDelegate, $ionicLoading, $ionicPopup, ErrorService) {
+.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $scope.selectedIngredientIds = [];
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    var navigateBack = true;
+    if($scope.resetPopup && $scope.resetPopup.pending) {
+      $scope.resetPopup.pending = false;
+      navigateBack = false;
+      $scope.resetPopup.close();
+    }
+    if(navigateBack) {
+      $scope.navigateBack();
+    }
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
   });
 
   function recipeCategoryCmpFn(a, b) {
@@ -37,10 +54,6 @@ angular.module('main')
       }
     }
   }
-
-  $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(false);
-  });
 
   _.forEach($scope.selectedIngredients, function(ingredient) {
     $scope.selectedIngredientNames.push(ingredient.name.standardForm);
@@ -258,12 +271,14 @@ angular.module('main')
   };
 
   $scope.resetEverything = function() {
-    var resetPopup = $ionicPopup.confirm({
+    $scope.resetPopup = $ionicPopup.confirm({
       title: 'Reset Everything?',
       template: 'Do you want to start over with new ingredients?',
       cssClass: ''
     });
-    resetPopup.then(function(res) {
+    $scope.resetPopup.pending = true;
+    $scope.resetPopup.then(function(res) {
+      $scope.resetPopup.pending = false;
       if(res) {
         $ionicHistory.clearCache().then(function() {
           $state.go('main.cook');
@@ -288,7 +303,7 @@ angular.module('main')
         _id: ingred._id, 
         formIds: ingred.formIds
       };
-    })
+    });
     $scope.selectedIngredientNames = $scope.selectedIngredientNames.concat(newNames);
     $scope.selectedIngredientIds = $scope.selectedIngredientIds.concat(newIds);
   }

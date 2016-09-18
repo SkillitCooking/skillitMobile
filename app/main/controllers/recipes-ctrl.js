@@ -1,9 +1,25 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $state, RecipeService, ItemCollectionService, $ionicLoading, ErrorService) {
+.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+  });
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    $ionicPopup.confirm({
+      title: EXIT_POPUP.TITLE,
+      text: EXIT_POPUP.TEXT
+    }).then(function(res) {
+      if(res) {
+        ionic.Platform.exitApp();
+      }
+    });
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
   });
 
   $scope.loadedArr = Array(2).fill(false);
@@ -24,10 +40,6 @@ angular.module('main')
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
   };
-
-  $scope.$on('$ionicView.enter', function(event, data) {
-    $ionicNavBarDelegate.showBackButton(false);
-  });
 
   $scope.fullSelected = true;
   //$scope.BYOSelected = false;

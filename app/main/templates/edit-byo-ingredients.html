@@ -1,7 +1,7 @@
-<ion-view view-title="Select Ingredients" on-swipe-right="navigateBack()">
+<ion-view hide-back-button="true" view-title="Select Ingredients" on-swipe-right="navigateBack()">
   
   <ion-nav-buttons side="primary">
-    <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
+    <button class="button top-back-button" ng-click="navigateBack()"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
   </ion-nav-buttons>
   <div class="row bottom-a-la-carte-buttons">
       <div class="col" ng-if="!cameFromRecipes()">        

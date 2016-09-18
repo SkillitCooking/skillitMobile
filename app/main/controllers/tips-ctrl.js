@@ -1,15 +1,27 @@
 'use strict';
 angular.module('main')
-.controller('TipsCtrl', ['$scope', '$ionicHistory', '$ionicNavBarDelegate', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', '$ionicLoading', 'ErrorService', function ($scope, $ionicHistory, $ionicNavBarDelegate, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService, $ionicLoading, ErrorService) {
+.controller('TipsCtrl', ['$scope', '$ionicHistory', '$stateParams', '$state', '$ionicTabsDelegate', 'ItemCollectionService', '$ionicLoading', '$ionicPlatform', '$ionicPopup', 'EXIT_POPUP', 'ErrorService', function ($scope, $ionicHistory, $stateParams, $state, $ionicTabsDelegate, ItemCollectionService, $ionicLoading, $ionicPlatform, $ionicPopup, EXIT_POPUP, ErrorService) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
   });
 
-  $scope.$on('$ionicView.enter', function(event, data){
-    $ionicNavBarDelegate.showBackButton(false);
-  });
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $ionicLoading.hide();
+    $ionicPopup.confirm({
+      title: EXIT_POPUP.TITLE,
+      text: EXIT_POPUP.TEXT
+    }).then(function(res) {
+      if(res) {
+        ionic.Platform.exitApp();
+      }
+    });
+  }, 501);
 
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
+  });
+  
   $scope.cameFromHome = $stateParams.cameFromHome;
 
   ItemCollectionService.getCollectionsForItemType('dailyTip').then(function(collections) {

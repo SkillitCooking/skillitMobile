@@ -358,6 +358,51 @@ angular.module('main', [
           collection: null
         }
       })
+      .state('main.chapters', {
+        url: '/chapters',
+        views: {
+          'tab-learn2': {
+            templateUrl: 'main/templates/chapters.html',
+            controller: 'ChaptersCtrl as ctrl'
+          }
+        }
+      })
+      .state('main.chapterPage', {
+        url: '/chapterPage',
+        views: {
+          'tab-learn2': {
+            templateUrl: 'main/templates/chapter-page.html',
+            controller: 'ChapterPageCtrl as ctrl'
+          }
+        },
+        params: {
+          chapter: null
+        }
+      })
+      .state('main.articlePage', {
+        url: '/articlePage',
+        views: {
+          'tab-learn2': {
+            templateUrl: 'main/templates/article-page.html',
+            controller: 'ArticlePageCtrl'
+          }
+        },
+        params: {
+          articleId: null
+        }
+      })
+      .state('main.itemsPage', {
+        url: '/itemsPage',
+        views: {
+          'tab-learn2': {
+            templateUrl: 'main/templates/items-page.html',
+            controller: 'ItemsPageCtrl as ctrl'
+          }
+        },
+        params: {
+          lesson: null
+        }
+      })
       .state('main.list', {
         url: '/learn/list',
         views: {

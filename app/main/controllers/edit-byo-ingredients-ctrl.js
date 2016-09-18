@@ -1,10 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('EditByoIngredientsCtrl', ['$scope', '$stateParams', '$state', '$ionicNavBarDelegate', '$ionicHistory', '_', '$ionicTabsDelegate', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($scope, $stateParams, $state, $ionicNavBarDelegate, $ionicHistory, _, $ionicTabsDelegate, INGREDIENT_CATEGORIES, ErrorService) {
-  
-  $scope.$on('$ionicView.enter', function(event, data) {
-    $ionicNavBarDelegate.showBackButton(false);
-  });
+.controller('EditByoIngredientsCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, INGREDIENT_CATEGORIES, ErrorService) {
 
   $scope.hasChanged = false;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
@@ -13,7 +9,14 @@ angular.module('main')
   $scope.originalBYOIngredientTypes = angular.copy($scope.BYOIngredientTypes);
   $scope.BYOName = $stateParams.BYOName;
   $scope.loadAlaCarte = $stateParams.loadAlaCarte;
-  console.log('ByOTypes', $scope.BYOIngredientTypes);
+
+  var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
+    $scope.navigateBack();
+  }, 501);
+
+  $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    deregisterBackAction();
+  });
 
   //on entering, if no selectedIngredientIds, then select first form of each ingredient
   //if selectedIngredientIds, then forms already going through?
@@ -59,6 +62,9 @@ angular.module('main')
         case INGREDIENT_CATEGORIES.OTHER:
           return false;
         case INGREDIENT_CATEGORIES.PROTEIN:
+          if(ingredient.name.standardForm === 'Chicken') {
+            return false;
+          }
           return true;
         default:
           ErrorService.logError({ 
