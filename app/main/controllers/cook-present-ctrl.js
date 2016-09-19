@@ -678,4 +678,8 @@ angular.module('main')
       return true;
     }
   };
+
+  $scope.favoriteRecipe = function () {
+    console.log('favoriteRecipe clicked');
+  };
 }]);

@@ -36,6 +36,15 @@ angular.module('main', [
       abstract: true,
       templateUrl: 'main/templates/tabs.html'
     })
+      .state('main.account', {
+        url: '/account',
+        views: {
+          'tab-account': {
+            templateUrl: 'main/templates/account-home.html',
+            controller: 'AccountHomeCtrl as ctrl'
+          }
+        }
+      })
       //base screen of flow for cook tab
       .state('main.home', {
         url: '/home',

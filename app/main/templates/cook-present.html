@@ -28,6 +28,8 @@
         </div>
       </div>
       <br/>
+      <button class="button" ng-click="favoriteRecipe()">Favorite Recipe</button>
+      <br/>
       <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
       <h3>Ingredient List</h3>
       <!--the test with combinedRecipe.mainVideoURLs is a proxy for whether it is 
@@ -91,5 +93,6 @@
         </div>
       </ion-list>
       <h3 class="center">Time to eat!</h3>
+      <button class="button" ng-click="favoriteRecipe()">Favorite Recipe</button>
     </ion-content>
   </ion-view>
