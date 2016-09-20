@@ -89,9 +89,11 @@ angular.module('main')
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
           //appropriate server call, in part based on above result
+          alert('successful faceboo');
           console.log('success facebook sign in', result);
         }, function(err) {
           //what types of errors can occur here?
+          alert('error facebook');
           console.log('error facebook sign in', err);
         });
       };
@@ -107,8 +109,10 @@ angular.module('main')
           //result will carry whether the login created a new user or not
           //appropriate server call, in part based on above result
           console.log('success google sign in', result);
+          alert('success google');
         }, function(err) {
           //what types of errors can occur here?
+          alert('error google');
           console.log('err google sign in', err);
         });
       };
