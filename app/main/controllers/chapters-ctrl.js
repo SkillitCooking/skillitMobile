@@ -24,6 +24,10 @@ angular.module('main')
 
   ChapterService.getChapters().then(function(res) {
     $scope.chapters = res.data;
+    //round timeEstimate to nearest 5 min
+    for (var i = $scope.chapters.length - 1; i >= 0; i--) {
+      $scope.chapters[i].timeEstimate = 5 * Math.round($scope.chapters[i].timeEstimate/5);
+    }
     setTimeout(function() {
       $ionicLoading.hide();
     }, 200);
