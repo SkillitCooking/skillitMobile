@@ -1,8 +1,6 @@
-<ion-view hide-back-button="true" view-title="Chapters">
+<ion-view hide-back-button="true" view-title="Learn">
   <!-- do you want padding? -->
-  <ion-content class="padding">
-    <h2>Learn</h2>
-    <p>Looking to improve your cooking skills? Well, we've got you covered with quick, digestable lessons over a wide range of topics</p>
+  <ion-content class="padding learn-tab">  
     <ion-list>
       <chapter-item ng-repeat="chapter in chapters" chapter="chapter" ng-click="selectChapter(chapter)"></chapter-item>
     </ion-list>

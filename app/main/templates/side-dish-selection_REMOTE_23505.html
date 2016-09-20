@@ -1,0 +1,40 @@
+
+  <ion-view view-title="main module">
+
+    <ion-nav-buttons side="primary">
+      <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
+    </ion-nav-buttons>
+    <!-- do you want padding? -->
+    <ion-content class="padding">
+
+      <ion-list class="add-side-dish-screen">
+        <div ng-repeat="recipe in alaCarteRecipes">
+          <h3 ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
+          <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
+            <div class="row">
+              <div class="col col-36">  
+                <img ng-src="{{recipe.mainPictureURL}}">
+              </div>
+              <div class="col col-54 col-center">
+                <h2>{{recipe.name}}</h2>    
+                <p class="recipe-description-time">{{recipe.description}}</p>          
+              </div>
+              <div class="col col-10 col-center">
+                <i class="icon checkbox-balanced ng-class: alaCarteClass($index);"></i>              
+              </div>
+            </div>  
+            <div class="row">
+              <div class="col">
+                <div class="recipe-description-time">
+                  <p><b>Prep Time</b>: {{recipe.prepTime}} mins <b>Total Time</b>: {{recipe.totalTime}} mins</p>
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+      </ion-list>
+      <button class="button button-balanced side-dish-screen-button" ng-click="addSides()" ng-disabled="!selectionHasChanged()">Change Your Sides</button>
+      <button class="button button-balanced side-dish-screen-button float-right" ng-click="cancel()">Cancel</button>
+
+    </ion-content>
+  </ion-view>

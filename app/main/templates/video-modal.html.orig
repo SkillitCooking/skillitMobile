@@ -1,0 +1,11 @@
+<<<<<<< HEAD
+<ion-modal-view ng-click="closeModal()" class="step-video-modal">
+	<div class="step-video-modal-wrapper">	
+  		<iframe width="100%" height="100%" ng-src="{{autoplayURL | sourceTrusted}}" frameborder="0" allowfullscreen allowtransparency="false"></iframe>
+	</div>
+</ion-modal-view>
+=======
+<ion-modal-view ng-click="closeModal()">
+  <youtube></youtube>
+</ion-modal-view>
+>>>>>>> 27a8a1751fc9e0ef88225cc89bf7230f68b50294

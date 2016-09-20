@@ -33,11 +33,18 @@ h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-presen
 div, p, .individual-recipe-in-list h2, h1, .button, .palanquin, .popup-body {
 	font-family: 'Palanquin', sans-serif;
 }
-.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere {
+p {
+	color: #666666;
+	font-size: 15px;
+}
+span {
+	color: #666666;
+}
+.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere, h4.ingredient-subtype-heading {
 	font-family: 'Pompiere', sans-serif;
 }
 .bar .title {
-	font-size:22px;
+	font-size:21px;
 	font-weight: bold;
 }
 .center {
@@ -151,14 +158,15 @@ ion-nav-back-button.button-clear {
     bottom: 33px;
     z-index: 5000;
     width: 100%;
-    background-color: #ffffff;
-    padding-top: 0;
+    background-color: #fcfcfd;
+    padding-top: 5px;
+    border-top: 1px solid 	#dddddd;
 }
 .bottom-nav-buttons-cook-tab .col {
 	padding-top: 0;
 }
 .bottom-nav-buttons-cook-tab .button {	
-    background-color: #ffffff;
+    background-color: #fcfcfd;
     color: $balanced;
     border-radius: 8px;
     min-width: 114px;
@@ -205,6 +213,10 @@ div.ingredient-form-selection {
 .cook-tab .list .item {
 	border-left: none;
 	border-right: none;
+	border-bottom: none;
+}
+.list div:first-child h4 {
+	display: none;
 }
 .ingredient-checkbox-row {
 	margin: 0 20px;
@@ -217,7 +229,11 @@ div.ingredient-form-selection {
 }
 h2.ingredient-type-heading {
 	font-size: 35px;
-	margin:0 0 0 20px;
+	margin: 0 0 5px 20px;
+}
+h4.ingredient-subtype-heading {
+	font-size: 25px;
+	margin: 5px 0 0 20px;
 }
 .cook-tab .list .item-checkbox {
 	padding-left: 40px;
@@ -250,7 +266,8 @@ h2.ingredient-type-heading {
 	font-size: 13px;
 }
 .item h2 {
-	font-size: 22px;	
+	font-size: 22px;
+	white-space: normal;	
 }
 .recipe-description-time p:first-child {
 	margin-bottom: 10px;
@@ -480,6 +497,21 @@ h3.side-dish-header {
 }
 
 
+/*******************/
+/*LEARN TAB*/
+/*training videos*/
+.individual-recipe-in-list.training-video-item {
+	padding: 0 10px;
+}
+.col-video-thumbnail {
+	max-width: 95px;
+}
+
+
+
+
+
+
 
 
 
@@ -632,4 +664,8 @@ img.video-thumbnail {
 	.bottom-nav-buttons-cook-tab .button {	
 	    min-width: 144px;
 	}		
+	/*training videos*/
+	.col-video-thumbnail {
+		max-width: 130px;
+	}	
 }
