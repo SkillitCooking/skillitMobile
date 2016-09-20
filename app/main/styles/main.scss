@@ -7,7 +7,7 @@ For example, you might change some of the default colors:
 
 $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
-$positive:                        #4a87ee !default;
+$positive:                        #328823 !default;
 $calm:                            #43cee6 !default;
 $balanced:                        #ef4734 !default;
 $energized:                       #f0b840 !default;
@@ -22,15 +22,12 @@ $ionicons-font-path: "../assets/fonts" !default;
 
 /**********************************/
 /*FONTS*/
-h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-present-instructions h3, .popup-head h3{
+h2.ingredient-type-heading, h3.recipe-category, h2.recipe-category, .cook-present-instructions h3, .popup-head h3, h4{
 	font-family: 'Pompiere', cursive;
 	font-size: 35px;
 	color: $balanced;
 }
-.cook-present-instructions h3 {
-	font-size: 35px;
-}
-div, p, .individual-recipe-in-list h2, h1, .button, .palanquin, .popup-body {
+div, p, .individual-recipe-in-list h2, h1, .button, .palanquin, .popup-body, span {
 	font-family: 'Palanquin', sans-serif;
 }
 p {
@@ -40,8 +37,17 @@ p {
 span {
 	color: #666666;
 }
+a {
+	color: $balanced;
+}
+button {
+	font-family: 'Pompiere', cursive !important;
+}
 .individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere, h4.ingredient-subtype-heading {
-	font-family: 'Pompiere', sans-serif;
+	font-family: 'Pompiere', cursive;
+}
+.italic {
+	font-style: italic;
 }
 .bar .title {
 	font-size:21px;
@@ -66,7 +72,7 @@ span {
     background-color: #ffffff;
     font-size: 19px;
     min-width: 33px;
-    top: 3px !important;
+    top: 6px !important;
 }
 .bar .button.close-x-button:active {
     color: #ffffff;
@@ -78,16 +84,21 @@ span {
 .popup-buttons .button {
 	border: 1px solid #000000;
 	border-radius: 8px;
+	font-size: 24px;
 }
 .popup-buttons .button.button-positive {
-    border: none;
-    background-color: #0552d4;
+    border: 1px solid #000000;
+    background-color: $positive;
+    font-size: 24px;
 }
 .popup-body {
 	font-size: 120%;
 }
 .popup-head h3 {
 	font-size: 26px;
+}
+.popover .bar-header {
+	border-bottom: none !important;
 }
 /**********************************/
 /*BOTTOM NAV TABS*/
@@ -128,6 +139,7 @@ ion-nav-back-button.button-clear {
 /*general*/
 .button.reset {
 	border-color: #ffffff;
+	font-size: 17px;
 }
 .cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll, .add-side.scroll-content.ionic-scroll {
 	height: 76%;
@@ -158,15 +170,15 @@ ion-nav-back-button.button-clear {
     bottom: 33px;
     z-index: 5000;
     width: 100%;
-    background-color: #fcfcfd;
+    background-color: #ffffff;
     padding-top: 5px;
-    border-top: 1px solid 	#dddddd;
+    border-top: 1px solid #dddddd;
 }
 .bottom-nav-buttons-cook-tab .col {
 	padding-top: 0;
 }
 .bottom-nav-buttons-cook-tab .button {	
-    background-color: #fcfcfd;
+    background-color: #ffffff;
     color: $balanced;
     border-radius: 8px;
     min-width: 114px;
@@ -232,14 +244,41 @@ h2.ingredient-type-heading {
 	margin: 0 0 5px 20px;
 }
 h4.ingredient-subtype-heading {
-	font-size: 25px;
+	font-size: 26px;
 	margin: 5px 0 0 20px;
+	color: #000000;
 }
 .cook-tab .list .item-checkbox {
 	padding-left: 40px;
 }
 /***********************/
 /*recipe selection tab*/
+.recipe-category-buttons {
+    position: fixed;
+    top: 50px;
+    z-index: 5000;
+    background-color: #ffffff;
+}
+.recipe-category-buttons  a {
+	font-family: 'Pompiere', cursive;
+	font-size: 24px;
+}
+.white-space-above-recipe-category-buttons {
+	position: fixed;
+    top: 36px;
+    height:66px;
+    z-index: 4999;
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dddddd;
+}
+.button-bar.recipe-category-buttons {
+	width: 96%;
+	margin-left: 7px;
+}
+.cook-recipe-selection.scroll-content.ionic-scroll {
+	padding-top: 60px;
+}
 .buttons-left .primary-buttons .fa-arrow-left {
 	font-size: 10px;
 }
@@ -289,7 +328,7 @@ h4.ingredient-subtype-heading {
     color: $balanced;
     border: 2px solid $balanced;
     border-radius: 50%;
-    padding: 4px 10px 5px 11px;
+    padding: 4px 10px 5px 10px;
     width: 32px;
     height: 32px;
     font-size: 19px !important;
@@ -306,11 +345,14 @@ h4.ingredient-subtype-heading {
 }
 .bottom-a-la-carte-buttons {
     position: fixed;
-    bottom: 48px;
+    bottom: 37px;
     z-index: 5000;
     width: 100%;
     background-color: #ffffff;
-    border-top: 1px solid $balanced;
+    border-top: 1px solid #dddddd;
+}
+.bottom-a-la-carte-buttons .col {
+	padding: 0;
 }
 .bottom-a-la-carte-buttons .button-white {
 	min-width: 117px;
@@ -319,6 +361,8 @@ h4.ingredient-subtype-heading {
 	background-color: #ffffff;
 	border: 1px solid $balanced;
 	color: $balanced;
+	border-radius: 8px;
+    font-size: 21px;
 }
 .bottom-a-la-carte-buttons .button-white:active {
 	background-color: $balanced;
@@ -327,16 +371,19 @@ h4.ingredient-subtype-heading {
 }
 /*************************/
 /*recipe instructions page*/
+.cook-present-instructions h3 {
+	font-size: 30px;
+}
 .recipe-instructions {
-	box-shadow: 0px 1px 3px #999999;
+	box-shadow: 0px 1px 2px #999999;
 	margin-bottom: 10px;
 	white-space: normal;
 }
 .recipe-instructions.clickableStepClass {
-	box-shadow: 0px 1px 3px $balanced;
+	box-shadow: 0px 1px 2px #999999;
 }
 .recipe-instructions.has-tip {
-	box-shadow: 0px 1px 3px $balanced;
+	box-shadow: 0px 1px 2px #999999;
 	margin-bottom: 10px;
 	white-space: normal;
 }
@@ -374,10 +421,20 @@ h4.ingredient-subtype-heading {
     background-color: #ef4734;
     color: #ffffff;
 }
-
+.button-white-round, .button-white-round:hover {
+	border-radius: 50%;
+	color: $balanced;
+	background: #ffffff;
+	border: 2px solid $balanced;
+}
+.button-white-round:active {
+	color: #ffffff;
+	background: $balanced;
+	border: none;
+}
 .video-container {
     position: relative;
-    padding-bottom: 56.25%;
+    padding-bottom: 46.25%;
     padding-top: 30px; height: 0; overflow: hidden;
 }
  
@@ -456,6 +513,7 @@ ul.seasoning-spices-list {
 /*seasoning profile selector*/
 .popover .bar h1.title, .seasoning-selector-popup h3 {
 	font-size: 23px;
+	font-weight: normal;
 }
 
 
@@ -495,91 +553,23 @@ h3.side-dish-header {
 .edit-byo h3 {
 	margin-top: 10px;
 }
+.min-ingredients-needed {
+	font-family: 'Pompiere', cursive;
+	font-size: 18px;
+}
 
 
 /*******************/
 /*LEARN TAB*/
-/*training videos*/
 .individual-recipe-in-list.training-video-item {
 	padding: 0 10px;
 }
 .col-video-thumbnail {
 	max-width: 95px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**************/
-/*HOME TAB*/
-.button-white-round, .button-white-round:hover {
-	border-radius: 50%;
-	color: $balanced;
-	background: #ffffff;
-	border: 2px solid $balanced;
+h4.article-subtitle {
+	font-size: 25px;
 }
-.button-white-round:active {
-	color: #ffffff;
-	background: $balanced;
-	border: none;
-}
-.button-center-rectangle {
-	border-radius: 5%;
-    color: $balanced;
-	background: #ffffff;
-	border: 1px solid $balanced;
-	min-width: 115px;
-
-}
-.button-center-rectangle:active {
-	color: #ffffff;
-	background: $balanced;
-	border: none;
-}
-.home-tab ion-item {
-	height: 230px;
-}
-.home-tab h3 {
-	margin-top:0 !important;
-}
-.home-tab .row.mg-bot-20 {
-	margin-bottom: 20px;
-}
-.list.card.individual-recipe-in-list {
-	margin-bottom: 20px;
-	height: 230px;
-}
-.list.card.individual-recipe-in-list h2 {
-	margin: 10px;
-}
-.home-tab p {
-	font-size: 14px;
-}
-.list.card.individual-recipe-in-list p {
-	padding: 0 10px;
-}
-.row.get-cooking .button.button-balanced{
-	margin-top: 10px;
-	font-size: 25px !important;
-}
-.home-tab .home-tab-border-bottom {
-	border-bottom: 1px solid #dddddd;
-}
-
-
-
-/*********TIPS COLLECTION PAGE*****************/
-/**********************************/
 .education-collection {
 	margin: 10px 5px;
 	box-shadow: 0px 1px 3px #999999;
@@ -602,6 +592,24 @@ h3.side-dish-header {
     height: 32px;
 }
 
+.learn-tab-article img {
+	max-width: 100%;
+}
+ul.bullet-points {
+	list-style: disc inside !important;
+	padding: 0 20px;
+}
+ul.bullet-points li {	
+	padding: 5px 0;
+}
+.learn-article-video-popup {
+	position: fixed;
+	left: 0 !important;
+	top: 30% !important;
+	margin: 0 auto;
+	width: 100%;
+}
+
 /*********TIPS ITEM PAGE*****************/
 /**********************************/
 .individual-recipe-in-list.education-item h2 {
@@ -619,18 +627,7 @@ h3.side-dish-header {
 .full-text-display p {
 	white-space: normal !important
 }
-.tips-tab .home-tab-border-bottom {
-	display: none;
-}
-.tips-tab .item-icon-right {
-	padding-right: 15px;
-}
-.tips-tab h2 {
-	padding-right: 40px;
-}
-.tips-tab p {
-	margin-top: 4px;
-}
+
 
 /****************LEARN TAB************/
 /*************************************/

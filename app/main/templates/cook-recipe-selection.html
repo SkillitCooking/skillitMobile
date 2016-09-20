@@ -4,24 +4,25 @@
       <button class="button top-back-button" ng-click="navigateBack()"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button top-back-button" ng-click="resetEverything()">Reset</button>
+      <button class="button top-back-button reset" ng-click="resetEverything()">Reset</button>
     </ion-nav-buttons>
     <div ng-if="alaCarteSelected" class="row bottom-a-la-carte-buttons">
       <div class="col">
-        <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-white">Let's Cook!</button>
-      </div>
-      <div class="col">
         <button ng-click="selectFull()" class="button button-white">Add a Main</button>
       </div>
+      <div class="col">
+        <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-white">Let's Cook!</button>
+      </div>
+    </div>
+    <div class="white-space-above-recipe-category-buttons"></div>
+    <div class="button-bar recipe-category-buttons">
+      <a ng-class="getFullButtonClass()" ng-disabled="noFullDishes()" ng-click="selectFull()">Mains</a>
+      <a ng-class="getBYOButtonClass()" ng-disabled="noBYODishes()" ng-click="selectBYO()">BYOs</a>
+      <a ng-class="getAlaCarteButtonClass()" ng-disabled="noAlaCarteDishes()" ng-click="selectAlaCarte()">Sides</a>
     </div>
     <!-- do you want padding? -->
-    <ion-content class="padding cook-recipe-selection">
-      <div class="button-bar">
-        <a ng-class="getFullButtonClass()" ng-disabled="noFullDishes()" ng-click="selectFull()">Mains</a>
-        <a ng-class="getBYOButtonClass()" ng-disabled="noBYODishes()" ng-click="selectBYO()">BYOs</a>
-        <a ng-class="getAlaCarteButtonClass()" ng-disabled="noAlaCarteDishes()" ng-click="selectAlaCarte()">Sides</a>
-      </div>
-      <div ng-if="alaCarteSelected">
+    <div ng-if="alaCarteSelected">
+      <ion-content class="padding cook-recipe-selection a-la-carte-selection">
         <ion-list>
           <div ng-repeat="recipe in alaCarteRecipes">
             <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
@@ -56,8 +57,10 @@
             <button ng-click="selectComplete()" class="button button-balanced">Add Full Dish</button>
           </div>
         </div>-->
-      </div>
-      <div ng-if="fullSelected">        
+      </ion-content>
+    </div>
+    <div ng-if="fullSelected">  
+      <ion-content class="padding cook-recipe-selection"> 
         <ion-list>
           <div ng-repeat="recipe in fullRecipes">
             <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
@@ -84,9 +87,11 @@
               </div>
             </ion-item-->
           </div>
-        </ion-list> 
-      </div>
-      <div ng-if="BYOSelected">
+        </ion-list>       
+      </ion-content>
+    </div>  
+    <div ng-if="BYOSelected">
+      <ion-content class="padding cook-recipe-selection">
         <h3 class="recipe-category">Build Your Own</h3>
         <ion-list>
           <div ng-repeat="recipe in BYORecipes">
@@ -113,7 +118,7 @@
               </div>
             </ion-item-->
           </div>
-        </ion-list>
-      </div>
-    </ion-content>
+        </ion-list>      
+      </ion-content>
+    </div>  
   </ion-view>

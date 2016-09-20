@@ -4,14 +4,14 @@
     <button class="button top-back-button" ng-click="navigateBack()"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
   </ion-nav-buttons>
   <div class="row bottom-a-la-carte-buttons">
+      <div class="col">
+        <button class="button button-white side-dish-screen-button" ng-click="cancel()">{{getCancelText()}}</button>
+      </div>
       <div class="col" ng-if="!cameFromRecipes()">        
         <button class="button button-white side-dish-screen-button" ng-click="changeIngredients()" ng-disabled="!selectionHasChanged('not-recipes') || inadequateIngredients('not-recipes')">Let's Go!</button>
       </div>
       <div class ="col" ng-if="cameFromRecipes()">
         <button class="button button-white side-dish-screen-button" ng-click="changeIngredients()" ng-disabled="inadequateIngredients('recipes')">Let's Go!</button>
-      </div>
-      <div class="col">
-        <button class="button button-white side-dish-screen-button" ng-click="cancel()">{{getCancelText()}}</button>
       </div>
   </div>
   <!-- do you want padding? -->
@@ -19,7 +19,7 @@
     <div ng-repeat="type in BYOIngredientTypes">
       <div ng-if="isNewDisplayName(type)">
         <h3 class="recipe-category">{{type.displayName}}</h3>
-        <p>Minimum Needed: {{type.minNeeded}}</p>
+        <p class="min-ingredients-needed">Select at least {{type.minNeeded}} ingredients for this reicpe</p>
       </div>
       <ion-list class="cook-tab">
         <div ng-repeat="ingredient in type.ingredients" class="ingredient-checkbox-row">
