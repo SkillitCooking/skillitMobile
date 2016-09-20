@@ -228,18 +228,21 @@ angular.module('main')
   $scope.toRecipeSelection = function() {
     var selectedIngredients = [];
     for(var key in $scope.ingredientCategories){
-      var ingredients = angular.copy($scope.ingredientCategories[key]);
-      for (var i = ingredients.length - 1; i >= 0; i--) {
-        var ingredient = ingredients[i];
-        if(ingredient.isSelected){
-          //trim unselected forms, then test forms for emptiness
-          for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
-            if(!ingredient.ingredientForms[j].isSelected){
-              ingredient.ingredientForms.splice(j, 1);
+      var subCategories = angular.copy($scope.ingredientCategories[key]);
+      for(var subCategory in subCategories) {
+        var ingredients = subCategories[subCategory];
+        for (var i = ingredients.length - 1; i >= 0; i--) {
+          var ingredient = ingredients[i];
+          if(ingredient.isSelected){
+            //trim unselected forms, then test forms for emptiness
+            for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
+              if(!ingredient.ingredientForms[j].isSelected){
+                ingredient.ingredientForms.splice(j, 1);
+              }
             }
-          }
-          if(ingredient.ingredientForms.length > 0){
-            selectedIngredients.push(ingredient);
+            if(ingredient.ingredientForms.length > 0){
+              selectedIngredients.push(ingredient);
+            }
           }
         }
       }
