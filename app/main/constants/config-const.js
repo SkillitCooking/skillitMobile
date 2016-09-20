@@ -66,4 +66,20 @@ angular.module('main')
   }).constant('EXIT_POPUP', {
     'TITLE': 'Exit Skillit?',
     'TEXT': 'Do you want to close and exit Skillit?'
+  }).constant('LOGIN', {
+    'MIN_PASSWORD_LENGTH': 8,
+    'EMAIL_REGEX': /[^\s@]+@[^\s@]+\.[^\s@]+/,
+    'EMAIL_CONFLICT': 'conflict_email',
+    'EMAIL_CONFLICT_MESSAGE': 'A user with the supplied email already exists!',
+    'PASSWORD_REQUIRED': 'required_password',
+    'PASSWORD_REQUIRED_MESSAGE': 'To sign up, you need a password',
+    'EMAIL_REQUIRED': 'required_email',
+    'EMAIL_REQUIRED_MESSAGE': 'To sign up, you need an email',
+    'USERNAME_CONFLICT': 'required_username',
+    'USERNAME_CONFLICT_MESSAGE': 'A user with the supplied username already exists!',
+    'INVALID_EMAIL': 'invalid_email',
+    'INVALID_EMAIL_MESSAGE': 'To sign up, you need to supply a valid email address',
+    'BASIC': 'basic',
+    'FACEBOOK': 'facebook',
+    'GOOGLE': 'google'
   });

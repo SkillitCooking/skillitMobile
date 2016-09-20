@@ -3,10 +3,18 @@ angular.module('main', [
   'ionic',
   'ngCordova',
   'ui.router',
-  'restangular'
+  'restangular',
+  'ionic.cloud'
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
+.config(function($ionicCloudProvider) {
+  $ionicCloudProvider.init({
+    'core': {
+      'app_id': 'e5243594'
+    }
+  });
+})
 .config(function ($stateProvider, $urlRouterProvider, RestangularProvider, $provide) {
   //exception handler
   $provide.decorator('$exceptionHandler', ['$delegate', '$injector', function($delegate, $injector){

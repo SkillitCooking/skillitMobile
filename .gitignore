@@ -24,3 +24,6 @@
 # IDE
 *.sublime-project
 *.sublime-workspace
+
+# Exclusions
+!/app/bower_components/ionic.cloud.min.js
