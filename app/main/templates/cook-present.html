@@ -3,7 +3,7 @@
       <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button">Reset</button>
+      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset">Reset</button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
     <ion-content class="padding">
@@ -44,7 +44,7 @@
             <s ng-if="!ingredient.useInRecipe">{{ingredient.name}}</s>
           </li>
           <li ng-if="categoryNeedsOilOrButter()">
-            &nbsp;&nbsp;• Oil or Butter
+            &nbsp;&nbsp;• <span>Oil or Butter</span>
           </li>
         </ul>
       </div>
@@ -55,7 +55,7 @@
         <h5>Current Seasoning: {{seasoningProfile.name}}</h5>
         <ul class="seasoning-spices-list">
           <li ng-repeat="spice in seasoningProfile.spices">
-            &nbsp;&nbsp;• {{spice}}
+            &nbsp;&nbsp;• <span>{{spice}}</span>
           </li>
         </ul>
         <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
@@ -69,9 +69,9 @@
                 <p><b>Step {{getSubStepNumber(step, 'clickable-single')}}:</b> {{step.text}}</p>
                 <br ng-if="step.stepType === 'Season'"/>
                 <p ng-repeat="line in step.seasoningInfo">{{line}}</p>
-                <i ng-if="step.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
-                <i ng-if="step.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
-                <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-erlenmeyer-flask instruction-step-tip-icon"></i>
+                <i ng-if="step.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>
+                <i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>
+                <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-ios-toggle-outline instruction-step-tip-icon"></i>
               </ion-item>
               <ion-item ng-switch-default ng-class="clickableStep(step)" class="recipe-instructions" ng-if="!step.isEmpty">
                 <p><b>Step {{getSubStepNumber(step, 'notclickable-single')}}:</b> {{step.text}}</p>
@@ -81,8 +81,8 @@
               <div ng-switch on="isClickable(subStep)">
                 <ion-item ng-switch-when="true" class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)" ng-click="showTip(subStep, $event)">
                   <p><b>Step {{getSubStepNumber(subStep, 'clickable-notsingle')}}:</b> {{subStep.text}}</p>
-                  <i ng-if="subStep.hasTip" class="ion-information-circled instruction-step-tip-icon"></i>
-                  <i ng-if="subStep.hasVideo" class="ion-videocamera instruction-step-tip-icon"></i>
+                  <i ng-if="subStep.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>
+                  <i ng-if="subStep.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>
                 </ion-item>
                 <ion-item ng-switch-default class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)">
                   <p><b>Step {{getSubStepNumber(subStep, 'not-clickable-notsingle')}}:</b> {{subStep.text}}</p>

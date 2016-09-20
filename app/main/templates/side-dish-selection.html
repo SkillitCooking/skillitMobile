@@ -2,14 +2,14 @@
   <ion-view hide-back-button="true" view-title="Add a Side" on-swipe-right="navigateBack()">
 
     <ion-nav-buttons side="primary">
-      <button class="button" ng-click="navigateBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back</button>
+      <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <div class="row bottom-a-la-carte-buttons">
       <div class="col">
-        <button class="button button-white side-dish-screen-button" ng-click="addSides()" ng-disabled="!selectionHasChanged()">Let's Go!</button>
+        <button class="button button-white side-dish-screen-button button-spice-up-add-side" ng-click="cancel()">{{getCancelText()}}</button>
       </div>
       <div class="col">
-        <button class="button button-white side-dish-screen-button float-right" ng-click="cancel()">{{getCancelText()}}</button>
+        <button class="button button-white side-dish-screen-button button-spice-up-add-side" ng-click="addSides()" ng-disabled="!selectionHasChanged()">Let's Go!</button>
       </div>
     </div>
     <!-- do you want padding? -->

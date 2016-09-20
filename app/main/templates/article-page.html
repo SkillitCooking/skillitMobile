@@ -3,10 +3,10 @@
   <ion-nav-buttons side="primary">
     <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
   </ion-nav-buttons>
-  <ion-content class="padding">
-  <h2>{{article.title}}</h2>
+  <ion-content class="padding learn-tab-article">
+    <h2 class="education-title">{{article.title}}</h2>
     <div ng-repeat="section in article.contentSections">
-      <h4 ng-if="hasSubtitle(section)">{{section.subTitle}}</h4>
+      <h4 class="article-subtitle" ng-if="hasSubtitle(section)">{{section.subTitle}}</h4>
       <div ng-repeat="piece in section.contentArray" ng-switch on="piece.type">
         <div ng-switch-when="text">
           <span ng-repeat="chunk in piece.textChunks">
@@ -27,7 +27,7 @@
                   </span>                  
                 </li>
               </ol>
-              <ul ng-if="!chunk.isOrdered">
+              <ul class="bullet-points" ng-if="!chunk.isOrdered">
                 <li ng-repeat="point in chunk.bulletPoints">
                   <span ng-if="point.hasParts" ng-repeat="part in point.lineParts">
                     <span ng-if="!containsLink(part)">{{part.text}}</span>
@@ -48,7 +48,7 @@
           <p class="subdued" ng-if="piece.url">{{piece.caption}}</p>
         </div>
         <div ng-switch-when="video">
-          <iframe ng-if="piece.url" width="300" height="169" ng-src="{{piece.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+          <p style="text-align: center"><iframe ng-if="piece.url" width="300" height="169" ng-src="{{piece.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe></p>
           <p class="subdued" ng-if="piece.url">{{piece.caption}}</p>
         </div>
         <div ng-switch-default>

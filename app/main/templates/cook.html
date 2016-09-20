@@ -27,7 +27,7 @@
             <h2 class="ingredient-type-heading">{{name}}</h2>
             <ion-list>
               <div ng-if="!isError()" ng-repeat="(subCatName, ingredients) in ingredientSubCategories">
-                <h4 ng-if="showSubCategoryName(subCatName)">{{subCatName}}</h4>
+                <h4 class="ingredient-subtype-heading" ng-if="showSubCategoryName(subCatName)">{{subCatName}}</h4>
                 <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
                   <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
                     {{ingredient.name.standardForm}}

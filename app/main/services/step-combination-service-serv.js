@@ -179,7 +179,9 @@ angular.module('main')
       }, 0);
       combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
       combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
-        return recipe.mainVideoURL + '&rel=0';
+        if(recipe.mainVideoUrl && recipe.mainVideoURL !== "") {
+          return recipe.mainVideoURL + '&rel=0';
+        }
       });
       //set combinedRecipe recipeCategories
       combinedRecipe.recipeCategorys = [];
