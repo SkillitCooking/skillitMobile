@@ -7,7 +7,7 @@ For example, you might change some of the default colors:
 
 $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
-$positive:                        #328823 !default;
+$positive:                        #7be1ff !default;
 $calm:                            #43cee6 !default;
 $balanced:                        #ef4734 !default;
 $energized:                       #f0b840 !default;
@@ -85,6 +85,7 @@ button {
 	border: 1px solid #000000;
 	border-radius: 8px;
 	font-size: 24px;
+	color: #000000;
 }
 .popup-buttons .button.button-positive {
     border: 1px solid #000000;
@@ -255,7 +256,7 @@ h4.ingredient-subtype-heading {
 /*recipe selection tab*/
 .recipe-category-buttons {
     position: fixed;
-    top: 50px;
+    top: 60px;
     z-index: 5000;
     background-color: #ffffff;
 }
@@ -265,8 +266,8 @@ h4.ingredient-subtype-heading {
 }
 .white-space-above-recipe-category-buttons {
 	position: fixed;
-    top: 36px;
-    height:66px;
+    top: 46px;
+    height:76px;
     z-index: 4999;
     width: 100%;
     background-color: #ffffff;
@@ -277,7 +278,7 @@ h4.ingredient-subtype-heading {
 	margin-left: 7px;
 }
 .cook-recipe-selection.scroll-content.ionic-scroll {
-	padding-top: 60px;
+	padding-top: 85px;
 }
 .buttons-left .primary-buttons .fa-arrow-left {
 	font-size: 10px;
