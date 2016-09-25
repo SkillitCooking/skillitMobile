@@ -301,7 +301,6 @@ angular.module('main')
       };
 
       scope.emailEntered = function() {
-        console.log(scope.resetEmail);
         if(!scope.data.resetEmail || !LOGIN.EMAIL_REGEX.test(scope.data.resetEmail)) {
           return false;
         } else {
@@ -311,7 +310,9 @@ angular.module('main')
 
       scope.requestReset = function() {
         scope.enterEmail = false;
-        $ionicAuth.requestPasswordReset(scope.resetEmail);
+        console.log('email: ', scope.data.resetEmail);
+        var response = $ionicAuth.requestPasswordReset(scope.data.resetEmail);
+        console.log('reset', response);
       };
 
       scope.resetIsValid = function() {
@@ -320,7 +321,7 @@ angular.module('main')
       };
 
       scope.resetPassword = function() {
-        $ionicAuth.confirmPasswordReset(scope.resetCode, scope.resetPassword);
+        $ionicAuth.confirmPasswordReset(scope.data.resetCode, scope.data.resetPassword);
         scope.resetPasswordModal.remove();
         $ionicPopup.alert({
           title: 'Password Reset!',

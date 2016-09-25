@@ -130,6 +130,15 @@ angular.module('main')
   };
 
   $scope.cookFavoriteRecipe = function(recipe) {
+    FavoriteRecipeService.favoriteRecipeUsedForUser({
+      userId: $ionicUser.get(USER.ID),
+      token: $ionicAuth.getToken(),
+      favoriteRecipeId: recipe._id
+    }).then(function(res) {
+      //nothing yet...
+    }, function(response) {
+      //nothing yet
+    });
     $state.go('main.cookPresentFavoriteRecipe', {
       recipeIds: recipe.recipeIds,
       selectedIngredientNames: recipe.ingredientNames,

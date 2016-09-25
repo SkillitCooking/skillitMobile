@@ -34,7 +34,7 @@ angular.module('main')
         if(scope.recipe.timesUsed > 1) {
           s = "s";
         }
-        return 'You\'ve made this recipe ' + scope.recipe.timesUsed + ' time' + s + ' and last made it on ' + $filter('date')(scope.recipe.dateLastUsed, 'shortDate');
+        return 'You favorited this recipe on ' + $filter('date')(scope.recipe.dateCreated, 'shortDate');
       };
 
       scope.showRecipeDisclaimer = function() {
