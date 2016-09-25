@@ -32,11 +32,11 @@ angular.module('main', [
       ErrorService.showErrorAlert();
     };
   }]);
-  RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
-  //RestangularProvider.setBaseUrl("http://localhost:8000/api/");
+  //RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
+  RestangularProvider.setBaseUrl("http://localhost:8000/api/");
 
   // ROUTING with ui.router
-  $urlRouterProvider.otherwise('/main/home');
+  $urlRouterProvider.otherwise('main/cook');
   $stateProvider
     // this state is placed in the <ion-nav-view> in the index.html
     .state('main', {
@@ -51,6 +51,74 @@ angular.module('main', [
             templateUrl: 'main/templates/account-home.html',
             controller: 'AccountHomeCtrl as ctrl'
           }
+        }
+      })
+      .state('main.cookPresentFavoriteRecipe', {
+        url: '/account/recipePresent',
+        views: {
+          'tab-account': {
+            templateUrl: 'main/templates/cook-present.html',
+            controller: 'CookPresentCtrl as ctrl'
+          }
+        },
+        params: {
+          recipeIds: null,
+          selectedIngredientNames: null,
+          selectedIngredientIds: null,
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          sidesAdded: false,
+          ingredientsChanged: false,
+          numberBackToRecipeSelection: null,
+          cameFromHome: false,
+          cameFromRecipes: false,
+          isFavoriteRecipe: true,
+          loadAlaCarte: true
+        }
+      })
+      .state('main.cookAddSideFavorite', {
+        cache: false,
+        url: '/account/recipePresent/addSide',
+        views: {
+          'tab-account': {
+            templateUrl: 'main/templates/side-dish-selection.html',
+            controller: 'SideDishSelectionCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          selectedIngredientIds: null,
+          numberBackToRecipeSelection: null,
+          isFavoriteRecipe: true
+        }
+      })
+      .state('main.editBYOIngredientsFavorite', {
+        cache: false,
+        url: '/account/recipePresent/editIngredients',
+        views: {
+          'tab-home': {
+            templateUrl: 'main/templates/edit-byo-ingredients.html',
+            controller: 'EditByoIngredientsCtrl as ctrl'
+          }
+        },
+        params: {
+          alaCarteRecipes: null,
+          alaCarteSelectedArr: null,
+          currentSeasoningProfile: null,
+          previousRecipeIds: null,
+          selectedIngredientNames: null,
+          selectedIngredientIds: null,
+          numberBackToRecipeSelection: null,
+          BYOIngredientTypes: null,
+          BYOName: null,
+          cameFromRecipes: false,
+          cameFromHome: false,
+          isFavoriteRecipe: true
         }
       })
       //base screen of flow for cook tab
@@ -83,6 +151,7 @@ angular.module('main', [
           numberBackToRecipeSelection: null,
           cameFromHome: true,
           cameFromRecipes: false,
+          isFavoriteRecipe: false,
           loadAlaCarte: true
         }
       })
@@ -173,6 +242,7 @@ angular.module('main', [
           numberBackToRecipeSelection: null,
           cameFromHome: false,
           cameFromRecipes: false,
+          isFavoriteRecipe: false,
           loadAlaCarte: false
         }
       })
@@ -283,6 +353,7 @@ angular.module('main', [
           cameFromHome: false,
           cameFromRecipes: true,
           cameFromRecipeCollection: false,
+          isFavoriteRecipe: false,
           loadAlaCarte: true
         }
       })
@@ -447,4 +518,9 @@ angular.module('main', [
           }
         }
       });
-});
+})
+/*.run(function($state, $timeout) {
+  $timeout(function() {
+    $state.go('main.cook');
+  }, 5000);
+})*/;

@@ -1,13 +1,14 @@
 'use strict';
 angular.module('main')
-.directive('recipeItem', ['RECIPE_TYPES', 'RECIPE_DISCLAIMERS', function (RECIPE_TYPES, RECIPE_DISCLAIMERS) {
+.directive('recipeItem', ['$filter', 'RECIPE_TYPES', 'RECIPE_DISCLAIMERS', function ($filter, RECIPE_TYPES, RECIPE_DISCLAIMERS) {
   return {
     templateUrl: 'main/templates/recipe-item.html',
     restrict: 'E',
     scope: {
       recipe: '=',
       iconclass: '=',
-      showdatefeatured: '='
+      showdatefeatured: '=',
+      isfavorite: '='
     },
     link: function (scope, element, attrs) {
       scope.getRecipeActiveTime = function() {
@@ -26,6 +27,14 @@ angular.module('main')
             return scope.recipe.totalTime;
           }
         };
+      };
+
+      scope.getFavoriteRecipeDescription = function() {
+        var s = ""
+        if(scope.recipe.timesUsed > 1) {
+          s = "s";
+        }
+        return 'You\'ve made this recipe ' + scope.recipe.timesUsed + ' time' + s + ' and last made it on ' + $filter('date')(scope.recipe.dateLastUsed, 'shortDate');
       };
 
       scope.showRecipeDisclaimer = function() {

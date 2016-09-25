@@ -82,4 +82,7 @@ angular.module('main')
     'BASIC': 'basic',
     'FACEBOOK': 'facebook',
     'GOOGLE': 'google'
+  }).constant('USER', {
+    'ID': 'userId',
+    'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']
   });

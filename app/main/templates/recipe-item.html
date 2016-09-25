@@ -12,11 +12,15 @@
   </div>  
   <div class="row">
     <div class="col">
-      <div class="recipe-description-time">
+      <div ng-if="!isfavorite" class="recipe-description-time">
         <p>{{recipe.description}}</p>
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
         <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
         <!--<p ng-if="showdatefeatured">Feature Date: {{recipe.dateFeatured}}</p>-->
+      </div>
+      <div ng-if="isfavorite" class="recipe-description-time">
+        <p>{{getFavoriteRecipeDescription()}}</p>
+        <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
       </div>
     </div>
   </div>

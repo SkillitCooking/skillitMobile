@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', 'ErrorService', function (_, $scope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, ErrorService) {
+.controller('CookPresentCtrl', ['_', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -130,6 +130,10 @@ angular.module('main')
       navigateBack = false;
       $scope.resetPopup.close();
     }
+    if($scope.loginPopover && $scope.loginPopover.isShown()) {
+      $scope.loginPopover.remove();
+      navigateBack = false;
+    }
     if($scope.seasonPopover && $scope.seasonPopover.isShown()) {
       $scope.seasonPopover.remove();
       navigateBack = false;
@@ -154,6 +158,7 @@ angular.module('main')
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
   $scope.cameFromHome = $stateParams.cameFromHome;
   $scope.cameFromRecipes = $stateParams.cameFromRecipes;
+  $scope.isFavoriteRecipe = $stateParams.isFavoriteRecipe;
   $scope.cameFromRecipeCollection = $stateParams.cameFromRecipeCollection;
 
   if(!$scope.numberBackToRecipeSelection) {
@@ -347,6 +352,8 @@ angular.module('main')
   $scope.addSide = function() {
     if($scope.cameFromHome) {
       $state.go('main.cookAddSideHome', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
+    } else if($scope.isFavoriteRecipe) {
+      $state.go('main.cookAddSideFavorite', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
     } else if($scope.cameFromRecipes) {
       $state.go('main.cookAddSideRecipes', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
     } else if($scope.cameFromRecipeCollection) {
@@ -375,6 +382,10 @@ angular.module('main')
     }
     if($scope.cameFromRecipes) {
       $state.go('main.editBYOIngredientsRecipes', {
+        alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: recipeName
+      });
+    } else if($scope.isFavoriteRecipe) {
+      $state.go('main.editBYOIngredientsFavorite', {
         alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection, BYOIngredientTypes: $scope.BYOIngredientTypes, BYOName: recipeName
       });
     } else {
@@ -426,6 +437,9 @@ angular.module('main')
     }
     if($scope.videoModal) {
       $scope.videoModal.remove();
+    }
+    if($scope.loginPopover) {
+      $scope.loginPopover.remove();
     }
   });
 
@@ -679,7 +693,59 @@ angular.module('main')
     }
   };
 
-  $scope.favoriteRecipe = function () {
-    console.log('favoriteRecipe clicked');
+  $scope.favoriteRecipe = function (event) {
+    if($ionicAuth.isAuthenticated()) {
+      var name;
+      if($scope.combinedRecipe.name) {
+        name = $scope.combinedRecipe.name;
+      } else {
+        name = $scope.combinedRecipe.mainName;
+        if($scope.combinedRecipe.alaCarteNames) {
+          name += " plus " + $scope.combinedRecipe.alaCarteNames;
+        }
+      }
+      FavoriteRecipeService.saveFavoriteRecipeForUser({
+        userId: $ionicUser.get(USER.ID),
+        token: $ionicAuth.getToken(),
+        favoriteRecipe: {
+          userId: $ionicUser.get(USER.ID),
+          recipeIds: $scope.recipeIds,
+          ingredientAndFormIds: $scope.selectedIngredientIds,
+          ingredientNames: $scope.selectedIngredientNames,
+          lastSeasoningProfileUsedId: $scope.seasoningProfile._id,
+          name: name,
+          mainPictureURL: $scope.combinedRecipe.mainPictureURL,
+          prepTime: $scope.getRecipeActiveTime(),
+          totalTime: $scope.getRecipeTotalTime()
+        }
+      }).then(function(res) {
+        $rootScope.$broadcast('newRecipeFavorited');
+        $ionicPopup.alert({
+         title: 'Congrats!',
+         template: 'This Recipe is now a Favorite!'
+       });
+      }, function(response) {
+        ErrorService.showErrorAlert();
+      });
+    } else {
+      //show popover
+      $ionicPopover.fromTemplateUrl('main/templates/login-popover.html', 
+        {scope: $scope}).then(function(popover) {
+        $scope.loginPopover = popover;
+        $scope.loginPopover.show(event);
+      });
+    }
   };
+
+  $scope.$on('signInStart', function(event){
+    event.preventDefault();
+    $ionicLoading.show();
+  });
+  $scope.$on('signInStop', function(event, removePopover, fetchRecipes) {
+    event.preventDefault();
+    $ionicLoading.hide();
+    if(removePopover) {
+      $scope.loginPopover.remove();
+    }
+  });
 }]);

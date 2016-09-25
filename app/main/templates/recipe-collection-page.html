@@ -6,7 +6,7 @@
   <ion-content class="padding cook-recipe-selection">
     <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
     <ion-list>
-      <recipe-item ng-repeat="recipe in recipes" recipe="recipe" iconclass="recipeIconClass($index)" ng-click="recipeSelected(recipe)" showdatefeatured="false"></recipe-item>
+      <recipe-item ng-repeat="recipe in recipes" recipe="recipe" iconclass="recipeIconClass($index)" isfavorite="false" ng-click="recipeSelected(recipe)" showdatefeatured="false"></recipe-item>
     </ion-list>
   </ion-content>
 </ion-view>

@@ -283,12 +283,15 @@ angular.module('main')
   };
 
   $scope.clearIngredients = function() {
+    console.log('cats', $scope.ingredientCategories);
     for(var key in $scope.ingredientCategories) {
-      for (var i = $scope.ingredientCategories[key].length - 1; i >= 0; i--) {
-        $scope.ingredientCategories[key][i].isSelected = false;
-        for (var j = $scope.ingredientCategories[key][i].ingredientForms.length - 1; j >= 0; j--) {
-          if(j > 0) {
-            $scope.ingredientCategories[key][i].ingredientForms[j].isSelected = false;
+      for(var subCat in $scope.ingredientCategories[key]) {
+        for (var i = $scope.ingredientCategories[key][subCat].length - 1; i >= 0; i--) {
+          $scope.ingredientCategories[key][subCat][i].isSelected = false;
+          for (var j = $scope.ingredientCategories[key][subCat][i].ingredientForms.length - 1; j >= 0; j--) {
+            if(j > 0) {
+              $scope.ingredientCategories[key][subCat][i].ingredientForms[j].isSelected = false;
+            }
           }
         }
       }
