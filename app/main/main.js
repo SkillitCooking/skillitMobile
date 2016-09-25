@@ -32,8 +32,8 @@ angular.module('main', [
       ErrorService.showErrorAlert();
     };
   }]);
-  //RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
-  RestangularProvider.setBaseUrl("http://localhost:8000/api/");
+  RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
+  //RestangularProvider.setBaseUrl("http://localhost:8000/api/");
 
   // ROUTING with ui.router
   $urlRouterProvider.otherwise('main/cook');
