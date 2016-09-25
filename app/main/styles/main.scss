@@ -12,7 +12,7 @@ $calm:                            #43cee6 !default;
 $balanced:                        #ef4734 !default;
 $energized:                       #f0b840 !default;
 $assertive:                       #0C7C59 !default;
-$royal:                           #0C7C59 !default;
+$royal:                           #3B5998 !default;
 $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built & temporary main.css
 $ionicons-font-path: "../assets/fonts" !default;
@@ -43,7 +43,7 @@ a {
 button {
 	font-family: 'Pompiere', cursive !important;
 }
-.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere, h4.ingredient-subtype-heading {
+.individual-recipe-in-list h2, .cook-present-instructions h1, .popover h1, .seasoning-selector-popup ion-header-bar, .seasoning-selector-popup h3, div.header-item.title, .cook-present-instructions h5, .education-title, .pompiere, h4.ingredient-subtype-heading, h1.title {
 	font-family: 'Pompiere', cursive;
 }
 .italic {
@@ -256,9 +256,12 @@ h4.ingredient-subtype-heading {
 /*recipe selection tab*/
 .recipe-category-buttons {
     position: fixed;
-    top: 60px;
+    top: 70px;
     z-index: 5000;
     background-color: #ffffff;
+}
+.platform-android .recipe-category-buttons {
+    top: 85px;
 }
 .recipe-category-buttons  a {
 	font-family: 'Pompiere', cursive;
@@ -266,7 +269,7 @@ h4.ingredient-subtype-heading {
 }
 .white-space-above-recipe-category-buttons {
 	position: fixed;
-    top: 46px;
+    top: 45px;
     height:76px;
     z-index: 4999;
     width: 100%;
@@ -278,7 +281,7 @@ h4.ingredient-subtype-heading {
 	margin-left: 7px;
 }
 .cook-recipe-selection.scroll-content.ionic-scroll {
-	padding-top: 85px;
+	padding-top: 65px;
 }
 .buttons-left .primary-buttons .fa-arrow-left {
 	font-size: 10px;
@@ -352,6 +355,9 @@ h4.ingredient-subtype-heading {
     background-color: #ffffff;
     border-top: 1px solid #dddddd;
 }
+.platform-android .bottom-a-la-carte-buttons {
+    bottom: 0px;  
+}
 .bottom-a-la-carte-buttons .col {
 	padding: 0;
 }
@@ -416,6 +422,13 @@ h4.ingredient-subtype-heading {
     font-family: 'pompiere', sans-serif;
     font-size: 21px;
     border-radius: 8px;
+}
+.button-spice-up-add-side.login-signup {
+	min-width: 110px;
+}
+.button-spice-up-add-side.reset-password {
+	max-width: 110px;
+	font-size: 17px;
 }
 .button-spice-up-add-side:hover, .button-spice-up-add-side:active {
 	border-color: #ef4734;
@@ -643,6 +656,14 @@ img.video-thumbnail {
 	width: auto;
 }
 
+/*************ACCOUNT TAB***************/
+/**************************************/
+.cook-recipe-selection.account-tab.scroll-content.ionic-scroll {
+	padding-top: 10px;
+}
+.account-tab .button-bar {
+	margin-bottom: 10px;
+}
 
 /**************************************/
 /*RESPONSIVE*/

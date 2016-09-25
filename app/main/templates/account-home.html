@@ -2,20 +2,18 @@
   <ion-nav-buttons side="secondary">
     <button ng-if="isAuthenticated()" ng-click="logout()" class="button top-back-button reset">Log Out</button>
   </ion-nav-buttons>
-  <!-- do you want padding? -->
-  <div ng-if="isAuthenticated()">
-    <div class="white-space-above-recipe-category-buttons"></div>
-    <div class="button-bar recipe-category-buttons">
-      <a ng-class="getFavRecipesButtonClass()" ng-click="selectFavRecipes()">Favorite Recipes</a>
-      <a ng-class="getAccountInfoButtonClass()" ng-click="selectAccountInfo()">Account</a>
+  <ion-content class="padding cook-recipe-selection account-tab">
+    <!-- do you want padding? -->
+    <div ng-if="isAuthenticated()">
+      <div class="button-bar">
+        <a ng-class="getFavRecipesButtonClass()" ng-click="selectFavRecipes()">Favorite Recipes</a>
+        <a ng-class="getAccountInfoButtonClass()" ng-click="selectAccountInfo()">Account</a>
+      </div>
     </div>
-  </div>
-  <ion-content class="padding cook-recipe-selection">
-  
     <login-directive ng-if="!isAuthenticated()"></login-directive>
     <div ng-if="isAuthenticated()">
       <div ng-if="favRecipeSelected">
-        <h2>Your Favorite Recipes</h2>
+        <h2 class="recipe-category">Your Favorite Recipes</h2>
         <div ng-if="noFavoriteRecipes()">
           <p>You don't have any Favorite Recipes... go find a recipe that you like, and then 'Favorite' it to see it here!</p>
         </div>
@@ -42,7 +40,7 @@
           </label>
 
         </div>
-        <button class="button" ng-disabled="!userInfoHasChanged()" ng-click="saveUserInfo()">Save</button>
+        <p style="text-align: center"><button class="button button-spice-up-add-side login-signup" ng-disabled="!userInfoHasChanged()" ng-click="saveUserInfo()">Save</button></p>
       </div>
     </div>
 
