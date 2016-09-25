@@ -428,6 +428,12 @@ angular.module('main')
     $scope.videoModal.remove();
   };
 
+  $scope.closeLoginPopover = function() {
+    if($scope.loginPopover) {
+      $scope.loginPopover.remove();
+    }
+  };
+
   $scope.$on('$destroy', function() {
     if($scope.seasonPopover) {
       $scope.seasonPopover.remove();
