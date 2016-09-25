@@ -27,9 +27,8 @@
           <button class="button button-white-round" ng-click="incrementMainVideo()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
-      <br/>
-      <button class="button" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Favorite Recipe</button>
-      <br/>
+      <br/>    
+      <button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  
       <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
       <h3>Ingredient List</h3>
       <!--the test with combinedRecipe.mainVideoURLs is a proxy for whether it is 
@@ -93,6 +92,6 @@
         </div>
       </ion-list>
       <h3 class="center">Time to eat!</h3>
-      <button class="button" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe()">Favorite Recipe</button>
+      <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe()">Save to Favorites</button></p>
     </ion-content>
   </ion-view>
