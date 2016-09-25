@@ -1,12 +1,13 @@
 'use strict';
 angular.module('main')
-.directive('loginDirective', ['$rootScope', '$ionicAuth', '$ionicUser', '$ionicPopup', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($rootScope, $ionicAuth, $ionicUser, $ionicPopup, UserService, ErrorService, LOGIN, USER) {
+.directive('loginDirective', ['$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, UserService, ErrorService, LOGIN, USER) {
   return {
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
     scope: {},
     link: function (scope, element, attrs) {
       scope.hasErrors = false;
+      scope.data = {};
 
       function clearForm() {
         scope.password = "";
@@ -289,8 +290,55 @@ angular.module('main')
       };
 
       scope.resetCredentials = function() {
-        //fill in
+        scope.enterEmail = true;
+        $ionicModal.fromTemplateUrl('main/templates/password-reset-modal.html', {
+          scope: scope,
+          animation: 'slide-in-up'
+        }).then(function(modal) {
+          scope.resetPasswordModal = modal;
+          scope.resetPasswordModal.show();
+        });
       };
+
+      scope.emailEntered = function() {
+        console.log(scope.resetEmail);
+        if(!scope.data.resetEmail || !LOGIN.EMAIL_REGEX.test(scope.data.resetEmail)) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+
+      scope.requestReset = function() {
+        scope.enterEmail = false;
+        $ionicAuth.requestPasswordReset(scope.resetEmail);
+      };
+
+      scope.resetIsValid = function() {
+        return (scope.data.resetPassword === scope.data.resetConfirmPassword) &&
+        (scope.data.resetCode && scope.data.resetCode.length === 6);
+      };
+
+      scope.resetPassword = function() {
+        $ionicAuth.confirmPasswordReset(scope.resetCode, scope.resetPassword);
+        scope.resetPasswordModal.remove();
+        $ionicPopup.alert({
+          title: 'Password Reset!',
+          template: 'Now let\'s get cooking!'
+        });
+      };
+
+      scope.cancelReset = function() {
+        if(scope.resetPasswordModal) {
+          scope.resetPasswordModal.remove();
+        }
+      };
+
+      scope.$on('$destroy', function() {
+        if(scope.resetPasswordModal) {
+          scope.resetPasswordModal.remove();
+        }
+      });
     }
   };
 }]);
