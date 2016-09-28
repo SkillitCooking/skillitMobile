@@ -122,82 +122,6 @@ angular.module('main', [
         }
       })
       //base screen of flow for cook tab
-      .state('main.home', {
-        url: '/home',
-        views: {
-          'tab-home': {
-            templateUrl: 'main/templates/home.html',
-            controller: 'HomeCtrl as ctrl'
-          }
-        }
-      })
-      .state('main.cookPresentHome', {
-        url: '/home/recipePresent',
-        views: {
-          'tab-home': {
-            templateUrl: 'main/templates/cook-present.html',
-            controller: 'CookPresentCtrl as ctrl'
-          }
-        },
-        params: {
-          recipeIds: null,
-          selectedIngredientNames: null,
-          selectedIngredientIds: null,
-          alaCarteRecipes: null,
-          alaCarteSelectedArr: null,
-          currentSeasoningProfile: null,
-          sidesAdded: false,
-          ingredientsChanged: false,
-          numberBackToRecipeSelection: null,
-          cameFromHome: true,
-          cameFromRecipes: false,
-          isFavoriteRecipe: false,
-          loadAlaCarte: true
-        }
-      })
-      .state('main.cookAddSideHome', {
-        cache: false,
-        url: '/home/recipePresent/addSide',
-        views: {
-          'tab-home': {
-            templateUrl: 'main/templates/side-dish-selection.html',
-            controller: 'SideDishSelectionCtrl as ctrl'
-          }
-        },
-        params: {
-          alaCarteRecipes: null,
-          alaCarteSelectedArr: null,
-          currentSeasoningProfile: null,
-          previousRecipeIds: null,
-          selectedIngredientNames: null,
-          selectedIngredientIds: null,
-          numberBackToRecipeSelection: null,
-          cameFromHome: true
-        }
-      })
-      .state('main.editBYOIngredientsHome', {
-        cache: false,
-        url: '/home/recipePresent/editIngredients',
-        views: {
-          'tab-home': {
-            templateUrl: 'main/templates/edit-byo-ingredients.html',
-            controller: 'EditByoIngredientsCtrl as ctrl'
-          }
-        },
-        params: {
-          alaCarteRecipes: null,
-          alaCarteSelectedArr: null,
-          currentSeasoningProfile: null,
-          previousRecipeIds: null,
-          selectedIngredientNames: null,
-          selectedIngredientIds: null,
-          numberBackToRecipeSelection: null,
-          BYOIngredientTypes: null,
-          BYOName: null,
-          cameFromRecipes: false,
-          cameFromHome: true
-        }
-      })
       .state('main.cook', {
         url: '/cook',
         views: {
@@ -285,30 +209,6 @@ angular.module('main', [
           BYOIngredientTypes: null,
           BYOName: null,
           cameFromRecipes: false
-        }
-      })
-      .state('main.tips', {
-        url: '/tips',
-        views: {
-          'tab-tips': {
-            templateUrl: 'main/templates/tips.html',
-            controller: 'TipsCtrl as ctrl'
-          }
-        },
-        params: {
-          cameFromHome: false
-        }
-      })
-      .state('main.tipsCollection', {
-        url: '/tips/collection',
-        views: {
-          'tab-tips': {
-            templateUrl: 'main/templates/tip-collection-page.html',
-            controller: 'TipCollectionPageCtrl as ctrl'
-          }
-        },
-        params: {
-          collection: null
         }
       })
       .state('main.recipes', {
@@ -401,51 +301,6 @@ angular.module('main', [
           loadAlaCarte: false
         }
       })
-      .state('main.learn', {
-        url: '/learn',
-        views: {
-          'tab-learn': {
-            templateUrl: 'main/templates/learn.html',
-            controller: 'LearnCtrl as ctrl'
-          }
-        }
-      })
-      .state('main.glossaryCollection', {
-        url: '/learn/glossary/collection',
-        views: {
-          'tab-learn': {
-            templateUrl: 'main/templates/glossary-collection-page.html',
-            controller: 'GlossaryCollectionPageCtrl as ctrl'
-          }
-        },
-        params: {
-          collection: null
-        }
-      })
-      .state('main.trainingVideoCollection', {
-        url: '/learn/trainingVideo/collection',
-        views: {
-          'tab-learn': {
-            templateUrl: 'main/templates/training-video-collection-page.html',
-            controller: 'TrainingVideoCollectionPageCtrl as ctrl'
-          }
-        },
-        params: {
-          collection: null
-        }
-      })
-      .state('main.howToShopCollection', {
-        url: '/learn/howToShop/collection',
-        views: {
-          'tab-learn': {
-            templateUrl: 'main/templates/how-to-shop-collection-page.html',
-            controller: 'HowToShopCollectionPageCtrl as ctrl'
-          }
-        },
-        params: {
-          collection: null
-        }
-      })
       .state('main.chapters', {
         url: '/chapters',
         views: {
@@ -490,37 +345,5 @@ angular.module('main', [
         params: {
           lesson: null
         }
-      })
-      .state('main.list', {
-        url: '/learn/list',
-        views: {
-          'tab-learn': {
-            templateUrl: 'main/templates/list.html',
-            controller: 'LearnCtrl as ctrl'
-          }
-        }
-      })
-      .state('main.listDetail', {
-        url: 'learn/list/detail',
-        views: {
-          'tab-learn': {
-            templateUrl: 'main/templates/list-detail.html',
-            controller: 'LearnCtrl as ctrl'
-          }
-        }
-      })
-      .state('main.debug', {
-        url: '/debug',
-        views: {
-          'tab-debug': {
-            templateUrl: 'main/templates/debug.html',
-            controller: 'DebugCtrl as ctrl'
-          }
-        }
       });
-})
-/*.run(function($state, $timeout) {
-  $timeout(function() {
-    $state.go('main.cook');
-  }, 5000);
-})*/;
+});
