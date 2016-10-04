@@ -143,7 +143,6 @@ angular.module('main')
           //result will carry whether the login created a new user or not
 
           //different alert cases - new signup vs. existing user
-          console.log('$ionicUser', $ionicUser);
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
@@ -156,14 +155,14 @@ angular.module('main')
             }).then(function(res){
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.save();
-              scope.$emit('signInStop', true, true);
+              $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
               });
             }, function(response) {
-              scope.$emit('signInStop', true, false);
+              $rootScope.$broadcast('signInStop', true, false);
               clearForm();
               $ionicAuth.logout();
               ErrorService.showErrorAlert();
@@ -180,14 +179,14 @@ angular.module('main')
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.save();
-              scope.$emit('signInStop', true, true);
+              $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
               }); 
             }, function(response) {
-              scope.$emit('signInStop', true, false);
+              $rootScope.$broadcast('signInStop', true, false);
               clearForm();
               $ionicAuth.logout();
               ErrorService.showErrorAlert();
@@ -222,14 +221,14 @@ angular.module('main')
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.save();
-              scope.$emit('signInStop', true, true);
+              $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
               });
             }, function(response) {
-              scope.$emit('signInStop', true, false);
+              $rootScope.$broadcast('signInStop', true, false);
               clearForm();
               $ionicAuth.logout();
               ErrorService.showErrorAlert();
@@ -245,14 +244,14 @@ angular.module('main')
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.save();
-              scope.$emit('signInStop', true, true);
+              $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
               }); 
             }, function(response) {
-              scope.$emit('signInStop', true, false);
+              $rootScope.$broadcast('signInStop', true, false);
               clearForm();
               $ionicAuth.logout();
               ErrorService.showErrorAlert();
