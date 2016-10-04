@@ -15,7 +15,7 @@ angular.module('main', [
     }
   });
 })
-.config(function ($stateProvider, $urlRouterProvider, RestangularProvider, $provide) {
+.config(function ($stateProvider, $urlRouterProvider, RestangularProvider, $provide, Config) {
   //exception handler
   $provide.decorator('$exceptionHandler', ['$delegate', '$injector', function($delegate, $injector){
     return function(exception, cause) {
@@ -32,8 +32,7 @@ angular.module('main', [
       ErrorService.showErrorAlert();
     };
   }]);
-  RestangularProvider.setBaseUrl("http://107.170.199.250:3000/api/");
-  //RestangularProvider.setBaseUrl("http://localhost:8000/api/");
+  RestangularProvider.setBaseUrl(Config.ENV.SERVER_URL);
 
   // ROUTING with ui.router
   $urlRouterProvider.otherwise('main/cook');

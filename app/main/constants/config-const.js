@@ -1,6 +1,17 @@
 'use strict';
 
 angular.module('main')
+  .constant('Config', {
+    ENV: {
+        /*inject-env*/
+        'SERVER_URL': 'http://138.68.45.225:3000/api/'
+        /*endinject*/
+    },
+    BUILD : {
+        /*inject-build*/
+        /*endinject*/
+    }
+  })
   .constant('NAME_FORM_FLAGS', {
     'SINGULAR': 'singularForm',
     'STANDARD': 'standardForm',
