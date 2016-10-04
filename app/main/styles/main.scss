@@ -446,6 +446,23 @@ h4.ingredient-subtype-heading {
 	background: $balanced;
 	border: none;
 }
+.button.close-video {
+	position: fixed;
+	bottom: 30%;
+	left: 34%;
+	font-family: 'pompiere', sans-serif;
+    font-size: 21px;
+    border-radius: 8px;
+	border-color: #ef4734;
+    background-color: #ef4734;
+    color: #ffffff;    
+    min-width: 100px;
+}
+.button.close-video:hover, .button.close-video:active {
+	border-color: #ef4734;
+    background-color: transparent;
+    color: #ef4734;	
+}
 .video-container {
     position: relative;
     padding-bottom: 46.25%;
@@ -686,5 +703,9 @@ img.video-thumbnail {
 	/*training videos*/
 	.col-video-thumbnail {
 		max-width: 130px;
+	}
+	.button.close-video {
+	    bottom: 34%;
+	    left: 37%;
 	}	
 }
