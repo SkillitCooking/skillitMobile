@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('trainingVideoItem', ['$ionicModal', function ($ionicModal) {
+.directive('trainingVideoItem', ['$ionicModal', '$rootScope', function ($ionicModal, $rootScope) {
   return {
     templateUrl: 'main/templates/training-video-item.html',
     restrict: 'E',
@@ -8,13 +8,14 @@ angular.module('main')
       video: '='
     },
     link: function (scope, element, attrs) {
-      scope.autoplayURL = scope.video.video.url + "&autoplay=1&rel=0";
+      scope.stepVideo = scope.video.video;
 
       scope.getVideoModal = function() {
         $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
           scope: scope,
           animation: 'slide-in-up'
         }).then(function(modal) {
+          $rootScope.redrawSlides = true;
           scope.modal = modal;
           scope.modal.show();
         });

@@ -61,8 +61,12 @@ angular.module('main')
           $scope.slider.slides[i].swiperSlideOffset = offset;
           var translate3d = "translate3d(" + "-" + offset +"px,0px,0px)";
           $scope.slider.slides[i].style.transform = translate3d;
+          if(i === $scope.slider.activeIndex) {
+            $scope.slider.slides[i].style.opacity = "1";
+          } else {
+            $scope.slider.slides[i].style.opacity = "0";
+          }
         }
-        $scope.slider.slides[$scope.slider.activeIndex].style.opacity = "1";
         $rootScope.redrawSlides = false;
       }
     }
@@ -283,7 +287,6 @@ angular.module('main')
   };
 
   $scope.clearIngredients = function() {
-    console.log('cats', $scope.ingredientCategories);
     for(var key in $scope.ingredientCategories) {
       for(var subCat in $scope.ingredientCategories[key]) {
         for (var i = $scope.ingredientCategories[key][subCat].length - 1; i >= 0; i--) {
@@ -352,9 +355,5 @@ angular.module('main')
         $ionicScrollDelegate.scrollTop();
       }, 500);
     }
-  };
-
-  $scope.test = function(ingredients){
-    console.log("Ingredients: ", ingredients);
   };
 }]);

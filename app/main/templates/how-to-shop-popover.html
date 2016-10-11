@@ -1,16 +1,16 @@
 <ion-popover-view class="image-modal">
   <ion-header-bar>
-    <h1 class="title">{{howToShop.title}}</h1>
+    <h1 class="title">{{item.title}}</h1>
     <button class="button close-x-button" ng-click="closeItemPopover()">X</button>
   </ion-header-bar>
   <ion-content class="padding">
-    <div ng-if="howToShop.pictures && howToShop.pictures.length > 0">
+    <div ng-if="item.pictures && item.pictures.length > 0">
       <img ng-src="{{displayPicture.url}}">
       <p class="subdued">{{displayPicture.caption}}</p>
-      <button ng-disabled="noPrevPictures(howToShop)" ng-click="prevPicture(howToShop)">Prev</button>
-      <button ng-disabled="noNextPictures(howToShop)" ng-click="nextPicture(howToShop)">Next</button>
+      <button ng-disabled="noPrevPictures(item)" ng-click="prevPicture(item)">Prev</button>
+      <button ng-disabled="noNextPictures(item)" ng-click="nextPicture(item)">Next</button>
     </div>
-    <div ng-repeat="line in howToShop.lines">
+    <div ng-repeat="line in item.lines">
       <p><b ng-if="line.toBold">{{line.toBold}}:</b>{{line.copy}}</p>
       <br />
     </div>

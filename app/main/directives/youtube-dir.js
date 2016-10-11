@@ -1,44 +1,58 @@
 'use strict';
 angular.module('main')
-.directive('youtube', function ($window) {
+.directive('youtube', ['YoutubePlayerService', '$timeout', function (YoutubePlayerService, $timeout) {
   return {
     templateUrl: 'main/templates/youtube-i-frame.html',
     restrict: 'E',
-    scope: true,
+    scope: {
+      video: '=',
+      playerid: '='
+    },
     link: function (scope, element, attrs) {
+
+      //Note: this directive is currently set up to only allow the existence of one
+      //player at a given time... which works just fine if we're just doing modal
+      //popups for this directive, but may need a change if the need for this arises
       
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      //Honestly, will want to eventually turn this directive into a reusable component with
+      //an isolate scope
+      
+      //stepVideo is accessible here on scope
+      //destroy the player or call appropriate api method on call
 
-      var player;
-
-      function stateChange(event) {
-        console.log("Did this make it?");
-        scope.$apply(function() {
-          console.log("state change event: ", event);
-          scope.$emit("test", event);
-          if(event.data === YT.PlayerState.ENDED) {
-            console.log("onStateChange");
-          }
+      if(YoutubePlayerService.getStatus()) {
+        if(scope.youtubePlayer) {
+          scope.youtubePlayer.destroy();
+        }
+        $timeout(function() {
+          scope.youtubePlayer = YoutubePlayerService.createPlayer(scope.playerid, scope.video.videoId, scope.video.end);
         });
       }
 
-      function onReady(event) {
-        console.log("READY... FUCK");
-      }
+      scope.$watch('video', function(newValue, oldValue) {
+        if(scope.youtubePlayer && scope.youtubePlayer.cueVideoById) {
+          //might need timeout on this one...
+          $timeout(function() {
+            scope.youtubePlayer.cueVideoById({
+              videoId: scope.video.videoId,
+              endSeconds: parseInt(scope.video.end)
+            });
+          });
+        }
+      });
 
-      $window.onYouTubeIframeAPIReady = function() {
-        player = new YT.Player('modal-player', {
-          events: {
-            'onReady': onReady
-          }
-        });
-        console.log("hur dood: ", player);
-        player.addEventListener('onStateChange', stateChange);
-        console.log("hir dood: ", player);
-      };
+      //modal close event?
+      scope.$on('$destroy', function() {
+        if(scope.youtubePlayer) {
+          scope.youtubePlayer.destroy();
+        }
+      });
+
+      scope.$on('onPause', function(event) {
+        if(scope.youtubePlayer) {
+          scope.youtubePlayer.stopVideo();
+        }
+      });
     }
   };
-});
+}]);

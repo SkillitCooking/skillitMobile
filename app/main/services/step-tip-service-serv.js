@@ -86,7 +86,7 @@ angular.module('main')
                 ingredientTips[j].stepTip.text ? (step.hasTip = true) : (step.hasTip = false);
               }
               if(!step.hasVideo) {
-                ingredientTips[j].stepTip.videoURL ? (step.hasVideo = true) : (step.hasVideo = false);
+                ingredientTips[j].stepTip.videoInfo ? (step.hasVideo = true) : (step.hasVideo = false);
               }
               step.stepTips.push(ingredientTips[j].stepTip);
             } else {
@@ -99,7 +99,7 @@ angular.module('main')
                     ingredientTips[j].stepTip.text ? (step.hasTip = true) : (step.hasTip = false);
                   }
                   if(!step.hasVideo) {
-                    ingredientTips[j].stepTip.videoURL ? (step.hasVideo = true) : (step.hasVideo = false);
+                    ingredientTips[j].stepTip.videoInfo ? (step.hasVideo = true) : (step.hasVideo = false);
                   }
                   step.stepTips.push(ingredientTips[j].stepTip);
                 }
@@ -130,7 +130,7 @@ angular.module('main')
                 ingredientTip.stepTip.text ? (arrElem.hasTip = true) : (arrElem.hasTip = false);
               }
               if(!arrElem.hasVideo) {
-                ingredientTip.stepTip.videoURL ? (arrElem.hasVideo = true) : (arrElem.hasVideo = false);
+                ingredientTip.stepTip.videoInfo ? (arrElem.hasVideo = true) : (arrElem.hasVideo = false);
               }
               arrElem.stepTips.push(ingredientTip.stepTip);
             }

@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
+.controller('CookPresentCtrl', ['_', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $document, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
+
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -236,15 +237,18 @@ angular.module('main')
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
     //mainVideo indicator array
-    $scope.mainVideoUrlIndicators = [];
+    $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
       if($stateParams.sidesAdded && $scope.seasoningProfiles) {
         amendSeasonings();
       }
-      if($scope.combinedRecipe.mainVideoURLs) {
-        $scope.mainVideoUrlIndicators = Array($scope.combinedRecipe.mainVideoURLs.length).fill(false);
-        $scope.mainVideoUrlIndicators[0] = true;
-        $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[0];
+      if($scope.combinedRecipe.mainVideos) {
+        $scope.mainVideoIndicators = Array($scope.combinedRecipe.mainVideos.length).fill(false);
+        $scope.mainVideoIndicators[0] = true;
+        $scope.playingVideo = $scope.combinedRecipe.mainVideos[0];
+      } else {
+        //the single main player
+        $scope.playingVideo = $scope.combinedRecipe.mainVideo;
       }
       if((!$scope.selectedIngredientNames || $scope.selectedIngredientNames.length < 1) || (!$scope.selectedIngredientIds || $scope.selectedIngredientIds.length < 1)) {
         var resetNames, resetIds = false;
@@ -393,11 +397,12 @@ angular.module('main')
     }
   };
 
-  //first have popup show both cases; then do automatic video play for video case
+  //first have popup show both cases
   $scope.showTip = function(step, event) {
     if(step.stepType === 'Season' && $scope.combinedRecipe.canAddSeasoningProfile) {
       $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
         {scope: $scope}).then(function(popover) {
+        $rootScope.redrawSlides = true;
         $scope.seasonPopover = popover;
         $scope.seasonPopover.show(event);
       });
@@ -408,15 +413,18 @@ angular.module('main')
       $scope.displayStepTip = $scope.stepTipStep.stepTips[0];
       $ionicPopover.fromTemplateUrl('main/templates/step-tip-popover.html', 
         {scope: $scope}).then(function(popover) {
+        $rootScope.redrawSlides = true;
         $scope.stepTipPopver = popover;
         $scope.stepTipPopver.show(event);
       });
     } else if(step.hasVideo) {
-      $scope.autoplayURL = step.stepTips[0].videoURL + "&autoplay=1&rel=0";
+      $scope.stepVideo = step.stepTips[0].videoInfo;
       $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
       }).then(function(modal) {
+        //has to be a cleaner way than just setting shit on $rootScope like below...
+        $rootScope.redrawSlides = true;
         $scope.videoModal = modal;
         $scope.videoModal.show();
       });
@@ -459,35 +467,35 @@ angular.module('main')
 
   $scope.incrementMainVideo = function() {
     //indexOf true
-    var curIndex = $scope.mainVideoUrlIndicators.indexOf(true);
-    if(curIndex < $scope.mainVideoUrlIndicators.length - 1) {
-      $scope.mainVideoUrlIndicators.fill(false);
-      $scope.mainVideoUrlIndicators[curIndex+1] = true;
-      $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[curIndex+1];
+    var curIndex = $scope.mainVideoIndicators.indexOf(true);
+    if(curIndex < $scope.mainVideoIndicators.length - 1) {
+      $scope.mainVideoIndicators.fill(false);
+      $scope.mainVideoIndicators[curIndex+1] = true;
+      $scope.playingVideo = $scope.combinedRecipe.mainVideos[curIndex+1];
     }
   };
 
   $scope.decrementMainVideo = function() {
     //indexOf true
-    var curIndex = $scope.mainVideoUrlIndicators.indexOf(true);
+    var curIndex = $scope.mainVideoIndicators.indexOf(true);
     if(curIndex > 0) {
-      $scope.mainVideoUrlIndicators.fill(false);
-      $scope.mainVideoUrlIndicators[curIndex-1] = true;
-      $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[curIndex-1];
+      $scope.mainVideoIndicators.fill(false);
+      $scope.mainVideoIndicators[curIndex-1] = true;
+      $scope.playingVideo = $scope.combinedRecipe.mainVideos[curIndex-1];
     }
   };
 
   $scope.toggleMainVideo = function(index) {
     //if false clicked, to true, and true to false
-    if(!$scope.mainVideoUrlIndicators[index]) {
-      $scope.mainVideoUrlIndicators.fill(false);
-      $scope.mainVideoUrlIndicators[index] = true;
-      $scope.playingVideoURL = $scope.combinedRecipe.mainVideoURLs[index];
+    if(!$scope.mainVideoIndicators[index]) {
+      $scope.mainVideoIndicators.fill(false);
+      $scope.mainVideoIndicators[index] = true;
+      $scope.playingVideo = $scope.combinedRecipe.mainVideos[index];
     }
   };
 
   $scope.getMainVideoDotClass = function(index) {
-    if($scope.mainVideoUrlIndicators[index]) {
+    if($scope.mainVideoIndicators[index]) {
       return 'ion-ios-circle-filled';
     } else {
       return 'ion-ios-circle-outline';
@@ -537,7 +545,7 @@ angular.module('main')
   };
 
   $scope.tipHasVideo = function() {
-    if($scope.displayStepTip.videoURL && $scope.displayStepTip.videoURL !== "") {
+    if($scope.displayStepTip.videoInfo && $scope.displayStepTip.videoInfo.videoId) {
       return true;
     } else {
        return false;
@@ -551,6 +559,7 @@ angular.module('main')
   $scope.seasoningProfilePopup = function(event) {
     $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
         {scope: $scope}).then(function(popover) {
+        $rootScope.redrawSlides = true;
         $scope.seasonPopover = popover;
         $scope.seasonPopover.show(event);
     });
@@ -737,6 +746,7 @@ angular.module('main')
       //show popover
       $ionicPopover.fromTemplateUrl('main/templates/login-popover.html', 
         {scope: $scope}).then(function(popover) {
+        $rootScope.redrawSlides = true;
         $scope.loginPopover = popover;
         $scope.loginPopover.show(event);
       });

@@ -48,8 +48,8 @@
           <p class="subdued" ng-if="piece.url">{{piece.caption}}</p>
         </div>
         <div ng-switch-when="video">
-          <p style="text-align: center"><iframe ng-if="piece.url" width="300" height="169" ng-src="{{piece.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe></p>
-          <p class="subdued" ng-if="piece.url">{{piece.caption}}</p>
+          <p style="text-align: center"><youtube ng-if="piece" video="piece" playerid="getPlayerId($index)"></youtube></p>
+          <p class="subdued" ng-if="piece.videoId">{{piece.caption}}</p>
         </div>
         <div ng-switch-default>
           <pre>{{piece.type}}</pre>

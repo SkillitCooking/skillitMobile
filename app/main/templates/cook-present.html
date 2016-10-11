@@ -11,15 +11,14 @@
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3>
       <div class="video-container">
-        <iframe ng-if="combinedRecipe.mainVideoURL && combinedRecipe.mainVideoURL !== ''" width="300" height="169" ng-src="{{combinedRecipe.mainVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
-        <iframe width="300" height="169" ng-if="combinedRecipe.mainVideoURLs" ng-src="{{playingVideoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+        <youtube ng-if="playingVideo" video="playingVideo" playerid="'mainplayer'"></youtube>
       </div>
-      <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideoURLs">
+      <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideos">
         <div class="col col-25 col-center">
           <button class="button button-white-round" ng-click="decrementMainVideo()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
         </div>
         <div class="col col-50 col-center">
-          <div ng-repeat="indicator in mainVideoUrlIndicators track by $index">      
+          <div ng-repeat="indicator in mainVideoIndicators track by $index">      
             <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
           </div>
         </div>
@@ -31,11 +30,11 @@
       <button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  
       <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
       <h3>Ingredient List</h3>
-      <!--the test with combinedRecipe.mainVideoURLs is a proxy for whether it is 
+      <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
       truly a combined recipe-->
       <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
       <div ng-repeat="recipeIngredients in ingredientsForRecipes">
-        <h5 ng-if="combinedRecipe.mainVideoURLs">{{recipeIngredients.name}}</h5>
+        <h5 ng-if="combinedRecipe.mainVideos">{{recipeIngredients.name}}</h5>
         <ul> 
           <li ng-repeat="ingredient in recipeIngredients.ingredients">
           <!--ingredients such that ingredient.useInRecipe === false should only come through with Fulls-->

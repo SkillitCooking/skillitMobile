@@ -65,7 +65,6 @@ angular.module('main')
           ingredientTypes[i].ingredients[j].ingredientForms[0].useInRecipe = true;
         }
       }
-      console.log('byo types: ', ingredientTypes);
       setTimeout(function() {
         $state.go('main.editBYOIngredientsRecipes', {
           alaCarteRecipes: [],

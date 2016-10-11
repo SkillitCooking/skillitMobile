@@ -4,8 +4,8 @@
     <button class="button close-x-button" ng-click="closeItemPopover()">X</button>
   </ion-header-bar>
   <ion-content class="padding">
-    <iframe ng-if="item.video && item.video.url" width="300" height="169" ng-src="{{item.video.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
-    <p class="subdued" ng-if="item.video.url">{{item.video.caption}}</p>
+    <p ng-if="item.video && item.video.videoId" style="text-align: center"><youtube video="item.video" playerid="'glossarypopover'"></youtube></p>
+    <p class="subdued" ng-if="item.video && item.video.videoId">{{item.video.caption}}</p>
     <img ng-if="item.picture && item.picture.url" ng-src={{item.picture.url}}>
     <p class="subdued" ng-if="item.picture.url">{{item.picture.caption}}</p>
     <div ng-repeat="line in item.lines">

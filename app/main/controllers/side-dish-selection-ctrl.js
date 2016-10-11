@@ -92,6 +92,11 @@ angular.module('main')
   }
 
   $scope.addSides = function() {
+    //so can add new main player in newly created view... this is hacky... should be
+    //eventually refactored to just remove unnecessary cook present back views
+    var videoPlayer = angular.element( document.querySelector( '#mainplayer' ) );
+    videoPlayer.remove();
+    
     var selectedRecipes = [];
     for (var i = $scope.alaCarteSelectedArr.length - 1; i >= 0; i--) {
       if($scope.alaCarteSelectedArr[i]) {

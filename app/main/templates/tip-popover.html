@@ -1,11 +1,11 @@
 <ion-popover-view class="image-modal">
   <ion-header-bar>
-    <h1 class="title">{{tip.title}}</h1>
+    <h1 class="title">{{item.title}}</h1>
     <button class="button close-x-button" ng-click="closeItemPopover()">X</button>
   </ion-header-bar>
   <ion-content class="padding">
-    <img ng-if="tip.picture.url" ng-src="{{tip.picture.url}}">
-    <p class="subdued" ng-if="tip.picture.url">{{tip.picture.caption}}</p>
-    <p class="padding-10">{{tip.text}}</p>
+    <img ng-if="item.picture.url" ng-src="{{item.picture.url}}">
+    <p class="subdued" ng-if="item.picture.url">{{item.picture.caption}}</p>
+    <p class="padding-10">{{item.text}}</p>
   </ion-content>
 <ion-popover-view class="image-modal">

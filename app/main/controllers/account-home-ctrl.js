@@ -2,6 +2,7 @@
 angular.module('main')
 .controller('AccountHomeCtrl', ['$scope', '$state', '$ionicLoading', '$ionicAuth', '$ionicUser', 'UserService', 'FavoriteRecipeService', 'ErrorService', 'USER', function ($scope, $state, $ionicLoading, $ionicAuth, $ionicUser, UserService, FavoriteRecipeService, ErrorService, USER) {
 
+
   $scope.ages = USER.AGES;
   $scope.accountInfoSelected = false;
   $scope.favRecipeSelected = true;

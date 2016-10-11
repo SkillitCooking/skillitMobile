@@ -9,7 +9,7 @@
     <ion-list>
       <div ng-repeat="item in items">
         <how-to-shop-item ng-if="item.itemType === 'howToShop'" item="item" minimizable="true"></how-to-shop-item>
-        <glossary-item ng-if="item.itemType === 'glossary'" item="item" minimizable="true"></glossary-item>
+        <glossary-item ng-if="item.itemType === 'glossary'" listindex="$index" item="item" minimizable="true"></glossary-item>
         <daily-tip-item ng-if="item.itemType === 'tip'" tip="item" showdatefeatured="false" minimizable="true"></daily-tip-item>
         <training-video-item ng-if="item.itemType === 'trainingVideo'" video="item"></training-video-item>
       </div>

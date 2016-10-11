@@ -7,8 +7,8 @@
 </ion-item>
 
 <ion-item ng-if="!minimized" class="item-icon-right individual-recipe-in-list education-item full-text-display" ng-click="toggleMinimized()">
-    <iframe ng-if="item.video && item.video.url" width="300" height="169" ng-src="{{item.video.url | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
-    <p class="subdued" ng-if="item.video.url">{{item.video.caption}}</p>
+    <youtube video="item.video" playerid="getPlayerId()" ng-if="item.video.videoId"></youtube>
+    <p class="subdued" ng-if="item.video.videoId">{{item.video.caption}}</p>
     <img ng-if="item.picture && item.picture.url" ng-src={{item.picture.url}}>
     <p class="subdued" ng-if="item.picture.url">{{item.picture.caption}}</p>
     <h2>{{item.title}}</h2>

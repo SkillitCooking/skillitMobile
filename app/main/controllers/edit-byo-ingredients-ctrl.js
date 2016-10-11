@@ -93,6 +93,12 @@ angular.module('main')
   };
 
   $scope.changeIngredients = function() {
+
+    //so can add new main player in newly created view... this is hacky... should be
+    //eventually refactored to just remove unnecessary cook present back views
+    var videoPlayer = angular.element( document.querySelector( '#mainplayer' ) );
+    videoPlayer.remove();
+
     //adjust selected names - probably a little overly simplistic method
     for (var i = $scope.BYOIngredientTypes.length - 1; i >= 0; i--) {
       var type = $scope.BYOIngredientTypes[i];

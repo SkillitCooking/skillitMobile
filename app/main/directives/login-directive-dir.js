@@ -294,6 +294,7 @@ angular.module('main')
           scope: scope,
           animation: 'slide-in-up'
         }).then(function(modal) {
+          $rootScope.redrawSlides = true;
           scope.resetPasswordModal = modal;
           scope.resetPasswordModal.show();
         });
@@ -309,9 +310,7 @@ angular.module('main')
 
       scope.requestReset = function() {
         scope.enterEmail = false;
-        console.log('email: ', scope.data.resetEmail);
         var response = $ionicAuth.requestPasswordReset(scope.data.resetEmail);
-        console.log('reset', response);
       };
 
       scope.resetIsValid = function() {

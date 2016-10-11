@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('ArticlePageCtrl', ['$scope', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', function ($scope, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES) {
+.controller('ArticlePageCtrl', ['$rootScope', '$scope', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', function ($rootScope, $scope, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES) {
     
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -25,17 +25,15 @@ angular.module('main')
   if($stateParams.articleId) {
     ArticleService.getArticleFromId($stateParams.articleId).then(function(res){
       $scope.article = res.data;
+      $scope.articlePlayers = [];
       for (var i = $scope.article.contentSections.length - 1; i >= 0; i--) {
         var section = $scope.article.contentSections[i];
         for (var j = section.contentArray.length - 1; j >= 0; j--) {
           if(section.contentArray[j].type === CONTENT_PIECE_TYPES.TEXT) {
-            console.log('piece pre', angular.copy(section.contentArray[j]));
             ArticleTextService.processTextChunks(section.contentArray[j]);
-            console.log('piece post', section.contentArray[j]);
           }
         }
       }
-      console.log('article', $scope.article);
       setTimeout(function() {
           $ionicLoading.hide();
         }, 200);
@@ -71,15 +69,13 @@ angular.module('main')
     switch(textThing.itemType) {
       case ITEM_TYPES.TIP:
         templateUrl = 'main/templates/tip-popover.html';
-        $scope.tip = textThing.linkedItem;
-        console.log('tip', $scope.tip);
+        $scope.item = textThing.linkedItem;
         break;
       case ITEM_TYPES.HOWTOSHOP:
         templateUrl = 'main/templates/how-to-shop-popover.html';
-        $scope.howToShop = textThing.linkedItem;
-        ContentTextService.processLineBreaks($scope.howToShop);
-        ContentTextService.addBolding($scope.howToShop);
-        console.log('shp', $scope.howToShop);
+        $scope.item = textThing.linkedItem;
+        ContentTextService.processLineBreaks($scope.item);
+        ContentTextService.addBolding($scope.item);
         break;
       case ITEM_TYPES.GLOSSARY:
         templateUrl = 'main/templates/glossary-popover.html';
@@ -89,7 +85,7 @@ angular.module('main')
         break;
       case ITEM_TYPES.TRAININGVIDEO:
         templateUrl = 'main/templates/training-video-popover.html';
-        $scope.video = textThing.linkedItem;
+        $scope.item = textThing.linkedItem;
         break;
       default:
         //error
@@ -102,6 +98,7 @@ angular.module('main')
     $ionicPopover.fromTemplateUrl(templateUrl, {
       scope: $scope
     }).then(function(popover) {
+      $rootScope.redrawSlides = true;
       $scope.itemPopover = popover;
       $scope.itemPopover.show(event);
     });
@@ -115,6 +112,10 @@ angular.module('main')
 
   $scope.closeItemPopover = function() {
     $scope.itemPopover.remove();
+  };
+
+  $scope.getPlayerId = function(index) {
+    return 'articleplayer' + index;
   };
 
   $scope.navigateBack = function() {

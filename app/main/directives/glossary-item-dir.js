@@ -6,7 +6,8 @@ angular.module('main')
     restrict: 'E',
     scope: {
       item: '=',
-      minimizable: '='
+      minimizable: '=',
+      listindex: '='
     },
     link: function (scope, element, attrs) {
       ContentTextService.processLineBreaks(scope.item);
@@ -22,6 +23,10 @@ angular.module('main')
         if(scope.minimizable) {
           scope.minimized = !scope.minimized;
         }
+      };
+
+      scope.getPlayerId = function() {
+        return 'glossaryplayer' + scope.listindex;
       };
     }
   };

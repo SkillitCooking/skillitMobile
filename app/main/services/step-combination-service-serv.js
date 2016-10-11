@@ -181,9 +181,9 @@ angular.module('main')
         }
       }, 0);
       combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
-      combinedRecipe.mainVideoURLs = _.map(recipes, function(recipe) {
-        if(recipe.mainVideoUrl && recipe.mainVideoURL !== "") {
-          return recipe.mainVideoURL + '&rel=0';
+      combinedRecipe.mainVideos = _.map(recipes, function(recipe) {
+        if(recipe.mainVideo && recipe.mainVideo.videoId) {
+          return recipe.mainVideo;
         }
       });
       //set combinedRecipe recipeCategories
@@ -242,10 +242,8 @@ angular.module('main')
           }
         }
       }
-      //adjust mainVideoUrl
       //round cookTimes
       if(recipes[0]) {
-        recipes[0].mainVideoUrl += '&rel=0';
         recipes[0].prepTime = 5 * Math.round(recipes[0].prepTime/5);
         recipes[0].totalTime = 5 * Math.round(recipes[0].totalTime/5);
       }

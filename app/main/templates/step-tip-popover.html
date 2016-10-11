@@ -10,6 +10,6 @@
     </div>    
     <p ng-if="tipHasText()">{{displayStepTip.text}}</p>
     <h5 ng-if="tipHasVideo()">{{displayStepTip.videoTitle}}</h5>
-    <iframe ng-if="tipHasVideo()" width="300" height="169" ng-src="{{displayStepTip.videoURL | sourceTrusted}}" frameborder="0" allowfullscreen></iframe>
+    <youtube ng-if="tipHasVideo()" video="displayStepTip.videoInfo" playerid="'steptippopover'"></youtube>
   </ion-content>
 </ion-popover-view>
