@@ -7,7 +7,8 @@ angular.module('main')
   };
 
   function publish(eventName, data) {
-    $rootScope.broadcast(eventName, data);
+    console.log(eventName);
+    $rootScope.$broadcast(eventName, data);
   }
 
   $document.bind('pause', function() {

@@ -1,4 +1,7 @@
 {
+  "name": "Skillit", 
+  "version": "0.0.2", 
+  "description": "A pretty neat cooking application.",
   "private": true,
   "engines": {
     "node": ">=4.0.0"
