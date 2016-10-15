@@ -239,6 +239,7 @@ angular.module('main')
           var ingredient = ingredients[i];
           if(ingredient.isSelected){
             //trim unselected forms, then test forms for emptiness
+            //Add check for 'any' here
             for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
               if(!ingredient.ingredientForms[j].isSelected){
                 ingredient.ingredientForms.splice(j, 1);

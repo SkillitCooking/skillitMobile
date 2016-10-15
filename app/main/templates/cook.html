@@ -33,7 +33,8 @@
                     {{ingredient.name.standardForm}}
                   </ion-checkbox>
                   <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
-                    <div class="grouping-of-ingredient-forms">              
+                    <div class="grouping-of-ingredient-forms"> 
+                    <!--Insert 'any' form here-->             
                       <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
                         <label class="checkbox checkbox-balanced">
                         <span class="ingredient-form-name">{{form.name}}</span>
