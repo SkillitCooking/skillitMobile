@@ -2,6 +2,15 @@
 angular.module('main')
 .controller('CookPresentCtrl', ['_', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $document, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
 
+  function recipeTypeCmpFn(a, b) {
+    if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
+      return -1;
+    }
+    if(b.recipeType === 'Full' || b.recipeType === 'BYO') {
+      return 1;
+    }
+    return 0;
+  }
 
   function ingredientCategoryCmpFn(a, b) {
     if(a.ingredientList.ingredientTypes[0].ingredients[0].inputCategory < b.ingredientList.ingredientTypes[0].ingredients[0].inputCategory) {
@@ -177,7 +186,6 @@ angular.module('main')
   if($stateParams.sidesAdded || $stateParams.ingredientsChanged) {
     $scope.numberBackToRecipeSelection -= 2;
   }
-
   $scope.recipeIds = $stateParams.recipeIds;
   if($stateParams.loadAlaCarte) {
     RecipeService.getRecipesOfType('AlaCarte').then(function(recipes) {
@@ -209,6 +217,7 @@ angular.module('main')
   };
   RecipeService.getRecipesWithIds(wrappedRecipeIds).then(function(response) {
     var recipes = response.data;
+    recipes.sort(recipeTypeCmpFn);
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames, $scope.selectedIngredientIds);
     var BYORecipe = _.find(recipes, function(recipe) {
       return recipe.recipeType === 'BYO';
@@ -760,7 +769,7 @@ angular.module('main')
   $scope.$on('signInStop', function(event, removePopover, fetchRecipes) {
     event.preventDefault();
     $ionicLoading.hide();
-    if(removePopover) {
+    if(removePopover && $scope.loginPopover) {
       $scope.loginPopover.remove();
     }
   });

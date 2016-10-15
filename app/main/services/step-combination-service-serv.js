@@ -183,6 +183,7 @@ angular.module('main')
       combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
       combinedRecipe.mainVideos = _.map(recipes, function(recipe) {
         if(recipe.mainVideo && recipe.mainVideo.videoId) {
+          console.log('name', recipe.name);
           return recipe.mainVideo;
         }
       });
