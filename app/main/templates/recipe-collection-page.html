@@ -3,7 +3,7 @@
   <ion-nav-buttons side="primary">
     <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
   </ion-nav-buttons>
-  <ion-content class="padding cook-recipe-selection">
+  <ion-content class="padding cook-recipe-selection normal-padding">
     <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
     <ion-list>
       <recipe-item ng-repeat="recipe in recipes" recipe="recipe" iconclass="recipeIconClass($index)" isfavorite="false" ng-click="recipeSelected(recipe)" showdatefeatured="false"></recipe-item>
