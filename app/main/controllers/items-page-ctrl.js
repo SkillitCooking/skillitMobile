@@ -3,6 +3,7 @@ angular.module('main')
 .controller('ItemsPageCtrl', ['$scope', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'ErrorService', function ($scope, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, ErrorService) {
 
   $scope.lesson = $stateParams.lesson;
+  console.log('lesson: ', $scope.lesson);
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -19,7 +20,9 @@ angular.module('main')
 
   if($scope.lesson) {
     ItemsService.getItemsWithTypesAndIds({items: $scope.lesson.itemIds}).then(function(res) {
+      console.log('res', res.data);
       $scope.items = ContentItemOrderingService.orderLessonItems(res.data, $scope.lesson.itemIds);
+      console.log('items', $scope.items);
       setTimeout(function() {
         $ionicLoading.hide();
       }, 200);
