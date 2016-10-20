@@ -213,6 +213,14 @@ angular.module('main')
     return false;
   };
 
+  $scope.getMinNeededText = function(minNeeded) {
+    if(minNeeded == 0) {
+      return 'These ingredients are optional';
+    } else {
+      return 'Select at least ' + minNeeded + ' of these ingredients.';
+    }
+  };
+
   $scope.cancel = function() {
     if($stateParams.cameFromRecipes) {
       //$ionicTabsDelegate.select(4);
