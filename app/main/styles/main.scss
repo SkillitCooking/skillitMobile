@@ -5,9 +5,9 @@ in ionic's _variables.scss file.
 For example, you might change some of the default colors:
 */
 
-$light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
-$positive:                        #7be1ff !default;
+$light:                           #ffffff !default;
+$stable:                          #ffffff !default;
+$positive:                        #ffffff !default;
 $calm:                            #43cee6 !default;
 $balanced:                        #ef4734 !default;
 $energized:                       #f0b840 !default;
@@ -79,6 +79,7 @@ button {
     border: 1px solid $balanced;
     background-color: $balanced;
 }
+
 /***********************/
 /*POPUPS*/
 .popup-buttons .button {
@@ -605,9 +606,6 @@ h3.side-dish-header {
 .individual-recipe-in-list.training-video-item {
 	padding: 0 10px;
 }
-.col-video-thumbnail {
-	max-width: 95px;
-}
 h4.article-subtitle {
 	font-size: 25px;
 }
@@ -632,7 +630,9 @@ h4.article-subtitle {
     width: 32px;
     height: 32px;
 }
-
+.education-collection .icon.ion-videocamera {
+    padding-left: 9px;
+}
 .learn-tab-article img {
 	max-width: 100%;
 }
@@ -712,10 +712,6 @@ img.video-thumbnail {
 	.bottom-nav-buttons-cook-tab .button {	
 	    min-width: 144px;
 	}		
-	/*training videos*/
-	.col-video-thumbnail {
-		max-width: 130px;
-	}
 	.button.close-video {
 	    bottom: 34%;
 	    left: 37%;
