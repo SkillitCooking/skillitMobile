@@ -17,11 +17,11 @@ angular.module('main')
             $ionicDeploy.extract().then(function() {
               $ionicPopup.show({
                 title: 'Update Available!',
-                template: 'We just fetched an update - would you like to restart Skillit to use the new features?',
+                template: 'Hey, we\'ve just pushed some new features to make your Skillit experience even tastier. Would you like to install them now? Won\'t take more than a few seconds, promise.',
                 buttons: [
-                  {text: 'No Thanks'},
+                  {text: 'Nah, Later'},
                   {
-                    text: 'Update',
+                    text: 'Heck Yes!',
                     onTap: function(e) {
                       $ionicDeploy.load();
                     }

@@ -13,12 +13,10 @@ angular.module('main')
   });
 
   service.createPlayer = function(idName, videoId, videoEnd) {
-    return new YT.Player(idName, {
+    var player = new YT.Player(idName, {
       events: {},
       videoId: videoId,
-      end: parseInt(videoEnd, 10),
-      rel: 0,
-      modestbranding: 1,
+      playerVars: {'end': videoEnd, 'modestbranding': 1, 'rel': 0},
       height: 169,
       width: 300,
     });
