@@ -6,22 +6,24 @@
     <div class="col col-center">
       <h2>{{recipe.name}}</h2>
     </div>
-    <div class="col col-10 col-center">
-      <!--<i class="icon checkbox-balanced" ng-class="iconclass"></i>--><i class="icon ion-chevron-right recipe-selection-arrow"></i>
-    </div>
+    <div class="col col-10"></div>
   </div>  
   <div class="row">
-    <div class="col">
+    <div class="col col-90">
       <div ng-if="!isfavorite" class="recipe-description-time">
         <p>{{recipe.description}}</p>
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
-        <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
+        <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
         <!--<p ng-if="showdatefeatured">Feature Date: {{recipe.dateFeatured}}</p>-->
       </div>
       <div ng-if="isfavorite" class="recipe-description-time">
         <p>{{getFavoriteRecipeDescription()}}</p>
-        <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
+        <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
       </div>
     </div>
   </div>
+      <!--<div class="col col-10 col-center">
+        <i class="icon ion-chevron-right recipe-selection-arrow"></i>
+    </div>-->
+    <i class="ion-arrow-right-c recipe-selection-arrow" aria-hidden="true"></i>
 </ion-item>
