@@ -9,26 +9,9 @@
     <ion-content class="padding">
       <h1 ng-if="combinedRecipe.name">{{combinedRecipe.name}}</h1>
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
-      <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3>
-      <div class="video-container">
-        <youtube ng-if="playingVideo" video="playingVideo" playerid="'mainplayer'"></youtube>
-      </div>
-      <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideos">
-        <div class="col col-25 col-center">
-          <button class="button button-white-round" ng-click="decrementMainVideo()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-        </div>
-        <div class="col col-50 col-center">
-          <div ng-repeat="indicator in mainVideoIndicators track by $index">      
-            <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
-          </div>
-        </div>
-        <div class="col col-25 col-center">
-          <button class="button button-white-round" ng-click="incrementMainVideo()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-      <br/>    
+      <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 
       <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->
-      <p><b>Active Time</b>: {{getRecipeActiveTime()}} mins <b>Total Time</b>: {{getRecipeTotalTime()}} mins</p>
+      <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
       <h3>Ingredient List</h3>
       <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
       truly a combined recipe-->
@@ -46,20 +29,36 @@
           </li>
         </ul>
       </div>
-      <br/>
       <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
       <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
         <h3>Seasoning</h3>
-        <h5>Current Seasoning: {{seasoningProfile.name}}</h5>
+        <h5>Current Seasoning: <span class="current-seasoning">{{seasoningProfile.name}}</span></h5>
         <ul class="seasoning-spices-list">
           <li ng-repeat="spice in seasoningProfile.spices">
             &nbsp;&nbsp;• <span>{{spice}}</span>
           </li>
         </ul>
-        <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Your Life</button>      
+        <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>      
       </div>
       <ion-list class="list">
       <h3>Instructions</h3>
+      <div class="video-container">
+        <youtube ng-if="playingVideo" video="playingVideo" playerid="'mainplayer'"></youtube>
+      </div>
+      <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideos">
+        <div class="col col-25 col-center">
+          <button class="button button-white-round" ng-click="decrementMainVideo()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        </div>
+        <div class="col col-50 col-center">
+          <div ng-repeat="indicator in mainVideoIndicators track by $index">      
+            <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
+          </div>
+        </div>
+        <div class="col col-25 col-center">
+          <button class="button button-white-round" ng-click="incrementMainVideo()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <br/>   
         <div ng-if="!isError()" ng-repeat="step in combinedRecipe.stepList">
           <div ng-switch on="isSingleStep(step)">
             <div ng-switch-when="true" ng-switch on="isClickable(step)">
