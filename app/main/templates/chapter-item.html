@@ -1,4 +1,5 @@
-<ion-item class="education-collection" ng-click="">
+<ion-item class="education-collection item-thumbnail-left" ng-click="">
+  <img ng-if="chapter.pictureURL" ng-src="{{chapter.pictureURL}}">
   <h2 class="education-title">{{chapter.name}}</h2>
   <p>{{chapter.description}}</p>
   <!--<p><b>Estimated Time: {{chapter.timeEstimate}} min</b></p>-->
