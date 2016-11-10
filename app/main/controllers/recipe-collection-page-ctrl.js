@@ -88,8 +88,8 @@ angular.module('main')
   };
 
   //BYO handling here
-  if($scope.collection && $scope.collection.isBYOCollection){
-    RecipeService.getRecipesOfType('BYO').then(function(recipes) {
+  if($scope.collection) {
+    RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
       $scope.recipes = recipes.data;
       if($scope.recipes) {
         for (var i = $scope.recipes.length - 1; i >= 0; i--) {
@@ -103,22 +103,5 @@ angular.module('main')
     }, function(response) {
       ErrorService.showErrorAlert();
     });
-  } else {
-    if($scope.collection) {
-      RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
-        $scope.recipes = recipes.data;
-        if($scope.recipes) {
-          for (var i = $scope.recipes.length - 1; i >= 0; i--) {
-            $scope.recipes[i].prepTime = 5 * Math.round($scope.recipes[i].prepTime/5);
-            $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
-          }
-        }
-        setTimeout(function() {
-          $ionicLoading.hide();
-        }, 200);
-      }, function(response) {
-        ErrorService.showErrorAlert();
-      });
-    }
   }
 }]);

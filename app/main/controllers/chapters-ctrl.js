@@ -22,8 +22,19 @@ angular.module('main')
     deregisterBackAction();
   });
 
+  function chapterSort(chapA, chapB) {
+    if(chapA.orderingPreference < chapB.orderingPreference) {
+      return -1;
+    }
+    if(chapB.orderingPreference < chapA.orderingPreference) {
+      return 1;
+    }
+    return 0;
+  }
+
   ChapterService.getChapters().then(function(res) {
     $scope.chapters = res.data;
+    $scope.chapters.sort(chapterSort);
     //round timeEstimate to nearest 5 min
     for (var i = $scope.chapters.length - 1; i >= 0; i--) {
       $scope.chapters[i].timeEstimate = 5 * Math.round($scope.chapters[i].timeEstimate/5);

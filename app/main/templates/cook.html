@@ -38,7 +38,9 @@
                       <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
                         <label class="checkbox checkbox-balanced">
                         <span class="ingredient-form-name">{{form.name}}</span>
-                         <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
+                         <div ng-class="getFormCheckShape()">
+                           <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
+                         </div>
                          <div class="track">
                            <div class="handle"></div>
                          </div>

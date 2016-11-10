@@ -357,4 +357,13 @@ angular.module('main')
       }, 500);
     }
   };
+
+  $scope.getFormCheckShape = function() {
+    if(ionic.Platform.isAndroid()) {
+      return 'checkbox-square';
+    } else {
+      //assumes Apple
+      return 'checkbox-circle';
+    }
+  };
 }]);

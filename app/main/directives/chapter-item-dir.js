@@ -5,7 +5,8 @@ angular.module('main')
     templateUrl: 'main/templates/chapter-item.html',
     restrict: 'E',
     scope: {
-      chapter: '='
+      chapter: '=',
+      index: '='
     },
     link: function (scope, element, attrs) {
 

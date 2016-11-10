@@ -215,7 +215,7 @@ angular.module('main')
 
   $scope.getMinNeededText = function(minNeeded) {
     if(minNeeded == 0) {
-      return 'These ingredients are optional';
+      return 'Optional';
     } else {
       return 'Select at least ' + minNeeded + ' of these ingredients.';
     }

@@ -574,6 +574,10 @@ angular.module('main')
     });
   };
 
+  $scope.capitalize = function(spice) {
+    return spice.charAt(0).toUpperCase() + spice.substring(1);
+  };
+
   $scope.showMoreProfiles = false;
   $scope.showMoreSeasonings = function() {
     $scope.showMoreProfiles = true;

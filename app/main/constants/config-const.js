@@ -4,8 +4,8 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'http://107.170.199.250:3000/api/',
-    'CHANNEL': 'dev'
+        'SERVER_URL': 'http://138.68.45.225:3000/api/',
+    'CHANNEL': 'production'
         /*endinject*/
     },
     BUILD : {
@@ -30,7 +30,7 @@ angular.module('main')
     'HEAT': 'Heat',
     'PLACE': 'Place',
     'PREHEAT': 'PreheatOven',
-    'SAUTEE': 'Sautee',
+    'SAUTEE': 'Saute',
     'SEASON': 'Season',
     'SLOWCOOK': 'SlowCook',
     'STEAM': 'Steam',
