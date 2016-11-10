@@ -35,11 +35,11 @@ div, p, .individual-recipe-in-list h2, h1, .button, .palanquin, .popup-body, spa
 	font-family: 'Open Sans', sans-serif;
 }
 p {
-	color: #666666;
+	color: #333333;
 	font-size: 15px;
 }
 span {
-	color: #666666;
+	color: #333333;
 }
 a {
 	color: $balanced;
@@ -346,7 +346,7 @@ h4.ingredient-subtype-heading {
 }
 .recipe-selection-arrow {
 	position: absolute;
-    right: 10px;
+    right: 5px;
     top: 40%;
     color: $balanced;
     border: 2px solid $balanced;
@@ -394,6 +394,11 @@ h4.ingredient-subtype-heading {
 	background-color: $balanced;
 	border: 1px solid $balanced;
 	color: #ffffff;
+}
+.a-la-carte-selection .icon {
+	position: relative;
+	right: 0;
+	color: $balanced;
 }
 /*************************/
 /*recipe instructions page*/
@@ -629,6 +634,32 @@ h3.side-dish-header {
 
 /*******************/
 /*LEARN TAB*/
+h1.learn-title {
+	font-weight: 700;
+    color: $balanced;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    font-variant: small-caps;
+}
+h1.learn-title {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-align: center;
+}
+h1.learn-title:before, h1.learn-title:after {
+    position: absolute;
+    top: 51%;
+    overflow: hidden;
+    width: 50%;
+    height: 1px;
+    content: '\a0';
+    background-color: red;
+}
+h1.learn-title:before {
+    margin-left: -50%;
+    text-align: right;
+}
 .individual-recipe-in-list.training-video-item {
 	padding: 0 10px;
 }
@@ -679,6 +710,16 @@ ul.bullet-points li {
 .cook-recipe-selection.scroll-content.ionic-scroll.normal-padding {
 	padding-top: 10px;
 }
+.learn-tab .button-bar {
+	margin-bottom: 12px;
+}
+.training-video-item h2, .training-video-item p {
+	white-space: normal;
+}
+img.video-thumbnail {
+	height: 66px;
+	width: auto;
+}
 /*********TIPS ITEM PAGE*****************/
 /**********************************/
 .individual-recipe-in-list.education-item h2 {
@@ -698,19 +739,29 @@ ul.bullet-points li {
 }
 
 
-/****************LEARN TAB************/
-/*************************************/
-.learn-tab .button-bar {
-	margin-bottom: 12px;
+/*************RECIPES TAB***************/
+/**************************************/
+.recipe-category-img {
+	width: 80px;
 }
-.training-video-item h2, .training-video-item p {
-	white-space: normal;
+.recipe-categories.item {
+	padding: 0;
 }
-img.video-thumbnail {
-	height: 66px;
-	width: auto;
+.recipe-categories .row {
+	padding: 1px;
 }
-
+.col-55 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 55%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 55%;
+    -ms-flex: 0 0 55%;
+    flex: 0 0 55%;
+    max-width: 55%;
+}
+.recipe-categories .recipe-selection-arrow {
+	top: 31%;
+}
 /*************ACCOUNT TAB***************/
 /**************************************/
 .cook-recipe-selection.account-tab.scroll-content.ionic-scroll {
@@ -719,6 +770,7 @@ img.video-thumbnail {
 .account-tab .button-bar {
 	margin-bottom: 10px;
 }
+
 
 /**************************************/
 /*RESPONSIVE*/
@@ -745,4 +797,10 @@ img.video-thumbnail {
 	    bottom: 34%;
 	    left: 37%;
 	}	
+	.recipe-category-img {
+		width: 100px;
+	}
+	.recipe-categories .recipe-selection-arrow {
+		top: 35%;
+	}
 }
