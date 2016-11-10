@@ -25,6 +25,12 @@ angular.module('main')
   $scope.loadedArr = Array(2).fill(false);
 
   function recipeCollectionSortFn(collectionA, collectionB) {
+    if(collectionA.orderPreference == -1) {
+      return 1;
+    }
+    if(collectionB.orderPreference == -1) {
+      return -1;
+    }
     if(collectionA.orderPreference < collectionB.orderPreference) {
       return -1;
     }

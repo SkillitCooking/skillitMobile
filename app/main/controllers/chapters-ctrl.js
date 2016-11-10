@@ -23,6 +23,12 @@ angular.module('main')
   });
 
   function chapterSort(chapA, chapB) {
+    if(chapA.orderingPreference == -1) {
+      return 1;
+    }
+    if(chapB.orderingPreference == -1) {
+      return -1;
+    }
     if(chapA.orderingPreference < chapB.orderingPreference) {
       return -1;
     }
