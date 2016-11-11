@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('ChaptersCtrl', ['$scope', '$ionicLoading', '$ionicHistory', '$ionicPlatform', '$ionicPopup', '$state', 'ChapterService', 'ErrorService', 'EXIT_POPUP', function ($scope, $ionicLoading, $ionicHistory, $ionicPlatform, $ionicPopup, $state, ChapterService, ErrorService, EXIT_POPUP) {
+.controller('ChaptersCtrl', ['$scope', '$ionicLoading', '$ionicHistory', '$ionicPlatform', '$ionicPopup', '$state', 'ChapterService', 'LessonService', 'ErrorService', 'EXIT_POPUP', function ($scope, $ionicLoading, $ionicHistory, $ionicPlatform, $ionicPopup, $state, ChapterService, LessonService, ErrorService, EXIT_POPUP) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -53,7 +53,25 @@ angular.module('main')
   });
 
   $scope.selectChapter = function(chapter) {
-    $state.go('main.chapterPage', {chapter: chapter});
+    if(chapter.lessonIds.length === 1) {
+      $ionicLoading.show({
+        template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+      });
+      LessonService.getLessonsWithIds({lessonIds: chapter.lessonIds}).then(
+        function(res) {
+          var lesson = res.data[0];
+          $ionicLoading.hide();
+          if(lesson.isArticle) {
+            $state.go('main.articlePage', {articleId: lesson.articleId});
+          } else {
+            $state.go('main.itemsPage', {lesson: lesson});
+          }
+        }, function(response) {
+          ErrorService.showErrorAlert();
+        });
+    } else {
+      $state.go('main.chapterPage', {chapter: chapter});
+    }
   };
 
 }]);

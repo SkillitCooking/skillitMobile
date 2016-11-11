@@ -5,7 +5,8 @@ angular.module('main')
     templateUrl: 'main/templates/item-collection.html',
     restrict: 'E',
     scope: {
-      collection: '='
+      collection: '=',
+      isRecipeCollection: '='
     },
     link: function (scope, element, attrs) {
       
