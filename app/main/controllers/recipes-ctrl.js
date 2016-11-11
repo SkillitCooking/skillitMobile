@@ -23,15 +23,26 @@ angular.module('main')
   });
 
   $scope.loadedArr = Array(2).fill(false);
+
+  function recipeCollectionSortFn(collectionA, collectionB) {
+    if(collectionA.orderPreference == -1) {
+      return 1;
+    }
+    if(collectionB.orderPreference == -1) {
+      return -1;
+    }
+    if(collectionA.orderPreference < collectionB.orderPreference) {
+      return -1;
+    }
+    if(collectionA.orderPreference > collectionB.orderPreference) {
+      return 1;
+    }
+    return 0;
+  }
   
   ItemCollectionService.getCollectionsForItemType('recipe').then(function(collections) {
     $scope.recipeCollections = collections.data;
-    $scope.recipeCollections.unshift({
-      description: 'Feeling a little creative? Take a look at these recipes that let you choose the ingredients that you want to use.',
-      name: 'Build Your Own',
-      itemType: 'recipe',
-      isBYOCollection: true
-    });
+    $scope.recipeCollections.sort(recipeCollectionSortFn);
     $ionicLoading.hide();
   }, function(response) {
     ErrorService.showErrorAlert();

@@ -19,7 +19,7 @@
     <div ng-repeat="type in BYOIngredientTypes">
       <div ng-if="isNewDisplayName(type)">
         <h3 class="recipe-category">{{type.displayName}}</h3>
-        <p class="min-ingredients-needed">{{getMinNeededText(type.minNeeded)}}</p>
+        <p ng-if="!isCheckboxDisabled(type)" class="min-ingredients-needed">{{getMinNeededText(type.minNeeded)}}</p>
       </div>
       <ion-list class="cook-tab">
         <div ng-repeat="ingredient in type.ingredients" class="ingredient-checkbox-row">

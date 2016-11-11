@@ -31,6 +31,14 @@ angular.module('main')
         }
       };
 
+      scope.isRecipeCollection = function() {
+        if(scope.itemType === 'recipe') {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
       scope.goToCollection = function(collection) {
         var stateName;
         switch(scope.itemType) {

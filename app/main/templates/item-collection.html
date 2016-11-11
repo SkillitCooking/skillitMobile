@@ -1,4 +1,4 @@
-<ion-item class="education-collection item-thumbnail-left" ng-click="">
+<ion-item class="education-collection item-thumbnail-left" ng-if="isRecipeCollection" ng-click="">
   <img ng-if="collection.pictureURL" ng-src="{{collection.pictureURL}}">
   <div class="row">	  
 	<div class="col col-75 col-center">
@@ -6,5 +6,11 @@
 	 </div>
 	 <div class="col col-25"></div>
   </div>
+  <i class="icon ion-chevron-right"></i>
+</ion-item>
+<ion-item class="education-collection item-thumbnail-left" ng-if="!isRecipeCollection" ng-click="">
+  <img ng-if="collection.pictureURL" ng-src="{{collection.pictureURL}}">
+  <h2 class="education-title">{{collection.name}}</h2>
+  <p>{{collection.description}}</p>
   <i class="icon ion-chevron-right"></i>
 </ion-item>

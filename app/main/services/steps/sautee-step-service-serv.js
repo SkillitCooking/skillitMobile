@@ -234,7 +234,7 @@ angular.module('main')
       var sauteeDuration = _.find(step.stepSpecifics, function (specific) {
         return specific.propName === "sauteeDuration";
       }).val;
-      var stepText = "Sautee ";
+      var stepText = "Saute ";
       GeneralTextService.assignIngredientPrefixes(step.ingredientsToSautee);
       GeneralTextService.assignIngredientDisplayNames(step.ingredientsToSautee);
 

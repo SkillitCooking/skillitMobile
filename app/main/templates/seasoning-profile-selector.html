@@ -9,7 +9,7 @@
     <ion-list>
       <ion-checkbox class="individual-recipe-in-list checkbox-balanced" ng-repeat="profile in combinedRecipe.choiceSeasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfile(profile)">
         <h3>{{profile.name}}</h3>
-        <p ng-repeat="spice in profile.spices"><em>• {{spice}}</em></p>
+        <p ng-repeat="spice in profile.spices"><em>• {{capitalize(spice)}}</em></p>
       </ion-checkbox>
       <p style="text-align: center"><button class="button button-spice-up-add-side" ng-if="!showOtherProfiles()" ng-click="showMoreSeasonings()">More Seasonings</button></p>
       <ion-checkbox ng-if="showOtherProfiles()" class="individual-recipe-in-list checkbox-balanced" ng-repeat="profile in seasoningProfiles" ng-model="seasoningProfile" ng-change="changeSeasoningProfileOther(profile)">

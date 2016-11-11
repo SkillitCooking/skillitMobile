@@ -170,6 +170,10 @@ angular.module('main')
     if(recipe.recipeType === 'AlaCarte') {
       return recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
     } else if(recipe.recipeType === 'Full') {
+      //JANKY - fix later using constants, and probably should just change name of Suatee...
+      if(recipe.recipeCategory === 'Sautee') {
+        return 'Stir Frys';
+      }
       return recipe.recipeCategory;
     }
   };
