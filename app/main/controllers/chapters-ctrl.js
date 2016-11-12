@@ -52,7 +52,7 @@ angular.module('main')
     ErrorService.showErrorAlert();
   });
 
-  $scope.selectChapter = function(chapter) {
+  $scope.selectChapter = function(chapter, index) {
     if(chapter.lessonIds.length === 1) {
       $ionicLoading.show({
         template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -62,15 +62,15 @@ angular.module('main')
           var lesson = res.data[0];
           $ionicLoading.hide();
           if(lesson.isArticle) {
-            $state.go('main.articlePage', {articleId: lesson.articleId});
+            $state.go('main.articlePage', {articleId: lesson.articleId, chapters: $scope.chapters, currentChapterIndex: index, lessons: res.data, currentLessonIndex: 0});
           } else {
-            $state.go('main.itemsPage', {lesson: lesson});
+            $state.go('main.itemsPage', {lesson: lesson, chapters: $scope.chapters, currentChapterIndex: index, lessons: res.data, currentLessonIndex: 0});
           }
         }, function(response) {
           ErrorService.showErrorAlert();
         });
     } else {
-      $state.go('main.chapterPage', {chapter: chapter});
+      $state.go('main.chapterPage', {chapter: chapter, chapters: $scope.chapters, index: index});
     }
   };
 

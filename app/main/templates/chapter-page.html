@@ -7,7 +7,9 @@
     <h2 class="recipe-category no-bottom-margin">{{chapter.name}}</h2>
     <p>{{chapter.description}}</p>
     <ion-list>
-      <lesson-item ng-repeat="lesson in lessons" lesson="lesson" ng-click="selectLesson(lesson)"></lesson-item>
+      <lesson-item ng-repeat="lesson in lessons" lesson="lesson" ng-click="selectLesson(lesson, $index)"></lesson-item>
     </ion-list>
+    <button class="button" ng-click="previousChapter()" ng-disabled="isFirstChapter()">Previous</button>
+    <button class="button" ng-click="nextChapter()" ng-disabled="isLastChapter()">Next</button>
   </ion-content>
 </ion-view>

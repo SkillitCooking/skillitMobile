@@ -318,7 +318,9 @@ angular.module('main', [
           }
         },
         params: {
-          chapter: null
+          chapter: null,
+          chapters: null,
+          index: null
         }
       })
       .state('main.articlePage', {
@@ -330,7 +332,11 @@ angular.module('main', [
           }
         },
         params: {
-          articleId: null
+          articleId: null,
+          chapters: null,
+          currentChapterIndex: null,
+          lessons: null,
+          currentLessonIndex: null
         }
       })
       .state('main.itemsPage', {
@@ -342,7 +348,11 @@ angular.module('main', [
           }
         },
         params: {
-          lesson: null
+          lesson: null,
+          chapters: null,
+          currentChapterIndex: null,
+          lessons: null,
+          currentLessonIndex: null
         }
       });
 });
