@@ -24,6 +24,11 @@
         </div>
       </div>
       <div ng-if="accountInfoSelected">
+        <div>
+          <p>Dietary Preferences</p>
+          <p>{{getDietaryPreferencesString()}}</p>
+          <button class="button" ng-click="editPreferences($event)">Edit Preferences</button>
+        </div>
         <div class="list">
           <label class="item item-input">
             <input type="text" ng-change="changeUserInfo()" ng-model="user.firstName" placeholder="First Name"/>

@@ -1,0 +1,14 @@
+<ion-popover-view>
+  <ion-header-bar>
+    <h1 class="title">Dietary Preferences</h1>
+    <button class="button close-x-button" ng-click="closeDietaryPreferencesPopup()">X</button>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-checkbox class="checkbox-balanced" ng-repeat="pref in dietaryPreferences" ng-click="changeUserInfo()" ng-model="pref.isMarked">
+        <h3>{{pref.title}}</h3>
+      </ion-checkbox>
+    </ion-list>
+    <button class="button" ng-click="closeDietaryPreferencesPopup()">Done</button>
+  </ion-content>
+</ion-popover-view>
