@@ -13,7 +13,6 @@ angular.module('main')
   });
 
   service.createPlayer = function(idName, videoId, videoEnd) {
-    console.log('videoEnd', videoEnd);
     var player = new YT.Player(idName, {
       events: {},
       videoId: videoId,

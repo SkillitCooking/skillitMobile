@@ -12,6 +12,10 @@
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 
       <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->
       <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
+      <div>
+        <!--RECIPE BADGES HERE -->
+        <img ng-repeat="badge in recipeBadges" ng-src="{{badge}}">
+      </div>
       <h3>Ingredient List</h3>
       <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
       truly a combined recipe-->

@@ -97,4 +97,15 @@ angular.module('main')
   }).constant('USER', {
     'ID': 'userId',
     'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']
+  }).constant('RECIPE_BADGES', {
+    'EASY_CLEANUP': 'main/assets/images/rounded-rectangle-easy-cleanup.jpg',
+    'LEAN_PROTEIN': 'main/assets/images/rounded-rectangle-lean-protein.jpg',
+    'MINIMAL_PREP': 'main/assets/images/rounded-rectangle-minimal-prep.jpg',
+    'PALEO': 'main/assets/images/rounded-rectangle-paleo.jpg',
+    'PESCATARIAN': 'main/assets/images/rounded-rectangle-pescatarian.jpg',
+    'QUICK_EATS': 'main/assets/images/rounded-rectangle-quick-eats.jpg',
+    'REDUCETARIAN': 'main/assets/images/rounded-rectangle-reducetarian.jpg',
+    'VEGAN': 'main/assets/images/rounded-rectangle-vegan.jpg',
+    'VEGETARIAN': 'main/assets/images/rounded-rectangle-vegetarian.jpg',
+    'WELL_ROUNDED': 'main/assets/images/rounded-rectangle-well-rounded.jpg'
   });
