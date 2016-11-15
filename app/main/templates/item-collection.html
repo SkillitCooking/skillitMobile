@@ -1,12 +1,14 @@
-<ion-item class="education-collection item-thumbnail-left" ng-if="isRecipeCollection" ng-click="">
-  <img ng-if="collection.pictureURL" ng-src="{{collection.pictureURL}}">
-  <div class="row">	  
-	<div class="col col-75 col-center">
-	  	<h2 class="education-title">{{collection.name}}</h2>
-	 </div>
-	 <div class="col col-25"></div>
+<ion-item class="education-collection recipe-categories" ng-if="isRecipeCollection" ng-click="">
+  <div class="row">
+  <div class="col col-36 col-center">
+    <img ng-if="collection.pictureURL" ng-src="{{collection.pictureURL}}">    
   </div>
-  <i class="icon ion-chevron-right"></i>
+  <div class="col col-50 col-center">
+      <h2 class="education-title">{{collection.name}}</h2>
+   </div>
+   <div class="col col-10"></div>
+  </div>
+  <i class="ion-arrow-right-c recipe-selection-arrow chapter"></i>
 </ion-item>
 <ion-item class="education-collection item-thumbnail-left" ng-if="!isRecipeCollection" ng-click="">
   <img ng-if="collection.pictureURL" ng-src="{{collection.pictureURL}}">
