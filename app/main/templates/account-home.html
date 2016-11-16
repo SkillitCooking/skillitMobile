@@ -24,11 +24,14 @@
         </div>
       </div>
       <div ng-if="accountInfoSelected">
-        <div>
-          <p>Dietary Preferences</p>
+          <!--p>Dietary Preferences</p>
           <p>{{getDietaryPreferencesString()}}</p>
-          <button class="button" ng-click="editPreferences($event)">Edit Preferences</button>
-        </div>
+          <button class="button" ng-click="editPreferences($event)">Edit Preferences</button-->
+
+          <ion-list>
+            <p>Dietary Preferences</p>
+            <ion-checkbox class="checkbox-balanced" ng-repeat="pref in dietaryPreferences" ng-model="pref.isMarked" ng-click="changeUserInfo()"><h3>{{pref.title}}</h3></ion-checkbox>
+          </ion-list>
         <div class="list">
           <label class="item item-input">
             <input type="text" ng-change="changeUserInfo()" ng-model="user.firstName" placeholder="First Name"/>

@@ -78,6 +78,7 @@ angular.module('main')
     }).then(function(res) {
       $scope.user = res.data;
       DietaryPreferencesService.getAllDietaryPreferences().then(function(res) {
+          console.log('res: ', res);
           $scope.dietaryPreferences = res.data;
           for (var i = $scope.dietaryPreferences.length - 1; i >= 0; i--) {
             if(_.some($scope.user.dietaryPreferences, function(userPref) {
@@ -144,7 +145,7 @@ angular.module('main')
         case 1: 
           return amendedDietaryPreferences[0].title;
         case 2:
-          return amendedDietaryPreferences[0].title + " and " + $scope.amendedDietaryPreferences[1].title;
+          return amendedDietaryPreferences[0].title + " and " +amendedDietaryPreferences[1].title;
         default:
           var dietaryPreferences = '';
           for (var i = amendedDietaryPreferences.length - 1; i >= 0; i--) {
