@@ -13,36 +13,43 @@
       <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->
       <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
       <div>
-        <!--RECIPE BADGES HERE -->
+      </div>
+      <!--RECIPE BADGES HERE -->
+      <div class="recipe-badges-container">
         <img ng-repeat="badge in recipeBadges" ng-src="{{badge}}">
       </div>
-      <h3>Ingredient List</h3>
-      <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
-      truly a combined recipe-->
-      <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
-      <div ng-repeat="recipeIngredients in ingredientsForRecipes">
-        <h5 ng-if="combinedRecipe.mainVideos">{{recipeIngredients.name}}</h5>
-        <ul> 
-          <li ng-repeat="ingredient in recipeIngredients.ingredients">
-          <!--ingredients such that ingredient.useInRecipe === false should only come through with Fulls-->
-            &nbsp;&nbsp;• <span ng-if="ingredient.useInRecipe">{{ingredient.name}}</span>
-            <s ng-if="!ingredient.useInRecipe">{{ingredient.name}}</s>
-          </li>
-          <li ng-if="categoryNeedsOilOrButter()">
-            &nbsp;&nbsp;• <span>Oil or Butter</span>
-          </li>
-        </ul>
-      </div>
-      <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
-      <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
-        <h3>Seasoning</h3>
-        <h5>Current Seasoning: <span class="current-seasoning">{{seasoningProfile.name}}</span></h5>
-        <ul class="seasoning-spices-list">
-          <li ng-repeat="spice in seasoningProfile.spices">
-            &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
-          </li>
-        </ul>
-        <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>      
+      <div class="row">
+        <div class="col col-75 ingredients-seasoning">
+          <h3>Ingredient List</h3>
+          <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
+          truly a combined recipe-->
+          <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
+          <div ng-repeat="recipeIngredients in ingredientsForRecipes">
+            <h5 ng-if="combinedRecipe.mainVideos">{{recipeIngredients.name}}</h5>
+            <ul> 
+              <li ng-repeat="ingredient in recipeIngredients.ingredients">
+              <!--ingredients such that ingredient.useInRecipe === false should only come through with Fulls-->
+                &nbsp;&nbsp;• <span ng-if="ingredient.useInRecipe">{{ingredient.name}}</span>
+                <s ng-if="!ingredient.useInRecipe">{{ingredient.name}}</s>
+              </li>
+              <li ng-if="categoryNeedsOilOrButter()">
+                &nbsp;&nbsp;• <span>Oil or Butter</span>
+              </li>
+            </ul>
+          </div>
+          <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
+          <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
+            <h3>Seasoning</h3>
+            <h5>Current Seasoning:</h5>
+            <h5 class="current-seasoning">{{seasoningProfile.name}}</h5>
+            <ul class="seasoning-spices-list">
+              <li ng-repeat="spice in seasoningProfile.spices">
+                &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
+              </li>
+            </ul>
+            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>      
+          </div>
+        </div>          
       </div>
       <ion-list class="list">
       <h3>Instructions</h3>

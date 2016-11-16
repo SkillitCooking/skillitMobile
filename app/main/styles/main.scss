@@ -59,6 +59,9 @@ h1 {
 .center {
 	text-align: center;
 }
+.button.button-positive:hover {
+    color: #000;
+}
 
 .bar .button.close-x-button {
     color: $balanced;
@@ -114,9 +117,15 @@ h1 {
 	color: #000000;
 }
 .popup-buttons .button.button-positive {
-    border: 1px solid #000000;
-    background-color: $positive;
+    border: 1px solid $balanced;
+    background-color: #ffffff;
+    color: $balanced;
     font-size: 24px;
+}
+.popup-buttons .button.button-positive:hover {
+    border: 1px solid $balanced;
+    background-color: $balanced;
+    color: #ffffff;
 }
 .popup-body {
 	font-size: 120%;
@@ -124,8 +133,11 @@ h1 {
 .popup-head h3 {
 	font-size: 26px;
 }
-.popover .bar-header {
+/*.popover .bar-header {
 	border-bottom: none !important;
+}*/
+.popup-head {
+    border-bottom: 1px solid #333;
 }
 /**********************************/
 /*BOTTOM NAV TABS*/
@@ -272,7 +284,7 @@ div.ingredient-form-selection {
 h2.ingredient-type-heading {
 	font-size: 27px;
 	margin: 0 0 5px 20px;
-	font-weight: 300;
+	font-weight: 500;
 }
 h4.ingredient-subtype-heading {
 	font-size: 22px;
@@ -437,6 +449,16 @@ h4.ingredient-subtype-heading {
 	margin-bottom: 10px;
 	white-space: normal;
 }
+.recipe-badges-container {
+	position: absolute;
+    right: -10px;
+    margin-top: 5px;
+}
+.recipe-badges-container img {
+    width: 110px;
+    display: block;
+    margin: 0px 0 4px;
+}
 .recipe-instructions.clickableStepClass {
 	box-shadow: 0px 1px 2px #999999;
 }
@@ -462,12 +484,13 @@ h4.ingredient-subtype-heading {
 .recipe-video {
 	margin: 0 auto;
 }
-.cook-present-instructions ul {
-	list-style-type: disc;
+.col.ingredients-seasoning {
+	padding: 0;
 }
 .current-seasoning {
-	font-style: italic;
+	text-decoration: underline;
 	color: #000000;
+	margin: 5px 0;
 }
 .button-spice-up-add-side {
 	border-color: #ef4734;
@@ -833,4 +856,9 @@ h2.chapter-number {
 	.recipe-categories .row .col img {
 		width: 100px;
 	}
+	.recipe-badges-container img {
+	    width: 120px;
+	    display: block;
+	    margin: 0px 0 5px;
+	}	
 }
