@@ -20,6 +20,7 @@ angular.module('main')
       height: 169,
       width: 300,
     });
+    return player;
   };
 
   service.getStatus = function() {

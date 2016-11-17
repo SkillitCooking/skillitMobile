@@ -19,7 +19,10 @@
         </div>
         <div ng-if="!noFavoriteRecipes()">
           <ion-list>
-            <recipe-item ng-repeat="recipe in favoriteRecipes" recipe="recipe" iconclass="" showdatefeatured="false" ng-click="cookFavoriteRecipe(recipe)" isfavorite="true"></recipe-item>
+            <div ng-repeat="recipe in favoriteRecipes">
+              <recipe-item recipe="recipe" iconclass="" showdatefeatured="false" ng-click="cookFavoriteRecipe(recipe)" isfavorite="true"></recipe-item>
+              <button class="button" ng-click="unfavoriteRecipe(recipe)">Remove</button>
+            </div>
           </ion-list>
         </div>
       </div>

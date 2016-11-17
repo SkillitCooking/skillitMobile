@@ -11,7 +11,8 @@ angular.module('main')
       var alertPopup = $ionicPopup.alert({
         title: 'Nobody\'s Perfect',
         template: '<p class="no-ingredient-popup">Mistakes happen in the kitchen...and on our server</p>',
-        cssClass: 'popup-alerts'
+        cssClass: 'popup-alerts',
+        okText: 'Get Cookin\''
       });
       alertPopup.then(function(res) {
         //clearHistory and cache and navigate to cook beginning

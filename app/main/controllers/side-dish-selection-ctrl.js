@@ -106,6 +106,8 @@ angular.module('main')
         _.pull($scope.previousRecipeIds, $scope.alaCarteRecipes[i]._id);
       }
     }
+    //make previous recipes unique
+    $scope.previousRecipeIds = _.uniq($scope.previousRecipeIds);
     if($stateParams.cameFromHome) {
       $state.go('main.cookPresentHome', {recipeIds: $scope.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteSelectedArr, currentSeasoningProfile: $scope.currentSeasoningProfile, sidesAdded: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: false});
     } else if($stateParams.isFavoriteRecipe) {

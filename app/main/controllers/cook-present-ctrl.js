@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'RecipeBadgeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $document, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, RecipeBadgeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
+.controller('CookPresentCtrl', ['_', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $document, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
 
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
@@ -165,7 +165,9 @@ angular.module('main')
     deregisterBackAction();
   });
 
+  console.log('history', angular.copy($ionicHistory.viewHistory()));
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
+  console.log('numBack', $scope.numberBackToRecipeSelection);
   $scope.cameFromHome = $stateParams.cameFromHome;
   $scope.cameFromRecipes = $stateParams.cameFromRecipes;
   $scope.isFavoriteRecipe = $stateParams.isFavoriteRecipe;
@@ -187,6 +189,10 @@ angular.module('main')
     $scope.numberBackToRecipeSelection -= 2;
   }
   $scope.recipeIds = $stateParams.recipeIds;
+  //run initial check for favoriting
+  if($ionicAuth.isAuthenticated()) {
+    $scope.favoriteRecipeId = FavoriteRecipeDetectionService.getFavoriteId($scope.recipeIds);
+  }
   if($stateParams.loadAlaCarte) {
     RecipeService.getRecipesOfType('AlaCarte').then(function(recipes) {
       recipes = recipes.data;
@@ -639,8 +645,10 @@ angular.module('main')
       if($scope.cameFromHome) {
         $ionicHistory.goBack($scope.numberBackToRecipeSelection);
       } else if($scope.cameFromRecipes) {
+        console.log('number back: ', $scope.numberBackToRecipeSelection);
         $ionicHistory.goBack($scope.numberBackToRecipeSelection + 1);
       } else if($scope.cameFromRecipeCollection) {
+        console.log('number back 1: ', $scope.numberBackToRecipeSelection);
         $ionicHistory.goBack($scope.numberBackToRecipeSelection);
       } else { 
         $ionicHistory.goBack($scope.numberBackToRecipeSelection);
@@ -652,7 +660,9 @@ angular.module('main')
     $scope.resetPopup = $ionicPopup.confirm({
       title: 'Reset Selection?',
       template: '<p class="no-ingredient-popup">Do you want to clear your ingredients and start over?</p>',
-      cssClass: ''
+      cssClass: '',
+      cancelText: 'No',
+      okText: 'Yes'
     });
     $scope.resetPopup.pending = true;
     $scope.resetPopup.then(function(res) {
@@ -722,6 +732,24 @@ angular.module('main')
     }
   };
 
+  $scope.unfavoriteRecipe = function(event) {
+    if($ionicAuth.isAuthenticated()) {
+      $ionicLoading.show();
+      FavoriteRecipeService.unfavoriteRecipe({
+        userId: $ionicUser.get(USER.ID),
+        token: $ionicAuth.getToken(),
+        favoriteRecipeId: $scope.favoriteRecipeId
+      }).then(function(res) {
+        $scope.favoriteRecipeId = false;
+        $rootScope.$broadcast('recipeUnfavorited');
+        $ionicLoading.hide();
+      }, function(response) {
+        $ionicLoading.hide();
+        ErrorService.showErrorAlert();
+      });
+    }
+  };
+
   $scope.favoriteRecipe = function (event) {
     if($ionicAuth.isAuthenticated()) {
       var name;
@@ -748,6 +776,8 @@ angular.module('main')
           totalTime: $scope.getRecipeTotalTime()
         }
       }).then(function(res) {
+        //set favoriteId
+        $scope.favoriteRecipeId = res.data._id;
         $rootScope.$broadcast('newRecipeFavorited');
         $ionicPopup.alert({
          title: 'Congrats!',
