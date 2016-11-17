@@ -4,7 +4,7 @@
   </ion-nav-buttons>
   <!-- do you want padding? -->
   <ion-content class="padding">
-    <h2 class="education-title">{{lesson.name}}</h2>
+    <h2 class="education-title color-balanced">{{lesson.name}}</h2>
     <p>{{lesson.description}}</p>
     <ion-list>
       <div ng-repeat="item in items">
@@ -14,7 +14,14 @@
         <training-video-item ng-if="item.itemType === 'trainingVideo'" video="item"></training-video-item>
       </div>
     </ion-list>
-    <button class="button" ng-click="previousThing()" ng-disabled="isFirst()">Previous</button>
-    <button class="button" ng-click="nextThing()" ng-disabled="isLast()">Next</button>
+    <div class="row">
+      <div class="col col-25">
+        <p style="text-align: center"><button class="button button-white-round" ng-click="previousThing()" ng-disabled="isFirst()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></p>
+      </div>
+      <div class="col col-50"></div>
+      <div class="col col-25">
+        <p style="text-align: center"><button class="button button-white-round" ng-click="nextThing()" ng-disabled="isLast()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button></p>
+      </div>
+    </div>    
   </ion-content>
 </ion-view>

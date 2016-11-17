@@ -29,10 +29,15 @@
           <button class="button" ng-click="editPreferences($event)">Edit Preferences</button-->
 
           <ion-list>
-            <p>Dietary Preferences</p>
-            <ion-checkbox class="checkbox-balanced" ng-repeat="pref in dietaryPreferences" ng-model="pref.isMarked" ng-click="changeUserInfo()"><h3>{{pref.title}}</h3></ion-checkbox>
+            <h2 class="recipe-category">Dietary Preferences</h2>
+            <p>Let us know if you have any eating restrictions and we'll hide the relevant ingredients and recipes</p>
+            <div ng-repeat="pref in dietaryPreferences" class="ingredient-checkbox-row">
+              <ion-checkbox class="checkbox-balanced dietary-preference"  ng-model="pref.isMarked" ng-click="changeUserInfo()">
+                {{pref.title}}
+              </ion-checkbox>
+            </div>
           </ion-list>
-        <div class="list">
+        <!--<div class="list">
           <label class="item item-input">
             <input type="text" ng-change="changeUserInfo()" ng-model="user.firstName" placeholder="First Name"/>
           </label>
@@ -47,7 +52,7 @@
             </select>
           </label>
 
-        </div>
+        </div>-->
         <p style="text-align: center"><button class="button button-spice-up-add-side login-signup" ng-disabled="!userInfoHasChanged()" ng-click="saveUserInfo()">Save</button></p>
       </div>
     </div>

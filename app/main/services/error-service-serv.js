@@ -9,9 +9,9 @@ angular.module('main')
     if(!service.isErrorAlready) {
       service.isErrorAlready = true;
       var alertPopup = $ionicPopup.alert({
-        title: 'Oopsy Daisy',
-        template: 'Something unexpected happened that caused an error... we\'ll be looking into it!',
-        cssClass: ''
+        title: 'Nobody\'s Perfect',
+        template: '<p class="no-ingredient-popup">Mistakes happen in the kitchen...and on our server</p>',
+        cssClass: 'popup-alerts'
       });
       alertPopup.then(function(res) {
         //clearHistory and cache and navigate to cook beginning

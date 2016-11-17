@@ -38,6 +38,9 @@ p {
 	color: #333333 !important;
 	font-size: 15px;
 }
+.loading p {
+	color: #dddddd !important;
+}
 span {
 	color: #333333 !important;
 }
@@ -48,7 +51,9 @@ a {
 h1 {
 	font-size: 27px;
 }
-
+.color-balanced {
+	color: $balanced;
+}
 .italic {
 	font-style: italic;
 }
@@ -80,6 +85,15 @@ h1 {
 
 /***********************/
 /*SPACING**/
+.col-36 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 32%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 32%;
+    -ms-flex: 0 0 32%;
+	flex: 0 0 33.3333%;
+	max-width: 32%;
+}
 .col-40 {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 40%;
@@ -88,6 +102,15 @@ h1 {
     -ms-flex: 0 0 40%;
     flex: 0 0 40%;
     max-width: 40%;
+}
+.col-55 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 55%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 55%;
+    -ms-flex: 0 0 55%;
+    flex: 0 0 55%;
+    max-width: 55%;
 }
 .no-bottom-margin {
 	margin-bottom: 0;
@@ -104,6 +127,14 @@ h1 {
 .padding-left-zero {
 	padding-left: 0;
 } 
+.button-float-left {
+	float: left;
+	margin-left: 20px;
+}
+.button-float-right {
+	float: right;
+	margin-right: 20px;
+}
 /***********************/
 /*POPUPS*/
 .popup-container .popup {
@@ -116,28 +147,33 @@ h1 {
 	font-size: 20px;
 	color: #000000;
 }
-.popup-buttons .button.button-positive {
+.popup-buttons .button {
     border: 1px solid $balanced;
     background-color: #ffffff;
     color: $balanced;
     font-size: 24px;
 }
-.popup-buttons .button.button-positive:hover {
+.popup-buttons .button:hover {
     border: 1px solid $balanced;
     background-color: $balanced;
     color: #ffffff;
 }
 .popup-body {
-	font-size: 120%;
+	padding: 5px 10px;
+}
+.popup-body p {
+	font-size: 17px;
+	margin: 5px 0;
 }
 .popup-head h3 {
-	font-size: 26px;
+	font-size: 24px;
 }
 /*.popover .bar-header {
 	border-bottom: none !important;
 }*/
 .popup-head {
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #333333;
+    padding: 5px;
 }
 /**********************************/
 /*BOTTOM NAV TABS*/
@@ -344,10 +380,6 @@ h4.ingredient-subtype-heading {
 	width: 80px;
 	height: 80px;
 }
-.col-36 {
-	flex: 0 0 33.3333%;
-	max-width: 32%;
-}
 .cook-recipe-selection .item, .cook-recipe-selection .item p, .cook-recipe-selection .item h2 {
 	white-space: normal; 
 }
@@ -391,7 +423,7 @@ h4.ingredient-subtype-heading {
 	margin: 10px 0;
 }
 .cook-recipe-selection button {
-	font-family: 'pompiere', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 21px;	
 }
 .cook-recipe-selection .col-50.col-center {
@@ -504,7 +536,6 @@ h4.ingredient-subtype-heading {
 	min-width: 110px;
 }
 .button-spice-up-add-side.reset-password {
-	max-width: 110px;
 	font-size: 17px;
 }
 .button-spice-up-add-side:hover, .button-spice-up-add-side:active {
@@ -529,7 +560,7 @@ h4.ingredient-subtype-heading {
 	position: fixed;
 	bottom: 30%;
 	left: 34%;
-	font-family: 'pompiere', sans-serif;
+	font-family: 'Open Sans', sans-serif;
     font-size: 21px;
     border-radius: 8px;
 	border-color: #ef4734;
@@ -669,7 +700,7 @@ h3.side-dish-header {
 	margin-top: 10px;
 }
 .min-ingredients-needed {
-	font-family: 'Pompiere', cursive;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 18px;
 }
 
@@ -801,7 +832,7 @@ h2.chapter-number {
 	padding: 0;
 }
 .recipe-categories .row {
-	padding: 1px;
+	height: 80px;
 }
 .col-55 {
     -webkit-box-flex: 0;
@@ -812,11 +843,13 @@ h2.chapter-number {
     flex: 0 0 55%;
     max-width: 55%;
 }
-.recipe-categories .col-50 {
-	padding-left: 0;
+.recipe-category-cover-image {
+	flex: 0 0 28%;
+	max-width: 28%;
+	padding: 0;
 }
-.recipe-categories .recipe-selection-arrow {
-	top: 39%;
+.recipe-categories .col-55 {
+	padding-left: 10px;
 }
 /*************ACCOUNT TAB***************/
 /**************************************/
@@ -826,8 +859,18 @@ h2.chapter-number {
 .account-tab .button-bar {
 	margin-bottom: 10px;
 }
-
-
+.dietary-preference.item-checkbox {
+	padding: 10px 0 10px 50px;
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+}
+.social-login-buttons .button {
+	width: 120px;
+}
+.login-screen .login-signup.button {
+	margin: 0;
+}
 /**************************************/
 /*RESPONSIVE*/
 /*recipe selection tab*/
@@ -854,8 +897,15 @@ h2.chapter-number {
 	    left: 37%;
 	}	
 	.recipe-categories .row .col img {
-		width: 100px;
+		width: 90px;
 	}
+	.recipe-categories .row {
+		height: 90px;
+	}
+	.recipe-category-cover-image {
+		flex: 0 0 27%;
+		max-width: 27%;
+	}	
 	.recipe-badges-container img {
 	    width: 120px;
 	    display: block;

@@ -1,4 +1,13 @@
-<div>
+<div class="login-screen">
+  <h2 class="recipe-category">Create an Account</h2>
+  <p>Save your favorite dishes, select any dietary restrictions, and receive tailored recipes just for you!</p>  
+  <p style="text-align: center; font-weight: 700">Sign Up or Login for an Account Using:</p>
+  <div class="row social-login-buttons">
+    <div class="col col-50"><p style="text-align: center"><button class="button icon-right button-royal" ng-click="signInFacebook()">Facebook</button></p></div>
+    <div class="col col-50"><p style="text-align: center"><button class="button icon-right button-assertive" ng-click="signInGoogle()">Google</button></p></div>
+  </div>
+  <br>
+  <p style="text-align: center; font-weight: 700">Too Cool for Social Media?<br>We Get Down with Email, too:</p>
   <div class="list">
     <label class="item item-input">
       <input type="text" ng-model="email" placeholder="Email" />
@@ -11,16 +20,9 @@
     </label>
   </div>
   <div class="row">
-    <div class="col"><p style="text-align: center"><button class="button icon-right ion-social-facebook button-royal" ng-click="signInFacebook()">Log In with Facebook</button></p></div>
-  </div>
-  <div class="row">
-    <div class="col"><p style="text-align: center"><button class="button icon-right ion-social-googleplus button-assertive" ng-click="signInGoogle()">Log In with Google</button></p></div>
-  </div>  
-  <div class="row">
     <div class="col col-50"><p style="text-align: center"><button class="button button-spice-up-add-side login-signup" ng-click="signIn()" ng-disabled="isSignInDisabled()">Log In</button></p></div>
     <div class="col col-50"><p style="text-align: center"><button class="button button-spice-up-add-side login-signup" ng-click="signUp()" ng-disabled="isSignUpDisabled()">Sign Up</button></p></div>
   </div>  
-  <div class="row">
-    <div class="col"><p style="text-align: center"><button class="button button-spice-up-add-side reset-password" ng-click="resetCredentials()">Reset Password</button></p></div>    
+  <p style="text-align: center"><button class="button button-spice-up-add-side reset-password" ng-click="resetCredentials()">Reset Password</button></p>
   </div>
 </div>
