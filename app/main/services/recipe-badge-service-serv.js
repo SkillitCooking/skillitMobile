@@ -188,43 +188,33 @@ angular.module('main')
     var badges = [];
     if(isEasyCleanup(recipe)) {
       badges.push(RECIPE_BADGES.EASY_CLEANUP);
-      console.log('easy');
     }
     if(isLeanProtein(recipe)) {
       badges.push(RECIPE_BADGES.LEAN_PROTEIN);
-      console.log('lean');
     }
     if(isMinimalPrep(recipe)) {
       badges.push(RECIPE_BADGES.MINIMAL_PREP);
-      console.log('minimal');
     }
     if (isPaleo(recipe)) {
       badges.push(RECIPE_BADGES.PALEO);
-      console.log('paleo');
     }
     if(isPescatarian(recipe)) {
       badges.push(RECIPE_BADGES.PESCATARIAN);
-      console.log('fish');
     }
     if(isQuickEats(recipe)) {
       badges.push(RECIPE_BADGES.QUICK_EATS);
-      console.log('quick');
     }
     if(isReducetarian(recipe)) {
       badges.push(RECIPE_BADGES.REDUCETARIAN);
-      console.log('reduce');
     }
     if(isVegan(recipe)) {
       badges.push(RECIPE_BADGES.VEGAN);
-      console.log('vegan');
     }
     if(isVegetarian(recipe)) {
       badges.push(RECIPE_BADGES.VEGETARIAN);
-      console.log('veg');
     }
     if(isWellRounded(recipe)) {
       badges.push(RECIPE_BADGES.WELL_ROUNDED);
-      console.log('well');
     }
     return badges;
   };

@@ -4,8 +4,8 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'http://138.68.45.225:3000/api/',
-    'CHANNEL': 'production'
+        'SERVER_URL': 'http://localhost:8000/api/',
+    'CHANNEL': 'dev'
         /*endinject*/
     },
     BUILD : {

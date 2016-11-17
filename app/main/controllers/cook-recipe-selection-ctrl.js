@@ -278,7 +278,9 @@ angular.module('main')
     $scope.resetPopup = $ionicPopup.confirm({
       title: 'Reset Everything?',
       template: 'Do you want to start over with new ingredients?',
-      cssClass: ''
+      cssClass: '',
+      cancelText: 'No',
+      okText: 'Yes'
     });
     $scope.resetPopup.pending = true;
     $scope.resetPopup.then(function(res) {

@@ -183,7 +183,6 @@ angular.module('main')
       combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
       combinedRecipe.mainVideos = _.map(recipes, function(recipe) {
         if(recipe.mainVideo && recipe.mainVideo.videoId) {
-          console.log('name', recipe.name);
           return recipe.mainVideo;
         }
       });
@@ -191,6 +190,15 @@ angular.module('main')
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
         combinedRecipe.recipeCategorys.push(recipes[i].recipeCategory);
+      }
+      //create combined ingredientList for badges
+      combinedRecipe.ingredientList = {
+        ingredientTypes: [],
+        equipmentNeeded: []
+      };
+      for (var i = recipes.length - 1; i >= 0; i--) {
+        Array.prototype.push.apply(combinedRecipe.ingredientList.ingredientTypes, recipes[i].ingredientList.ingredientTypes);
+        Array.prototype.push.apply(combinedRecipe.ingredientList.equipmentNeeded, recipes[i].ingredientList.equipmentNeeded);
       }
       //reverse recipe steps for popping
       for (var i = recipes.length - 1; i >= 0; i--) {

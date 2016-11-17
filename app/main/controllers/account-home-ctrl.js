@@ -13,16 +13,35 @@ angular.module('main')
     $ionicLoading.show();
   });
 
-  $scope.$on('newRecipeFavorited', function(event) {
-    event.preventDefault();
+  function favoriteRecipeEventHandler(event) {
+    if(event) {
+      event.preventDefault();
+    }
     FavoriteRecipeService.getFavoriteRecipesForUser({
         userId: $ionicUser.get(USER.ID),
         token: $ionicAuth.getToken()
       }).then(function(res) {
         $scope.favoriteRecipes = res.data;
+        var favoriteRecipeIds = _.map($scope.favoriteRecipes, function(favRecipe) {
+          return {
+            _id: favRecipe._id,
+            recipeIds: favRecipe.recipeIds
+          };
+        });
+        $ionicUser.set('favoriteRecipeIds', favoriteRecipeIds);
+        $ionicUser.save();
+        //set favorite recipes to $ionicUser
       }, function(response) {
         ErrorService.showErrorAlert();
       });
+  }
+
+  $scope.$on('recipeUnfavorited', function(event) {
+    favoriteRecipeEventHandler(event);
+  });
+
+  $scope.$on('newRecipeFavorited', function(event) {
+    favoriteRecipeEventHandler(event);
   });
 
   $scope.$on('signInStop', function(event, removePopover, fetchRecipes) {
@@ -33,6 +52,15 @@ angular.module('main')
         token: $ionicAuth.getToken()
       }).then(function(res) {
         $scope.favoriteRecipes = res.data;
+        //set fav recipes to $ionicUser
+         var favoriteRecipeIds = _.map($scope.favoriteRecipes, function(favRecipe) {
+          return {
+            _id: favRecipe._id,
+            recipeIds: favRecipe.recipeIds
+          };
+        });
+        $ionicUser.set('favoriteRecipeIds', favoriteRecipeIds);
+        $ionicUser.save();
         $ionicLoading.hide();
       }, function(response) {
         ErrorService.showErrorAlert();
@@ -69,6 +97,15 @@ angular.module('main')
       token: $ionicAuth.getToken()
     }).then(function(res) {
       $scope.favoriteRecipes = res.data;
+      //set favorite recipes to $ionicUser
+       var favoriteRecipeIds = _.map($scope.favoriteRecipes, function(favRecipe) {
+          return {
+            _id: favRecipe._id,
+            recipeIds: favRecipe.recipeIds
+          };
+        });
+        $ionicUser.set('favoriteRecipeIds', favoriteRecipeIds);
+        $ionicUser.save();
     }, function(response) {
       ErrorService.showErrorAlert();
     });
@@ -78,7 +115,6 @@ angular.module('main')
     }).then(function(res) {
       $scope.user = res.data;
       DietaryPreferencesService.getAllDietaryPreferences().then(function(res) {
-          console.log('res: ', res);
           $scope.dietaryPreferences = res.data;
           for (var i = $scope.dietaryPreferences.length - 1; i >= 0; i--) {
             if(_.some($scope.user.dietaryPreferences, function(userPref) {
@@ -231,6 +267,40 @@ angular.module('main')
       alaCarteRecipes: [],
       alaCarteSelectedArr: []
     });
+  };
+
+  $scope.unfavoriteRecipe = function(favRecipe) {
+    if($ionicAuth.isAuthenticated()) {
+      $ionicLoading.show();
+      FavoriteRecipeService.unfavoriteRecipe({
+        userId: $ionicUser.get(USER.ID),
+        token: $ionicAuth.getToken(),
+        favoriteRecipeId: favRecipe._id
+      }).then(function(res) {
+        FavoriteRecipeService.getFavoriteRecipesForUser({
+          userId: $ionicUser.get(USER.ID),
+          token: $ionicAuth.getToken()
+        }).then(function(res) {
+          $scope.favoriteRecipes = res.data;
+          var favoriteRecipeIds = _.map($scope.favoriteRecipes, function(favRecipe) {
+            return {
+              _id: favRecipe._id,
+              recipeIds: favRecipe.recipeIds
+            };
+          });
+          $ionicUser.set('favoriteRecipeIds', favoriteRecipeIds);
+          $ionicUser.save();
+          $ionicLoading.hide();
+          //set favorite recipes to $ionicUser
+        }, function(response) {
+          $ionicLoading.hide();
+          ErrorService.showErrorAlert();
+        });
+      }, function(response) {
+        $ionicLoading.hide();
+        ErrorService.showErrorAlert();
+      });
+    }
   };
 
   $scope.logout = function() {

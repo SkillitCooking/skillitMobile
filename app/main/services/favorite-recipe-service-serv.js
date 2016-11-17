@@ -12,6 +12,9 @@ angular.module('main')
     },
     favoriteRecipeUsedForUser: function(info) {
       return baseFavoriteRecipes.customPOST(info, 'favoriteRecipeUsedForUser');
+    },
+    unfavoriteRecipe: function(info) {
+      return baseFavoriteRecipes.customPOST(info, 'unfavoriteRecipe');
     }
   };
 });

@@ -11,7 +11,8 @@ angular.module('main')
       var alertPopup = $ionicPopup.alert({
         title: 'Oopsy Daisy',
         template: 'Something unexpected happened that caused an error... we\'ll be looking into it!',
-        cssClass: ''
+        cssClass: '',
+        okText: 'Get Cookin\''
       });
       alertPopup.then(function(res) {
         //clearHistory and cache and navigate to cook beginning
