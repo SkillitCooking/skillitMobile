@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, ErrorService, EXIT_POPUP, INPUTCATEGORIES) {
+.controller('CookCtrl', ['$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'USER', function ($rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, USER) {
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -9,6 +9,29 @@ angular.module('main')
       return 1;
     } else {
       return 0;
+    }
+  }
+
+  $scope.$on('$ionicView.loaded', function(event, data) {
+    if(!$localStorage.hasSeenIntro) {
+    console.log('has not seen intro');
+    $localStorage.hasSeenIntro = true;
+    $ionicModal.fromTemplateUrl('main/templates/intro-slides-modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.introModal = modal;
+      $scope.introModal.show();
+    });
+  } else {
+    $localStorage.hasSeenIntro = false;
+    console.log('hasSeenIntro');
+  }
+  });
+
+  $scope.closeIntroModal = function() {
+    if($scope.introModal) {
+      $scope.introModal.remove();
     }
   }
 
@@ -79,7 +102,14 @@ angular.module('main')
     }
   });
 
-  IngredientService.getIngredientsForSelection().then(function(response){
+  var userId, userToken;
+
+  if($ionicAuth.isAuthenticated()) {
+    userId = $ionicUser.get(USER.ID);
+    userToken = $ionicAuth.getToken();
+  }
+
+  IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
     $scope.ingredientCategories = response.data;
     $scope.inputCategoryArray = [];
     //set first form of all ingredients to selected

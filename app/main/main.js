@@ -4,7 +4,8 @@ angular.module('main', [
   'ngCordova',
   'ui.router',
   'restangular',
-  'ionic.cloud'
+  'ionic.cloud',
+  'ngStorage'
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
@@ -35,13 +36,36 @@ angular.module('main', [
   RestangularProvider.setBaseUrl(Config.ENV.SERVER_URL);
 
   // ROUTING with ui.router
-  $urlRouterProvider.otherwise('main/cook');
+  $urlRouterProvider.otherwise('/root');
   $stateProvider
     // this state is placed in the <ion-nav-view> in the index.html
     .state('main', {
       url: '/main',
       abstract: true,
       templateUrl: 'main/templates/tabs.html'
+    })
+    .state('root', {
+      url: '/root',
+      onEnter: function($state, $localStorage) {
+        if($localStorage.hasSeenIntro) {
+          console.log('here');
+          $state.go('main.cook');
+          $localStorage.hasSeenIntro = false;
+        } else {
+          console.log('there');
+          $state.go('introSlides');
+          $localStorage.hasSeenIntro = true;
+        }
+      }
+    })
+    .state('introSlides', {
+      url: '/introSlides',
+      views: {
+        'intro-slides': {
+          templateUrl: 'app/main/templates/intro-slides.html',
+          controller: 'IntroSlidesCtrl as ctrl'
+        }
+      }
     })
       .state('main.account', {
         url: '/account',

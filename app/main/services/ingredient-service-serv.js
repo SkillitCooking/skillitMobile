@@ -5,8 +5,8 @@ angular.module('main')
   var baseIngredients = Restangular.all('ingredients');
 
   return {
-    getIngredientsForSelection: function () {
-      return baseIngredients.customGET('getIngredientsForSelection');
+    getIngredientsForSelection: function (userId, userToken) {
+      return baseIngredients.customGET(/*{userId: userId, userToken: userToken},*/ 'getIngredientsForSelection');
     }
   };
 
