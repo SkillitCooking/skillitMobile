@@ -10,7 +10,6 @@ angular.module('main')
     },
     link: function (scope, element, attrs) {
     	scope.$on('$ionicSlides.sliderInitialized', function(event, data) {
-            console.log('data', data);
     		scope.slider = data.slider;
     	});
 
@@ -22,6 +21,11 @@ angular.module('main')
             } else {
                 return "fa fa-circle-thin fa-lg fa-inverse";
             }
+        };
+
+        scope.startIntro = function() {
+            //index 1 is where the meat of the intro starts
+            scope.slider.slideTo(1);
         };
 
         scope.goToSlide = function(index) {
