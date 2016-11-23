@@ -98,51 +98,51 @@ angular.module('main')
     'ID': 'userId',
     'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']
   }).constant('RECIPE_BADGES', {
-    'EASY_CLEANUP': 'main/assets/images/rounded-rectangle-easy-cleanup.jpg',
-    'LEAN_PROTEIN': 'main/assets/images/rounded-rectangle-lean-protein.jpg',
-    'MINIMAL_PREP': 'main/assets/images/rounded-rectangle-minimal-prep.jpg',
-    'PALEO': 'main/assets/images/rounded-rectangle-paleo.jpg',
-    'PESCATARIAN': 'main/assets/images/rounded-rectangle-pescatarian.jpg',
-    'QUICK_EATS': 'main/assets/images/rounded-rectangle-quick-eats.jpg',
-    'REDUCETARIAN': 'main/assets/images/rounded-rectangle-reducetarian.jpg',
-    'VEGAN': 'main/assets/images/rounded-rectangle-vegan.jpg',
-    'VEGETARIAN': 'main/assets/images/rounded-rectangle-vegetarian.jpg',
-    'WELL_ROUNDED': 'main/assets/images/rounded-rectangle-well-rounded.jpg'
+    'EASY_CLEANUP': 'main/assets/images/recipe_badges/rounded-rectangle-easy-cleanup.jpg',
+    'LEAN_PROTEIN': 'main/assets/images/recipe_badges/rounded-rectangle-lean-protein.jpg',
+    'MINIMAL_PREP': 'main/assets/images/recipe_badges/rounded-rectangle-minimal-prep.jpg',
+    'PALEO': 'main/assets/images/recipe_badges/rounded-rectangle-paleo.jpg',
+    'PESCATARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-pescatarian.jpg',
+    'QUICK_EATS': 'main/assets/images/recipe_badges/rounded-rectangle-quick-eats.jpg',
+    'REDUCETARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-reducetarian.jpg',
+    'VEGAN': 'main/assets/images/recipe_badges/rounded-rectangle-vegan.jpg',
+    'VEGETARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-vegetarian.jpg',
+    'WELL_ROUNDED': 'main/assets/images/recipe_badges/rounded-rectangle-well-rounded.jpg'
  }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',
         'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
-        'screenshot_ios': 'main/assets/images/slide-1-ios-ingredients.png',
-        'screenshot_android': 'main/assets/images/slide-1-android-ingredients.png'
+        'screenshot_ios': 'main/assets/images/ios-walkthrough/ingredients-1.png',
+        'screenshot_android': 'main/assets/images/android_walkthrough/android_walkthrough/ingredients-1.png'
     },
     {
         'header': 'Select Recipe',
         'subtitle': 'Choose one of our recipes or use \'Build Your Own\' to make your perfect dish',
-        'screenshot_ios': 'main/assets/images/slide-2-ios-selection.png',
-        'screenshot_android': 'main/assets/images/slide-2-android-selection.png'
+        'screenshot_ios': 'main/assets/images/ios-walkthrough/selection-2.png',
+        'screenshot_android': 'main/assets/images/android_walkthrough/selection-2.png'
     },
     {
         'header': 'Customize Away',
         'subtitle': 'Feeling hungry? Add some sides. Feeling adventurous? Try different spices.',
-        'screenshot_ios': 'main/assets/images/slide-3-ios-present-1.png',
-        'screenshot_android': 'main/assets/images/slide-3-android-instructions-1.png'
+        'screenshot_ios': 'main/assets/images/ios-walkthrough/present-3.png',
+        'screenshot_android': 'main/assets/images/android_walkthrough/present-3.png'
     },
     {
         'header': 'Learn As You Go',
         'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
-        'screenshot_ios': 'main/assets/images/slide-4-ios-present-2.png',
-        'screenshot_android': 'main/assets/images/slide-4-android-instructions-2.png'
+        'screenshot_ios': 'main/assets/images/ios-walkthrough/present-instructions-4.png',
+        'screenshot_android': 'main/assets/images/android_walkthrough/present-instructions-4.png'
     },
     {
         'header': 'Discover',
         'subtitle': 'Not sure what you want to cook with? Browse different recipe collections.',
-        'screenshot_ios': 'main/assets/images/slide-5-ios-browse.png',
-        'screenshot_android': 'main/assets/images/slide-5-android-browse.png'
+        'screenshot_ios': 'main/assets/images/ios-walkthrough/browse-5.png',
+        'screenshot_android': 'main/assets/images/android_walkthrough/browse-5.png'
     },
     {
         'header': 'Educate Yo\'Self',
         'subtitle': 'Learn what you need to know to skillit in the kitchen',
-        'screenshot_ios': 'main/assets/images/slide-6-ios-learn.png',
-        'screenshot_android': 'main/assets/images/slide-6-android-learn.png'
+        'screenshot_ios': 'main/assets/images/ios-walkthrough/learn-6.png',
+        'screenshot_android': 'main/assets/images/android_walkthrough/learn-6.png'
     }
   ]);
