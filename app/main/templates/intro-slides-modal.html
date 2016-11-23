@@ -1,20 +1,6 @@
-<ion-modal-view>
+<ion-view hide-nav-bar="true">
   <!-- do you want padding? -->
-  <ion-content scroll="false" class="padding">
+  <!--intro-slides slides="introSlides" modal="introModal"></intro-slides-->
 
-    <!-- content goes here -->
-    <ion-slides  options="options" slider="data.slider">
-    <ion-slide-page>
-      <div class="box blue"><h1>BLUE</h1></div>
-    </ion-slide-page>
-    <ion-slide-page>
-      <div class="box yellow"><h1>YELLOW</h1></div>
-    </ion-slide-page>
-    <ion-slide-page>
-      <div class="box pink"><h1>PINK</h1></div>
-      <button class="button" ng-click="closeIntroModal()">Close</button>
-    </ion-slide-page>
-  </ion-slides>
-
-  </ion-content>
-</ion-modal-view>
+     <intro-slides slides="introSlides"></intro-slides>
+</ion-view>

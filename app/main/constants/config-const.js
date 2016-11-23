@@ -108,4 +108,41 @@ angular.module('main')
     'VEGAN': 'main/assets/images/rounded-rectangle-vegan.jpg',
     'VEGETARIAN': 'main/assets/images/rounded-rectangle-vegetarian.jpg',
     'WELL_ROUNDED': 'main/assets/images/rounded-rectangle-well-rounded.jpg'
-  });
+  }).constant('INTRO_SLIDES', [
+    {
+        'header': 'Input Ingredients',
+        'subtitle': 'Tell us what ya got, and we\'ll show you how to make it!',
+        'screenshot_ios': 'main/assets/images/slide-1-ios-ingredients.png',
+        'screenshot_android': 'main/assets/images/slide-1-android-ingredients.png'
+    },
+    {
+        'header': 'Choose a Recipe',
+        'subtitle': 'Find a tasty recipe or build your own. Add some tasty sides if you like',
+        'screenshot_ios': 'main/assets/images/slide-2-ios-selection.png',
+        'screenshot_android': 'main/assets/images/slide-2-android-selection.png'
+    },
+    {
+        'header': 'Make what You Want',
+        'subtitle': 'Bro brah, these recipes are like super-duper customizable',
+        'screenshot_ios': 'main/assets/images/slide-3-ios-present-1.png',
+        'screenshot_android': 'main/assets/images/slide-3-android-instructions-1.png'
+    },
+    {
+        'header': 'Time to Cook',
+        'subtitle': 'Every recipe includes a video and step-by-step instructions',
+        'screenshot_ios': 'main/assets/images/slide-4-ios-present-2.png',
+        'screenshot_android': 'main/assets/images/slide-4-android-instructions-2.png'
+    },
+    {
+        'header': 'Browsing is Nice',
+        'subtitle': 'Doods, you can just go and look at sick food pics',
+        'screenshot_ios': 'main/assets/images/slide-5-ios-browse.png',
+        'screenshot_android': 'main/assets/images/slide-5-android-browse.png'
+    },
+    {
+        'header': 'Hey Guurrrl',
+        'subtitle': 'You like learning? We got some nice learning over here',
+        'screenshot_ios': 'main/assets/images/slide-6-ios-learn.png',
+        'screenshot_android': 'main/assets/images/slide-6-android-learn.png'
+    }
+  ]);

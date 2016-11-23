@@ -1,0 +1,21 @@
+<ion-slides options="{pagination: false}" slider="data.slider">
+    <!--intro-slide ng-repeat="slide in slides" header="slide.header" subtitle="slide.subtitle" screenshot="getScreenshot(slide)" index="$index" slide-count="slideCount" modal="modal" slider="slider"></intro-slide-->
+    <ion-slide-page ng-repeat="slide in slides" ng-init="slideIndex = $index" class="intro-slide-background">
+      <ion-content scroll="true">
+        <h3>{{slide.header}}</h3>
+        <h3>{{slide.subtitle}}</h3>
+        <img ng-src="{{getScreenshot(slide)}}">
+        <div ng-repeat="n in slideCount track by $index">
+          <i ng-class="getDotClass(slideIndex, $index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+        </div>
+        <button class="button" ng-click="signUp()">Sign Up</button>
+        <button class="button" ng-click="getCooking()">Get Cooking</button>
+      </ion-content>
+    </ion-slide-page>
+    <ion-slide-page class="intro-slide-background">
+      <ion-content scroll="true">
+        <login-directive></login-directive>
+        <button class="button" ng-click="closeIntro()">Close</button>
+      </ion-content>
+    </ion-slide-page>
+</ion-slides>

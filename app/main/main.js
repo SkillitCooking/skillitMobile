@@ -58,11 +58,11 @@ angular.module('main', [
         }
       }
     })
-    .state('introSlides', {
+    .state('main.introSlides', {
       url: '/introSlides',
       views: {
         'intro-slides': {
-          templateUrl: 'app/main/templates/intro-slides.html',
+          templateUrl: 'main/templates/intro-slides-modal.html',
           controller: 'IntroSlidesCtrl as ctrl'
         }
       }

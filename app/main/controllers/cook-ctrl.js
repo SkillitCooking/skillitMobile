@@ -16,13 +16,14 @@ angular.module('main')
     if(!$localStorage.hasSeenIntro) {
     console.log('has not seen intro');
     $localStorage.hasSeenIntro = true;
-    $ionicModal.fromTemplateUrl('main/templates/intro-slides-modal.html', {
+    /*$ionicModal.fromTemplateUrl('main/templates/intro-slides-modal.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.introModal = modal;
       $scope.introModal.show();
-    });
+    });*/
+    $state.go('main.introSlides');
   } else {
     $localStorage.hasSeenIntro = false;
     console.log('hasSeenIntro');

@@ -47,9 +47,9 @@
                 &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
               </li>
             </ul>
-            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>      
+            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>
           </div>
-        </div>          
+        </div>
       </div>
       <ion-list class="list">
       <h3>Instructions</h3>
@@ -61,7 +61,7 @@
           <button class="button button-white-round" ng-click="decrementMainVideo()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
         </div>
         <div class="col col-50 col-center">
-          <div ng-repeat="indicator in mainVideoIndicators track by $index">      
+          <div ng-repeat="indicator in mainVideoIndicators track by $index">
             <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
           </div>
         </div>
