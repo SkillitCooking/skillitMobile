@@ -879,6 +879,41 @@ h2.chapter-number {
 .login-screen .login-signup.button {
 	margin: 0;
 }
+
+/***************************************/
+/*WALKTHROUGH*/
+.walkthrough-img-container {
+	text-align: center;
+}
+.walkthrough-img-container img {
+	max-width: 45%;
+	margin: 0 auto;
+}
+h3.walkthrough-top-header {
+	color: #ffffff;
+	text-align: center;
+	margin: 20px 8px 10px;
+}
+p.walkthrough-subheader {
+	text-align: center;
+	margin: 0 10px 10px;
+	font-size: 16px;
+	height: 50px;
+}
+.walkthrough-slider-dots {
+	display: inline-block;
+	margin: 0 2px;
+}
+.button.get-cooking {
+    border: 1px solid #fff;
+    background-color: transparent;
+    color: #fff;
+    border-radius: 8px;
+    margin: 20px 0 0;	
+}
+.button.skip-button {
+    background-color: transparent;
+}
 /**************************************/
 /*RESPONSIVE*/
 /*recipe selection tab*/
@@ -919,4 +954,13 @@ h2.chapter-number {
 	    display: block;
 	    margin: 0px 0 5px;
 	}	
+	p.walkthrough-subheader {
+		font-size: 18px;
+	}
+	.button.get-cooking {
+	    margin: 30px 0 10px;	
+	}	
+	.walkthrough-img-container img {
+		max-width: 50%;
+	}
 }

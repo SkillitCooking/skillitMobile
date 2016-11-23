@@ -4,8 +4,8 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'http://107.170.199.250:3000/api/',
-    'CHANNEL': 'dev'
+        'SERVER_URL': 'http://138.68.45.225:3000/api/',
+    'CHANNEL': 'production'
         /*endinject*/
     },
     BUILD : {
@@ -108,40 +108,40 @@ angular.module('main')
     'VEGAN': 'main/assets/images/rounded-rectangle-vegan.jpg',
     'VEGETARIAN': 'main/assets/images/rounded-rectangle-vegetarian.jpg',
     'WELL_ROUNDED': 'main/assets/images/rounded-rectangle-well-rounded.jpg'
-  }).constant('INTRO_SLIDES', [
+ }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',
-        'subtitle': 'Tell us what ya got, and we\'ll show you how to make it!',
+        'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
         'screenshot_ios': 'main/assets/images/slide-1-ios-ingredients.png',
         'screenshot_android': 'main/assets/images/slide-1-android-ingredients.png'
     },
     {
-        'header': 'Choose a Recipe',
-        'subtitle': 'Find a tasty recipe or build your own. Add some tasty sides if you like',
+        'header': 'Select Recipe',
+        'subtitle': 'Choose from Skillit meals or use \'Build Your Own\' to make your perfect dish',
         'screenshot_ios': 'main/assets/images/slide-2-ios-selection.png',
         'screenshot_android': 'main/assets/images/slide-2-android-selection.png'
     },
     {
-        'header': 'Make what You Want',
-        'subtitle': 'Bro brah, these recipes are like super-duper customizable',
+        'header': 'Customize Away',
+        'subtitle': 'Feeling hungry? Add some sides. Feeling adventurous? Try different spices.',
         'screenshot_ios': 'main/assets/images/slide-3-ios-present-1.png',
         'screenshot_android': 'main/assets/images/slide-3-android-instructions-1.png'
     },
     {
-        'header': 'Time to Cook',
-        'subtitle': 'Every recipe includes a video and step-by-step instructions',
+        'header': 'Learn As You Go',
+        'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
         'screenshot_ios': 'main/assets/images/slide-4-ios-present-2.png',
         'screenshot_android': 'main/assets/images/slide-4-android-instructions-2.png'
     },
     {
-        'header': 'Browsing is Nice',
-        'subtitle': 'Doods, you can just go and look at sick food pics',
+        'header': 'Discover',
+        'subtitle': 'Not sure what you want to cook with? Browse different recipe collections.',
         'screenshot_ios': 'main/assets/images/slide-5-ios-browse.png',
         'screenshot_android': 'main/assets/images/slide-5-android-browse.png'
     },
     {
-        'header': 'Hey Guurrrl',
-        'subtitle': 'You like learning? We got some nice learning over here',
+        'header': 'Educate Yo\'Self',
+        'subtitle': 'Learn what you need to know to skillit in the kitchen',
         'screenshot_ios': 'main/assets/images/slide-6-ios-learn.png',
         'screenshot_android': 'main/assets/images/slide-6-android-learn.png'
     }

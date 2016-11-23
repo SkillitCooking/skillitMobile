@@ -2,14 +2,20 @@
     <!--intro-slide ng-repeat="slide in slides" header="slide.header" subtitle="slide.subtitle" screenshot="getScreenshot(slide)" index="$index" slide-count="slideCount" modal="modal" slider="slider"></intro-slide-->
     <ion-slide-page ng-repeat="slide in slides" ng-init="slideIndex = $index" class="intro-slide-background">
       <ion-content scroll="true">
-        <h3>{{slide.header}}</h3>
-        <h3>{{slide.subtitle}}</h3>
-        <img ng-src="{{getScreenshot(slide)}}">
-        <div ng-repeat="n in slideCount track by $index">
-          <i ng-class="getDotClass(slideIndex, $index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+        <h3 class="walkthrough-top-header">{{slide.header}}</h3>
+        <p class="walkthrough-subheader">{{slide.subtitle}}</p  >
+        <p class="walkthrough-img-container"><img ng-src="{{getScreenshot(slide)}}"></p>
+        <div class="walkthrough-img-container">
+          <div class="walkthrough-slider-dots" ng-repeat="n in slideCount track by $index">
+            <i ng-class="getDotClass(slideIndex, $index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+          </div>
         </div>
-        <button class="button" ng-click="signUp()">Sign Up</button>
-        <button class="button" ng-click="getCooking()">Get Cooking</button>
+        <div class="walkthrough-img-container">
+          <button class="button get-cooking" ng-click="signUp()">Get Cooking</button>
+        </div>
+        <div class="walkthrough-img-container">
+          <button class="button skip-button" ng-click="getCooking()">Skip</button>
+        </div>
       </ion-content>
     </ion-slide-page>
     <ion-slide-page class="intro-slide-background">
