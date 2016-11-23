@@ -18,7 +18,7 @@ angular.module('main')
 
       scope.getLoginClasses = function() {
         if(scope.isWalkthrough) {
-          return 'login-screen';
+          return 'login-screen-walkthrough';
         } else {
           return 'login-screen';
         }

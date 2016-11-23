@@ -117,7 +117,7 @@ angular.module('main')
     },
     {
         'header': 'Select Recipe',
-        'subtitle': 'Choose from Skillit meals or use \'Build Your Own\' to make your perfect dish',
+        'subtitle': 'Choose one of our recipes or use \'Build Your Own\' to make your perfect dish',
         'screenshot_ios': 'main/assets/images/slide-2-ios-selection.png',
         'screenshot_android': 'main/assets/images/slide-2-android-selection.png'
     },
