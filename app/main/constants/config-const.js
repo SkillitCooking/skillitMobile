@@ -4,8 +4,8 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'http://138.68.45.225:3000/api/',
-    'CHANNEL': 'production'
+        'SERVER_URL': 'http://107.170.199.250:3000/api/',
+    'CHANNEL': 'dev'
         /*endinject*/
     },
     BUILD : {
@@ -112,37 +112,37 @@ angular.module('main')
     {
         'header': 'Input Ingredients',
         'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
-        'screenshot_ios': 'main/assets/images/ios-walkthrough/ingredients-1.png',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/ingredients-1.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/android_walkthrough/ingredients-1.png'
     },
     {
         'header': 'Select Recipe',
         'subtitle': 'Choose one of our recipes or use \'Build Your Own\' to make your perfect dish',
-        'screenshot_ios': 'main/assets/images/ios-walkthrough/selection-2.png',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/selection-2.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/selection-2.png'
     },
     {
         'header': 'Customize Away',
         'subtitle': 'Feeling hungry? Add some sides. Feeling adventurous? Try different spices.',
-        'screenshot_ios': 'main/assets/images/ios-walkthrough/present-3.png',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-3.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/present-3.png'
     },
     {
         'header': 'Learn As You Go',
         'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
-        'screenshot_ios': 'main/assets/images/ios-walkthrough/present-instructions-4.png',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-instructions-4.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/present-instructions-4.png'
     },
     {
         'header': 'Discover',
         'subtitle': 'Not sure what you want to cook with? Browse different recipe collections.',
-        'screenshot_ios': 'main/assets/images/ios-walkthrough/browse-5.png',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/browse-5.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/browse-5.png'
     },
     {
         'header': 'Educate Yo\'Self',
         'subtitle': 'Learn what you need to know to skillit in the kitchen',
-        'screenshot_ios': 'main/assets/images/ios-walkthrough/learn-6.png',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/learn-6.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/learn-6.png'
     }
   ]);

@@ -27,7 +27,7 @@
         <p class="walkthrough-img-container"><img ng-src="{{getScreenshot(slide)}}"></p>
         <div class="walkthrough-img-container">
           <div class="walkthrough-slider-dots" ng-repeat="n in slideCount track by $index">
-            <i ng-class="getDotClass(slideIndex, $index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+            <i ng-class="getDotClass(slideIndex, $index)" ng-click="goToSlide($index+1)" aria-hidden="true"></i>
           </div>
         </div>
         <div class="walkthrough-img-container">

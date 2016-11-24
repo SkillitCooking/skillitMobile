@@ -27,12 +27,6 @@ angular.module('main')
     }
   });
 
-  $scope.closeIntroModal = function() {
-    if($scope.introModal) {
-      $scope.introModal.remove();
-    }
-  }
-
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();
     var showExitConfirm = true;

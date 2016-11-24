@@ -9,8 +9,9 @@ angular.module('main')
     	modal: '='
     },
     link: function (scope, element, attrs) {
-    	scope.$on('$ionicSlides.sliderInitialized', function(event, data) {
-    		scope.slider = data.slider;
+        scope.data = {};
+    	scope.$watch('data.slider', function(nv, ov) {
+    		scope.slider = scope.data.slider;
     	});
 
         scope.slideCount = new Array(scope.slides.length);
