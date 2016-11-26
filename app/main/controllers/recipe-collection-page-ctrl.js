@@ -29,6 +29,27 @@ angular.module('main')
     $ionicHistory.goBack();
   };
 
+  //initialize first next page value
+  $scope.nextPageNumber = 1;
+
+  $scope.loadMoreRecipes = function() {
+    RecipeService.getRecipesForCollection($scope.collection._id, $scope.nextPageNumber).then(function(recipes) {
+      if(recipes.data) {
+        for (var i = recipes.data.length - 1; i >= 0; i--) {
+          recipes.data[i].prepTime = 5 * Math.round(recipes.data[i].prepTime/5);
+          recipes.data[i].totalTime = 5 * Math.round(recipes.data[i].totalTime/5);
+        }
+      }
+      Array.prototype.push.apply($scope.recipes, recipes.data);
+      $scope.loadMoreRecipes++;
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, 200);
+    }, function(response) {
+      ErrorService.showErrorAlert();
+    });
+  };
+
   function setSelected(names, ids, recipe) {
     for (var i = recipe.ingredientList.ingredientTypes.length - 1; i >= 0; i--) {
       var type = recipe.ingredientList.ingredientTypes[i];
@@ -87,21 +108,10 @@ angular.module('main')
     }
   };
 
+  $scope.recipes = [];
+
   //BYO handling here
   if($scope.collection) {
-    RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
-      $scope.recipes = recipes.data;
-      if($scope.recipes) {
-        for (var i = $scope.recipes.length - 1; i >= 0; i--) {
-          $scope.recipes[i].prepTime = 5 * Math.round($scope.recipes[i].prepTime/5);
-          $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
-        }
-      }
-      setTimeout(function() {
-        $ionicLoading.hide();
-      }, 200);
-    }, function(response) {
-      ErrorService.showErrorAlert();
-    });
+    $scope.loadMoreRecipes();
   }
 }]);

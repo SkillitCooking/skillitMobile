@@ -28,20 +28,20 @@
             <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
             <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="alaCarteItemClicked($index)">
               <div class="row">
-                <div class="col col-36">  
+                <div class="col col-36">
                   <img ng-src="{{recipe.mainPictureURL}}">
                 </div>
                 <div class="col col-center">
-                  <h2>{{recipe.name}}</h2>                               
+                  <h2>{{recipe.name}}</h2>
                 </div>
-                <div class="col col-10 col-center">                
+                <div class="col col-10 col-center">
                   <i class="icon checkbox-balanced ng-class:alaCarteClass($index);"></i>
                 </div>
-              </div>  
+              </div>
               <div class="row">
                 <div class="col">
                   <div class="recipe-description-time">
-                    <p>{{recipe.description}}</p> 
+                    <p>{{recipe.description}}</p>
                     <p>Active Time: {{getRecipeActiveTime(recipe)}} mins | Total Time: {{getRecipeTotalTime(recipe)}} mins</p>
                   </div>
                 </div>

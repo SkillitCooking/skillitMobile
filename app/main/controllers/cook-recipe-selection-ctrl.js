@@ -78,7 +78,7 @@ angular.module('main')
     }
     $scope.fullRecipes = response.data.Full;
     if($scope.fullRecipes) {
-      for (var i = $scope.fullRecipes.length - 1; i >= 0; i--) {   
+      for (var i = $scope.fullRecipes.length - 1; i >= 0; i--) {
         $scope.fullRecipes[i].prepTime = 5 * Math.round($scope.fullRecipes[i].prepTime/5);
         $scope.fullRecipes[i].totalTime = 5 * Math.round($scope.fullRecipes[i].totalTime/5);
       }
@@ -86,7 +86,7 @@ angular.module('main')
     }
     $scope.BYORecipes = response.data.BYO;
     if($scope.BYORecipes) {
-      for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {   
+      for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {
         $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
         $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
       }
