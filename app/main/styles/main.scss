@@ -879,6 +879,83 @@ h2.chapter-number {
 .login-screen .login-signup.button {
 	margin: 0;
 }
+
+/***************************************/
+/*WALKTHROUGH*/
+.walkthrough-img-container {
+	text-align: center;
+}
+.walkthrough-img-container img {
+	max-width: 45%;
+	margin: 0 auto;
+}
+h3.walkthrough-top-header {
+	color: #ffffff;
+	text-align: center;
+	margin: 20px 8px 10px;
+}
+p.walkthrough-subheader {
+	text-align: center;
+	margin: 0 10px 10px;
+	font-size: 16px;
+	height: 50px;
+}
+.walkthrough-slider-dots {
+	display: inline-block;
+	margin: 0 2px;
+}
+.button.get-cooking {
+    border: 1px solid #fff;
+    background-color: transparent;
+    color: #fff;
+    border-radius: 8px;
+    margin: 20px 0 0;	
+}
+.button.skip-button {
+    background-color: transparent;
+}
+h2.intro-slide-header {
+	color: #ffffff;
+	text-align: center;
+	margin: 100px 8px 10px;	
+}
+.intro-slide-subheader {
+	text-align: center;
+	margin: 0px 16px 10px;	
+	font-size: 18px;
+	line-height: 23px;
+}
+.intro-wrapper {
+	position: absolute;
+	top: 20%;
+}
+.login-screen-walkthrough h2.recipe-category {
+	color: #ffffff;
+	text-align: center;
+	margin-top: 30px;
+}
+.login-screen-walkthrough p {
+	font-size: 18px;
+	margin: 0 10px 10px;
+}
+.login-screen-walkthrough .list {
+	margin: 0 20px 20px;
+	border: 1px solid #ffffff;
+}
+.login-screen-walkthrough .list .item.item-input {
+	background-color: transparent;
+}
+.button-spice-up-add-side {
+	border-color: #ffffff;
+    background-color: $balanced;
+    color: #ffffff;
+}
+
+.button-spice-up-add-side:hover, .button-spice-up-add-side:active {
+	border-color: #ffffff;
+    background-color: #ffffff;
+    color: $balanced;
+}
 /**************************************/
 /*RESPONSIVE*/
 /*recipe selection tab*/
@@ -919,4 +996,13 @@ h2.chapter-number {
 	    display: block;
 	    margin: 0px 0 5px;
 	}	
+	p.walkthrough-subheader {
+		font-size: 18px;
+	}
+	.button.get-cooking {
+	    margin: 30px 0 10px;	
+	}	
+	.walkthrough-img-container img {
+		max-width: 50%;
+	}
 }

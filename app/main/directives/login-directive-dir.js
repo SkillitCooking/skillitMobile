@@ -4,7 +4,9 @@ angular.module('main')
   return {
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
-    scope: {},
+    scope: {
+      isWalkthrough: '='
+    },
     link: function (scope, element, attrs) {
       scope.hasErrors = false;
       scope.data = {};
@@ -13,6 +15,14 @@ angular.module('main')
         scope.password = "";
         scope.passwordConfirm = "";
       }
+
+      scope.getLoginClasses = function() {
+        if(scope.isWalkthrough) {
+          return 'login-screen-walkthrough';
+        } else {
+          return 'login-screen';
+        }
+      };
 
       scope.signIn = function() {
         //if success, want to let parent know - either broadcast or $emit
