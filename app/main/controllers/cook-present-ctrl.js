@@ -165,9 +165,7 @@ angular.module('main')
     deregisterBackAction();
   });
 
-  console.log('history', angular.copy($ionicHistory.viewHistory()));
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
-  console.log('numBack', $scope.numberBackToRecipeSelection);
   $scope.cameFromHome = $stateParams.cameFromHome;
   $scope.cameFromRecipes = $stateParams.cameFromRecipes;
   $scope.isFavoriteRecipe = $stateParams.isFavoriteRecipe;
@@ -252,6 +250,7 @@ angular.module('main')
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
     //mainVideo indicator array
+    console.log('combined', $scope.combinedRecipe);
     $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
       $scope.recipeBadges = RecipeBadgeService.getBadgesForCombinedRecipe($scope.combinedRecipe);
