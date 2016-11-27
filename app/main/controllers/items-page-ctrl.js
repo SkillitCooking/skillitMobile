@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('ItemsPageCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService) {
+.controller('ItemsPageCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', 'PAGINATION', function ($scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService, PAGINATION) {
 
   $scope.lesson = $stateParams.lesson;
   $scope.chapters = $stateParams.chapters;
@@ -21,15 +21,29 @@ angular.module('main')
     deregisterBackAction();
   });
 
-  if($scope.lesson) {
-    ItemsService.getItemsWithTypesAndIds({items: $scope.lesson.itemIds}).then(function(res) {
-      $scope.items = ContentItemOrderingService.orderLessonItems(res.data, $scope.lesson.itemIds);
+  $scope.nextPageNumber = 1;
+
+  function getPagedIds() {
+    var begin = PAGINATION.ITEMS_PER_PAGE * ($scope.nextPageNumber - 1);
+    var end = PAGINATION.ITEMS_PER_PAGE * $scope.nextPageNumber;
+    return $scope.itemIds.slice(begin, end);
+  }
+
+  $scope.loadMoreItems = function() {
+    var pagedIds = getPagedIds();
+    ItemsService.getItemsWithTypesAndIds({items: pagedIds}).then(function(res) {
+      ContentItemOrderingService.orderLessonItems($scope.items, res.data, $scope.lesson.itemIds);
+      $scope.nextPageNumber++;
       setTimeout(function() {
         $ionicLoading.hide();
       }, 200);
     }, function(response) {
       ErrorService.showErrorAlert();
     });
+  };
+
+  if($scope.lesson) {
+    $scope.loadMoreItems();
   } else {
     //error - we need $scope.lesson
     ErrorService.logError({

@@ -48,12 +48,10 @@ angular.module('main', [
       url: '/root',
       onEnter: function($state, $localStorage) {
         if($localStorage.hasSeenIntro) {
-          console.log('here');
           $state.go('main.cook');
           $localStorage.hasSeenIntro = false;
         } else {
-          console.log('there');
-          $state.go('introSlides');
+          $state.go('main.introSlides');
           $localStorage.hasSeenIntro = true;
         }
       }

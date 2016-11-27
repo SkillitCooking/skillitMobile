@@ -145,4 +145,6 @@ angular.module('main')
         'screenshot_ios': 'main/assets/images/ios_walkthrough/learn-6.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/learn-6.png'
     }
-  ]);
+  ]).constant('PAGINATION', {
+    'ITEMS_PER_PAGE': 25
+  });

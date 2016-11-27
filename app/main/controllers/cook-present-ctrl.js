@@ -250,6 +250,7 @@ angular.module('main')
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
     //mainVideo indicator array
+    console.log('combined', $scope.combinedRecipe);
     $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
       StepCombinationService.eliminateUnnecesaries($scope.combinedRecipe);

@@ -22,6 +22,7 @@
       <div class="col col-25">
         <p style="text-align: center"><button class="button button-white-round" ng-click="nextThing()" ng-disabled="isLast()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button></p>
       </div>
-    </div>    
+    </div>
+    <ion-infinite-scroll on-infinite="loadMoreItems()" distance="1%"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

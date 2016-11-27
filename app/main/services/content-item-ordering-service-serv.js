@@ -3,7 +3,7 @@ angular.module('main')
 .factory('ContentItemOrderingService', function () {
   var service = {};
 
-  service.orderLessonItems = function(groupedItems, itemIds) {
+  service.orderLessonItems = function(currentItems, groupedItems, itemIds) {
     var orderedItems = [];
     var flattenedItems = [];
     var assignItemType = function(item) {
@@ -23,7 +23,7 @@ angular.module('main')
       var index = flattenedItems.findIndex(findItemIndex);
       orderedItems = orderedItems.concat(flattenedItems.splice(index, 1));
     }
-    return orderedItems;
+    Array.prototype.push.apply(currentItems, orderedItems);
   };
 
   return service;
