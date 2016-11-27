@@ -165,9 +165,7 @@ angular.module('main')
     deregisterBackAction();
   });
 
-  console.log('history', angular.copy($ionicHistory.viewHistory()));
   $scope.numberBackToRecipeSelection = $stateParams.numberBackToRecipeSelection;
-  console.log('numBack', $scope.numberBackToRecipeSelection);
   $scope.cameFromHome = $stateParams.cameFromHome;
   $scope.cameFromRecipes = $stateParams.cameFromRecipes;
   $scope.isFavoriteRecipe = $stateParams.isFavoriteRecipe;
@@ -254,6 +252,7 @@ angular.module('main')
     //mainVideo indicator array
     $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
+      StepCombinationService.eliminateUnnecesaries($scope.combinedRecipe);
       $scope.recipeBadges = RecipeBadgeService.getBadgesForCombinedRecipe($scope.combinedRecipe);
       if($stateParams.sidesAdded && $scope.seasoningProfiles) {
         amendSeasonings();

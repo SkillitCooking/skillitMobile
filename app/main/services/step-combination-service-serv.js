@@ -186,7 +186,7 @@ angular.module('main')
           return recipe.mainVideo;
         }
       });
-      //set combinedRecipe recipeCategories
+      //set combinedRecipe recipeCategories and recipeTypes
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
         combinedRecipe.recipeCategorys.push(recipes[i].recipeCategory);
@@ -264,6 +264,27 @@ angular.module('main')
     var combinedRecipe = combineRecipes(recipes, currentSeasoningProfile);
     assignStepNumbers(combinedRecipe);
     return combinedRecipe;
+  };
+
+  service.eliminateUnnecesaries = function(combinedRecipe) {
+    //eliminate unnecessary 'some of'
+    var stepList = combinedRecipe.stepList;
+    for (var i = stepList.length - 1; i >= 0; i--) {
+      if(stepList[i].textArr) {
+        var textArr = stepList[i].textArr;
+        for (var j = 0; j < textArr.length; j++) {
+          if(!textArr[j].hasBeenAmended) {
+            if(j !== 0 && j === textArr.length - 1) {
+              //then replace "some of" with "the rest of"
+              textArr[j].text = textArr[j].text.replace("some of", "the rest of");
+            } else {
+              //then just take out 'some of'
+              textArr[j].text = textArr[j].text.replace("some of", "");
+            }
+          }
+        }
+      }
+    }
   };
 
   return service;

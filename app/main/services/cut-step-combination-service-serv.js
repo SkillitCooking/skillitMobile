@@ -7,6 +7,22 @@ angular.module('main')
     return stepListStep.actionType === stepToPlace.actionType;
   }
 
+  function convertToStepTextForm(recipeType, number) {
+    if(recipeType === 'AlaCarte') {
+      if(number == 1) {
+        return 'side';
+      } else {
+        return number + ' sides';
+      }
+    } else {
+      if(number == 1) {
+        return 'main dish';
+      } else {
+        return number + ' main dishes';
+      }
+    }
+  }
+
   function addToStep(receivingArrElem, stepToAddArr, stepToAddIndex) {
     //initial text adjustment needed?
     if(!receivingArrElem.hasStepsAdded) {
@@ -14,8 +30,9 @@ angular.module('main')
       var actionTypeIndex = receivingArrElem.text.indexOf(receivingArrElem.actionType);
       actionTypeIndex += receivingArrElem.actionType.length;
       //insert 'some of ' using slice
-      receivingArrElem.text = receivingArrElem.text.slice(0, actionTypeIndex) +  
-        " some of" + receivingArrElem.text.slice(actionTypeIndex);
+      //Don't believe the below is necessary given the addition of 'some of' through the 'isMultiple' flag
+      /*receivingArrElem.text = receivingArrElem.text.slice(0, actionTypeIndex) +  
+        " some of" + receivingArrElem.text.slice(actionTypeIndex);*/
       var amendingText;
       if(receivingArrElem.hasBeenAmended) {
         //then separate the amended text for reattachment after insertion later
@@ -30,7 +47,8 @@ angular.module('main')
       //arbitrarily use the first one there and ignore the other ones...
       receivingArrElem.text += " for use in the ";
       //need total length of both...
-      receivingArrElem.recipeCategorys = receivingArrElem.recipeCategorys.concat(stepToAddArr[stepToAddIndex].recipeCategorys);
+      //instead of using recipeCategorys, we will be using recipeTypes
+      /*receivingArrElem.recipeCategorys = receivingArrElem.recipeCategorys.concat(stepToAddArr[stepToAddIndex].recipeCategorys);
       var countedRecipes = _.countBy(receivingArrElem.recipeCategorys);
       var countedRecipeKeys = Object.keys(countedRecipes);
       switch(countedRecipeKeys.length) {
@@ -83,6 +101,39 @@ angular.module('main')
             }
           }
           break;
+      }*/
+      receivingArrElem.recipeTypes = receivingArrElem.recipeTypes.concat(stepToAddArr[stepToAddIndex].recipeTypes);
+      var countedRecipes = _.countBy(receivingArrElem.recipeTypes);
+      var countedRecipeKeys = Object.keys(countedRecipes);
+      switch(countedRecipeKeys.length) {
+        case 0:
+          ErrorService.logError({
+            message: "CutStepCombination Service ERROR: expected more than 0 recipeTypes in function 'addToStep'",
+            receivingArrElem: receivingArrElem
+          });
+          ErrorService.showErrorAlert();
+          break;
+
+        case 1:
+          //is this actually an error case?
+          receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[0], countedRecipes[countedRecipeKeys[0]]);
+          break;
+
+        case 2:
+          receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[0], countedRecipes[countedRecipeKeys[0]]);
+          receivingArrElem.text += " and ";
+          receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[1], countedRecipes[countedRecipeKeys[1]]);
+          break;
+
+        default:
+          for (var i = countedRecipeKeys.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              receivingArrElem.text += "and " + convertToStepTextForm(countedRecipeKeys[i], countedRecipes[countedRecipeKeys[i]]);
+            } else {
+              receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[i], countedRecipes[countedRecipeKeys[i]]) + ", ";
+            }
+          }
+          break;
       }
       //add back on amended text
       if(amendingText) {
@@ -104,7 +155,7 @@ angular.module('main')
       //will need to handle case where other cutMethods mentioned...
       var endIndex = receivingArrElem.text.indexOf("for use in the ") + "for use in the ".length;
       receivingArrElem.text = receivingArrElem.text.slice(0, endIndex);
-      receivingArrElem.recipeCategorys = receivingArrElem.recipeCategorys.concat(stepToAddArr[stepToAddIndex].recipeCategorys);
+      /*receivingArrElem.recipeCategorys = receivingArrElem.recipeCategorys.concat(stepToAddArr[stepToAddIndex].recipeCategorys);
       var countedRecipes = _.countBy(receivingArrElem.recipeCategorys);
       var countedRecipeKeys = Object.keys(countedRecipes);
       switch(countedRecipeKeys.length) {
@@ -154,6 +205,39 @@ angular.module('main')
               } else {
                 receivingArrElem.text += countedRecipeKeys[i];
               }
+            }
+          }
+          break;
+      }*/
+      receivingArrElem.recipeTypes = receivingArrElem.recipeTypes.concat(stepToAddArr[stepToAddIndex].recipeTypes);
+      var countedRecipes = _.countBy(receivingArrElem.recipeTypes);
+      var countedRecipeKeys = Object.keys(countedRecipes);
+      switch(countedRecipeKeys.length) {
+        case 0:
+          ErrorService.logError({
+            message: "CutStepCombination Service ERROR: expected more than 0 recipeTypes in function 'addToStep'",
+            receivingArrElem: receivingArrElem
+          });
+          ErrorService.showErrorAlert();
+          break;
+
+        case 1:
+          //is this actually an error case?
+          receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[0], countedRecipes[countedRecipeKeys[0]]);
+          break;
+
+        case 2:
+          receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[0], countedRecipes[countedRecipeKeys[0]]);
+          receivingArrElem.text += " and ";
+          receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[1], countedRecipes[countedRecipeKeys[1]]);
+          break;
+
+        default:
+          for (var i = countedRecipeKeys.length - 1; i >= 0; i--) {
+            if(i === 0) {
+              receivingArrElem.text += "and " + convertToStepTextForm(countedRecipeKeys[i], countedRecipes[countedRecipeKeys[i]]);
+            } else {
+              receivingArrElem.text += convertToStepTextForm(countedRecipeKeys[i], countedRecipes[countedRecipeKeys[i]]) + ", ";
             }
           }
           break;

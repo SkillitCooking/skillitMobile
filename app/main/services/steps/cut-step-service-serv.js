@@ -59,6 +59,7 @@ angular.module('main')
               sourceStepType: STEP_TYPES.CUT
             };
             step.recipeCategory = recipe.recipeCategory;
+            step.recipeType = recipe.recipeType;
           } 
         } else {
           //error
@@ -151,6 +152,7 @@ angular.module('main')
       for (var i = step.ingredientsToCut.length - 1; i >= 0; i--) {
         var arrElem = {};
         arrElem.recipeCategorys = [step.recipeCategory];
+        arrElem.recipeTypes = [step.recipeType];
         arrElem.actionType = actionType;
         arrElem.ingredientName = step.ingredientsToCut[i].displayName;
         arrElem.text = actionType;
