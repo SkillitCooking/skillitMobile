@@ -250,7 +250,6 @@ angular.module('main')
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
     //mainVideo indicator array
-    console.log('combined', $scope.combinedRecipe);
     $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
       StepCombinationService.eliminateUnnecesaries($scope.combinedRecipe);
@@ -645,10 +644,8 @@ angular.module('main')
       if($scope.cameFromHome) {
         $ionicHistory.goBack($scope.numberBackToRecipeSelection);
       } else if($scope.cameFromRecipes) {
-        console.log('number back: ', $scope.numberBackToRecipeSelection);
         $ionicHistory.goBack($scope.numberBackToRecipeSelection + 1);
       } else if($scope.cameFromRecipeCollection) {
-        console.log('number back 1: ', $scope.numberBackToRecipeSelection);
         $ionicHistory.goBack($scope.numberBackToRecipeSelection);
       } else { 
         $ionicHistory.goBack($scope.numberBackToRecipeSelection);

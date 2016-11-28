@@ -14,7 +14,6 @@ angular.module('main')
 
   $scope.$on('$ionicView.loaded', function(event, data) {
     if(!$localStorage.hasSeenIntro) {
-      console.log('has not seen intro');
       $localStorage.hasSeenIntro = true;
       /*$ionicModal.fromTemplateUrl('main/templates/intro-slides-modal.html', {
         scope: $scope,

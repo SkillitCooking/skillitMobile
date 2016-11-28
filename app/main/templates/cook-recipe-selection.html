@@ -62,9 +62,10 @@
     <div ng-if="fullSelected">  
       <ion-content class="padding cook-recipe-selection"> 
         <ion-list>
-          <div ng-repeat="recipe in fullRecipes">
-            <h3 class="recipe-category" ng-if="needsHeader(recipe)">{{getHeader(recipe)}}</h3>
-            <recipe-item recipe="recipe" iconclass="fullRecipeClass($index)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
+          <div ng-repeat="(recipeCategory, catObj) in fullRecipes">
+            <h3 class="recipe-category">{{getFullHeader(recipeCategory)}}</h3>
+            <recipe-item ng-repeat="recipe in catObj.recipes" recipe="recipe" iconclass="fullRecipeClass($index, recipeCategory)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
+            <button class="button" ng-if="catObj.hasMoreToLoad" ng-click="loadMoreRecipes(recipeCategory)">Load More</button>
             <!--ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  

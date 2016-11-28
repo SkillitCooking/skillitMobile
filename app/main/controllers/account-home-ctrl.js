@@ -15,10 +15,6 @@ angular.module('main')
 
   $scope.nextPageNumber = 1;
 
-  $scope.loadMoreRecipes = function() {
-
-  };
-
   function favoriteRecipeEventHandler(event) {
     if(event) {
       event.preventDefault();

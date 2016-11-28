@@ -7,6 +7,9 @@ angular.module('main')
     getRecipesWithIngredients: function(ingredientIds) {
       return baseRecipes.customPOST(ingredientIds, 'getRecipesWithIngredients');
     },
+    getMoreRecipesForCategory: function(info) {
+      return baseRecipes.customPOST(info, 'getMoreRecipesForCategory');
+    },
     getRecipesWithIds: function(recipeIds) {
       return baseRecipes.customPOST(recipeIds, 'getRecipesWithIds');
     },

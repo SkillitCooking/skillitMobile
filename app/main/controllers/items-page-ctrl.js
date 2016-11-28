@@ -26,20 +26,28 @@ angular.module('main')
   function getPagedIds() {
     var begin = PAGINATION.ITEMS_PER_PAGE * ($scope.nextPageNumber - 1);
     var end = PAGINATION.ITEMS_PER_PAGE * $scope.nextPageNumber;
-    return $scope.itemIds.slice(begin, end);
+    var sliced = $scope.lesson.itemIds.slice(begin, end);
+    if(end >= $scope.lesson.itemIds.length) {
+      $scope.hideInfiniteScroll = true;
+    }
+    return sliced;
   }
 
   $scope.loadMoreItems = function() {
     var pagedIds = getPagedIds();
     ItemsService.getItemsWithTypesAndIds({items: pagedIds}).then(function(res) {
+      if(!$scope.items) {
+        $scope.items = [];
+      }
       ContentItemOrderingService.orderLessonItems($scope.items, res.data, $scope.lesson.itemIds);
-      $scope.nextPageNumber++;
+      $scope.$broadcast('scroll.infiniteScrollComplete');
       setTimeout(function() {
         $ionicLoading.hide();
       }, 200);
     }, function(response) {
       ErrorService.showErrorAlert();
     });
+    $scope.nextPageNumber += 1;
   };
 
   if($scope.lesson) {
@@ -138,8 +146,10 @@ angular.module('main')
   };
 
   $scope.isLast = function() {
-    if($scope.currentLessonIndex === $scope.lessons.length - 1 && $scope.currentChapterIndex === $scope.chapters.length - 1) {
-      return true;
+    if($scope.lessons && $scope.chapters) {
+      if($scope.currentLessonIndex === $scope.lessons.length - 1 && $scope.currentChapterIndex === $scope.chapters.length - 1) {
+        return true;
+      }
     }
     return false;
   };

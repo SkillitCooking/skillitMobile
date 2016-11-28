@@ -62,9 +62,11 @@ angular.module('main')
       formIds: _.map(ingredient.ingredientForms, '_id') 
     });
   });
+  //copy so as to preserve original ingredients when attempting to LoadMore
   var ingredientIds = {
-    ingredientIds: $scope.selectedIngredientIds
+    ingredientIds: angular.copy($scope.selectedIngredientIds)
   };
+  
   RecipeService.getRecipesWithIngredients(ingredientIds).then(function(response) {
     $scope.alaCarteRecipes = response.data.AlaCarte;
     if($scope.alaCarteRecipes){
@@ -78,11 +80,12 @@ angular.module('main')
     }
     $scope.fullRecipes = response.data.Full;
     if($scope.fullRecipes) {
-      for (var i = $scope.fullRecipes.length - 1; i >= 0; i--) {
-        $scope.fullRecipes[i].prepTime = 5 * Math.round($scope.fullRecipes[i].prepTime/5);
-        $scope.fullRecipes[i].totalTime = 5 * Math.round($scope.fullRecipes[i].totalTime/5);
+      for(var key in $scope.fullRecipes) {
+        for (var i = $scope.fullRecipes[key].recipes.length - 1; i >= 0; i--) {
+          $scope.fullRecipes[key].recipes[i].prepTime = 5 * Math.round($scope.fullRecipes[key].recipes[i].prepTime/5);
+          $scope.fullRecipes[key].recipes[i].totalTime = 5 * Math.round($scope.fullRecipes[key].recipes[i].totalTime/5);
+        }
       }
-      $scope.fullRecipes.sort(recipeCategoryCmpFn);
     }
     $scope.BYORecipes = response.data.BYO;
     if($scope.BYORecipes) {
@@ -116,7 +119,7 @@ angular.module('main')
   });
 
   $scope.noFullDishes = function() {
-    if(!$scope.fullRecipes || $scope.fullRecipes.length === 0) {
+    if(!$scope.fullRecipes || Object.keys($scope.fullRecipes).length === 0) {
       return true;
     } else {
       return false;
@@ -169,13 +172,14 @@ angular.module('main')
   $scope.getHeader = function(recipe) {
     if(recipe.recipeType === 'AlaCarte') {
       return recipe.ingredientList.ingredientTypes[0].ingredients[0].inputCategory;
-    } else if(recipe.recipeType === 'Full') {
-      //JANKY - fix later using constants, and probably should just change name of Suatee...
-      if(recipe.recipeCategory === 'Sautee') {
-        return 'Stir Frys';
-      }
-      return recipe.recipeCategory;
     }
+  };
+
+  $scope.getFullHeader = function(recipeCategory) {
+    if(recipeCategory === 'Sautee') {
+      return 'Stir Frys';
+    }
+    return recipeCategory;
   };
 
   $scope.getAlaCarteButtonClass = function() {
@@ -248,8 +252,8 @@ angular.module('main')
     }
   };
 
-  $scope.fullRecipeClass = function(index) {
-    if($scope.fullRecipes[index].isSelected) {
+  $scope.fullRecipeClass = function(index, recipeCategory) {
+    if($scope.fullRecipes[recipeCategory].recipes[index].isSelected) {
       return "ion-checkmark-circled";
     } else {
       return "ion-ios-circle-outline";
@@ -262,6 +266,22 @@ angular.module('main')
     } else {
       return "ion-ios-circle-outline";
     }
+  };
+
+  $scope.loadMoreRecipes = function(recipeCategory) {
+    //should we have a loading going on here?
+    $ionicLoading.show();
+    var recipeIds = $scope.fullRecipes[recipeCategory].additionalRecipeIds;
+    RecipeService.getMoreRecipesForCategory({recipeIds: recipeIds}).then(function(res) {
+      var recipes = res.data;
+      Array.prototype.push.apply($scope.fullRecipes[recipeCategory].recipes, recipes.recipes);
+      $scope.fullRecipes[recipeCategory].hasMoreToLoad = recipes.hasMoreToLoad;
+      $scope.fullRecipes[recipeCategory].additionalRecipeIds = recipes.additionalRecipeIds;
+      $ionicLoading.hide();
+    }, function(response) {
+      $ionicLoading.hide();
+      ErrorService.showErrorAlert();
+    });
   };
 
   $scope.noneSelected = function() {

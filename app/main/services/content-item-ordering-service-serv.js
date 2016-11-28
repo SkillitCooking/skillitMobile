@@ -6,11 +6,13 @@ angular.module('main')
   service.orderLessonItems = function(currentItems, groupedItems, itemIds) {
     var orderedItems = [];
     var flattenedItems = [];
-    var assignItemType = function(item) {
+    var assignItemType = function(item, key) {
         item.itemType = key;
     };
     for(var key in groupedItems) {
-      groupedItems[key].forEach(assignItemType);
+      for (var i = groupedItems[key].length - 1; i >= 0; i--) {
+        assignItemType(groupedItems[key][i], key);
+      }
       flattenedItems = flattenedItems.concat(groupedItems[key]);
     }
     var findItemIndex = function(item) {

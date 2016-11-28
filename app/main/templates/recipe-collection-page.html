@@ -9,6 +9,6 @@
     <ion-list>
       <recipe-item ng-repeat="recipe in recipes" recipe="recipe" iconclass="recipeIconClass($index)" isfavorite="false" ng-click="recipeSelected(recipe)" showdatefeatured="false"></recipe-item>
     </ion-list>
-    <ion-infinite-scroll on-infinite="loadMoreRecipes()" distance="1%"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="!hideInfiniteScroll" on-infinite="loadMoreRecipes()" distance="1%"></ion-infinite-scroll>
   </ion-content>
 </ion-view>
