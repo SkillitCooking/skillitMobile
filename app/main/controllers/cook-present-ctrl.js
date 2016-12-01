@@ -232,8 +232,16 @@ angular.module('main')
   MealsCookedService.postCookedMeal({
     recipeIds: $scope.recipeIds,
     source: source,
-
-  }).then();
+    isAnonymous: isAnonymous,
+    ingredientsChosenIds: $scope.selectedIngredientIds,
+    deviceToken: ionic.Platform.device().uuid,
+    userId: $ionicUser.get(USER.ID, undefined),
+    token: $ionicAuth.getToken()
+  }).then(function(res) {
+    $scope.curMealCookedId = res.data._id;
+  }, function(response) {
+    $scope.curMealCookedId = undefined;
+  });
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
   };
