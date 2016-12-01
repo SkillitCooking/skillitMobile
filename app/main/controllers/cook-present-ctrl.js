@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'USER', function (_, $document, $scope, $rootScope, $stateParams, $state, RecipeService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, USER) {
+.controller('CookPresentCtrl', ['_', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', function (_, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER) {
 
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
@@ -216,6 +216,24 @@ angular.module('main')
   }
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
+  //post mealCooked data
+  var source;
+  if($scope.cameFromRecipes) {
+    source = MEALS_COOKED_SOURCE.RECIPES_TAB;
+  } else if($scope.isFavoriteRecipe) {
+    source = MEALS_COOKED_SOURCE.FAVORITE;
+  } else {
+    source = MEALS_COOKED_SOURCE.COOK_TAB;
+  }
+  var isAnonymous = true;
+  if($ionicAuth.isAuthenticated()) {
+    isAnonymous = false;
+  }
+  MealsCookedService.postCookedMeal({
+    recipeIds: $scope.recipeIds,
+    source: source,
+
+  }).then();
   var wrappedRecipeIds = {
     recipeIds: $scope.recipeIds
   };
