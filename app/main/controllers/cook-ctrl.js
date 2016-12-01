@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'USER', function ($rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'USER', function (_, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, USER) {
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -250,6 +250,15 @@ angular.module('main')
     }
   };
 
+  function getIngredientIds(selectedIngredients) {
+    return _.map(selectedIngredients, function(ingredient) {
+      return {
+        _id: ingredient._id,
+        formIds: _.map(ingredient.ingredientForms, '_id')
+      };
+    });
+  }
+
   $scope.toRecipeSelection = function() {
     var selectedIngredients = [];
     for(var key in $scope.ingredientCategories){
@@ -274,6 +283,24 @@ angular.module('main')
       }
     }
     if(selectedIngredients.length > 0){
+      //create id/formid array
+      var isAnonymous = true;
+      if($ionicAuth.isAuthenticated()) {
+        isAnonymous = false;
+      }
+      var ingredientIds = getIngredientIds(selectedIngredients);
+      IngredientUsedService.postUsedIngredients({
+        ingredientIds: ingredientIds,
+        isAnonymous: isAnonymous,
+        userId: $ionicUser.get(USER.ID, undefined),
+        token: $ionicAuth.getToken(),
+        deviceToken: ionic.Platform.device().uuid
+      }).then(function(res) {
+        //don't need to handle a success either - just logging ish for now
+      }, function(response) {
+        //don't need to do anything to client-side handle an error - just let the
+        //user continue
+      });
       //go to next controller - but do we want to query for recipes here or there? Also, how are params accessed by the coming state?
       $state.go('main.cookRecipeSelection', {selectedIngredients: selectedIngredients});
     } else {

@@ -629,6 +629,23 @@ angular.module('main')
       return profile._id === season._id;
     });
     $scope.seasoningProfile = profile;
+    if($scope.curMealCookedId) {
+      var isAnonymous = true;
+      if($ionicAuth.isAuthenticated()) {
+        isAnonymous = false;
+      }
+      SeasoningUsedService.postSeasoningUsed({
+        seasoningId: profile._id,
+        mealCookedId: $scope.curMealCookedId,
+        isAnonymous: isAnonymous,
+        userId: $ionicUser.get(USER.ID, undefined),
+        token: $ionicAuth.getToken()
+      }).then(function(res) {
+        //do nothing - don't need any return info
+      }, function(response) {
+        //do nothing - don't want the logging error to upset the user
+      });
+    }
     for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
       if($scope.combinedRecipe.stepList[i].stepType === 'Season') {
         SeasoningProfileTextService.addSeasoning($scope.combinedRecipe.stepList[i], $scope.seasoningProfile);
@@ -642,6 +659,24 @@ angular.module('main')
     }
     $scope.showMoreProfiles = false;
     $scope.seasoningProfile = profile;
+    if($scope.curMealCookedId) {
+      var isAnonymous = true;
+      if($ionicAuth.isAuthenticated()) {
+        isAnonymous = false;
+      }
+      SeasoningUsedService.postSeasoningUsed({
+        seasoningId: profile._id,
+        mealCookedId: $scope.curMealCookedId,
+        isAnonymous: isAnonymous,
+        userId: $ionicUser.get(USER.ID, undefined),
+        token: $ionicAuth.getToken(),
+        deviceToken: ionic.Platform.device().uuid
+      }).then(function(res) {
+        //do nothing - don't need any return info
+      }, function(response) {
+        //do nothing - don't want the logging error to upset the user
+      });
+    }
     for (var i = $scope.combinedRecipe.stepList.length - 1; i >= 0; i--) {
       if($scope.combinedRecipe.stepList[i].stepType === 'Season') {
         SeasoningProfileTextService.addSeasoning($scope.combinedRecipe.stepList[i], $scope.seasoningProfile);

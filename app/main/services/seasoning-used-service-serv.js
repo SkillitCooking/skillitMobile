@@ -6,6 +6,6 @@ angular.module('main')
   return {
     postSeasoningUsed: function(info) {
       return baseSeasoningUsed.customPOST(info, '/');
-    };
+    }
   };
 });
