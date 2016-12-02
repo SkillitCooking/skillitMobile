@@ -20,8 +20,8 @@
     <!-- do you want padding? -->
     
         <!-- content goes here -->
-      <ion-slides options="slideOptions" slider="data.slider" on-slide-changed="slideHasChanged($index)">
-        <ion-slide-page ng-repeat="(name, ingredientSubCategories) in ingredientCategories">
+      <ion-slides options="slideOptions" slider="data.slider">
+        <ion-slide-page ng-repeat="(name, ingredientSubCategories) in ingredientCategories" ng-init="storeCatName($index, name)">
           <ion-content class="has-header padding cook-tab" scroll=true>
           <div class="wrap-class" ng-class="getWrapClass($index)">
             <h2 class="ingredient-type-heading">{{name}}</h2>
@@ -29,15 +29,15 @@
               <div ng-if="!isError()" ng-repeat="(subCatName, ingredients) in ingredientSubCategories">
                 <h4 class="ingredient-subtype-heading" ng-if="showSubCategoryName(subCatName)">{{subCatName}}</h4>
                 <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
-                  <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
+                  <ion-checkbox ng-click="ingredientSelected(ingredient)" class="checkbox-balanced" ng-model="ingredient.isSelected">
                     {{ingredient.name.standardForm}}
                   </ion-checkbox>
                   <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
                     <div class="grouping-of-ingredient-forms"> 
                     <!--Insert 'any' form here-->             
                       <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
-                        <label class="checkbox checkbox-balanced">
-                        <span class="ingredient-form-name">{{form.name}}</span>
+                        <label ng-click="ingredientFormSelected(form, ingredient)" class="checkbox checkbox-balanced">
+                         <span class="ingredient-form-name">{{form.name}}</span>
                          <div ng-class="getFormCheckShape()">
                            <input class="ingredient-form-type" type="checkbox" ng-model="form.isSelected">
                          </div>

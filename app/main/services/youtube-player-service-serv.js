@@ -13,8 +13,13 @@ angular.module('main')
   });
 
   service.createPlayer = function(idName, videoId, videoEnd) {
+    function onPlayerStateChange(event) {
+      $rootScope.$broadcast('youtubeStateChange', videoId, event.data);
+    }
     var player = new YT.Player(idName, {
-      events: {},
+      events: {
+        'onStateChange': onPlayerStateChange
+      },
       videoId: videoId,
       playerVars: {'end': videoEnd, 'modestbranding': 1, 'rel': 0},
       height: 169,

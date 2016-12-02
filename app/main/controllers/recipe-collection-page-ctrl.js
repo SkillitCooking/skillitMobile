@@ -104,7 +104,8 @@ angular.module('main')
           selectedIngredientIds: [],
           BYOIngredientTypes: ingredientTypes,
           BYOName: recipe.name,
-          loadAlaCarte: true
+          loadAlaCarte: true,
+          isNewLoad: true
         }, 200);
       });
     } else {
@@ -112,7 +113,7 @@ angular.module('main')
       var selectedNames = [], selectedIds = [];
       setSelected(selectedNames, selectedIds, recipe);
       setTimeout(function() {
-        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true});
       }, 200);
     }
   };

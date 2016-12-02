@@ -1,6 +1,8 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'USER', function (_, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, USER) {
+
+  $scope.catNames = [];
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -10,6 +12,13 @@ angular.module('main')
     } else {
       return 0;
     }
+  }
+
+  if(typeof $window.ga !== 'undefined') {
+    if($ionicAuth.isAuthenticated()) {
+      $window.ga.setUserId($ionicUser.get(USER.ID));
+    }
+    $window.ga.trackView('IngredientInput');
   }
 
   $scope.$on('$ionicView.loaded', function(event, data) {
@@ -91,6 +100,7 @@ angular.module('main')
       ErrorService.toggleIsErrorAlready();
       $scope.clearIngredients();
     }
+    $scope.slideStartTime = Date.now();
   });
 
   var userId, userToken;
@@ -132,6 +142,10 @@ angular.module('main')
   $scope.$watch("data.slider", function(nv, ov) {
     $scope.slider = $scope.data.slider;
   });
+
+  $scope.storeCatName = function(index, name) {
+    $scope.catNames[index] = name;
+  };
 
   $scope.notBeginningSlide = function() {
     if($scope.slider) {
@@ -192,14 +206,15 @@ angular.module('main')
     }
   };
 
-  $scope.slideHasChanged = function(index) {
-    /*if($scope.slider) {
-      $scope.slider.update();
-    }*/
-  };
-
   $scope.slidePrev = function() {
     if($scope.slider) {
+      if(!$scope.slider.isBeginning) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          $scope.slideStartTime = Date.now();
+        }
+      }
       $scope.slider.slidePrev();
       setTimeout(function() {
         $ionicScrollDelegate.scrollTop();
@@ -209,6 +224,11 @@ angular.module('main')
 
   $scope.slideNext = function() {
     if($scope.slider) {
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.slideStartTime;
+        $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+        $scope.slideStartTime = Date.now();
+      }
       $scope.slider.slideNext();
       setTimeout(function() {
         $ionicScrollDelegate.scrollTop();
@@ -282,7 +302,11 @@ angular.module('main')
         }
       }
     }
-    if(selectedIngredients.length > 0){
+    if(selectedIngredients.length > 0) {
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.slideStartTime;
+        $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+      }
       //create id/formid array
       var isAnonymous = true;
       if($ionicAuth.isAuthenticated()) {
@@ -332,6 +356,10 @@ angular.module('main')
     $scope.resetPopup.then(function(res) {
       $scope.resetPopup.pending = false;
       if(res) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+        }
         $scope.clearIngredients();
       }
     });
@@ -389,6 +417,11 @@ angular.module('main')
   $scope.swipeLeft = function() {
     if($scope.slider) {
       if($scope.hasMoreSlides()) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          $scope.slideStartTime = Date.now();
+        }
         $scope.slider.slideNext();
         setTimeout(function() {
           $ionicScrollDelegate.scrollTop();
@@ -401,6 +434,13 @@ angular.module('main')
 
   $scope.swipeRight = function() {
     if($scope.slider) {
+      if(!$scope.slider.isBeginning) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          $scope.slideStartTime = Date.now();
+        }
+      }
       $scope.slider.slidePrev();
       setTimeout(function() {
         $ionicScrollDelegate.scrollTop();
@@ -416,4 +456,25 @@ angular.module('main')
       return 'checkbox-circle';
     }
   };
+
+  $scope.ingredientSelected = function(ingredient) {
+    if(typeof $window.ga !== 'undefined') {
+      var action = 'unchecked';
+      if(ingredient.isSelected) {
+        action = 'checked';
+      }
+      $window.ga.trackEvent('IngredientChecked', action, ingredient.name.standardForm);
+    }
+  };
+
+  $scope.ingredientFormSelected = function(form, ingredient) {
+    if(typeof $window.ga !== 'undefined') {
+      var action = 'unchecked';
+      if(form.isSelected) {
+        action = 'unchecked';
+      }
+      var label = ingredient.name.standardForm + '.' + form.name;
+      $window.ga.trackEvent('IngredientFormChecked', action, label);
+    }
+  }
 }]);

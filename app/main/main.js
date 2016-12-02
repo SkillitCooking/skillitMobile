@@ -95,7 +95,8 @@ angular.module('main', [
           cameFromHome: false,
           cameFromRecipes: false,
           isFavoriteRecipe: true,
-          loadAlaCarte: true
+          loadAlaCarte: true,
+          isNewLoad: false
         }
       })
       .state('main.cookAddSideFavorite', {
@@ -139,7 +140,8 @@ angular.module('main', [
           BYOName: null,
           cameFromRecipes: false,
           cameFromHome: false,
-          isFavoriteRecipe: true
+          isFavoriteRecipe: true,
+          isNewLoad: false
         }
       })
       //base screen of flow for cook tab
@@ -188,7 +190,8 @@ angular.module('main', [
           cameFromHome: false,
           cameFromRecipes: false,
           isFavoriteRecipe: false,
-          loadAlaCarte: false
+          loadAlaCarte: false,
+          isNewLoad: false
         }
       })
       .state('main.cookAddSide', {
@@ -229,7 +232,8 @@ angular.module('main', [
           numberBackToRecipeSelection: null,
           BYOIngredientTypes: null,
           BYOName: null,
-          cameFromRecipes: false
+          cameFromRecipes: false,
+          isNewLoad: false
         }
       })
       .state('main.recipes', {
@@ -275,7 +279,8 @@ angular.module('main', [
           cameFromRecipes: true,
           cameFromRecipeCollection: false,
           isFavoriteRecipe: false,
-          loadAlaCarte: true
+          loadAlaCarte: true,
+          isNewLoad: false
         }
       })
       .state('main.cookAddSideRecipes', {
@@ -319,7 +324,8 @@ angular.module('main', [
           BYOIngredientTypes: null,
           BYOName: null,
           cameFromRecipes: true,
-          loadAlaCarte: false
+          loadAlaCarte: false,
+          isNewLoad: false
         }
       })
       .state('main.chapters', {

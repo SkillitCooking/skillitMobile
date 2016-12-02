@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $scope.selectedIngredientIds = [];
@@ -23,6 +23,10 @@ angular.module('main')
 
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function(event, data) {
+    $scope.selectionTabStart = Date.now();
   });
 
   function recipeCategoryCmpFn(a, b) {
@@ -206,19 +210,46 @@ angular.module('main')
     }
   };
 
+  function getCurrentTabName() {
+    if($scope.alaCarteSelected) {
+      return 'AlaCarte';
+    }
+    if($scope.BYOSelected) {
+      return 'BYO';
+    }
+    if($scope.fullSelected) {
+      return 'Full';
+    }
+  }
+
   $scope.selectAlaCarte = function() {
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.selectionTabStart;
+      $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+      $scope.selectionTabStart = Date.now();
+    }
     $scope.alaCarteSelected = true;
     $scope.BYOSelected = false;
     $scope.fullSelected = false;
   };
 
   $scope.selectBYO = function() {
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.selectionTabStart;
+      $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+      $scope.selectionTabStart = Date.now();
+    }
     $scope.BYOSelected = true;
     $scope.fullSelected = false;
     $scope.alaCarteSelected = false;
   };
 
   $scope.selectFull = function() {
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.selectionTabStart;
+      $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+      $scope.selectionTabStart = Date.now();
+    }
     $scope.alaCarteSelected = false;
     $scope.BYOSelected = false;
     $scope.fullSelected = true;
@@ -306,6 +337,10 @@ angular.module('main')
     $scope.resetPopup.then(function(res) {
       $scope.resetPopup.pending = false;
       if(res) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.selectionTabStart;
+          $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+        }
         $ionicHistory.clearCache().then(function() {
           $state.go('main.cook');
         }, function(error) {
@@ -336,6 +371,10 @@ angular.module('main')
 
   $scope.recipeSelected = function(recipe) {
     //"pull up" present-recipe page using first one selected
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.selectionTabStart;
+      $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+    }
     recipe.isSelected = true;
     if(recipe.missingIngredients && recipe.missingIngredients.length !== 0) {
       addMissingIngredients(recipe);
@@ -354,7 +393,7 @@ angular.module('main')
       recipe.isSelected = false;
     }, 400);
     setTimeout(function() {
-      $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
+      $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr, isNewLoad: true});
     }, 200);
   };
 
@@ -366,10 +405,18 @@ angular.module('main')
         recipeIds.push($scope.alaCarteRecipes[i]._id);
       }
     }
-    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr});
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.selectionTabStart;
+      $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+    }
+    $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr, isNewLoad: true});
   };
 
   $scope.swipeRight = function() {
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.selectionTabStart;
+      $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+    }
     $ionicHistory.goBack();
   };
 

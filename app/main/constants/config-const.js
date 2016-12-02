@@ -4,7 +4,7 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'http://localhost:8000/api/',
+        'SERVER_URL': 'http://107.170.199.250:3000/api/',
     'CHANNEL': 'dev'
         /*endinject*/
     },
@@ -113,7 +113,7 @@ angular.module('main')
         'header': 'Input Ingredients',
         'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/ingredients-1.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/android_walkthrough/ingredients-1.png'
+        'screenshot_android': 'main/assets/images/android_walkthrough/ingredients-1.png'
     },
     {
         'header': 'Select Recipe',

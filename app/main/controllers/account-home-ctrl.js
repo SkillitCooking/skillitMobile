@@ -267,7 +267,8 @@ angular.module('main')
       selectedIngredientNames: recipe.ingredientNames,
       selectedIngredientIds: recipe.ingredientAndFormIds,
       alaCarteRecipes: [],
-      alaCarteSelectedArr: []
+      alaCarteSelectedArr: [],
+      isNewLoad: true
     });
   };
 
