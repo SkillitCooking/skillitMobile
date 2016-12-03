@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('SideDishSelectionCtrl', ['_', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicPlatform', function (_, $scope, $stateParams, $state, $ionicHistory, $ionicPlatform) {
+.controller('SideDishSelectionCtrl', ['_', '$window', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicPlatform', function (_, $window, $scope, $stateParams, $state, $ionicHistory, $ionicPlatform) {
 
   $scope.hasChanged = false;
   $scope.alaCarteRecipes = $stateParams.alaCarteRecipes;
@@ -17,6 +17,14 @@ angular.module('main')
 
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.sideDishStart;
+      $window.ga.trackTiming('SideDishSelection', interval);
+    }
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function(event, data) {
+    $scope.sideDishStart = Date.now();
   });
 
   $scope.needsHeader = function(recipe) {
@@ -34,6 +42,16 @@ angular.module('main')
   };
 
   $scope.alaCarteItemClicked = function(index) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var action;
+      if($scope.alaCarteSelectedArr[index]) {
+        action = 'unselected';
+      } else {
+        action = 'selected';
+      }
+      $window.ga.trackEvent('SideDishSelection', action, $scope.alaCarteRecipes[index].name);
+    }
     $scope.alaCarteSelectedArr[index] = !$scope.alaCarteSelectedArr[index];
   };
 

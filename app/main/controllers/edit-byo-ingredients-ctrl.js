@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('EditByoIngredientsCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, INGREDIENT_CATEGORIES, ErrorService) {
+.controller('EditByoIngredientsCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($window, $scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, INGREDIENT_CATEGORIES, ErrorService) {
 
   $scope.hasChanged = false;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
@@ -15,7 +15,16 @@ angular.module('main')
   }, 501);
 
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.editBYOTimeStart;
+      $window.ga.trackTiming('EditBYO', interval, 'TimeOnPage');
+    }
     deregisterBackAction();
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function(event, data) {
+    $scope.editBYOTimeStart = Date.now();
   });
 
   //on entering, if no selectedIngredientIds, then select first form of each ingredient
@@ -246,6 +255,35 @@ angular.module('main')
       return 'Cancel';
     } else {
       return 'No Changes';
+    }
+  };
+
+  $scope.ingredientClicked = function(ingredient, type) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      if(!$scope.isCheckboxDisabled(type)) {
+        var action;
+        if(ingredient.useInRecipe) {
+          action = 'IngredientSelected';
+        } else {
+          action = 'IngredientUnSelected';
+        }
+        $window.ga.trackEvent('EditBYO', action, ingredient.name.standardForm);
+      }
+    }
+  };
+
+  $scope.ingredientFormClicked = function(form, ingredient) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var action;
+      if(form.useInRecipe) {
+        action = 'FormSelected';
+      } else {
+        action = 'FormSelected';
+      }
+      $window.ga.trackEvent('EditBYO', action, form.name);
+      $window.ga.trackEvent('EditBYO', action, ingredient.name.standardForm);
     }
   };
 

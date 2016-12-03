@@ -6,7 +6,7 @@
       <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset">Reset</button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
-    <ion-content class="padding">
+    <ion-content delegate-handle="cook-present" on-scroll="checkScroll()" class="padding">
       <h1 ng-if="combinedRecipe.name">{{combinedRecipe.name}}</h1>
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 

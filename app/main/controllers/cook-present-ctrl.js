@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER) {
 
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
@@ -145,10 +145,19 @@ angular.module('main')
       navigateBack = false;
     }
     if($scope.seasonPopover && $scope.seasonPopover.isShown()) {
+      //analytics
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.startSeasonPopoverTime;
+        $window.ga.trackTiming('RecipePresent', interval, 'SeasonPopoverTime');
+      }
       $scope.seasonPopover.remove();
       navigateBack = false;
     }
     if($scope.stepTipPopver && $scope.stepTipPopver.isShown()) {
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.stepTipPopverStartTime;
+        $window.ga.trackTiming('RecipePresent', interval, 'StepTipTime', $scope.displayStepTip.title);
+      }
       $scope.stepTipPopver.remove();
       navigateBack = false;
     }
@@ -195,29 +204,33 @@ angular.module('main')
     if(typeof $window.ga !== 'undefined') {
       if($scope.playingVideo && $scope.playingVideo.videoId == videoId) {
         if(state !== $scope.mainVideoState) {
+          var name = $scope.combinedRecipe.name;
+          if(!name) {
+            name = $scope.combinedRecipe.mainName;
+          }
           if($scope.mainVideoState == -1 && state == 1) { //unstarted && playing
             $scope.mainVideoStarted = Date.now();
-            $window.ga.trackEvent('RecipePresent', 'MainVideoStart');
+            $window.ga.trackEvent('RecipePresent', 'MainVideoStart', name);
             $scope.mainVideoState = state;
           } else
           if($scope.mainVideoState == 1 && state == 2) { //playing and paused
             $scope.mainVideoPaused = Date.now();
             var interval = $scope.mainVideoPaused - $scope.mainVideoStarted;
-            $window.ga.trackEvent('RecipePresent', 'MainVideoPaused');
+            $window.ga.trackEvent('RecipePresent', 'MainVideoPaused', name);
             $window.ga.trackTiming('RecipePresent', interval, 'StartToPause', 'MainVideo');
             $scope.mainVideoState = state;
           } else
           if($scope.mainVideoState == 1 && state == 0) { //playing and ended
             $scope.mainVideoEnded = Date.now();
             var interval = $scope.mainVideoEnded - $scope.mainVideoStarted;
-            $window.ga.trackEvent('RecipePresent', 'MainVideoEnded');
+            $window.ga.trackEvent('RecipePresent', 'MainVideoEnded', name);
             $window.ga.trackTiming('RecipePresent', interval, 'StartToEnd', 'MainVideo');
             $scope.mainVideoState = state;
           } else 
           if($scope.mainVideoState == 2 && state == 1) { //paused and playing
             $scope.mainVideoStarted = Date.now();
             var interval = $scope.mainVideoStarted - $scope.mainVideoPaused;
-            $window.ga.trackEvent('RecipePresent', 'MainVideoRestarted');
+            $window.ga.trackEvent('RecipePresent', 'MainVideoRestarted', name);
             $window.ga.trackTiming('RecipePresent', interval, 'PauseToStart', 'MainVideo');
             $scope.mainVideoState = 1;
           } else {
@@ -484,6 +497,9 @@ angular.module('main')
   };
 
   $scope.addSide = function() {
+    if(typeof $window.ga !== 'undefined') {
+      $window.ga.trackEvent('RecipePresent', 'click', 'AddSideButton');
+    }
     if($scope.cameFromHome) {
       $state.go('main.cookAddSideHome', {alaCarteRecipes: $scope.alaCarteRecipes, previousRecipeIds: $scope.recipeIds, currentSeasoningProfile: $scope.seasoningProfile, alaCarteSelectedArr: $scope.alaCarteSelectedArr, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, numberBackToRecipeSelection: $scope.numberBackToRecipeSelection});
     } else if($scope.isFavoriteRecipe) {
@@ -509,6 +525,14 @@ angular.module('main')
 
   $scope.editBYOIngredients = function() {
     var recipeName;
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var name = $scope.combinedRecipe.name;
+      if(!name) {
+        name = $scope.combinedRecipe.mainName;
+      }
+      $window.ga.trackEvent('RecipePresent', 'EditIngredientsClicked', name);
+    }
     if($scope.notFullySatisfiedRecipeName) {
       recipeName = $scope.notFullySatisfiedRecipeName;
     } else if($scope.BYOName) {
@@ -534,10 +558,20 @@ angular.module('main')
         {scope: $scope}).then(function(popover) {
         $rootScope.redrawSlides = true;
         $scope.seasonPopover = popover;
+        $scope.startSeasonPopoverTime = Date.now();
         $scope.seasonPopover.show(event);
       });
     } else if(step.hasTip || step.stepTips.length > 1) {
+      //analytics
       $scope.stepTipStep = step;
+      if(typeof $window.ga !== 'undefined') {
+        var name = $scope.combinedRecipe.name;
+        if(!name) {
+          name = $scope.combinedRecipe.mainName;
+        }
+        $window.ga.trackEvent('RecipePresent', 'stepTipClicked', name);
+        $window.ga.trackEvent('RecipePresent', 'stepTipClicked', $scope.stepTipStep.stepTips[0].title);
+      }
       $scope.selectedTipArr = Array($scope.stepTipStep.stepTips.length).fill(false);
       $scope.selectedTipArr[0] = true;
       $scope.displayStepTip = $scope.stepTipStep.stepTips[0];
@@ -545,10 +579,21 @@ angular.module('main')
         {scope: $scope}).then(function(popover) {
         $rootScope.redrawSlides = true;
         $scope.stepTipPopver = popover;
+        //analytics
+        $scope.stepTipPopverStartTime = Date.now();
         $scope.stepTipPopver.show(event);
       });
     } else if(step.hasVideo) {
+      //analytics
       $scope.stepVideo = step.stepTips[0].videoInfo;
+      if(typeof $window.ga != 'undefined') {
+        var name = $scope.combinedRecipe.name;
+        if(!name) {
+          name = $scope.combinedRecipe.mainName;
+        }
+        $window.ga.trackEvent('RecipePresent', 'StepVideoClick', name);
+        $window.ga.trackEvent('RecipePresent', 'StepVideoClick', $scope.stepVideo.video.videoId);
+      }
       $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -574,9 +619,17 @@ angular.module('main')
 
   $scope.$on('$destroy', function() {
     if($scope.seasonPopover) {
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.startSeasonPopoverTime;
+        $window.ga.trackTiming('RecipePresent', interval, 'SeasonPopoverTime');
+      }
       $scope.seasonPopover.remove();
     }
     if($scope.stepTipPopver) {
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.stepTipPopverStartTime;
+        $window.ga.trackTiming('RecipePresent', interval, 'StepTipTime', $scope.displayStepTip.title);
+      }
       $scope.stepTipPopver.remove();
     }
     if($scope.videoModal) {
@@ -688,10 +741,15 @@ angular.module('main')
   };
 
   $scope.seasoningProfilePopup = function(event) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      $window.ga.trackEvent('RecipePresent', 'click', 'SpiceUpLifeButton');
+    }
     $ionicPopover.fromTemplateUrl('main/templates/seasoning-profile-selector.html', 
         {scope: $scope}).then(function(popover) {
         $rootScope.redrawSlides = true;
         $scope.seasonPopover = popover;
+        $scope.startSeasonPopoverTime = Date.now();
         $scope.seasonPopover.show(event);
     });
   };
@@ -702,6 +760,10 @@ angular.module('main')
 
   $scope.showMoreProfiles = false;
   $scope.showMoreSeasonings = function() {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      $window.ga.trackEvent('RecipePresent', 'click', 'SideDishSelectionMore');
+    }
     $scope.showMoreProfiles = true;
   };
 
@@ -711,7 +773,14 @@ angular.module('main')
 
   $scope.changeSeasoningProfileOther = function(profile) {
     if($scope.seasonPopover) {
-      setTimeout(function() {$scope.seasonPopover.remove()}, 200);
+      setTimeout(function() {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.startSeasonPopoverTime;
+          $window.ga.trackTiming('RecipePresent', interval, 'SeasonPopoverTime');
+          $window.ga.trackEvent('RecipePresent', 'SeasonSelection', profile.name);
+        }
+        $scope.seasonPopover.remove();
+      }, 200);
     }
     $scope.showMoreProfiles = false;
     $scope.combinedRecipe.choiceSeasoningProfiles.push(profile);
@@ -745,7 +814,15 @@ angular.module('main')
 
   $scope.changeSeasoningProfile = function(profile) {
     if($scope.seasonPopover) {
-      setTimeout(function() {$scope.seasonPopover.remove()}, 200);
+      setTimeout(function() {
+        //analytics
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.startSeasonPopoverTime;
+          $window.ga.trackTiming('RecipePresent', interval, 'SeasonPopoverTime');
+          $window.ga.trackEvent('RecipePresent', 'SeasonSelection', profile.name);
+        }
+        $scope.seasonPopover.remove();
+      }, 200);
     }
     $scope.showMoreProfiles = false;
     $scope.seasoningProfile = profile;
@@ -776,13 +853,25 @@ angular.module('main')
 
   $scope.closeSeasoningPopup = function() {
     if($scope.seasonPopover) {
-      setTimeout(function() {$scope.seasonPopover.remove()}, 100);
+      setTimeout(function() {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.startSeasonPopoverTime;
+          $window.ga.trackTiming('RecipePresent', interval, 'SeasonPopoverTime');
+        }
+        $scope.seasonPopover.remove();
+      }, 100);
     }
   };
 
   $scope.closeTip = function() {
     if($scope.stepTipPopver) {
-      setTimeout(function() {$scope.stepTipPopver.remove()}, 100);
+      setTimeout(function() {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.stepTipPopverStartTime;
+          $window.ga.trackTiming('RecipePresent', interval, 'StepTipTime', $scope.displayStepTip.title);
+        }
+        $scope.stepTipPopver.remove();
+      }, 100);
     }
   };
 
@@ -881,6 +970,14 @@ angular.module('main')
   };
 
   $scope.unfavoriteRecipe = function(event) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var name = $scope.combinedRecipe.name;
+      if(!name) {
+        name = $scope.combinedRecipe.mainName;
+      }
+      $window.ga.trackEvent('RecipePresent', 'RecipeUnFavorited', name);
+    }
     if($ionicAuth.isAuthenticated()) {
       $ionicLoading.show();
       FavoriteRecipeService.unfavoriteRecipe({
@@ -899,6 +996,14 @@ angular.module('main')
   };
 
   $scope.favoriteRecipe = function (event) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var name = $scope.combinedRecipe.name;
+      if(!name) {
+        name = $scope.combinedRecipe.mainName;
+      }
+      $window.ga.trackEvent('RecipePresent', 'RecipeFavorited', name);
+    }
     if($ionicAuth.isAuthenticated()) {
       var name;
       if($scope.combinedRecipe.name) {
@@ -964,6 +1069,23 @@ angular.module('main')
         name = $scope.combinedRecipe.mainName;
       }
       $window.ga.trackEvent('RecipePresent', 'mainVideoClick', name);
+    }
+  };
+
+  $scope.hasLoggedReachingBottom = false;
+  $scope.checkScroll = function() {
+    if(typeof $window.ga !== 'undefined' && !$scope.hasLoggedReachingBottom) {
+      var buffer = 120;
+      var currentTop = $ionicScrollDelegate.$getByHandle('cook-present').getScrollPosition().top;
+      var maxFromTop = $ionicScrollDelegate.$getByHandle('cook-present').getScrollView().__maxScrollTop;
+      if(currentTop >= maxFromTop - buffer) {
+        var name = $scope.combinedRecipe.name;
+        if(!name) {
+          name = $scope.combinedRecipe.mainName;
+        }
+        $window.ga.trackEvent('RecipePresent', 'ScrolledToBottom', name);
+        $scope.hasLoggedReachingBottom = true;
+      }
     }
   };
 }]);
