@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
 
   $scope.catNames = [];
 
@@ -132,6 +132,25 @@ angular.module('main')
     return 0;
   }
 
+  function hasDisplayForms(ingredient) {
+    if(ingredient.ingredientForms.length === 0) {
+      return false;
+    }
+    switch(ingredient.inputCategory) {
+      case 'Vegetables':
+      case 'Starches':
+        return false;
+
+      case 'Protein':
+        if(ingredient.name.standardForm === 'Chicken') {
+          return false;
+        }
+        return true;
+      default:
+        return false;
+    }
+  }
+
   IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
     var ingredientCategoriesObj = response.data;
     $scope.ingredientCategories = [];
@@ -149,7 +168,9 @@ angular.module('main')
         ingredients.sort(alphabeticalCmp);
         for (var i = ingredients.length - 1; i >= 0; i--) {
           //select form
-          ingredients[i].ingredientForms[0].isSelected = true;
+          if(!hasDisplayForms(ingredients[i])) {
+            ingredients[i].ingredientForms[0].isSelected = true;
+          } 
         }
       }
     }
@@ -317,7 +338,12 @@ angular.module('main')
           var ingredient = ingredients[k];
           if(ingredient.isSelected){
             //trim unselected forms, then test forms for emptiness
-            //Add check for 'any' here
+            if(!_.some(ingredient.ingredientForms, function(form) {
+              return form.isSelected;
+            })) {
+              //then select necessary forms
+              AnyFormSelectionService.selectForms(ingredient.ingredientForms);
+            }
             for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
               if(!ingredient.ingredientForms[j].isSelected){
                 ingredient.ingredientForms.splice(j, 1);
