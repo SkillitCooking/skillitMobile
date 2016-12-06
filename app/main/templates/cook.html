@@ -21,12 +21,12 @@
     
         <!-- content goes here -->
       <ion-slides options="slideOptions" slider="data.slider">
-        <ion-slide-page ng-repeat="(name, ingredientSubCategories) in ingredientCategories" ng-init="storeCatName($index, name)">
+        <ion-slide-page ng-repeat="categoryObj in ingredientCategories" ng-init="storeCatName($index, categoryObj.name)">
           <ion-content class="has-header padding cook-tab" scroll=true>
           <div class="wrap-class" ng-class="getWrapClass($index)">
-            <h2 class="ingredient-type-heading">{{name}}</h2>
+            <h2 class="ingredient-type-heading">{{categoryObj.name}}</h2>
             <ion-list>
-              <div ng-if="!isError()" ng-repeat="(subCatName, ingredients) in ingredientSubCategories">
+              <div ng-if="!isError()" ng-repeat="(subCatName, ingredients) in categoryObj.subCategories">
                 <h4 class="ingredient-subtype-heading" ng-if="showSubCategoryName(subCatName)">{{subCatName}}</h4>
                 <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
                   <ion-checkbox ng-click="ingredientSelected(ingredient)" class="checkbox-balanced" ng-model="ingredient.isSelected">

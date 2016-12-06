@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
 
   $scope.catNames = [];
 
@@ -110,13 +110,40 @@ angular.module('main')
     userToken = $ionicAuth.getToken();
   }
 
+  function categorySortFn(catA, catB) {
+    if(catA.name === INGREDIENT_CATEGORIES.VEGETABLES) {
+      return -1;
+    }
+    if(catB.name === INGREDIENT_CATEGORIES.VEGETABLES) {
+      return 1;
+    }
+    if(catA.name === INGREDIENT_CATEGORIES.PROTEIN) {
+      return -1;
+    }
+    if(catB.name === INGREDIENT_CATEGORIES.PROTEIN) {
+      return 1;
+    }
+    if(catA.name === INGREDIENT_CATEGORIES.STARCH) {
+      return -1;
+    }
+    if(catB.name === INGREDIENT_CATEGORIES.STARCH) {
+      return 1;
+    }
+    return 0;
+  }
+
   IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
-    $scope.ingredientCategories = response.data;
+    var ingredientCategoriesObj = response.data;
+    $scope.ingredientCategories = [];
     $scope.inputCategoryArray = [];
     //set first form of all ingredients to selected
-    for(var category in $scope.ingredientCategories) {
+    for(var category in ingredientCategoriesObj) {
+      var subCategories = ingredientCategoriesObj[category];
+      $scope.ingredientCategories.push({
+        name: category,
+        subCategories: subCategories
+      });
       $scope.inputCategoryArray.push(category);
-      var subCategories = $scope.ingredientCategories[category];
       for(var subCategory in subCategories) {
         var ingredients = subCategories[subCategory];
         ingredients.sort(alphabeticalCmp);
@@ -126,6 +153,7 @@ angular.module('main')
         }
       }
     }
+    $scope.ingredientCategories.sort(categorySortFn);
     setTimeout(function() {
       $ionicLoading.hide();
     }, 500);
@@ -239,7 +267,7 @@ angular.module('main')
   $scope.hasMoreSlides = function() {
     if($scope.slider) {
       if($scope.ingredientCategories) {
-        return $scope.slider.activeIndex < Object.keys($scope.ingredientCategories).length - 1;
+        return $scope.slider.activeIndex < $scope.ingredientCategories.length - 1;
       }
     }
   };
@@ -281,12 +309,12 @@ angular.module('main')
 
   $scope.toRecipeSelection = function() {
     var selectedIngredients = [];
-    for(var key in $scope.ingredientCategories){
-      var subCategories = angular.copy($scope.ingredientCategories[key]);
+    for(var i = $scope.ingredientCategories.length - 1; i >= 0; i--){
+      var subCategories = angular.copy($scope.ingredientCategories[i].subCategories);
       for(var subCategory in subCategories) {
         var ingredients = subCategories[subCategory];
-        for (var i = ingredients.length - 1; i >= 0; i--) {
-          var ingredient = ingredients[i];
+        for (var k = ingredients.length - 1; k >= 0; k--) {
+          var ingredient = ingredients[k];
           if(ingredient.isSelected){
             //trim unselected forms, then test forms for emptiness
             //Add check for 'any' here
@@ -366,13 +394,13 @@ angular.module('main')
   };
 
   $scope.clearIngredients = function() {
-    for(var key in $scope.ingredientCategories) {
-      for(var subCat in $scope.ingredientCategories[key]) {
-        for (var i = $scope.ingredientCategories[key][subCat].length - 1; i >= 0; i--) {
-          $scope.ingredientCategories[key][subCat][i].isSelected = false;
-          for (var j = $scope.ingredientCategories[key][subCat][i].ingredientForms.length - 1; j >= 0; j--) {
+    for(var k = $scope.ingredientCategories.length - 1; k >= 0; k--) {
+      for(var subCat in $scope.ingredientCategories[k].subCategories) {
+        for (var i = $scope.ingredientCategories[k].subCategories[subCat].length - 1; i >= 0; i--) {
+          $scope.ingredientCategories[k].subCategories[subCat][i].isSelected = false;
+          for (var j = $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms.length - 1; j >= 0; j--) {
             if(j > 0) {
-              $scope.ingredientCategories[key][subCat][i].ingredientForms[j].isSelected = false;
+              $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms[j].isSelected = false;
             }
           }
         }

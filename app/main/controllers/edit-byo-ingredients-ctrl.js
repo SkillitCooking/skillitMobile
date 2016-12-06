@@ -1,11 +1,12 @@
 'use strict';
 angular.module('main')
-.controller('EditByoIngredientsCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($window, $scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, INGREDIENT_CATEGORIES, ErrorService) {
+.controller('EditByoIngredientsCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'DietaryPreferenceAdjustments', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($window, $scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, DietaryPreferenceAdjustments, INGREDIENT_CATEGORIES, ErrorService) {
 
   $scope.hasChanged = false;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
   $scope.BYOIngredientTypes = $stateParams.BYOIngredientTypes;
+  DietaryPreferenceAdjustments.takeOutIngredients($scope.BYOIngredientTypes);
   $scope.originalBYOIngredientTypes = angular.copy($scope.BYOIngredientTypes);
   $scope.BYOName = $stateParams.BYOName;
   $scope.loadAlaCarte = $stateParams.loadAlaCarte;

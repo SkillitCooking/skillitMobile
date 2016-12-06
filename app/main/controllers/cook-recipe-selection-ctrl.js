@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $scope.selectedIngredientIds = [];
@@ -67,11 +67,16 @@ angular.module('main')
     });
   });
   //copy so as to preserve original ingredients when attempting to LoadMore
-  var ingredientIds = {
-    ingredientIds: angular.copy($scope.selectedIngredientIds)
-  };
+  var ingredientIds = angular.copy($scope.selectedIngredientIds);
+
+  var userId, userToken;
+
+  if($ionicAuth.isAuthenticated()) {
+    userId = $ionicUser.get(USER.ID);
+    userToken = $ionicAuth.getToken();
+  }
   
-  RecipeService.getRecipesWithIngredients(ingredientIds).then(function(response) {
+  RecipeService.getRecipesWithIngredients(ingredientIds, userId, userToken).then(function(response) {
     $scope.alaCarteRecipes = response.data.AlaCarte;
     if($scope.alaCarteRecipes){
       $scope.alaCarteClickedArr = Array($scope.alaCarteRecipes.length).fill(false);

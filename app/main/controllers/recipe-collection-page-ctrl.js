@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', 'ErrorService', function ($scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicPlatform, $ionicHistory, ErrorService) {
+.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', function ($scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicPlatform, $ionicHistory, $ionicUser, $ionicAuth, ErrorService, USER) {
 
   $scope.collection = $stateParams.collection;
 
@@ -32,9 +32,16 @@ angular.module('main')
   //initialize first next page value
   $scope.nextPageNumber = 0;
 
+  var userId, userToken;
+
+  if($ionicAuth.isAuthenticated()) {
+    userId = $ionicUser.get(USER.ID);
+    userToken = $ionicAuth.getToken();
+  }
+
   $scope.loadMoreRecipes = function() {
     if($scope.collection) {
-      RecipeService.getRecipesForCollection($scope.collection._id, $scope.nextPageNumber).then(function(recipes) {
+      RecipeService.getRecipesForCollection($scope.collection._id, $scope.nextPageNumber, userId, userToken).then(function(recipes) {
         if(recipes.data) {
           if(recipes.data.length !== 0) {
             for (var i = recipes.data.length - 1; i >= 0; i--) {

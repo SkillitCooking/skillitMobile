@@ -266,11 +266,14 @@ angular.module('main')
   }
   $scope.recipeIds = $stateParams.recipeIds;
   //run initial check for favoriting
+  var userId, userToken;
   if($ionicAuth.isAuthenticated()) {
     $scope.favoriteRecipeId = FavoriteRecipeDetectionService.getFavoriteId($scope.recipeIds);
+    userId = $ionicUser.get(USER.ID);
+    userToken = $ionicAuth.getToken();
   }
   if($stateParams.loadAlaCarte) {
-    RecipeService.getRecipesOfType('AlaCarte').then(function(recipes) {
+    RecipeService.getRecipesOfType('AlaCarte', userId, userToken).then(function(recipes) {
       recipes = recipes.data;
       recipes.sort(ingredientCategoryCmpFn);
       $scope.alaCarteRecipes = recipes;

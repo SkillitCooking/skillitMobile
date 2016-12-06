@@ -6,7 +6,7 @@ angular.module('main')
 
   return {
     getIngredientsForSelection: function (userId, userToken) {
-      return baseIngredients.customGET(/*{userId: userId, userToken: userToken},*/ 'getIngredientsForSelection');
+      return baseIngredients.customPOST({userId: userId, userToken: userToken}, 'getIngredientsForSelection');
     }
   };
 

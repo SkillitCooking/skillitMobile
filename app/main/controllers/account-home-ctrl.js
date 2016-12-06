@@ -72,6 +72,7 @@ angular.module('main')
         token: $ionicAuth.getToken()
       }).then(function(res) {
         $scope.user = res.data;
+        $ionicUser.set('dietaryPreferences', $scope.user.dietaryPreferences);
         DietaryPreferencesService.getAllDietaryPreferences().then(function(res) {
           $scope.dietaryPreferences = res.data;
           for (var i = $scope.dietaryPreferences.length - 1; i >= 0; i--) {
@@ -116,6 +117,7 @@ angular.module('main')
       token: $ionicAuth.getToken()
     }).then(function(res) {
       $scope.user = res.data;
+      $ionicUser.set('dietaryPreferences', $scope.user.dietaryPreferences);
       DietaryPreferencesService.getAllDietaryPreferences().then(function(res) {
           $scope.dietaryPreferences = res.data;
           for (var i = $scope.dietaryPreferences.length - 1; i >= 0; i--) {
@@ -230,6 +232,7 @@ angular.module('main')
         dietaryPreferences.push($scope.dietaryPreferences[i]);
       }
     }
+    $ionicUser.set('dietaryPreferences', dietaryPreferences);
     $ionicLoading.show();
     UserService.updatePersonalInfo({
       userId: $ionicUser.get(USER.ID),

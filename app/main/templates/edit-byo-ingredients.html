@@ -23,7 +23,7 @@
       </div>
       <ion-list class="cook-tab">
         <div ng-repeat="ingredient in type.ingredients" class="ingredient-checkbox-row">
-          <ion-checkbox class="checkbox-balanced" ng-click="ingredientClicked(ingredient)" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name.standardForm}}</ion-checkbox>
+          <ion-checkbox class="checkbox-balanced" ng-click="ingredientClicked(ingredient, type)" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name.standardForm}}</ion-checkbox>
           <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
             <div class="grouping-of-ingredient-forms">              
                 <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">         
