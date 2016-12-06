@@ -22,19 +22,7 @@ angular.module('main')
               });
             } else {
               $ionicDeploy.extract().then(function() {
-                $ionicPopup.show({
-                  title: 'Update Available!',
-                  template: 'Hey, we\'ve just pushed some new features to make your Skillit experience even tastier. Would you like to install them now? Won\'t take more than a few seconds, promise.',
-                  buttons: [
-                    {text: 'Nah, Later'},
-                    {
-                      text: 'Heck Yes!',
-                      onTap: function(e) {
-                        $ionicDeploy.load();
-                      }
-                    }
-                  ]
-                });
+                $ionicDeploy.load();
               });
             }
         });
