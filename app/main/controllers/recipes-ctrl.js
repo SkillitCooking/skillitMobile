@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP) {
+.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER) {
 
   $ionicLoading.show({
     template: '<p>Loading...</p><ion-spinner></ion-spinner>'
@@ -39,8 +39,14 @@ angular.module('main')
     }
     return 0;
   }
+
+  var userId, userToken;
+  if($ionicAuth.isAuthenticated()) {
+    userId = $ionicUser.get(USER.ID);
+    userToken = $ionicAuth.getToken();
+  }
   
-  ItemCollectionService.getCollectionsForItemType('recipe').then(function(collections) {
+  ItemCollectionService.getCollectionsForItemType('recipe', userId, userToken).then(function(collections) {
     $scope.recipeCollections = collections.data;
     $scope.recipeCollections.sort(recipeCollectionSortFn);
     $ionicLoading.hide();
