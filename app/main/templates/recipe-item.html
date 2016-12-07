@@ -13,7 +13,7 @@
         <p>{{recipe.description}}</p>
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
         <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
-        <!--<p ng-if="showdatefeatured">Feature Date: {{recipe.dateFeatured}}</p>-->
+        <p ng-if="recipe.usesMissingIngredients">Contains some ingredients you didn't select</p>
       </div>
       <div ng-if="isfavorite" class="recipe-description-time">
         <p>{{getFavoriteRecipeDescription()}}</p>
