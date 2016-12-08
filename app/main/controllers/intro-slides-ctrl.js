@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('IntroSlidesCtrl', ['$scope', '$ionicTabsDelegate', '$ionicNavBarDelegate', 'INTRO_SLIDES', function ($scope, $ionicTabsDelegate, $ionicNavBarDelegate, INTRO_SLIDES) {
+.controller('IntroSlidesCtrl', ['$rootScope', '$scope', '$ionicTabsDelegate', '$ionicNavBarDelegate', 'INTRO_SLIDES', function ($rootScope, $scope, $ionicTabsDelegate, $ionicNavBarDelegate, INTRO_SLIDES) {
 	$scope.introSlides = INTRO_SLIDES;
 	$scope.$on('$ionicView.beforeEnter', function(event, data) {
 		$ionicTabsDelegate.showBar(false);
@@ -9,5 +9,6 @@ angular.module('main')
 	$scope.$on('$ionicView.beforeLeave', function(event, data) {
 		$ionicTabsDelegate.showBar(true);
 		$ionicNavBarDelegate.showBar(true);
+    $rootScope.redrawSlides = true;
 	});
 }]);

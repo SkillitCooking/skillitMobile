@@ -7,5 +7,5 @@ angular.module('main')
     getGlossarysForCollection: function(collectionId) {
       return baseGlossary.customPOST({collectionId: collectionId}, 'getGlossarysForCollection');
     }
-  }
+  };
 });
