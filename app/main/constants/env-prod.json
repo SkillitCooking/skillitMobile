@@ -1,4 +1,5 @@
 {
   "SERVER_URL": "http://138.68.45.225:3000/api/",
-  "CHANNEL": "production"
+  "CHANNEL": "production",
+  "API_PASSWORD": "sm@34MLPG9L&rWph|YMwcg=&5|R3TMZ!!H+F48ThGFl56E&*RD"
 }

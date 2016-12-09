@@ -5,7 +5,8 @@ angular.module('main', [
   'ui.router',
   'restangular',
   'ionic.cloud',
-  'ngStorage'
+  'ngStorage',
+  'ng-persist'
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
@@ -33,7 +34,10 @@ angular.module('main', [
       ErrorService.showErrorAlert();
     };
   }]);
+
+  //Restangular configuration
   RestangularProvider.setBaseUrl(Config.ENV.SERVER_URL);
+  RestangularProvider.setDefaultHeaders({password: Config.ENV.API_PASSWORD});
 
   // ROUTING with ui.router
   $urlRouterProvider.otherwise('/root');

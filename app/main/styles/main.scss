@@ -382,8 +382,7 @@ h4.ingredient-subtype-heading {
 	white-space: nowrap;
 }
 .individual-recipe-in-list img {
-	width: 80px;
-	height: 80px;
+	width: 100%;
 }
 .cook-recipe-selection .item, .cook-recipe-selection .item p, .cook-recipe-selection .item h2 {
 	white-space: normal; 
@@ -963,10 +962,6 @@ h2.intro-slide-header {
 /*RESPONSIVE*/
 /*recipe selection tab*/
 @media (min-width: 374px) {
-	.individual-recipe-in-list img {
-		width: 100px;
-		height: 100px;
-	}
 	img.video-thumbnail {
 		height: 80px;
 		width: auto;

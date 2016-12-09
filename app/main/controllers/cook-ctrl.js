@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$localStorage', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $localStorage, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $persist, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
 
   $scope.catNames = [];
 
@@ -22,17 +22,12 @@ angular.module('main')
   }
 
   $scope.$on('$ionicView.loaded', function(event, data) {
-    if(!$localStorage.hasSeenIntro) {
-      $localStorage.hasSeenIntro = true;
-      /*$ionicModal.fromTemplateUrl('main/templates/intro-slides-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.introModal = modal;
-        $scope.introModal.show();
-      });*/
-      $state.go('main.introSlides');
-    }
+    $persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
+      if(hasSeen) {
+        $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);
+        $state.go('main.introSlides');
+      }
+    });
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
