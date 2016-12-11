@@ -1,6 +1,6 @@
 {
   "name": "Skillit", 
-  "version": "0.1.0", 
+  "version": "0.1.1", 
   "description": "A pretty neat cooking application.",
   "private": true,
   "engines": {
