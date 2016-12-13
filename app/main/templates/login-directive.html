@@ -20,9 +20,9 @@
     </label>
   </div>
   <div class="row">
-    <div class="col col-50"><p style="text-align: center"><button ng-if="isSignIn" class="button button-spice-up-add-side login-signup" ng-click="signIn()" ng-disabled="isSignInDisabled()">Log In</button></p></div>
-    <div class="col col-50"><p style="text-align: center"><button ng-if="isSignUp" class="button button-spice-up-add-side login-signup" ng-click="signUp()" ng-disabled="isSignUpDisabled()">Sign Up</button></p></div>
+    <div ng-if="isSignIn" class="col"><p style="text-align: center"><button class="button button-spice-up-add-side login-signup" ng-click="signIn()" ng-disabled="isSignInDisabled()">Log In</button></p></div>
+    <div ng-if="isSignUp" class="col"><p style="text-align: center"><button class="button button-spice-up-add-side login-signup" ng-click="signUp()" ng-disabled="isSignUpDisabled()">Sign Up</button></p></div>
   </div>  
-  <p style="text-align: center"><button ng-if="isSignIn" class="button button-spice-up-add-side reset-password" ng-click="resetCredentials()">Reset Password</button></p>
+  <p ng-if="isSignIn" style="text-align: center"><button class="button skip-button" ng-click="resetCredentials()">Reset Password</button></p>
   </div>
 </div>
