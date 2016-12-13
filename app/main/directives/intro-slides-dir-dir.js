@@ -12,12 +12,13 @@ angular.module('main')
         scope.data = {};
     	scope.$watch('data.slider', function(nv, ov) {
     		scope.slider = scope.data.slider;
+            if(scope.slider) {
+                scope.slideCount = new Array(scope.slider.slides.length);
+            }
     	});
 
-        scope.slideCount = new Array(scope.slides.length);
-
-        scope.getDotClass = function(slideIndex, index) {
-            if(index == slideIndex) {
+        scope.getDotClass = function(index) {
+            if(index == scope.slider.activeIndex) {
                 return "fa fa-circle fa-lg fa-inverse";
             } else {
                 return "fa fa-circle-thin fa-lg fa-inverse";
@@ -33,7 +34,7 @@ angular.module('main')
             scope.slider.slideTo(index);
         };
 
-        scope.signUp = function() {
+        scope.goToEnd = function() {
             scope.slider.slideTo(scope.slider.slides.length - 1);
         };
 
