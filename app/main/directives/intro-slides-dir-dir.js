@@ -17,6 +17,17 @@ angular.module('main')
             }
     	});
 
+        scope.slideOptions = {
+            pagination: true,
+            paginationClickable: true,
+            onTouchMove: function(swiper, event){
+              swiper.slideNext();
+            },
+            onTouchMoveOpposite: function(swiper, event){
+              swiper.slidePrev();
+            }
+        };
+
         scope.getDotClass = function(index) {
             if(index == scope.slider.activeIndex) {
                 return "fa fa-circle fa-lg fa-inverse";

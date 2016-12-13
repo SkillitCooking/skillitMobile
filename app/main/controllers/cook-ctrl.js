@@ -147,6 +147,12 @@ angular.module('main')
   }
 
   IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
+    $scope.response = response;
+    $ionicPopup.show({
+      title: 'Some BS',
+      template: '<pre>{{response | json}}</pre>',
+      scope: $scope
+    });
     var ingredientCategoriesObj = response.data;
     $scope.ingredientCategories = [];
     $scope.inputCategoryArray = [];
@@ -174,7 +180,16 @@ angular.module('main')
       $ionicLoading.hide();
     }, 500);
   }, function(response){
-    ErrorService.showErrorAlert();
+    $scope.response = response;
+    if(!$scope.poop) {
+      $ionicPopup.show({
+        title: 'Some BS',
+        template: '<pre>{{response | json}}</pre>',
+        scope: $scope
+      });
+      $scope.poop = true;
+    }
+    //ErrorService.showErrorAlert();
   });
 
   $scope.data = {};
