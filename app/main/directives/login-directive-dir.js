@@ -5,16 +5,66 @@ angular.module('main')
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
     scope: {
-      isWalkthrough: '='
+      type: '='
     },
     link: function (scope, element, attrs) {
       scope.hasErrors = false;
       scope.data = {};
 
+      switch(scope.type) {
+        case 'account':
+        case 'popover':
+          scope.isSignIn = true;
+          scope.isSignUp = true;
+          break;
+        case 'introSignUp':
+          scope.isSignUp = true;
+          scope.isSignIn = false;
+          scope.isWalkthrough = true;
+          break;
+        case 'introSignIn':
+          scope.isSignUp = false;
+          scope.isSignIn = true;
+          scope.isWalkthrough = true;
+          break;
+        default:
+          break;
+      }
+
       function clearForm() {
         scope.password = "";
         scope.passwordConfirm = "";
       }
+
+      scope.signUpOrLoginText = function() {
+        if(scope.isSignIn && scope.isSignUp) {
+          return 'Sign Up or Login for an Account Using:';
+        } else if(scope.isSignIn) {
+          return 'Login to your Account Using:';
+        } else if (scope.isSignUp) {
+          return 'Sign Up for an Account Using:';
+        }
+      };
+
+      scope.signUpOrLoginSubheader = function() {
+        if(scope.isSignIn && scope.isSignUp) {
+          return 'Sign up to save your favorite dishes, select any dietary restrictions, and receive tailored recipes just for you!';
+        } else if(scope.isSignIn) {
+          return 'Login to get back to Skillin\' it your way';
+        } else if(scope.isSignUp) {
+          return 'Sign up to save your favorite dishes, select any dietary restrictions, and receive tailored recipes just for you!';
+        }
+      };
+
+      scope.getTitle = function() {
+        if(scope.isSignUp && scope.isSignIn) {
+          return 'Create Account';
+        } else if(scope.isSignUp) {
+          return 'Create Account';
+        } else if(scope.isSignIn) {
+          return 'Login to your Account';
+        }
+      };
 
       scope.getLoginClasses = function() {
         if(scope.isWalkthrough) {

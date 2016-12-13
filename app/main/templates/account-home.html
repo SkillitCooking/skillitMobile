@@ -10,7 +10,7 @@
         <a ng-class="getAccountInfoButtonClass()" ng-click="selectAccountInfo()">Account</a>
       </div>
     </div>
-    <login-directive is-walkthrough="false" ng-if="!isAuthenticated()"></login-directive>
+    <login-directive type="'account'" ng-if="!isAuthenticated()"></login-directive>
     <div ng-if="isAuthenticated()">
       <div ng-if="favRecipeSelected">
         <h2 class="recipe-category">Your Favorite Recipes</h2>

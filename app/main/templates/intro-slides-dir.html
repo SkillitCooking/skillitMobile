@@ -30,17 +30,12 @@
             <i ng-class="getDotClass(slideIndex, $index)" ng-click="goToSlide($index+1)" aria-hidden="true"></i>
           </div>
         </div>
-        <div class="walkthrough-img-container">
-          <button class="button get-cooking" ng-click="signUp()">Get Cooking</button>
-        </div>
-        <div class="walkthrough-img-container">
-          <button class="button skip-button" ng-click="getCooking()">Skip</button>
-        </div>
       </ion-content>
     </ion-slide-page>
     <ion-slide-page class="intro-slide-background">
       <ion-content scroll="true">
-        <login-directive is-walkthrough="true"></login-directive>
+        <button class="button" ng-click="goToSignUp()">Sign Up</button>
+        <button class="button" ng-click="goToSignIn()">Sign In</button>
         <div class="walkthrough-img-container">
           <button class="button skip-button" ng-click="closeIntro()">Skip</button>
         </div>

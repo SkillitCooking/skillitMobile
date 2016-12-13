@@ -50,14 +50,16 @@ angular.module('main', [
     })
     .state('root', {
       url: '/root',
-      onEnter: function($state, $localStorage) {
-        if($localStorage.hasSeenIntro) {
-          $state.go('main.cook');
-          $localStorage.hasSeenIntro = false;
-        } else {
-          $state.go('main.introSlides');
-          $localStorage.hasSeenIntro = true;
-        }
+      onEnter: function($state, $persist) {
+        /*$persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
+          if(hasSeen) {
+            $state.go('main.cook');
+          } else {
+            $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);
+            $state.go('main.introSlides');
+          }
+        });*/
+        $state.go('main.introSlides');
       }
     })
     .state('main.introSlides', {
@@ -67,6 +69,18 @@ angular.module('main', [
           templateUrl: 'main/templates/intro-slides-modal.html',
           controller: 'IntroSlidesCtrl as ctrl'
         }
+      }
+    })
+    .state('main.loginIntro', {
+      url: '/loginIntro',
+      views: {
+        'intro-slides': {
+          templateUrl: 'main/templates/login-intro.html',
+          controller: 'LoginIntroCtrl as ctrl',
+        }
+      },
+      params: {
+        type: null
       }
     })
       .state('main.account', {

@@ -37,6 +37,14 @@ angular.module('main')
             scope.slider.slideTo(scope.slider.slides.length - 1);
         };
 
+        scope.goToSignUp = function() {
+            $state.go('main.loginIntro', {type: 'introSignUp'});
+        };
+
+        scope.goToSignIn = function() {
+            $state.go('main.loginIntro', {type: 'introSignIn'});
+        };
+
         scope.getCooking = function() {
             $state.go('main.cook');
         };

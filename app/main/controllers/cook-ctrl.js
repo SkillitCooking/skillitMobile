@@ -23,7 +23,7 @@ angular.module('main')
 
   $scope.$on('$ionicView.loaded', function(event, data) {
     $persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
-      if(hasSeen) {
+      if(!hasSeen) {
         $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);
         $state.go('main.introSlides');
       }
@@ -324,60 +324,62 @@ angular.module('main')
   }
 
   $scope.toRecipeSelection = function() {
-    var selectedIngredients = [];
-    for(var i = $scope.ingredientCategories.length - 1; i >= 0; i--){
-      var subCategories = angular.copy($scope.ingredientCategories[i].subCategories);
-      for(var subCategory in subCategories) {
-        var ingredients = subCategories[subCategory];
-        for (var k = ingredients.length - 1; k >= 0; k--) {
-          var ingredient = ingredients[k];
-          if(ingredient.isSelected){
-            //trim unselected forms, then test forms for emptiness
-            if(!_.some(ingredient.ingredientForms, function(form) {
-              return form.isSelected;
-            })) {
-              //then select necessary forms
-              AnyFormSelectionService.selectForms(ingredient.ingredientForms);
-            }
-            for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
-              if(!ingredient.ingredientForms[j].isSelected){
-                ingredient.ingredientForms.splice(j, 1);
+    if($scope.ingredientCategories) {
+      var selectedIngredients = [];
+      for(var i = $scope.ingredientCategories.length - 1; i >= 0; i--){
+        var subCategories = angular.copy($scope.ingredientCategories[i].subCategories);
+        for(var subCategory in subCategories) {
+          var ingredients = subCategories[subCategory];
+          for (var k = ingredients.length - 1; k >= 0; k--) {
+            var ingredient = ingredients[k];
+            if(ingredient.isSelected){
+              //trim unselected forms, then test forms for emptiness
+              if(!_.some(ingredient.ingredientForms, function(form) {
+                return form.isSelected;
+              })) {
+                //then select necessary forms
+                AnyFormSelectionService.selectForms(ingredient.ingredientForms);
               }
-            }
-            if(ingredient.ingredientForms.length > 0){
-              selectedIngredients.push(ingredient);
+              for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
+                if(!ingredient.ingredientForms[j].isSelected){
+                  ingredient.ingredientForms.splice(j, 1);
+                }
+              }
+              if(ingredient.ingredientForms.length > 0){
+                selectedIngredients.push(ingredient);
+              }
             }
           }
         }
       }
-    }
-    if(selectedIngredients.length > 0) {
-      if(typeof $window.ga !== 'undefined') {
-        var interval = Date.now() - $scope.slideStartTime;
-        $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+      if(selectedIngredients.length > 0) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+        }
+        //create id/formid array
+        var isAnonymous = true;
+        if($ionicAuth.isAuthenticated()) {
+          isAnonymous = false;
+        }
+        var ingredientIds = getIngredientIds(selectedIngredients);
+        IngredientUsedService.postUsedIngredients({
+          ingredientIds: ingredientIds,
+          isAnonymous: isAnonymous,
+          userId: $ionicUser.get(USER.ID, undefined),
+          token: $ionicAuth.getToken(),
+          deviceToken: ionic.Platform.device().uuid
+        }).then(function(res) {
+          //don't need to handle a success either - just logging ish for now
+        }, function(response) {
+          //don't need to do anything to client-side handle an error - just let the
+          //user continue
+        });
+        //go to next controller - but do we want to query for recipes here or there? Also, how are params accessed by the coming state?
+        $state.go('main.cookRecipeSelection', {selectedIngredients: selectedIngredients});
+      } else {
+        $scope.showInvalidPopup();
       }
-      //create id/formid array
-      var isAnonymous = true;
-      if($ionicAuth.isAuthenticated()) {
-        isAnonymous = false;
-      }
-      var ingredientIds = getIngredientIds(selectedIngredients);
-      IngredientUsedService.postUsedIngredients({
-        ingredientIds: ingredientIds,
-        isAnonymous: isAnonymous,
-        userId: $ionicUser.get(USER.ID, undefined),
-        token: $ionicAuth.getToken(),
-        deviceToken: ionic.Platform.device().uuid
-      }).then(function(res) {
-        //don't need to handle a success either - just logging ish for now
-      }, function(response) {
-        //don't need to do anything to client-side handle an error - just let the
-        //user continue
-      });
-      //go to next controller - but do we want to query for recipes here or there? Also, how are params accessed by the coming state?
-      $state.go('main.cookRecipeSelection', {selectedIngredients: selectedIngredients});
-    } else {
-      $scope.showInvalidPopup();
     }
   };
 
@@ -415,13 +417,15 @@ angular.module('main')
   };
 
   $scope.clearIngredients = function() {
-    for(var k = $scope.ingredientCategories.length - 1; k >= 0; k--) {
-      for(var subCat in $scope.ingredientCategories[k].subCategories) {
-        for (var i = $scope.ingredientCategories[k].subCategories[subCat].length - 1; i >= 0; i--) {
-          $scope.ingredientCategories[k].subCategories[subCat][i].isSelected = false;
-          for (var j = $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms.length - 1; j >= 0; j--) {
-            if(j > 0) {
-              $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms[j].isSelected = false;
+    if($scope.ingredientCategories) {
+      for(var k = $scope.ingredientCategories.length - 1; k >= 0; k--) {
+        for(var subCat in $scope.ingredientCategories[k].subCategories) {
+          for (var i = $scope.ingredientCategories[k].subCategories[subCat].length - 1; i >= 0; i--) {
+            $scope.ingredientCategories[k].subCategories[subCat][i].isSelected = false;
+            for (var j = $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms.length - 1; j >= 0; j--) {
+              if(j > 0) {
+                $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms[j].isSelected = false;
+              }
             }
           }
         }
