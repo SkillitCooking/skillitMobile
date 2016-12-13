@@ -58,9 +58,9 @@ angular.module('main')
 
       scope.getTitle = function() {
         if(scope.isSignUp && scope.isSignIn) {
-          return 'Create Account';
+          return 'Create an Account';
         } else if(scope.isSignUp) {
-          return 'Create Account';
+          return 'Create an Account';
         } else if(scope.isSignIn) {
           return 'Login to your Account';
         }

@@ -210,11 +210,7 @@ ion-nav-back-button.button-clear {
 	background: #ffffff;
 	border: 1px solid $balanced;
 }
-/**********************************/
-/* INTRO SLIDES */
-.intro-slide-background {
-	background-color: $balanced;
-}
+
 /**********************************/
 /*COOK TAB*/
 /*general*/
@@ -883,7 +879,16 @@ h2.chapter-number {
 }
 
 /***************************************/
-/*WALKTHROUGH*/
+/*WALKTHROUGH  & INTRO SLIDES */
+.intro-slide-background {
+	background-color: #ffffff;
+}
+.intro-slide-background.swiper-slide {
+	margin-top: 20px;
+}
+.swiper-slide img.skillit-logo-walkthrough {
+	max-width: 50%;
+}
 .walkthrough-img-container {
 	text-align: center;
 }
@@ -892,7 +897,7 @@ h2.chapter-number {
 	margin: 0 auto;
 }
 h3.walkthrough-top-header {
-	color: #ffffff;
+	color: $balanced;
 	text-align: center;
 	margin: 20px 8px 10px;
 }
@@ -906,6 +911,13 @@ p.walkthrough-subheader {
 	display: inline-block;
 	margin: 0 2px;
 }
+.walkthrough-slider-dots .fa-inverse {
+	color: $balanced;
+	margin: 0 1px;
+}
+.walkthrough-slider-dots .fa-lg {
+	font-size: 1em;
+}
 .button.get-cooking {
     border: 1px solid #fff;
     background-color: transparent;
@@ -917,9 +929,8 @@ p.walkthrough-subheader {
     background-color: transparent;
 }
 h2.intro-slide-header {
-	color: #ffffff;
+	color: $balanced;
 	text-align: center;
-	margin: 100px 8px 10px;	
 }
 .intro-slide-subheader {
 	text-align: center;
@@ -932,7 +943,7 @@ h2.intro-slide-header {
 	top: 20%;
 }
 .login-screen-walkthrough h2.recipe-category {
-	color: #ffffff;
+	color: $balanced;
 	text-align: center;
 	margin-top: 30px;
 }
@@ -947,16 +958,12 @@ h2.intro-slide-header {
 .login-screen-walkthrough .list .item.item-input {
 	background-color: transparent;
 }
-.button-spice-up-add-side {
-	border-color: #ffffff;
-    background-color: $balanced;
-    color: #ffffff;
+.walkthrough-login-signup {
+	width: 80%;
+	font-size: 20px;
 }
-
-.button-spice-up-add-side:hover, .button-spice-up-add-side:active {
-	border-color: #ffffff;
-    background-color: #ffffff;
-    color: $balanced;
+.final-walkthrough-slide {
+	margin-top: 100px;
 }
 /**************************************/
 /*RESPONSIVE*/
