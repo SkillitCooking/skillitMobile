@@ -28,9 +28,11 @@
               <div ng-if="!isError()" ng-repeat="(subCatName, ingredients) in categoryObj.subCategories">
                 <h4 class="ingredient-subtype-heading" ng-if="showSubCategoryName(subCatName)">{{subCatName}}</h4>
                 <div ng-repeat="ingredient in ingredients" class="ingredient-checkbox-row">
-                  <ion-checkbox ng-click="ingredientSelected(ingredient)" class="checkbox-balanced" ng-model="ingredient.isSelected">
-                    {{ingredient.name.standardForm}}
-                  </ion-checkbox>
+                  <span ng-click="ingredientSelected(ingredient)">
+                    <ion-checkbox class="checkbox-balanced" ng-model="ingredient.isSelected">
+                      {{ingredient.name.standardForm}}
+                    </ion-checkbox>
+                  </span>
                   <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
                     <div class="grouping-of-ingredient-forms"> 
                     <!--Insert 'any' form here-->             

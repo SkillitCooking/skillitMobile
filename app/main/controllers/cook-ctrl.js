@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $persist, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
 
   $scope.catNames = [];
 
@@ -69,6 +69,8 @@ angular.module('main')
   });
 
   $scope.$on('$ionicView.beforeEnter', function() {
+    $ionicTabsDelegate.showBar(true);
+    $ionicNavBarDelegate.showBar(true);
     if($scope.slider) {
       if($rootScope.redrawSlides) {
         //Could stand to refactor this out into some sort of service...
@@ -147,12 +149,6 @@ angular.module('main')
   }
 
   IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
-    $scope.response = response;
-    $ionicPopup.show({
-      title: 'Some BS',
-      template: '<pre>{{response | json}}</pre>',
-      scope: $scope
-    });
     var ingredientCategoriesObj = response.data;
     $scope.ingredientCategories = [];
     $scope.inputCategoryArray = [];
@@ -180,16 +176,7 @@ angular.module('main')
       $ionicLoading.hide();
     }, 500);
   }, function(response){
-    $scope.response = response;
-    if(!$scope.poop) {
-      $ionicPopup.show({
-        title: 'Some BS',
-        template: '<pre>{{response | json}}</pre>',
-        scope: $scope
-      });
-      $scope.poop = true;
-    }
-    //ErrorService.showErrorAlert();
+    ErrorService.showErrorAlert();
   });
 
   $scope.data = {};

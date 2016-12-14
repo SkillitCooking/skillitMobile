@@ -14,22 +14,16 @@ angular.module('main')
     		scope.slider = scope.data.slider;
             if(scope.slider) {
                 scope.slideCount = new Array(scope.slider.slides.length);
+                scope.currentIndex = 0;
             }
     	});
-
-        scope.slideOptions = {
+        scope.options = {
             pagination: true,
-            paginationClickable: true,
-            onTouchMove: function(swiper, event){
-              swiper.slideNext();
-            },
-            onTouchMoveOpposite: function(swiper, event){
-              swiper.slidePrev();
-            }
+            effect: 'slide'
         };
 
         scope.getDotClass = function(index) {
-            if(index == scope.slider.activeIndex) {
+            if(scope.currentIndex == index) {
                 return "fa fa-circle fa-lg fa-inverse";
             } else {
                 return "fa fa-circle-thin fa-lg fa-inverse";

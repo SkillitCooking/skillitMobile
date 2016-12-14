@@ -51,15 +51,14 @@ angular.module('main', [
     .state('root', {
       url: '/root',
       onEnter: function($state, $persist) {
-        /*$persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
+        $persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
           if(hasSeen) {
             $state.go('main.cook');
           } else {
             $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);
             $state.go('main.introSlides');
           }
-        });*/
-        $state.go('main.introSlides');
+        });
       }
     })
     .state('main.introSlides', {

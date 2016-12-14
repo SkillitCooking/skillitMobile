@@ -9,8 +9,4 @@ angular.module('main')
   $scope.$on('$ionicView.afterEnter', function(event, data) {
     $rootScope.redrawSlides = true;
   });
-	$scope.$on('$ionicView.beforeLeave', function(event, data) {
-		$ionicTabsDelegate.showBar(true);
-		$ionicNavBarDelegate.showBar(true);
-	});
 }]);
