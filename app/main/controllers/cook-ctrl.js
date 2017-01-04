@@ -149,6 +149,13 @@ angular.module('main')
   }
 
   IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
+    /*$scope.response = _.omit(response, ['data']);
+    $ionicPopup.show({
+      title: 'Debug',
+      template: '<pre>{{response | json}}</pre>',
+      scope: $scope
+    });*/
+    console.log('response', response);
     var ingredientCategoriesObj = response.data;
     $scope.ingredientCategories = [];
     $scope.inputCategoryArray = [];
@@ -176,6 +183,7 @@ angular.module('main')
       $ionicLoading.hide();
     }, 500);
   }, function(response){
+    $scope.response = _.omit(response, ['data']);
     ErrorService.showErrorAlert();
   });
 

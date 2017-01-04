@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('IngredientService', function (Restangular) {
+.factory('IngredientService', function (_, $rootScope, $ionicPopup, Restangular, $http) {
 
   var baseIngredients = Restangular.all('ingredients');
 
@@ -9,5 +9,4 @@ angular.module('main')
       return baseIngredients.customPOST({userId: userId, userToken: userToken}, 'getIngredientsForSelection');
     }
   };
-
 });

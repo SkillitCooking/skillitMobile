@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER) {
 
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
@@ -1065,6 +1065,10 @@ angular.module('main')
       $scope.loginPopover.remove();
     }
   });
+
+  $scope.socialShareMeal = function() {
+    SocialSharingService.shareMeal($scope.combinedRecipe);
+  };
 
   $scope.mainVideoClicked = function() {
     if(typeof $window.ga !== 'undefined') {
