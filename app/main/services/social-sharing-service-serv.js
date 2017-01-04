@@ -11,8 +11,9 @@ angular.module('main')
     } else {
       name = recipe.name;
     }
+    var message = SHARING.MESSAGE1 + name + SHARING.MESSAGE2;
     $cordovaSocialSharing
-    .share(SHARING.MESSAGE, SHARING.SUBJECT, SHARING.FILE, SHARING.LINK)
+    .share(message, SHARING.SUBJECT, SHARING.FILE, SHARING.LINK)
     .then(function(result) {
       //congrats popup
     }, function(err) {
