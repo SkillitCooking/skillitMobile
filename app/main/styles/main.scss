@@ -82,7 +82,30 @@ h1 {
     border: 1px solid $balanced;
     background-color: $balanced;
 }
-
+.learn-title, .learn-title-white {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-align: center;
+}
+.learn-title:before, .learn-title:after, .learn-title-white:before, .learn-title-white:after {
+    position: absolute;
+    top: 51%;
+    overflow: hidden;
+    width: 50%;
+    height: 10px;
+    content: '\a0';
+}
+.learn-title:before, .learn-title:after {
+  	background-color: #ef4734;
+}
+.learn-title-white:before, .learn-title-white:after {
+  	background-color: #ffffff;
+}
+.learn-title:before, .learn-title-white:before {
+    margin-left: -50%;
+    text-align: right;
+}
 /***********************/
 /*SPACING**/
 .col-36 {
@@ -123,7 +146,10 @@ h1 {
 }
 .home-tab .padding-10 {
 	padding: 10px !important;
-}   
+}  
+.padding-zero {
+	padding: 0;
+} 
 .padding-left-zero {
 	padding-left: 0;
 } 
@@ -384,10 +410,13 @@ h4.ingredient-subtype-heading {
 	white-space: normal; 
 }
 .cook-recipe-selection .item {
-	padding: 2px;
+	padding: 0 2px 2px 0;
+}
+.cook-recipe-selection .item .recipe-image-padding {
+	padding: 0;
 }
 .individual-recipe-in-list p {
-	font-size: 13px;
+	font-size: 14px;
 }
 .item h2 {
 	font-size: 18px;
@@ -418,17 +447,14 @@ h4.ingredient-subtype-heading {
     width: 31px;
     height: 31px;
     font-size: 23px;
-}
+} 
 .individual-recipe-in-list {
 	margin: 10px 0;
 }
-.cook-recipe-selection button {
-	font-family: 'Open Sans', sans-serif;
-	font-size: 21px;	
+.load-more-recipe-button {
+	font-size: 16px;
 }
-.cook-recipe-selection .col-50.col-center {
-	text-align: center;
-}
+
 .bottom-a-la-carte-buttons {
     position: fixed;
     bottom: 37px;
@@ -831,6 +857,33 @@ h2.chapter-number {
 
 /*************RECIPES TAB***************/
 /**************************************/
+.recipe-tab-padding {
+	padding: 0 0 10px;
+}
+.recipe-collection-container {
+	text-align: center;
+}
+.recipe-collection-image {
+	width: 100%;
+}
+.recipe-collection-container h2{
+	position: absolute;
+	top: 35%;
+	color: #ffffff;
+	font-size: 35px;
+	width: 100%;
+	left: 0px;
+	text-shadow: 2px 2px #000000;
+	font-weight: 900;
+}
+.item.recipe-categories {
+	margin: 4px 0;
+	border: none;
+}
+.item.recipe-categories:first-child {
+	margin-top: 0;
+}
+/****************/
 .recipe-category-img {
 	width: 80px;
 }
