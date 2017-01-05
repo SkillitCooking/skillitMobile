@@ -153,7 +153,8 @@ angular.module('main')
     'RECIPES_TAB': 1,
     'FAVORITE': 2
   }).constant('SHARING', {
-    'MESSAGE': 'I just cooked ' + name + ' using Skillit!',
+    'MESSAGE1': 'I just cooked ',
+    'MESSAGE2': ' using Skillit!',
     'IMAGE': 'main/assets/images/skillit-orange-text.png',
     'SUBJECT': 'Skillin\' it',
     'LINK': 'https://skillitcooking.com'

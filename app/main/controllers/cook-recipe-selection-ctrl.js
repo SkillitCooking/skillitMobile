@@ -188,6 +188,18 @@ angular.module('main')
     if(recipeCategory === 'Sautee') {
       return 'Stir Frys';
     }
+    if(recipeCategory === 'Hash') {
+      return 'Potato Hashes';
+    }
+    if(recipeCategory === 'Roast') {
+      return 'One Pan Roasts';
+    }
+    if(recipeCategory === 'Rice') {
+      return 'Fried Rice';
+    }
+    if(recipeCategory === 'Quinoa') {
+      return 'Loaded Quinoa';
+    }
     return recipeCategory;
   };
 
