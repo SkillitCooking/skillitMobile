@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('loginDirective', ['$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, UserService, ErrorService, LOGIN, USER) {
+.directive('loginDirective', ['$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', '$state', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, $state, UserService, ErrorService, LOGIN, USER) {
   return {
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
@@ -95,6 +95,8 @@ angular.module('main')
             $ionicPopup.alert({
               title: 'Login was successful!',
               template: 'Now let\'s get cooking!'
+            }).then(function(res) {
+              $state.go('main.cook');
             });
           }, function(response) {
             clearForm();
@@ -137,6 +139,8 @@ angular.module('main')
               $ionicPopup.alert({
                title: 'Signup Successful!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                $state.go('main.cook');
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
@@ -201,7 +205,6 @@ angular.module('main')
         $ionicAuth.login(LOGIN.FACEBOOK).then(function(result) {
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
-
           //different alert cases - new signup vs. existing user
           if(result.signup) {
             //then signed up for the first time
@@ -220,6 +223,8 @@ angular.module('main')
               $ionicPopup.alert({
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                $state.go('main.cook');
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
@@ -244,6 +249,8 @@ angular.module('main')
               $ionicPopup.alert({
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                $state.go('main.cook');
               }); 
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
@@ -269,6 +276,7 @@ angular.module('main')
         $ionicAuth.login(LOGIN.GOOGLE).then(function(result) {
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
+          console.log('Google then');
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
@@ -286,6 +294,8 @@ angular.module('main')
               $ionicPopup.alert({
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                $state.go('main.cook');
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
@@ -309,6 +319,8 @@ angular.module('main')
               $ionicPopup.alert({
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                $state.go('main.cook');
               }); 
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
