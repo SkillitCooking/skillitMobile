@@ -12,11 +12,11 @@
       <div ng-if="!isfavorite" class="recipe-description-time">        
         <p>{{recipe.description}}</p>
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
-        <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
+        <p>Ready In: {{getRecipeTotalTime(recipe)}} mins | Time Active: {{getRecipeActiveTime(recipe)}} mins </p>
       </div>
       <div ng-if="isfavorite" class="recipe-description-time">
         <p>{{getFavoriteRecipeDescription()}}</p>
-        <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
+        <p>Ready In: {{getRecipeTotalTime(recipe)}} mins | Time Active: {{getRecipeActiveTime(recipe)}} mins </p>
       </div>
       <p class="missing-ingredient-note" ng-if="recipe.usesMissingIngredients">Recipe calls for ingredients you didn't select</p>
     </div>

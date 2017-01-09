@@ -103,11 +103,11 @@
       <h3 class="center">Get your grub on!</h3>
       <div class="row">
         <div class="col">
-          <button class="button button-spice-up-add-side" ng-click="socialShareMeal()">Show your friends!</button>
+          <button class="button button-spice-up-add-side show-save-buttons" ng-click="socialShareMeal()">Show Your Friends!</button>
         </div>
         <div class="col">
-          <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)">Save to Favorites</button></p>
-          <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)">Unfavorite Recipe</button></p>
+          <p style="text-align:center"><button class="button button-spice-up-add-side show-save-buttons" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)">Add To Favorites</button></p>
+          <p style="text-align:center"><button class="button button-spice-up-add-side show-save-buttons" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)">Unfavorite Recipe</button></p>
         </div>
       </div>      
     </ion-content>

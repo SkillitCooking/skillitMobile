@@ -362,7 +362,7 @@ h4.ingredient-subtype-heading {
 /*recipe selection tab*/
 .recipe-category-buttons {
     position: fixed;
-    top: 70px;
+    top: 50px;
     z-index: 5000;
     background-color: #ffffff;
 }
@@ -375,8 +375,8 @@ h4.ingredient-subtype-heading {
 }
 .white-space-above-recipe-category-buttons {
 	position: fixed;
-    top: 45px;
-    height:76px;
+    top: 44px;
+    height:56px;
     z-index: 4999;
     width: 100%;
     background-color: #ffffff;
@@ -390,7 +390,7 @@ h4.ingredient-subtype-heading {
 	margin-left: 7px;
 }
 .cook-recipe-selection.scroll-content.ionic-scroll {
-	padding-top: 65px;
+	padding-top: 55px;
 }
 .platform-android .cook-recipe-selection.scroll-content.ionic-scroll {
 	padding-top: 45px;
@@ -491,6 +491,9 @@ h4.ingredient-subtype-heading {
 }
 .missing-ingredient-note {
 	font-weight: 600;
+}
+.button.show-save-buttons {
+	line-height: 140%;
 }
 /*************************/
 /*recipe instructions page*/
@@ -987,7 +990,7 @@ h2.intro-slide-header {
 }
 .intro-slide-subheader {
 	text-align: center;
-	margin: 0px 16px 10px;	
+	margin: 30px 16px 10px;	
 	font-size: 18px;
 	line-height: 23px;
 }

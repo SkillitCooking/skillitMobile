@@ -139,12 +139,6 @@ angular.module('main')
         'subtitle': 'Not sure what you want to cook with? Browse different recipe collections.',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/browse-5.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/browse-5.png'
-    },
-    {
-        'header': 'Educate Yo\'Self',
-        'subtitle': 'Learn what you need to know to skillit in the kitchen',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/learn-6.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/learn-6.png'
     }
   ]).constant('PAGINATION', {
     'ITEMS_PER_PAGE': 25
