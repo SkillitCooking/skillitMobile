@@ -1,6 +1,6 @@
 {
-  "name": "Skillit", 
-  "version": "0.1.5", 
+  "name": "Skillit",
+  "version": "0.1.5",
   "description": "A pretty neat cooking application.",
   "private": true,
   "engines": {
@@ -53,5 +53,9 @@
     "wiredep": "^4.0.0",
     "xml2js": "^0.4.9",
     "yeoman-test": "^1.1.0"
-  }
+  },
+  "cordovaPlugins": [],
+  "cordovaPlatforms": [
+    "ios"
+  ]
 }

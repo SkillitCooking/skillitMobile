@@ -1,7 +1,7 @@
 'use strict';
 angular.module('main')
 //check for hot updates
-.run(function($ionicPopup, $ionicDeploy, $ionicLoading, Config) {
+.run(function($ionicPopup, $ionicDeploy, $ionicLoading, Config, LOADING) {
   $ionicDeploy.channel = Config.ENV.CHANNEL;
   $ionicDeploy.getSnapshots().then(function(snapshots) {
     $ionicDeploy.info().then(function(curSnapShot) {
@@ -14,7 +14,8 @@ angular.module('main')
     $ionicDeploy.check().then(function(snapshotAvailable) {
       if(snapshotAvailable) {
         $ionicLoading.show({
-          template: '<p>Updating App...</p><ion-spinner></ion-spinner>'
+          template: LOADING.TEMPLATE,
+          noBackdrop: true
         });
         $ionicDeploy.download().then(function() {
             if(snapshots.length === 0) {

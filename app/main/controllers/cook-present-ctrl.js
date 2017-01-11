@@ -1075,8 +1075,12 @@ angular.module('main')
     }
   });
 
-  $scope.socialShareMeal = function() {
-    SocialSharingService.shareMeal($scope.combinedRecipe);
+  $scope.socialShareMeal = function(type) {
+    if(type === 'facebook') {
+      SocialSharingService.shareMealFacebook($scope.combinedRecipe);
+    } else if(type === 'twitter') {
+      SocialSharingService.shareMealTwitter($scope.combinedRecipe);
+    }
   };
 
   $scope.mainVideoClicked = function() {
