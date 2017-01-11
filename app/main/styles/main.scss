@@ -58,7 +58,7 @@ h1 {
 	font-style: italic;
 }
 .bar .title {
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: 600;
 }
 .center {
@@ -220,6 +220,12 @@ h1 {
 	min-width: 57px;
 	border-radius: 8px;
 }
+
+
+.tabs-light > .tabs {
+    background-image: none;
+}
+
 
 /***********************************/
 /*HEADER*/
@@ -405,6 +411,7 @@ h4.ingredient-subtype-heading {
 }
 .individual-recipe-in-list img {
 	width: 100%;
+    padding: 4px 0 0 4px;	
 }
 .cook-recipe-selection .item, .cook-recipe-selection .item p, .cook-recipe-selection .item h2 {
 	white-space: normal; 
@@ -691,6 +698,40 @@ h4.ingredient-subtype-heading {
 .popover-arrow {
 	display: none !important;
 }
+.button.social-share-buttons {
+    padding: 0;
+    min-width: 120px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.button.facebook {
+	background-color: #3b5998;
+	color: #ffffff;
+}
+.button.facebook:hover, .button.facebook:active {
+	background-color: #ffffff;
+	color: #3b5998;
+	border-color: #3b5998;
+}
+.twitter {
+	background-color: #00aced;
+	color: #ffffff;
+}
+.button.twitter:hover, .button.twitter:active {
+	background-color: #ffffff;
+	color: #00aced;
+	border-color: #00aced;
+}
+.google {
+	background-color: #009688;
+	color: #ffffff;
+}
+.button.google:hover, .button.google:active {
+	background-color: #ffffff;
+	color: #009688;
+	border-color: #009688;
+}
+
 /*seasoning profile selector*/
 .popover .bar h1.title, .seasoning-selector-popup h3 {
 	font-size: 18px;
@@ -929,6 +970,8 @@ h2.chapter-number {
 }
 .social-login-buttons .button {
 	width: 120px;
+	border-radius: 8px;
+	font-weight: 600;
 }
 .login-screen .login-signup.button {
 	margin: 0;
@@ -1066,4 +1109,8 @@ h2.intro-slide-header {
 	.walkthrough-img-container img {
 		max-width: 50%;
 	}
+	.bar .title {
+		font-size: 18px;
+		font-weight: 600;
+	}	
 }

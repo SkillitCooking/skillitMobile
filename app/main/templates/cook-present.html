@@ -103,14 +103,16 @@
       <h3 class="center">Get your grub on!</h3>
       <div class="row">
         <div class="col">
-          <button class="button button-spice-up-add-side show-save-buttons" ng-click="socialShareMeal('facebook')">Show Your Friends on Facebook!</button>
+          <p style="text-align: center"><button class="button facebook social-share-buttons" ng-click="socialShareMeal('facebook')"><i class="icon ion-social-facebook"></i> Post It!</button></p>
         </div>
         <div class="col">
-          <button class="button button-spice-up-add-side show-save-buttons" ng-click="socialShareMeal('twitter')">Show Your Friends on Twitter!</button>
+          <p style="text-align: center"><button class="button twitter social-share-buttons" ng-click="socialShareMeal('twitter')"><i class="icon ion-social-twitter"></i> Tweet It!</button></p>
         </div>
+      </div>
+      <div class="row">
         <div class="col">
-          <p style="text-align:center"><button class="button button-spice-up-add-side show-save-buttons" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)">Add To Favorites</button></p>
-          <p style="text-align:center"><button class="button button-spice-up-add-side show-save-buttons" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)">Unfavorite Recipe</button></p>
+          <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)">Save To Faves</button></p>
+          <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)">Unfavorite Recipe</button></p>
         </div>
       </div>      
     </ion-content>
