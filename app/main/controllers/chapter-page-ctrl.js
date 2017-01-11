@@ -1,13 +1,14 @@
 'use strict';
 angular.module('main')
-.controller('ChapterPageCtrl', ['$scope', '$stateParams', '$state', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'LessonService', 'ErrorService', function ($scope, $stateParams, $state, $ionicLoading, $ionicHistory, $ionicPlatform, LessonService, ErrorService) {
+.controller('ChapterPageCtrl', ['$scope', '$stateParams', '$state', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'LessonService', 'ErrorService', 'LOADING', function ($scope, $stateParams, $state, $ionicLoading, $ionicHistory, $ionicPlatform, LessonService, ErrorService, LOADING) {
   
   $scope.chapter = $stateParams.chapter;
   $scope.chapters = $stateParams.chapters;
   $scope.currentIndex = $stateParams.index;
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
@@ -54,7 +55,8 @@ angular.module('main')
     if($scope.chapters && $scope.currentIndex > 0) {
       if($scope.chapters[$scope.currentIndex - 1].lessonIds.length === 1) {
         $ionicLoading.show({
-          template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+          template: LOADING.TEMPLATE,
+          noBackdrop: true
         });
         LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentIndex - 1].lessonIds}).then(
           function(res) {
@@ -82,7 +84,8 @@ angular.module('main')
     if($scope.chapters && $scope.currentIndex < $scope.chapters.length - 1) {
       if($scope.chapters[$scope.currentIndex + 1].lessonIds.length === 1) {
         $ionicLoading.show({
-          template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+          template: LOADING.TEMPLATE,
+          noBackdrop: true
         });
         LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentIndex + 1].lessonIds}).then(
           function(res) {

@@ -152,4 +152,6 @@ angular.module('main')
     'IMAGE': 'main/assets/images/skillit-orange-text.png',
     'SUBJECT': 'Skillin\' it',
     'LINK': 'https://skillitcooking.com/pages/app'
+  }).constant('LOADING', {
+    'TEMPLATE': '<p>Loading...</p><ion-spinner></ion-spinner>'
   });

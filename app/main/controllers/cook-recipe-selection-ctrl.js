@@ -1,11 +1,12 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOADING) {
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $scope.selectedIngredientIds = [];
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
@@ -318,7 +319,10 @@ angular.module('main')
 
   $scope.loadMoreRecipes = function(recipeCategory) {
     //should we have a loading going on here?
-    $ionicLoading.show();
+    $ionicLoading.show({
+      template: LOADING.TEMPLATE,
+      noBackdrop: true
+    });
     var recipeIds = $scope.fullRecipes[recipeCategory].additionalRecipeIds;
     RecipeService.getMoreRecipesForCategory({recipeIds: recipeIds}).then(function(res) {
       var recipes = res.data;

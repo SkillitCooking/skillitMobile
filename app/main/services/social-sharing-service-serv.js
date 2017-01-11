@@ -4,7 +4,7 @@ angular.module('main')
 
   var service = {};
 
-  service.shareMeal = function(recipe) {
+  service.shareMealTwitter = function(recipe) {
     var name;
     if(recipe.mainName) {
       name = recipe.mainName;
@@ -13,11 +13,28 @@ angular.module('main')
     }
     var message = SHARING.MESSAGE1 + name + SHARING.MESSAGE2;
     $cordovaSocialSharing
-    .share(message, SHARING.SUBJECT, recipe.mainPictureURL, SHARING.LINK)
+    .shareViaTwitter(message, recipe.mainPictureURL, SHARING.LINK)
     .then(function(result) {
       //congrats popup
     }, function(err) {
       //unable to share popup...
+    });
+  };
+
+  service.shareMealFacebook = function(recipe) {
+    var name;
+    if(recipe.mainName) {
+      name = recipe.mainName;
+    } else {
+      name = recipe.name;
+    }
+    var message = SHARING.MESSAGE1 + name + SHARING.MESSAGE2;
+    $cordovaSocialSharing
+    .shareViaFacebook(message, recipe.mainPictureURL, SHARING.LINK)
+    .then(function(result) {
+      //congrats popup
+    }, function(error) {
+      //unable to share popup
     });
   };
 

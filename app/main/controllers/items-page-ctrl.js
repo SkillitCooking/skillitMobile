@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('ItemsPageCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', 'PAGINATION', function ($scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService, PAGINATION) {
+.controller('ItemsPageCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', 'PAGINATION', 'LOADING', function ($scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService, PAGINATION, LOADING) {
 
   $scope.lesson = $stateParams.lesson;
   $scope.chapters = $stateParams.chapters;
@@ -9,7 +9,8 @@ angular.module('main')
   $scope.currentLessonIndex = $stateParams.currentLessonIndex;
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
@@ -69,7 +70,8 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex - 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+            template: LOADING.TEMPLATE,
+            noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex - 1].lessonIds}).then(
             function(res) {
@@ -115,7 +117,8 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex + 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+            template: LOADING.TEMPLATE,
+            noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex + 1].lessonIds}).then(
             function(res) {

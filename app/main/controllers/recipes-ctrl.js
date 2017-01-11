@@ -1,9 +1,10 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER) {
+.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', 'LOADING', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER, LOADING) {
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {

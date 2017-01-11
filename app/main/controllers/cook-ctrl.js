@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', 'LOADING', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER, LOADING) {
 
   $scope.catNames = [];
 
@@ -60,7 +60,8 @@ angular.module('main')
   });
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   //catch resize event

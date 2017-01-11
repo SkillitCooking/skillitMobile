@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOADING) {
 
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
@@ -129,7 +129,8 @@ angular.module('main')
   }
 
   $ionicLoading.show({
-      template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
@@ -591,13 +592,14 @@ angular.module('main')
     } else if(step.hasVideo) {
       //analytics
       $scope.stepVideo = step.stepTips[0].videoInfo;
+      console.log('stepVideo', $scope.stepVideo);
       if(typeof $window.ga != 'undefined') {
         var name = $scope.combinedRecipe.name;
         if(!name) {
           name = $scope.combinedRecipe.mainName;
         }
         $window.ga.trackEvent('RecipePresent', 'StepVideoClick', name);
-        $window.ga.trackEvent('RecipePresent', 'StepVideoClick', $scope.stepVideo.video.videoId);
+        $window.ga.trackEvent('RecipePresent', 'StepVideoClick', $scope.stepVideo.videoId);
       }
       $ionicModal.fromTemplateUrl('main/templates/video-modal.html', {
         scope: $scope,
@@ -984,7 +986,10 @@ angular.module('main')
       $window.ga.trackEvent('RecipePresent', 'RecipeUnFavorited', name);
     }
     if($ionicAuth.isAuthenticated()) {
-      $ionicLoading.show();
+      $ionicLoading.show({
+        template: LOADING.TEMPLATE,
+        noBackdrop: true
+      });
       FavoriteRecipeService.unfavoriteRecipe({
         userId: $ionicUser.get(USER.ID),
         token: $ionicAuth.getToken(),
@@ -1057,7 +1062,10 @@ angular.module('main')
 
   $scope.$on('signInStart', function(event){
     event.preventDefault();
-    $ionicLoading.show();
+    $ionicLoading.show({
+      template: LOADING.TEMPLATE,
+      noBackdrop: true
+    });
   });
   $scope.$on('signInStop', function(event, removePopover, fetchRecipes) {
     event.preventDefault();

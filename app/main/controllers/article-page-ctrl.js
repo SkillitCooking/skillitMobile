@@ -1,9 +1,10 @@
 'use strict';
 angular.module('main')
-.controller('ArticlePageCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'LessonService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', function ($rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, LessonService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES) {
+.controller('ArticlePageCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'LessonService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', 'LOADING', function ($rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, LessonService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES, LOADING) {
     
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.TEMPLATE,
+    noBackdrop: true
   });
 
   $scope.chapters = $stateParams.chapters;
@@ -131,7 +132,8 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex - 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+            template: LOADING.TEMPLATE,
+            noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex - 1].lessonIds}).then(
             function(res) {
@@ -177,7 +179,8 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex + 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+            template: LOADING.TEMPLATE,
+            noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex + 1].lessonIds}).then(
             function(res) {

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('AccountHomeCtrl', ['_', '$rootScope', '$scope', '$state', '$ionicLoading', '$ionicAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', function (_, $rootScope, $scope, $state, $ionicLoading, $ionicAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER) {
+.controller('AccountHomeCtrl', ['_', '$rootScope', '$scope', '$state', '$ionicLoading', '$ionicAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOADING', function (_, $rootScope, $scope, $state, $ionicLoading, $ionicAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOADING) {
 
   $scope.ages = USER.AGES;
   $scope.accountInfoSelected = false;
@@ -10,7 +10,10 @@ angular.module('main')
 
   $scope.$on('signInStart', function(event) {
     event.preventDefault();
-    $ionicLoading.show();
+    $ionicLoading.show({
+      template: LOADING.TEMPLATE,
+      noBackdrop: true
+    });
   });
 
   $scope.nextPageNumber = 1;
@@ -233,7 +236,10 @@ angular.module('main')
       }
     }
     $ionicUser.set('dietaryPreferences', dietaryPreferences);
-    $ionicLoading.show();
+    $ionicLoading.show({
+      template: LOADING.TEMPLATE,
+      noBackdrop: true
+    });
     UserService.updatePersonalInfo({
       userId: $ionicUser.get(USER.ID),
       token: $ionicAuth.getToken(),
@@ -277,7 +283,10 @@ angular.module('main')
 
   $scope.unfavoriteRecipe = function(favRecipe) {
     if($ionicAuth.isAuthenticated()) {
-      $ionicLoading.show();
+      $ionicLoading.show({
+        template: LOADING.TEMPLATE,
+        noBackdrop: true
+      });
       FavoriteRecipeService.unfavoriteRecipe({
         userId: $ionicUser.get(USER.ID),
         token: $ionicAuth.getToken(),
@@ -310,7 +319,10 @@ angular.module('main')
   };
 
   $scope.logout = function() {
-    $ionicLoading.show();
+    $ionicLoading.show({
+      template: LOADING.TEMPLATE,
+      noBackdrop: true
+    });
     var userId = $ionicUser.get(USER.ID);
     var token = $ionicAuth.getToken();
     $ionicAuth.logout();
