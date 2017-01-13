@@ -912,16 +912,16 @@ h2.chapter-number {
 }
 .recipe-collection-container h2{
 	position: absolute;
-	top: 35%;
+	bottom: 5%;
 	color: #ffffff;
-	font-size: 35px;
+	font-size: 25px;
 	width: 100%;
-	left: 0px;
-	text-shadow: 2px 2px #000000;
-	font-weight: 900;
+	left: 10px;
+	font-weight: 400;
+	text-align: left;
 }
 .item.recipe-categories {
-	margin: 4px 0;
+	margin: -4px 0;
 	border: none;
 }
 .item.recipe-categories:first-child {
@@ -1112,5 +1112,8 @@ h2.intro-slide-header {
 	.bar .title {
 		font-size: 18px;
 		font-weight: 600;
+	}	
+	.recipe-collection-container h2{
+		font-size: 30px;
 	}	
 }
