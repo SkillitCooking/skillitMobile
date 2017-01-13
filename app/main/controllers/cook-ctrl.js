@@ -21,15 +21,6 @@ angular.module('main')
     $window.ga.trackView('IngredientInput');
   }
 
-  $scope.$on('$ionicView.loaded', function(event, data) {
-    $persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
-      if(!hasSeen) {
-        $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);
-        $state.go('main.introSlides');
-      }
-    });
-  });
-
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();
     var showExitConfirm = true;
@@ -70,6 +61,7 @@ angular.module('main')
   });
 
   $scope.$on('$ionicView.beforeEnter', function() {
+    $persist.set('HAS_SEEN', 'FIRST_OPEN', true);
     $ionicTabsDelegate.showBar(true);
     $ionicNavBarDelegate.showBar(true);
     if($scope.slider) {

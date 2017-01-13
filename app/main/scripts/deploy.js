@@ -2,6 +2,7 @@
 angular.module('main')
 //check for hot updates
 .run(function($ionicPopup, $ionicDeploy, $ionicLoading, $persist, Config, LOADING) {
+  console.log('running');
   $ionicDeploy.channel = Config.ENV.CHANNEL;
   $persist.get('HAS_SEEN', 'FIRST_OPEN', false).then(function(hasSeen) {
     if(hasSeen) {
@@ -16,7 +17,7 @@ angular.module('main')
         $ionicDeploy.check().then(function(snapshotAvailable) {
           if(snapshotAvailable) {
             $ionicLoading.show({
-              template: LOADING.TEMPLATE,
+              template: LOADING.UPDATE_TEMPLATE,
               noBackdrop: true
             });
             $ionicDeploy.download().then(function() {
@@ -37,7 +38,7 @@ angular.module('main')
         });
       });
     } else {
-      $persist.set('HAS_SEEN', 'FIRST_OPEN', true);
+      //nothing
     }
   });
 });

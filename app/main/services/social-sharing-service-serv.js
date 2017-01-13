@@ -5,6 +5,7 @@ angular.module('main')
   var service = {};
 
   service.shareMealTwitter = function(recipe) {
+    console.log('twitter pic', recipe.mainPictureURL);
     var name;
     if(recipe.mainName) {
       name = recipe.mainName;
@@ -22,6 +23,7 @@ angular.module('main')
   };
 
   service.shareMealFacebook = function(recipe) {
+    console.log('facebook pic', recipe.mainPictureURL);
     var name;
     if(recipe.mainName) {
       name = recipe.mainName;

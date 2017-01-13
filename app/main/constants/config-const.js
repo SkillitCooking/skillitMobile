@@ -153,5 +153,6 @@ angular.module('main')
     'SUBJECT': 'Skillin\' it',
     'LINK': 'https://skillitcooking.com/pages/app'
   }).constant('LOADING', {
-    'TEMPLATE': '<p>Loading...</p><ion-spinner></ion-spinner>'
+    'TEMPLATE': '<p>Loading...</p><ion-spinner></ion-spinner>',
+    'UPDATE_TEMPLATE': '<p>Updating App</p><ion-spinner></ion-spinner>'
   });
