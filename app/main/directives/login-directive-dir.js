@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('loginDirective', ['$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', '$state', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, $state, UserService, ErrorService, LOGIN, USER) {
+.directive('loginDirective', ['$window', '$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', '$state', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($window, $rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, $state, UserService, ErrorService, LOGIN, USER) {
   return {
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
@@ -75,6 +75,9 @@ angular.module('main')
       };
 
       scope.signIn = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('EmailSignIn', 'signIn');
+        }
         //if success, want to let parent know - either broadcast or $emit
         //also, want to make server call to set current Token for User
         //if failure, then display error messages
@@ -118,6 +121,9 @@ angular.module('main')
       };
 
       scope.signUp = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('EmailSignUp', 'signUp');
+        }
         //if success, then login; want to let parent know that successful login has occured -either $broadcast or $emit
         //also, want to make server call to create User and set current Token for User
         //if failure, then error messages
@@ -197,6 +203,9 @@ angular.module('main')
       };
 
       scope.signInFacebook = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('FacebookSignIn', 'signIn');
+        }
         //if success, want to let parent know - either $broadcast or $emit
         //also, want to make server call to possibly create User and set current Token for User
         //if failure, then error messages
@@ -268,6 +277,9 @@ angular.module('main')
       };
 
       scope.signInGoogle = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('GoogleLogIn', 'LogIn');
+        }
         //if success, want to let parent know - either $broadcast or $emit
         //also, want to make server call to possibly create User and set current Token for User
         //if failure, then error messages

@@ -11,6 +11,10 @@ angular.module('main')
   $scope.BYOName = $stateParams.BYOName;
   $scope.loadAlaCarte = $stateParams.loadAlaCarte;
 
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('EditIngredients');
+  }
+
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $scope.navigateBack();
   }, 501);

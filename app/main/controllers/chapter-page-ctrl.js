@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('ChapterPageCtrl', ['$scope', '$stateParams', '$state', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'LessonService', 'ErrorService', 'LOADING', function ($scope, $stateParams, $state, $ionicLoading, $ionicHistory, $ionicPlatform, LessonService, ErrorService, LOADING) {
+.controller('ChapterPageCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'LessonService', 'ErrorService', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicLoading, $ionicHistory, $ionicPlatform, LessonService, ErrorService, LOADING) {
   
   $scope.chapter = $stateParams.chapter;
   $scope.chapters = $stateParams.chapters;
@@ -10,6 +10,10 @@ angular.module('main')
     template: LOADING.TEMPLATE,
     noBackdrop: true
   });
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('ChapterPage');
+  }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();

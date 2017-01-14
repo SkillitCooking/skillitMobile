@@ -11,6 +11,10 @@ angular.module('main')
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
 
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('SideDishSelection');
+  }
+
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $scope.navigateBack();
   }, 501);

@@ -1,11 +1,15 @@
 'use strict';
 angular.module('main')
-.controller('ArticlePageCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'LessonService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', 'LOADING', function ($rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, LessonService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES, LOADING) {
+.controller('ArticlePageCtrl', ['$window', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'LessonService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', 'LOADING', function ($window, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, LessonService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES, LOADING) {
     
   $ionicLoading.show({
     template: LOADING.TEMPLATE,
     noBackdrop: true
   });
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('ArticlePage');
+  }
 
   $scope.chapters = $stateParams.chapters;
   $scope.currentChapterIndex = $stateParams.currentChapterIndex;

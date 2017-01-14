@@ -1,12 +1,16 @@
 'use strict';
 angular.module('main')
-.controller('AccountHomeCtrl', ['_', '$rootScope', '$scope', '$state', '$ionicLoading', '$ionicAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOADING', function (_, $rootScope, $scope, $state, $ionicLoading, $ionicAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOADING) {
+.controller('AccountHomeCtrl', ['_', '$window', '$rootScope', '$scope', '$state', '$ionicLoading', '$ionicAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOADING', function (_, $window, $rootScope, $scope, $state, $ionicLoading, $ionicAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOADING) {
 
   $scope.ages = USER.AGES;
   $scope.accountInfoSelected = false;
   $scope.favRecipeSelected = true;
   $scope.favoriteRecipes = [];
   $scope.infoHasChanged = false;
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('AccoutHome');
+  }
 
   $scope.$on('signInStart', function(event) {
     event.preventDefault();
@@ -155,11 +159,17 @@ angular.module('main')
   };
 
   $scope.selectFavRecipes = function() {
+    if(typeof $window.ga !== 'undefined') {
+      $window.ga.trackEvent('FavoriteRecipesSelected', 'selected');
+    }
     $scope.favRecipeSelected = true;
     $scope.accountInfoSelected = false;
   };
 
   $scope.selectAccountInfo = function() {
+    if(typeof $window.ga !== 'undefined') {
+      $window.ga.trackEvent('AccountInfoSelected', 'selected');
+    }
     $scope.accountInfoSelected = true;
     $scope.favRecipeSelected = false;
   };
@@ -169,6 +179,11 @@ angular.module('main')
   };
 
   $scope.changeUserInfo = function() {
+    if($scope.infoHasChanged && typeof $window.ga !== 'undefined') {
+      var action = "changed";
+      var label = $ionicUser.get(USER.ID);
+      $window.ga.trackEvent('DietaryPrefence', action, label);
+    }
     $scope.infoHasChanged = true;
   };
 
@@ -229,6 +244,11 @@ angular.module('main')
 
   $scope.saveUserInfo = function() {
     //will need to do dietary preferences update here
+    if(typeof $window.ga !== 'undefined') {
+      var action = 'saved';
+      var label = $ionicUser.get(USER.ID);
+      $window.ga.trackEvent('UserInfoSaved', action, label);
+    }
     var dietaryPreferences = [];
     for (var i = $scope.dietaryPreferences.length - 1; i >= 0; i--) {
       if($scope.dietaryPreferences[i].isMarked) {
@@ -262,6 +282,11 @@ angular.module('main')
   };
 
   $scope.cookFavoriteRecipe = function(recipe) {
+    if(typeof $window.ga !== 'undefined') {
+      var action = recipe.name;
+      var label = $ionicUser.get(USER.ID);
+      $window.ga.trackEvent('FavoriteRecipeCooked', action, label);
+    }
     FavoriteRecipeService.favoriteRecipeUsedForUser({
       userId: $ionicUser.get(USER.ID),
       token: $ionicAuth.getToken(),
@@ -282,6 +307,11 @@ angular.module('main')
   };
 
   $scope.unfavoriteRecipe = function(favRecipe) {
+    if(typeof $window.ga !== 'undefined') {
+      var action = favRecipe.name;
+      var label = $ionicUser.get(USER.ID);
+      $window.ga.trackEvent('RecipeUnfavorited', action, label);
+    }
     if($ionicAuth.isAuthenticated()) {
       $ionicLoading.show({
         template: LOADING.TEMPLATE,
@@ -319,6 +349,11 @@ angular.module('main')
   };
 
   $scope.logout = function() {
+    if(typeof $window.ga !== 'undefined') {
+      var label = 'userId';
+      var action = $ionicUser.get(USER.ID);
+      $window.ga.trackEvent('Logout', action, label);
+    }
     $ionicLoading.show({
       template: LOADING.TEMPLATE,
       noBackdrop: true

@@ -1,12 +1,16 @@
 'use strict';
 angular.module('main')
-.controller('ItemsPageCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', 'PAGINATION', 'LOADING', function ($scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService, PAGINATION, LOADING) {
+.controller('ItemsPageCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', 'PAGINATION', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService, PAGINATION, LOADING) {
 
   $scope.lesson = $stateParams.lesson;
   $scope.chapters = $stateParams.chapters;
   $scope.currentChapterIndex = $stateParams.currentChapterIndex;
   $scope.lessons = $stateParams.lessons;
   $scope.currentLessonIndex = $stateParams.currentLessonIndex;
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('ItemsPage');
+  }
 
   $ionicLoading.show({
     template: LOADING.TEMPLATE,

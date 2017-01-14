@@ -9,6 +9,10 @@ angular.module('main')
     noBackdrop: true
   });
 
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('RecipeSelection');
+  }
+
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();
     var navigateBack = true;

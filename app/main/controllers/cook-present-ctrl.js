@@ -250,6 +250,18 @@ angular.module('main')
   $scope.isFavoriteRecipe = $stateParams.isFavoriteRecipe;
   $scope.cameFromRecipeCollection = $stateParams.cameFromRecipeCollection;
 
+  if(typeof $window.ga !== 'undefined') {
+    if($stateParams.cameFromRecipes) {
+      $window.ga.trackView('RecipePresent.Recipes');
+    } else if($stateParams.isFavoriteRecipe) {
+      $window.ga.trackView('RecipePresent.Favorite');
+    } else if($stateParams.cameFromRecipeCollection) {
+      $window.ga.trackView('RecipePresent.RecipeCollection');
+    } else if($stateParams.numberBackToRecipeSelection) {
+      $window.ga.trackView('RecipePresent.Cook');
+    }
+  }
+
   if(!$scope.numberBackToRecipeSelection) {
     $scope.numberBackToRecipeSelection = -1;
   }
@@ -1076,6 +1088,15 @@ angular.module('main')
   });
 
   $scope.socialShareMeal = function(type) {
+    if(typeof $window.ga !== 'undefined') {
+      var name;
+      if($scope.combinedRecipe.mainName) {
+        name = $scope.combinedRecipe.mainName;
+      } else {
+        name = $scope.combinedRecipe.name;
+      }
+      $window.ga.trackEvent('SocialMealShare', name, type);
+    }
     if(type === 'facebook') {
       SocialSharingService.shareMealFacebook($scope.combinedRecipe);
     } else if(type === 'twitter') {

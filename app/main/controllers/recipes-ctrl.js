@@ -1,11 +1,15 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', 'LOADING', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER, LOADING) {
+.controller('RecipesCtrl', ['$window', '$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', 'LOADING', function ($window, $scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER, LOADING) {
 
   $ionicLoading.show({
     template: LOADING.TEMPLATE,
     noBackdrop: true
   });
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('Recipes');
+  }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();

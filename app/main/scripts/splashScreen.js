@@ -3,7 +3,9 @@ angular.module('main')
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     setTimeout(function() {
-      navigator.splashscreen.hide();
+      if(navigator.splashscreen) {
+        navigator.splashscreen.hide();
+      }
     }, 500);
   });
 });
