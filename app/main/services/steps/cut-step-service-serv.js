@@ -130,7 +130,7 @@ angular.module('main')
         break;
     }
     //set isEmpty
-    if(step.ingredientsToCut.length === 0) {
+    if(!step.ingredientsToCut || step.ingredientsToCut.length === 0) {
       step.isEmpty = true;
     } else {
       step.isEmpty = false;
