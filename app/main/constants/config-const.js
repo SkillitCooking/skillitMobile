@@ -31,8 +31,10 @@ angular.module('main')
     'HEAT': 'Heat',
     'PLACE': 'Place',
     'PREHEAT': 'PreheatOven',
+    'REMOVE': 'Remove',
     'SAUTEE': 'Saute',
     'SEASON': 'Season',
+    'SERVE': 'Serve',
     'SLOWCOOK': 'SlowCook',
     'STEAM': 'Steam',
     'STIR': 'Stir'

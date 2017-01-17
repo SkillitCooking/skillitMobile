@@ -250,6 +250,7 @@ angular.module('main')
   }
 
   function constructStepText(step) {
+    console.log('step', step);
     if(!step.isEmpty) {
       var placeType = _.find(step.stepSpecifics, function(specific) {
         return specific.propName === "placeType";

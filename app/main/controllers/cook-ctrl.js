@@ -148,7 +148,6 @@ angular.module('main')
       template: '<pre>{{response | json}}</pre>',
       scope: $scope
     });*/
-    console.log('response', response);
     var ingredientCategoriesObj = response.data;
     $scope.ingredientCategories = [];
     $scope.inputCategoryArray = [];

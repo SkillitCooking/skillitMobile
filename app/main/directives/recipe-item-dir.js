@@ -30,7 +30,7 @@ angular.module('main')
       };
 
       scope.getFavoriteRecipeDescription = function() {
-        var s = ""
+        var s = "";
         if(scope.recipe.timesUsed > 1) {
           s = "s";
         }

@@ -52,7 +52,7 @@ angular.module('main', [
       url: '/root',
       onEnter: function($state, $persist) {
         $persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
-          if(false) {
+          if(hasSeen) {
             $state.go('main.cook');
           } else {
             $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);

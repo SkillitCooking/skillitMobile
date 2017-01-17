@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('customStepService', ['_', 'StepTipService', 'DishInputService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, STEP_TYPES, ErrorService) {
+.factory('serveStepService', ['_', 'StepTipService', 'DishInputService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function instantiateStep (step, recipe) {
@@ -34,7 +34,7 @@ angular.module('main')
                 step.products[step.productKeys[0]] = {
                   ingredients: [],
                   dishes: [],
-                  sourceStepType: STEP_TYPES.CUSTOM
+                  sourceStepType: STEP_TYPES.SERVE
                 };
               }
               var concatIngredients = _.filter(ingredientType.ingredients, function(ingredient) {
@@ -49,7 +49,7 @@ angular.module('main')
           } else {
             //error
             ErrorService.logError({
-              message: "Custom Step Service ERROR: no type found for input in function 'instantiateStep'",
+              message: "Serve Step Service ERROR: no type found for input in function 'instantiateStep'",
               ingredientInput: ingredientInput,
               step: step,
               recipeName: recipe.name
@@ -70,7 +70,7 @@ angular.module('main')
                   step.products[step.productKeys[0]] = {
                     ingredients: [],
                     dishes: [],
-                    sourceStepType: STEP_TYPES.CUSTOM
+                    sourceStepType: STEP_TYPES.SERVE
                   };
                 }
                 var productIngredients = angular.copy(referencedStep.products[ingredientInput.key].ingredients);
@@ -80,9 +80,9 @@ angular.module('main')
                 step.products[step.productKeys[0]].ingredients = step.products[step.productKeys[0]].ingredients.concat(productIngredients);
               } else {
                 //error
-                console.log("customStepService error: no products for referencedStep: ", referencedStep);
+                console.log("ServeStepService error: no products for referencedStep: ", referencedStep);
                 ErrorService.logError({
-                  message: "Custom Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  message: "Serve Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
                   referencedStep: referencedStep,
                   step: step,
                   recipeName: recipe.name
@@ -106,7 +106,7 @@ angular.module('main')
         default:
           //error
           ErrorService.logError({
-            message: "Custom Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+            message: "Serve Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
             ingredientInput: ingredientInput,
             step: step,
             recipeName: recipe.name
@@ -129,15 +129,15 @@ angular.module('main')
               step.products[step.productKeys[0]] = {
                 ingredients: [],
                 dishes: [],
-                sourceStepType: STEP_TYPES.CUSTOM
+                sourceStepType: STEP_TYPES.SERVE
               };
             }
             step.products[step.productKeys[0]].dishes.push(dish);
           } else {
             //error
-            console.log("customStepService error: no dish found for input: ", dishInput);
+            console.log("serveStepService error: no dish found for input: ", dishInput);
             ErrorService.logError({
-              message: "Custom Step Service ERROR: no dish found for input in function 'instantiateStep'",
+              message: "Serve Step Service ERROR: no dish found for input in function 'instantiateStep'",
               dishInput: dishInput,
               step: step,
               recipeName: recipe.name
@@ -158,14 +158,14 @@ angular.module('main')
                   step.products[step.productKeys[0]] = {
                     ingredients: [],
                     dishes: [],
-                    sourceStepType: STEP_TYPES.CUSTOM
+                    sourceStepType: STEP_TYPES.SERVE
                   };
                 }
                 step.products[step.productKeys[0]].dishes.push(referencedStep.products[dishInput.key].dishes[0]);
               } else {
                 //error
                 ErrorService.logError({
-                  message: "Custom Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
+                  message: "Serve Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
                   referencedStep: referencedStep,
                   step: step,
                   recipeName: recipe.name
@@ -188,15 +188,15 @@ angular.module('main')
                   step.products = {};
                   step.products[step.productKeys[0]] = {
                     ingredients: [],
-                    sourceStepType: STEP_TYPES.CUSTOM
+                    sourceStepType: STEP_TYPES.SERVE
                   };
                 }
                 step.products[step.productKeys[0]].dishes = [dish];
               } else {
                 //error
-                console.log("customStepService error: cannot trace dish input on custom step: ", step);
+                console.log("serveStepService error: cannot trace dish input on custom step: ", step);
                 ErrorService.logError({
-                  message: "Custom Step Service ERROR: cannot trace dish input in function 'instantiateStep'",
+                  message: "Serve Step Service ERROR: cannot trace dish input in function 'instantiateStep'",
                   step: step,
                   recipeName: recipe.name
                 });
@@ -205,9 +205,9 @@ angular.module('main')
             }
           } else {
             //error
-            console.log("customStepService error: no step found from input: ", dishInput);
+            console.log("serveStepService error: no step found from input: ", dishInput);
             ErrorService.logError({
-              message: "Custom Step Service ERROR: no step found from input in function 'instantiateStep'",
+              message: "Serve Step Service ERROR: no step found from input in function 'instantiateStep'",
               dishInput: dishInput,
               step: step,
               recipeName: recipe.name
@@ -239,7 +239,7 @@ angular.module('main')
   function constructStepText(step) {
     if(!step.isEmpty) {
       var stepText = _.find(step.stepSpecifics, function(specific) {
-        return specific.propName === "customStepText";
+        return specific.propName === "serveStepText";
       }).val;
       step.text = stepText;
     }

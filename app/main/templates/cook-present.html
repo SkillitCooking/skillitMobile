@@ -11,7 +11,8 @@
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 
       <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->
-      <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
+      <p>{{combinedRecipe.description}}</p>
+      <p>Ready In: {{getRecipeTotalTime()}} mins | Time Active: {{getRecipeActiveTime()}} mins</p>
       <div>
       </div>
       <!--RECIPE BADGES HERE -->

@@ -10,7 +10,6 @@
   <div class="row">
     <div class="col col-90">
       <div ng-if="!isfavorite" class="recipe-description-time">        
-        <p>{{recipe.description}}</p>
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
         <p>Ready In: {{getRecipeTotalTime(recipe)}} mins | Time Active: {{getRecipeActiveTime(recipe)}} mins </p>
       </div>

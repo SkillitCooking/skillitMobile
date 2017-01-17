@@ -4,12 +4,12 @@ angular.module('main')
   ['_', 'bakeStepService', 'boilStepService', 'bringToBoilStepService', 
   'cookStepService', 'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'placeStepService',
-  'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
+  'preheatOvenStepService', 'sauteeStepService', 'serveStepService', 'seasonStepService',
   'slowCookStepService', 'steamingStepService', 'stirStepService', 'ErrorService',
   function (_, bakeStepService, boilStepService, bringToBoilStepService, cookStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
     heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
-    seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
+    serveStepService, seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames, ingredientIds) {
@@ -113,6 +113,10 @@ angular.module('main')
             seasonStepService.fillInStep(recipes[i], j);
             break;
 
+          case "Serve":
+            serveStepService.fillInStep(recipes[i], j);
+            break;
+
           case "SlowCook":
             slowCookStepService.fillInStep(recipes[i], j);
             break;
@@ -183,6 +187,9 @@ angular.module('main')
       case "Season":
         return true;
 
+      case "Serve":
+        return true;
+
       case "SlowCook":
         return true;
 
@@ -244,6 +251,9 @@ angular.module('main')
 
       case "Season":
         return step.stepInputs["dishInput"];
+
+      case "Serve":
+        return step.stepInputs["dishInputs"];
 
       case "SlowCook":
         return false;
