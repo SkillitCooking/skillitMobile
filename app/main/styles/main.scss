@@ -106,6 +106,12 @@ h1 {
     margin-left: -50%;
     text-align: right;
 }
+.font-weight-600 {
+	font-weight: 600;
+}
+.font-weight-500 {
+	font-weight: 500;
+}
 /***********************/
 /*SPACING**/
 .col-36 {
@@ -368,7 +374,7 @@ h4.ingredient-subtype-heading {
 /*recipe selection tab*/
 .recipe-category-buttons {
     position: fixed;
-    top: 50px;
+    top: 70px;
     z-index: 5000;
     background-color: #ffffff;
 }
@@ -382,7 +388,7 @@ h4.ingredient-subtype-heading {
 .white-space-above-recipe-category-buttons {
 	position: fixed;
     top: 44px;
-    height:56px;
+    height:76px;
     z-index: 4999;
     width: 100%;
     background-color: #ffffff;
@@ -431,7 +437,7 @@ h4.ingredient-subtype-heading {
 	font-weight: 500;
 }
 .recipe-description-time p:first-child {
-	margin-bottom: 10px;
+	margin: 4px 0px 3px;
 }
 .cook-recipe-selection h3:first-child {
 	margin-top: 10px;
@@ -495,9 +501,6 @@ h4.ingredient-subtype-heading {
 	position: relative;
 	right: 0;
 	color: $balanced;
-}
-.missing-ingredient-note {
-	font-weight: 600;
 }
 .button.show-save-buttons {
 	line-height: 140%;
@@ -570,6 +573,9 @@ h4.ingredient-subtype-heading {
     margin: 10px 0 20px;
     font-size: 15px;
     border-radius: 8px;
+}
+.ingredients-seasoning .button-spice-up-add-side {
+	width: 110px;
 }
 .button-spice-up-add-side.login-signup {
 	min-width: 110px;
