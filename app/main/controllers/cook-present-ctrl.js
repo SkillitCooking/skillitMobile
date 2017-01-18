@@ -950,6 +950,8 @@ angular.module('main')
           case 'Rice':
           case 'Quinoa':
           case 'Easy Dinners':
+          case 'Seafood Plates':
+          case 'Sautee':
             return true;
           default:
             return false;
@@ -964,6 +966,8 @@ angular.module('main')
             case 'Rice':
             case 'Quinoa':
             case 'Easy Dinners':
+            case 'Seafood Plates':
+            case 'Sautee':
               return true;
             default:
               break;
