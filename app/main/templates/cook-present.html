@@ -1,4 +1,4 @@
-  <ion-view hide-back-button="true" view-title="Let's Cook" class="cook-present-instructions" ng-class="getOpacity()" on-swipe-right="navigateBack()">
+<ion-view hide-back-button="true" view-title="Let's Cook" class="cook-present-instructions" ng-class="getOpacity()" on-swipe-right="navigateBack()">
     <ion-nav-buttons side="primary">
       <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
     </ion-nav-buttons>
@@ -10,9 +10,9 @@
       <h1 ng-if="combinedRecipe.name">{{combinedRecipe.name}}</h1>
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 
-      <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->
+      <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->      
       <p>{{combinedRecipe.description}}</p>
-      <p>Ready In: {{getRecipeTotalTime()}} mins | Time Active: {{getRecipeActiveTime()}} mins</p>
+      <p class="font-weight-600">Ready In: {{getRecipeTotalTime()}} mins | Time Active: {{getRecipeActiveTime()}} mins</p>
       <div>
       </div>
       <!--RECIPE BADGES HERE -->
@@ -21,7 +21,7 @@
       </div>
       <div class="row">
         <div class="col col-60 ingredients-seasoning">
-          <h3>Ingredient List</h3>
+          <h3>Ingredients</h3>
           <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
           truly a combined recipe-->
           <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
@@ -41,18 +41,20 @@
           <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
           <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
             <h3>Seasoning</h3>
-            <h5>Current Seasoning:</h5>
+            <h5>Current Selection:</h5>
             <h5 class="current-seasoning">{{seasoningProfile.name}}</h5>
             <ul class="seasoning-spices-list">
               <li ng-repeat="spice in seasoningProfile.spices">
                 &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
               </li>
             </ul>
-            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>
+            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Switch It Up</button>
           </div>
         </div>
-      </div>
+      </div>          
+      
       <ion-list class="list">
+
       <h3>Instructions</h3>
       <div class="video-container">
         <youtube ng-click="mainVideoClicked()" ng-if="playingVideo" video="playingVideo" playerid="'mainplayer'"></youtube>

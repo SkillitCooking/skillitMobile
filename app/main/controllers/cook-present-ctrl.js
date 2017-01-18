@@ -511,7 +511,7 @@ angular.module('main')
     if($scope.sidesExist) {
       return 'Change Sides';
     } else {
-      return 'Add a Side Dish';
+      return 'Add a Side';
     }
   };
 
