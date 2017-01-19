@@ -14,6 +14,12 @@ angular.module('main', [
   $ionicCloudProvider.init({
     'core': {
       'app_id': 'e5243594'
+    },
+    'auth': {
+      'google': {
+        'webClientId': '1098208374252-m9i429nt3774deb9e5e2c2adceark6nr.apps.googleusercontent.com'
+      },
+      'facebook': {}
     }
   });
 })

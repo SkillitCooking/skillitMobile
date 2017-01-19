@@ -1,6 +1,15 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOADING) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
+
+  var token;
+  var loginType = $ionicUser.get(LOGIN.TYPE);
+  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
+    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
+  } else {
+    token = $ionicAuth.getToken();
+  }
+
   $scope.selectedIngredients = $stateParams.selectedIngredients;
   $scope.selectedIngredientNames = [];
   $scope.selectedIngredientIds = [];
@@ -76,9 +85,9 @@ angular.module('main')
 
   var userId, userToken;
 
-  if($ionicAuth.isAuthenticated()) {
+  if(token) {
     userId = $ionicUser.get(USER.ID);
-    userToken = $ionicAuth.getToken();
+    userToken = token;
   }
   
   RecipeService.getRecipesWithIngredients(ingredientIds, userId, userToken).then(function(response) {

@@ -1,6 +1,14 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$window', '$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', 'LOADING', function ($window, $scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER, LOADING) {
+.controller('RecipesCtrl', ['$window', '$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER, LOGIN, LOADING) {
+
+  var token;
+  var loginType = $ionicUser.get(LOGIN.TYPE);
+  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
+    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
+  } else {
+    token = $ionicAuth.getToken();
+  }
 
   $ionicLoading.show({
     template: LOADING.TEMPLATE,
@@ -46,9 +54,9 @@ angular.module('main')
   }
 
   var userId, userToken;
-  if($ionicAuth.isAuthenticated()) {
+  if(token) {
     userId = $ionicUser.get(USER.ID);
-    userToken = $ionicAuth.getToken();
+    userToken = token;
   }
   
   ItemCollectionService.getCollectionsForItemType('recipe', userId, userToken).then(function(collections) {

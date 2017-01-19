@@ -96,7 +96,9 @@ angular.module('main')
     'INVALID_EMAIL_MESSAGE': 'To sign up, you need to supply a valid email address',
     'BASIC': 'basic',
     'FACEBOOK': 'facebook',
-    'GOOGLE': 'google'
+    'GOOGLE': 'google',
+    'TYPE': 'type',
+    'SOCIALTOKEN': 'socialtoken'
   }).constant('USER', {
     'ID': 'userId',
     'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']

@@ -1,10 +1,18 @@
 'use strict';
 angular.module('main')
-.factory('DietaryPreferenceAdjustments', function (_, $ionicUser, $ionicAuth) {
+.factory('DietaryPreferenceAdjustments', function (_, $ionicUser, $ionicAuth, LOGIN) {
   var service = {};
 
+  var token;
+  var loginType = $ionicUser.get(LOGIN.TYPE);
+  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
+    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
+  } else {
+    token = $ionicAuth.getToken();
+  }
+
   service.takeOutIngredients = function(ingredientTypes) {
-    if($ionicAuth.isAuthenticated()) {
+    if(token) {
       var dietaryPreferences = $ionicUser.get('dietaryPreferences');
       var outlawIngredients = [];
       for (var i = dietaryPreferences.length - 1; i >= 0; i--) {

@@ -1,6 +1,26 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOADING) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING) {
+
+  if(typeof $window.ga !== 'undefined') {
+    if($stateParams.cameFromRecipes) {
+      $window.ga.trackView('RecipePresent.Recipes');
+    } else if($stateParams.isFavoriteRecipe) {
+      $window.ga.trackView('RecipePresent.Favorite');
+    } else if($stateParams.cameFromRecipeCollection) {
+      $window.ga.trackView('RecipePresent.RecipeCollection');
+    } else {
+      $window.ga.trackView('RecipePresent.Cook');
+    }
+  }
+
+  var token;
+  var loginType = $ionicUser.get(LOGIN.TYPE);
+  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
+    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
+  } else {
+    token = $ionicAuth.getToken();
+  }
 
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
@@ -250,18 +270,6 @@ angular.module('main')
   $scope.isFavoriteRecipe = $stateParams.isFavoriteRecipe;
   $scope.cameFromRecipeCollection = $stateParams.cameFromRecipeCollection;
 
-  if(typeof $window.ga !== 'undefined') {
-    if($stateParams.cameFromRecipes) {
-      $window.ga.trackView('RecipePresent.Recipes');
-    } else if($stateParams.isFavoriteRecipe) {
-      $window.ga.trackView('RecipePresent.Favorite');
-    } else if($stateParams.cameFromRecipeCollection) {
-      $window.ga.trackView('RecipePresent.RecipeCollection');
-    } else if($stateParams.numberBackToRecipeSelection) {
-      $window.ga.trackView('RecipePresent.Cook');
-    }
-  }
-
   if(!$scope.numberBackToRecipeSelection) {
     $scope.numberBackToRecipeSelection = -1;
   }
@@ -280,10 +288,10 @@ angular.module('main')
   $scope.recipeIds = $stateParams.recipeIds;
   //run initial check for favoriting
   var userId, userToken;
-  if($ionicAuth.isAuthenticated()) {
+  if(token) {
     $scope.favoriteRecipeId = FavoriteRecipeDetectionService.getFavoriteId($scope.recipeIds);
     userId = $ionicUser.get(USER.ID);
-    userToken = $ionicAuth.getToken();
+    userToken = token;
   }
   if($stateParams.loadAlaCarte) {
     RecipeService.getRecipesOfType('AlaCarte', userId, userToken).then(function(recipes) {
@@ -320,7 +328,7 @@ angular.module('main')
     source = MEALS_COOKED_SOURCE.COOK_TAB;
   }
   var isAnonymous = true;
-  if($ionicAuth.isAuthenticated()) {
+  if(token) {
     isAnonymous = false;
   }
   MealsCookedService.postCookedMeal({
@@ -330,7 +338,7 @@ angular.module('main')
     ingredientsChosenIds: $scope.selectedIngredientIds,
     deviceToken: ionic.Platform.device().uuid,
     userId: $ionicUser.get(USER.ID, undefined),
-    token: $ionicAuth.getToken()
+    token: token
   }).then(function(res) {
     $scope.curMealCookedId = res.data._id;
   }, function(response) {
@@ -782,7 +790,7 @@ angular.module('main')
   $scope.showMoreSeasonings = function() {
     //analytics
     if(typeof $window.ga !== 'undefined') {
-      $window.ga.trackEvent('RecipePresent', 'click', 'SideDishSelectionMore');
+      $window.ga.trackEvent('RecipePresent', 'click', 'SpiceSelectionMore');
     }
     $scope.showMoreProfiles = true;
   };
@@ -810,7 +818,7 @@ angular.module('main')
     $scope.seasoningProfile = profile;
     if($scope.curMealCookedId) {
       var isAnonymous = true;
-      if($ionicAuth.isAuthenticated()) {
+      if(token) {
         isAnonymous = false;
       }
       SeasoningUsedService.postSeasoningUsed({
@@ -818,7 +826,7 @@ angular.module('main')
         mealCookedId: $scope.curMealCookedId,
         isAnonymous: isAnonymous,
         userId: $ionicUser.get(USER.ID, undefined),
-        token: $ionicAuth.getToken()
+        token: token
       }).then(function(res) {
         //do nothing - don't need any return info
       }, function(response) {
@@ -848,7 +856,7 @@ angular.module('main')
     $scope.seasoningProfile = profile;
     if($scope.curMealCookedId) {
       var isAnonymous = true;
-      if($ionicAuth.isAuthenticated()) {
+      if(token) {
         isAnonymous = false;
       }
       SeasoningUsedService.postSeasoningUsed({
@@ -856,7 +864,7 @@ angular.module('main')
         mealCookedId: $scope.curMealCookedId,
         isAnonymous: isAnonymous,
         userId: $ionicUser.get(USER.ID, undefined),
-        token: $ionicAuth.getToken(),
+        token: token,
         deviceToken: ionic.Platform.device().uuid
       }).then(function(res) {
         //do nothing - don't need any return info
@@ -1002,14 +1010,14 @@ angular.module('main')
       }
       $window.ga.trackEvent('RecipePresent', 'RecipeUnFavorited', name);
     }
-    if($ionicAuth.isAuthenticated()) {
+    if(token) {
       $ionicLoading.show({
         template: LOADING.TEMPLATE,
         noBackdrop: true
       });
       FavoriteRecipeService.unfavoriteRecipe({
         userId: $ionicUser.get(USER.ID),
-        token: $ionicAuth.getToken(),
+        token: token,
         favoriteRecipeId: $scope.favoriteRecipeId
       }).then(function(res) {
         $scope.favoriteRecipeId = false;
@@ -1031,7 +1039,7 @@ angular.module('main')
       }
       $window.ga.trackEvent('RecipePresent', 'RecipeFavorited', name);
     }
-    if($ionicAuth.isAuthenticated()) {
+    if(token) {
       var name;
       if($scope.combinedRecipe.name) {
         name = $scope.combinedRecipe.name;
@@ -1043,7 +1051,7 @@ angular.module('main')
       }
       FavoriteRecipeService.saveFavoriteRecipeForUser({
         userId: $ionicUser.get(USER.ID),
-        token: $ionicAuth.getToken(),
+        token: token,
         favoriteRecipe: {
           userId: $ionicUser.get(USER.ID),
           recipeIds: $scope.recipeIds,

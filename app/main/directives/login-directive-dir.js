@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('loginDirective', ['$window', '$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', '$state', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($window, $rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, $state, UserService, ErrorService, LOGIN, USER) {
+.directive('loginDirective', ['$window', '$rootScope', '$ionicAuth', '$ionicGoogleAuth', '$ionicFacebookAuth', '$ionicUser', '$ionicModal', '$ionicPopup', '$state', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($window, $rootScope, $ionicAuth, $ionicGoogleAuth, $ionicFacebookAuth, $ionicUser, $ionicModal, $ionicPopup, $state, UserService, ErrorService, LOGIN, USER) {
   return {
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
@@ -92,6 +92,7 @@ angular.module('main')
             token: result.token
           }).then(function(res) {
             $ionicUser.set(USER.ID, res.data._id);
+            $ionicUser.set(LOGIN.TYPE, LOGIN.BASIC);
             $ionicUser.save();
             $rootScope.$broadcast('signInStop', true, true);
             clearForm();
@@ -139,6 +140,7 @@ angular.module('main')
               token: result.token
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.BASIC);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -211,7 +213,7 @@ angular.module('main')
         //if failure, then error messages
         scope.$emit('signInStart');
         //loading screen needed? Especially when going to in app browser?
-        $ionicAuth.login(LOGIN.FACEBOOK).then(function(result) {
+        $ionicFacebookAuth.login().then(function(result) {
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
           //different alert cases - new signup vs. existing user
@@ -226,6 +228,8 @@ angular.module('main')
               username: $ionicUser.social.facebook.data.username
             }).then(function(res){
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
+              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -238,7 +242,7 @@ angular.module('main')
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicFacebookAuth.logout();
               ErrorService.showErrorAlert();
             });
           } else {
@@ -252,6 +256,8 @@ angular.module('main')
               name: $ionicUser.social.facebook.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
+              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -264,7 +270,7 @@ angular.module('main')
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicFacebookAuth.logout();
               ErrorService.showErrorAlert();
             });
           }
@@ -285,10 +291,9 @@ angular.module('main')
         //if failure, then error messages
         scope.$emit('signInStart');
         //loading screen needed? Especially when going to in app browser?
-        $ionicAuth.login(LOGIN.GOOGLE).then(function(result) {
+        $ionicGoogleAuth.login().then(function(result) {
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
-          console.log('Google then');
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
@@ -300,6 +305,8 @@ angular.module('main')
               username: $ionicUser.social.google.data.username
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
+              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -312,7 +319,7 @@ angular.module('main')
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicGoogleAuth.logout();
               ErrorService.showErrorAlert();
             });
           } else {
@@ -325,6 +332,8 @@ angular.module('main')
               name: $ionicUser.social.google.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
+              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -337,7 +346,7 @@ angular.module('main')
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicGoogleAuth.logout();
               ErrorService.showErrorAlert();
             });
           }

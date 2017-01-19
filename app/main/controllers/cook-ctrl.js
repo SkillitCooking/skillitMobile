@@ -1,8 +1,16 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', 'LOADING', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER, LOADING) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER, LOGIN, LOADING) {
 
   $scope.catNames = [];
+
+  var token;
+  var loginType = $ionicUser.get(LOGIN.TYPE);
+  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
+    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
+  } else {
+    token = $ionicAuth.getToken();
+  }
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -15,7 +23,7 @@ angular.module('main')
   }
 
   if(typeof $window.ga !== 'undefined') {
-    if($ionicAuth.isAuthenticated()) {
+    if(token) {
       $window.ga.setUserId($ionicUser.get(USER.ID));
     }
     $window.ga.trackView('IngredientInput');
@@ -95,9 +103,9 @@ angular.module('main')
 
   var userId, userToken;
 
-  if($ionicAuth.isAuthenticated()) {
+  if(token) {
     userId = $ionicUser.get(USER.ID);
-    userToken = $ionicAuth.getToken();
+    userToken = token;
   }
 
   function categorySortFn(catA, catB) {
@@ -361,7 +369,7 @@ angular.module('main')
         }
         //create id/formid array
         var isAnonymous = true;
-        if($ionicAuth.isAuthenticated()) {
+        if(token) {
           isAnonymous = false;
         }
         var ingredientIds = getIngredientIds(selectedIngredients);
@@ -369,7 +377,7 @@ angular.module('main')
           ingredientIds: ingredientIds,
           isAnonymous: isAnonymous,
           userId: $ionicUser.get(USER.ID, undefined),
-          token: $ionicAuth.getToken(),
+          token: token,
           deviceToken: ionic.Platform.device().uuid
         }).then(function(res) {
           //don't need to handle a success either - just logging ish for now
