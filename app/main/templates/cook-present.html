@@ -17,7 +17,7 @@
       </div>
       <!--RECIPE BADGES HERE -->
       <div class="row">
-        <div class="col col-60 ingredients-seasoning">
+        <div class="col col-50 ingredients-seasoning">
           <h3>Ingredients</h3>
           <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
           truly a combined recipe-->
@@ -34,27 +34,34 @@
                 &nbsp;&nbsp;• <span>Oil or Butter</span>
               </li>
             </ul>
-          </div>
-          <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
+          </div>          
+        </div>
+        <div class="col col-50 ingredients-seasoning seasoning border-left">
           <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
             <h3>Seasoning</h3>
-            <h5>Current Selection:</h5>
             <h5 class="current-seasoning">{{seasoningProfile.name}}</h5>
             <ul class="seasoning-spices-list">
               <li ng-repeat="spice in seasoningProfile.spices">
                 &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
               </li>
-            </ul>
-            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Switch It Up</button>
+            </ul>            
           </div>
+        </div>
+      </div>      
+      <div class="row"> 
+        <div class="col col-50 ingredients-seasoning">
+          <p style="text-align: center"><button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button></p>
+        </div>
+        <div class="col col-50 ingredients-seasoning seasoning border-left ">
+          <p style="text-align: center"><button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Switch It Up</button></p>
         </div>
       </div>          
       
       <ion-list class="list">
 
       <h3>Instructions</h3>
-      <div class="video-container">
-        <youtube ng-click="mainVideoClicked()" ng-if="playingVideo" video="playingVideo" playerid="'mainplayer'"></youtube>
+      <div ng-if="playingVideo" class="video-container">
+        <youtube ng-click="mainVideoClicked()"  video="playingVideo" playerid="'mainplayer'"></youtube>
       </div>
       <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideos">
         <div class="col col-25 col-center">
@@ -69,7 +76,6 @@
           <button class="button button-white-round" ng-click="incrementMainVideo()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
-      <br/>   
         <div ng-if="!isError()" ng-repeat="step in combinedRecipe.stepList">
           <div ng-switch on="isSingleStep(step)">
             <div ng-switch-when="true" ng-switch on="isClickable(step)">

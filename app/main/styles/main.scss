@@ -415,17 +415,34 @@ h4.ingredient-subtype-heading {
 	white-space: nowrap;
 }
 .individual-recipe-in-list img {
-	width: 100%;
-    padding: 4px 0 0 4px;	
+	width: 100%;	
 }
 .cook-recipe-selection .item, .cook-recipe-selection .item p, .cook-recipe-selection .item h2 {
 	white-space: normal; 
 }
 .cook-recipe-selection .item {
-	padding: 0 2px 2px 0;
+	padding: 3px;
 }
-.cook-recipe-selection .item .recipe-image-padding {
-	padding: 0;
+.ingredients-seasoning h3 {
+	text-align: center;
+}
+.ingredients-seasoning.seasoning h5 {
+	padding-left: 10px;
+}
+.ingredients-seasoning.seasoning ul {
+	padding-left: 10px;
+}
+.ingredients-seasoning.seasoning p {
+	margin: 0;
+}
+.border-left {
+	border-left: 1px solid $balanced;
+}
+.recipe-badges img {
+	margin: 0 auto;
+}
+.recipe-badges p {
+	text-align: center;
 }
 .individual-recipe-in-list p {
 	font-size: 14px;
@@ -522,16 +539,6 @@ h4.ingredient-subtype-heading {
 	margin-bottom: 10px;
 	white-space: normal;
 }
-.recipe-badges-container {
-	position: absolute;
-    right: -10px;
-    margin-top: 5px;
-}
-.recipe-badges-container img {
-    width: 110px;
-    display: block;
-    margin: 0px 0 4px;
-}
 .recipe-instructions.clickableStepClass {
 	box-shadow: 0px 1px 2px #999999;
 }
@@ -575,6 +582,7 @@ h4.ingredient-subtype-heading {
 }
 .ingredients-seasoning .button-spice-up-add-side {
 	width: 110px;
+	margin: 10px 0 0;
 }
 .button-spice-up-add-side.login-signup {
 	min-width: 110px;
@@ -620,7 +628,10 @@ h4.ingredient-subtype-heading {
 .video-container {
     position: relative;
     padding-bottom: 46.25%;
-    padding-top: 30px; height: 0; overflow: hidden;
+    padding-top: 30px; 
+    height: 0; 
+    overflow: hidden;
+    margin-bottom: 10px;
 }
  
 .video-container iframe, .video-container object, .video-container embed {

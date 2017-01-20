@@ -4,9 +4,9 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'http://localhost:8000/api/',
-    'CHANNEL': 'dev',
-    'API_PASSWORD': 'MDm|C7oQQIm&AZyhx4g7m^+uNGqm$7Ctt2-60O&Ek-%0o!NuLT'
+        'SERVER_URL': 'https://skillicookingprodapi.info/api/',
+    'CHANNEL': 'production',
+    'API_PASSWORD': 'sm@34MLPG9L&rWph|YMwcg=&5|R3TMZ!!H+F48ThGFl56E&*RD'
         /*endinject*/
     },
     BUILD : {
@@ -104,11 +104,11 @@ angular.module('main')
     'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']
   }).constant('RECIPE_BADGES', {
     'EASY_CLEANUP': 'main/assets/images/recipe_badges/rounded-rectangle-easy-cleanup.jpg',
-    'EASY_CLEANUP_NAME': 'Easy Cleanup',
+    'EASY_CLEANUP_NAME': 'Short',
     'LEAN_PROTEIN': 'main/assets/images/recipe_badges/rounded-rectangle-lean-protein.jpg',
     'LEAN_PROTEIN_NAME': 'Lean Protein',
     'MINIMAL_PREP': 'main/assets/images/recipe_badges/rounded-rectangle-minimal-prep.jpg',
-    'MINIMAL_PREP_NAME': 'Minimal Prep',
+    'MINIMAL_PREP_NAME': 'Short',
     'PALEO': 'main/assets/images/recipe_badges/rounded-rectangle-paleo.jpg',
     'PALEO_NAME': 'Paleo',
     'PESCATARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-pescatarian.jpg',
@@ -116,13 +116,13 @@ angular.module('main')
     'QUICK_EATS': 'main/assets/images/recipe_badges/rounded-rectangle-quick-eats.jpg',
     'QUICK_EATS_NAME': 'Quick Eats',
     'REDUCETARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-reducetarian.jpg',
-    'REDUCETARIAN_NAME': 'Reducetarian',
+    'REDUCETARIAN_NAME': 'Short',
     'VEGAN': 'main/assets/images/recipe_badges/rounded-rectangle-vegan.jpg',
     'VEGAN_NAME': 'Vegan',
     'VEGETARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-vegetarian.jpg',
     'VEGETARIAN_NAME': 'Vegetarian',
     'WELL_ROUNDED': 'main/assets/images/recipe_badges/rounded-rectangle-well-rounded.jpg',
-    'WELL_ROUNDED_NAME': 'Well Rounded'
+    'WELL_ROUNDED_NAME': 'Short'
  }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',

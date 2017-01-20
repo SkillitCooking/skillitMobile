@@ -4,20 +4,22 @@
       <h2>{{recipe.name}}</h2>
       <div ng-if="!isfavorite" class="recipe-description-time">        
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
-        <p class="font-weight-600">Ready In: {{getRecipeTotalTime(recipe)}} mins | Active Time: {{getRecipeActiveTime(recipe)}} mins </p>
+        <p class="font-weight-500">Ready In: {{getRecipeTotalTime(recipe)}} mins | Active Time: {{getRecipeActiveTime(recipe)}} mins </p>
       </div>
       <!--<p ng-if="recipe.usesMissingIngredients" class="missing-ingredient-note font-weight-500">Recipe calls for ingredients you didn't select</p>-->            
     </div>
   </div>  
   <div class="row">
-    <div class="col recipe-image-padding">  
+    <div class="col">  
       <img ng-src="{{recipe.mainPictureURL}}">
     </div>
   </div>
   <!--Recipe Badges-->
-  <div ng-repeat="badge in recipe.badges">
-    <p>{{getBadgeName(badge)}}</p>
-    <img ng-src="getBadgeIcon(badge)">
+  <div class="row recipe-badges">
+    <div class="col col-20" ng-repeat="badge in recipe.badges">      
+      <p style="text-align: center"><img ng-src="getBadgeIcon(badge)"></p>
+      <p>{{getBadgeName(badge)}}</p>
+    </div>
   </div>
       <!--<div class="col col-10 col-center">
         <i class="icon ion-chevron-right recipe-selection-arrow"></i>
