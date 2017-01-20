@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'RecipeBadgeService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, RecipeBadgeService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING) {
 
   if(typeof $window.ga !== 'undefined') {
     if($stateParams.cameFromRecipes) {
@@ -406,7 +406,6 @@ angular.module('main')
     $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
       StepCombinationService.eliminateUnnecesaries($scope.combinedRecipe);
-      $scope.recipeBadges = RecipeBadgeService.getBadgesForCombinedRecipe($scope.combinedRecipe);
       //ProgressiveStepTipService call
       //ProgressiveStepTipService.organize($scope.combinedRecipe);
       if($stateParams.sidesAdded && $scope.seasoningProfiles) {

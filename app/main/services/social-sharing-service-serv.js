@@ -14,7 +14,7 @@ angular.module('main')
     }
     var message = SHARING.MESSAGE1 + name + SHARING.MESSAGE2;
     $cordovaSocialSharing
-    .shareViaTwitter(message, recipe.mainPictureURL, SHARING.LINK)
+    .shareViaTwitter(message + ' ' + SHARING.HASHTAG, recipe.mainPictureURL, SHARING.LINK)
     .then(function(result) {
       //congrats popup
     }, function(err) {
