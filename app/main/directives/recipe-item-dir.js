@@ -11,55 +11,36 @@ angular.module('main')
       isfavorite: '='
     },
     link: function (scope, element, attrs) {
-      scope.getBadgeIcon = function(badge) {
-        switch(badge) {
-          case 'easy_cleanup':
-            return RECIPE_BADGES.EASY_CLEANUP;
-          case 'lean_protein':
-            return RECIPE_BADGES.LEAN_PROTEIN;
-          case 'minimal_prep':
-            return RECIPE_BADGES.MINIMAL_PREP;
-          case 'paleo':
-            return RECIPE_BADGES.PALEO;
-          case 'pescatarian':
-            return RECIPE_BADGES.PESCATARIAN;
-          case 'quick_eats':
-            return RECIPE_BADGES.QUICK_EATS;
-          case 'reducetarian':
-            return RECIPE_BADGES.REDUCETARIAN;
-          case 'vegan':
-            return RECIPE_BADGES.VEGAN;
-          case 'vegetarian':
-            return RECIPE_BADGES.VEGETARIAN;
-          case 'well_rounded':
-            return RECIPE_BADGES.WELL_ROUNDED;
-          default:
-            break;
+      function recipeBadgeSort(a, b) {
+        if(a === 'gluten_free') {
+          return 1;
         }
-      };
+        if(b === 'gluten_free') {
+          return -1;
+        }
+        return 0;
+      }
 
+      scope.recipe.badges.sort(recipeBadgeSort);
+
+      scope.shortRecipeBadges = scope.recipe.badges.slice(0, 3);
+      
       scope.getBadgeIcon = function(badge) {
         switch(badge) {
-          case 'easy_cleanup':
-            return RECIPE_BADGES.EASY_CLEANUP;
+          case 'gluten_free':
+            return RECIPE_BADGES.GLUTEN_FREE;
           case 'lean_protein':
             return RECIPE_BADGES.LEAN_PROTEIN;
-          case 'minimal_prep':
-            return RECIPE_BADGES.MINIMAL_PREP;
           case 'paleo':
             return RECIPE_BADGES.PALEO;
           case 'pescatarian':
             return RECIPE_BADGES.PESCATARIAN;
           case 'quick_eats':
             return RECIPE_BADGES.QUICK_EATS;
-          case 'reducetarian':
-            return RECIPE_BADGES.REDUCETARIAN;
           case 'vegan':
             return RECIPE_BADGES.VEGAN;
           case 'vegetarian':
             return RECIPE_BADGES.VEGETARIAN;
-          case 'well_rounded':
-            return RECIPE_BADGES.WELL_ROUNDED;
           default:
             break;
         }
@@ -67,26 +48,20 @@ angular.module('main')
 
       scope.getBadgeName = function(badge) {
         switch(badge) {
-          case 'easy_cleanup':
-            return RECIPE_BADGES.EASY_CLEANUP_NAME;
+          case 'gluten_free':
+            return RECIPE_BADGES.GLUTEN_FREE_NAME;
           case 'lean_protein':
             return RECIPE_BADGES.LEAN_PROTEIN_NAME;
-          case 'minimal_prep':
-            return RECIPE_BADGES.MINIMAL_PREP_NAME;
           case 'paleo':
             return RECIPE_BADGES.PALEO_NAME;
           case 'pescatarian':
             return RECIPE_BADGES.PESCATARIAN_NAME;
           case 'quick_eats':
             return RECIPE_BADGES.QUICK_EATS_NAME;
-          case 'reducetarian':
-            return RECIPE_BADGES.REDUCETARIAN_NAME;
           case 'vegan':
             return RECIPE_BADGES.VEGAN_NAME;
           case 'vegetarian':
             return RECIPE_BADGES.VEGETARIAN_NAME;
-          case 'well_rounded':
-            return RECIPE_BADGES.WELL_ROUNDED_NAME;
           default:
             break;
         }

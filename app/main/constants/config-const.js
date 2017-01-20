@@ -103,26 +103,20 @@ angular.module('main')
     'ID': 'userId',
     'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']
   }).constant('RECIPE_BADGES', {
-    'EASY_CLEANUP': 'main/assets/images/recipe_badges/rounded-rectangle-easy-cleanup.jpg',
-    'EASY_CLEANUP_NAME': 'Short',
-    'LEAN_PROTEIN': 'main/assets/images/recipe_badges/rounded-rectangle-lean-protein.jpg',
+    'GLUTEN_FREE': 'main/assets/images/recipe_badges/gluten-free.png',
+    'GLUTEN_FREE_NAME': 'Gluten Free',
+    'LEAN_PROTEIN': 'main/assets/images/recipe_badges/lean-protein.png',
     'LEAN_PROTEIN_NAME': 'Lean Protein',
-    'MINIMAL_PREP': 'main/assets/images/recipe_badges/rounded-rectangle-minimal-prep.jpg',
-    'MINIMAL_PREP_NAME': 'Short',
-    'PALEO': 'main/assets/images/recipe_badges/rounded-rectangle-paleo.jpg',
+    'PALEO': 'main/assets/images/recipe_badges/paleo.png',
     'PALEO_NAME': 'Paleo',
-    'PESCATARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-pescatarian.jpg',
+    'PESCATARIAN': 'main/assets/images/recipe_badges/seafood.png',
     'PESCATARIAN_NAME': 'Pescatarian',
-    'QUICK_EATS': 'main/assets/images/recipe_badges/rounded-rectangle-quick-eats.jpg',
-    'QUICK_EATS_NAME': 'Quick Eats',
-    'REDUCETARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-reducetarian.jpg',
-    'REDUCETARIAN_NAME': 'Short',
-    'VEGAN': 'main/assets/images/recipe_badges/rounded-rectangle-vegan.jpg',
+    'QUICK_EATS': 'main/assets/images/recipe_badges/ready-soon.png',
+    'QUICK_EATS_NAME': 'Ready Soon',
+    'VEGAN': 'main/assets/images/recipe_badges/vegan.png',
     'VEGAN_NAME': 'Vegan',
-    'VEGETARIAN': 'main/assets/images/recipe_badges/rounded-rectangle-vegetarian.jpg',
-    'VEGETARIAN_NAME': 'Vegetarian',
-    'WELL_ROUNDED': 'main/assets/images/recipe_badges/rounded-rectangle-well-rounded.jpg',
-    'WELL_ROUNDED_NAME': 'Short'
+    'VEGETARIAN': 'main/assets/images/recipe_badges/vegatarian.png',
+    'VEGETARIAN_NAME': 'Vegetarian'
  }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',
