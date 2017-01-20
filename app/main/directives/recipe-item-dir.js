@@ -21,9 +21,9 @@ angular.module('main')
         return 0;
       }
 
-      scope.recipe.badges.sort(recipeBadgeSort);
+      //scope.recipe.badges.sort(recipeBadgeSort);
 
-      scope.shortRecipeBadges = scope.recipe.badges.slice(0, 3);
+      //scope.shortRecipeBadges = scope.recipe.badges.slice(0, 3);
       
       scope.getBadgeIcon = function(badge) {
         switch(badge) {
