@@ -95,6 +95,7 @@ angular.module('main')
     if($stateParams.fromError) {
       ErrorService.toggleIsErrorAlready();
       $scope.clearIngredients();
+      $stateParams.fromError = !$stateParams.fromError;
     }
     $scope.slideStartTime = Date.now();
   });
@@ -218,6 +219,7 @@ angular.module('main')
   };
 
   $scope.isError = function() {
+    console.log('whoaser');
     return ErrorService.isErrorAlready;
   };
 
