@@ -388,7 +388,16 @@ angular.module('main')
           return true;
         }
         if(!scope.password || scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+          scope.signInPasswordJustRight = false;
+          if(scope.password && scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+            scope.signInPasswordTooShort = true;
+          } else {
+            scope.signInPasswordTooShort = false;
+          }
           return true;
+        } else {
+          scope.signInPasswordTooShort = false;
+          scope.signInPasswordJustRight = true;
         }
         return false;
       };
@@ -398,10 +407,29 @@ angular.module('main')
           return true;
         }
         if(!scope.password || scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+          scope.signInPasswordJustRight = false;
+          if(scope.password && scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+            scope.signInPasswordTooShort = true;
+          } else {
+            scope.signInPasswordTooShort = false;
+          }
           return true;
+        } else {
+          scope.signInPasswordTooShort = false;
+          scope.signInPasswordJustRight = true;
         }
         if(!scope.passwordConfirm || scope.passwordConfirm !== scope.password) {
+          if(scope.passwordConfirm) {
+            scope.passwordConfirmGood = false;
+            scope.passwordConfirmBad = true;
+          } else {
+            scope.passwordConfirmGood = false;
+            scope.passwordConfirmBad = false;
+          }
           return true;
+        } else {
+          scope.passwordConfirmGood = true;
+          scope.passwordConfirmBad = false;
         }
         return false;
       };

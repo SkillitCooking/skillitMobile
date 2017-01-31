@@ -219,7 +219,6 @@ angular.module('main')
   };
 
   $scope.isError = function() {
-    console.log('whoaser');
     return ErrorService.isErrorAlready;
   };
 
