@@ -1,6 +1,6 @@
 {
   "name": "Skillit",
-  "version": "0.1.10",
+  "version": "0.1.15",
   "description": "A pretty neat cooking application.",
   "private": true,
   "engines": {
@@ -57,5 +57,8 @@
   "cordovaPlugins": [],
   "cordovaPlatforms": [
     "ios"
-  ]
+  ],
+  "dependencies": {
+    "@ionic/cloud": "^0.15.1"
+  }
 }

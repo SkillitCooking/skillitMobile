@@ -1,16 +1,8 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER, LOGIN, LOADING) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'GeneralTextService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, GeneralTextService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER, LOGIN, LOADING) {
 
   $scope.catNames = [];
-
-  var token;
-  var loginType = $ionicUser.get(LOGIN.TYPE);
-  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-  } else {
-    token = $ionicAuth.getToken();
-  }
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -23,7 +15,7 @@ angular.module('main')
   }
 
   if(typeof $window.ga !== 'undefined') {
-    if(token) {
+    if($ionicAuth.isAuthenticated()) {
       $window.ga.setUserId($ionicUser.get(USER.ID));
     }
     $window.ga.trackView('IngredientInput');
@@ -68,8 +60,14 @@ angular.module('main')
     $rootScope.redrawSlides = true;
   });
 
+  var userId, userToken;
+
   $scope.$on('$ionicView.beforeEnter', function() {
     $persist.set('HAS_SEEN', 'FIRST_OPEN', true);
+    if($ionicAuth.isAuthenticated()) {
+      userId = $ionicUser.get(USER.ID);
+      userToken = $ionicAuth.getToken();
+    }
     $ionicTabsDelegate.showBar(true);
     $ionicNavBarDelegate.showBar(true);
     if($scope.slider) {
@@ -100,13 +98,6 @@ angular.module('main')
     }
     $scope.slideStartTime = Date.now();
   });
-
-  var userId, userToken;
-
-  if(token) {
-    userId = $ionicUser.get(USER.ID);
-    userToken = token;
-  }
 
   function categorySortFn(catA, catB) {
     if(catA.name === INGREDIENT_CATEGORIES.VEGETABLES) {
@@ -149,42 +140,55 @@ angular.module('main')
     }
   }
 
-  IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
-    /*$scope.response = _.omit(response, ['data']);
-    $ionicPopup.show({
-      title: 'Debug',
-      template: '<pre>{{response | json}}</pre>',
-      scope: $scope
-    });*/
-    var ingredientCategoriesObj = response.data;
-    $scope.ingredientCategories = [];
-    $scope.inputCategoryArray = [];
-    //set first form of all ingredients to selected
-    for(var category in ingredientCategoriesObj) {
-      var subCategories = ingredientCategoriesObj[category];
-      $scope.ingredientCategories.push({
-        name: category,
-        subCategories: subCategories
-      });
-      $scope.inputCategoryArray.push(category);
-      for(var subCategory in subCategories) {
-        var ingredients = subCategories[subCategory];
-        ingredients.sort(alphabeticalCmp);
-        for (var i = ingredients.length - 1; i >= 0; i--) {
-          //select form
-          if(!hasDisplayForms(ingredients[i])) {
-            ingredients[i].ingredientForms[0].isSelected = true;
-          } 
+  function getIngredients() {
+    IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
+      /*$scope.response = _.omit(response, ['data']);
+      $ionicPopup.show({
+        title: 'Debug',
+        template: '<pre>{{response | json}}</pre>',
+        scope: $scope
+      });*/
+      var ingredientCategoriesObj = response.data;
+      console.log('res', ingredientCategoriesObj);
+      $scope.ingredientCategories = [];
+      $scope.inputCategoryArray = [];
+      //set first form of all ingredients to selected
+      for(var category in ingredientCategoriesObj) {
+        var subCategories = ingredientCategoriesObj[category];
+        $scope.ingredientCategories.push({
+          name: category,
+          subCategories: subCategories
+        });
+        $scope.inputCategoryArray.push(category);
+        for(var subCategory in subCategories) {
+          var ingredients = subCategories[subCategory];
+          ingredients.sort(alphabeticalCmp);
+          for (var i = ingredients.length - 1; i >= 0; i--) {
+            //select form
+            if(!hasDisplayForms(ingredients[i])) {
+              ingredients[i].ingredientForms[0].isSelected = true;
+            } 
+          }
         }
       }
-    }
-    $scope.ingredientCategories.sort(categorySortFn);
-    setTimeout(function() {
-      $ionicLoading.hide();
-    }, 500);
-  }, function(response){
-    $scope.response = _.omit(response, ['data']);
-    ErrorService.showErrorAlert();
+      $scope.ingredientCategories.sort(categorySortFn);
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, 500);
+    }, function(response){
+      $scope.response = _.omit(response, ['data']);
+      ErrorService.showErrorAlert();
+    });
+  }
+
+  getIngredients();
+
+  //when dietaryPreferences change, reload
+  $scope.$on('dietaryPreferencesChanged', function(event) {
+    console.log('right here');
+    event.preventDefault();
+    $scope.goToSlide(0);
+    getIngredients();
   });
 
   $scope.data = {};
@@ -366,10 +370,14 @@ angular.module('main')
         if(typeof $window.ga !== 'undefined') {
           var interval = Date.now() - $scope.slideStartTime;
           $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          var ingredientNamePairs = GeneralTextService.getNamePairs(selectedIngredients);
+          for (var l = ingredientNamePairs.length - 1; l >= 0; l--) {
+            $window.ga.trackEvent('IngredientPair', ingredientNamePairs[l]);
+          }
         }
         //create id/formid array
         var isAnonymous = true;
-        if(token) {
+        if($ionicAuth.isAuthenticated()) {
           isAnonymous = false;
         }
         var ingredientIds = getIngredientIds(selectedIngredients);
@@ -377,7 +385,7 @@ angular.module('main')
           ingredientIds: ingredientIds,
           isAnonymous: isAnonymous,
           userId: $ionicUser.get(USER.ID, undefined),
-          token: token,
+          token: $ionicAuth.getToken(),
           deviceToken: ionic.Platform.device().uuid
         }).then(function(res) {
           //don't need to handle a success either - just logging ish for now

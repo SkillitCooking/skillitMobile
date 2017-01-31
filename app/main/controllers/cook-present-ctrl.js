@@ -14,14 +14,6 @@ angular.module('main')
     }
   }
 
-  var token;
-  var loginType = $ionicUser.get(LOGIN.TYPE);
-  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-  } else {
-    token = $ionicAuth.getToken();
-  }
-
   function recipeTypeCmpFn(a, b) {
     if(a.recipeType === 'Full' || a.recipeType === 'BYO') {
       return -1;
@@ -191,15 +183,31 @@ angular.module('main')
     }
   }, 501);
 
+  //pass on dietaryPreferencesChanged msg
+  var dietaryPreferencesChanged = false;
+  $scope.$on('dietaryPreferencesChanged', function(event) {
+    event.preventDefault();
+    dietaryPreferencesChanged = true;
+  });
+
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
     if(typeof $window.ga !== 'undefined') {
       var interval = Date.now() - $scope.timeEntered;
       $window.ga.trackTiming('RecipePresent', interval);
     }
+    if(dietaryPreferencesChanged) {
+      $rootScope.$broadcast('dietaryPreferencesChanged');
+    }
   });
 
+  var userId, userToken;
   $scope.$on('$ionicView.beforeEnter', function(event, data) {
+    if($ionicAuth.isAuthenticated()) {
+      $scope.favoriteRecipeId = FavoriteRecipeDetectionService.getFavoriteId($scope.recipeIds);
+      userId = $ionicUser.get(USER.ID);
+      userToken = $ionicAuth.getToken();
+    }
     $scope.timeEntered = Date.now();
     $scope.mainVideoState = -1; //unstarted
   });
@@ -287,12 +295,6 @@ angular.module('main')
   }
   $scope.recipeIds = $stateParams.recipeIds;
   //run initial check for favoriting
-  var userId, userToken;
-  if(token) {
-    $scope.favoriteRecipeId = FavoriteRecipeDetectionService.getFavoriteId($scope.recipeIds);
-    userId = $ionicUser.get(USER.ID);
-    userToken = token;
-  }
   if($stateParams.loadAlaCarte) {
     RecipeService.getRecipesOfType('AlaCarte', userId, userToken).then(function(recipes) {
       recipes = recipes.data;
@@ -328,7 +330,7 @@ angular.module('main')
     source = MEALS_COOKED_SOURCE.COOK_TAB;
   }
   var isAnonymous = true;
-  if(token) {
+  if($ionicAuth.isAuthenticated()) {
     isAnonymous = false;
   }
   MealsCookedService.postCookedMeal({
@@ -338,7 +340,7 @@ angular.module('main')
     ingredientsChosenIds: $scope.selectedIngredientIds,
     deviceToken: ionic.Platform.device().uuid,
     userId: $ionicUser.get(USER.ID, undefined),
-    token: token
+    token: $ionicAuth.isAuthenticated()
   }).then(function(res) {
     $scope.curMealCookedId = res.data._id;
   }, function(response) {
@@ -415,6 +417,7 @@ angular.module('main')
         $scope.mainVideoIndicators = Array($scope.combinedRecipe.mainVideos.length).fill(false);
         $scope.mainVideoIndicators[0] = true;
         $scope.playingVideo = $scope.combinedRecipe.mainVideos[0];
+        console.log('playingVideo here', $scope.playingVideo);
       } else {
         //the single main player
         $scope.playingVideo = $scope.combinedRecipe.mainVideo;
@@ -516,7 +519,7 @@ angular.module('main')
 
   $scope.getAddSideText = function() {
     if($scope.sidesExist) {
-      return 'Change Sides';
+      return 'Change';
     } else {
       return 'Add a Side';
     }
@@ -542,10 +545,10 @@ angular.module('main')
   $scope.getEditIngredientsButtonText = function() {
     //use BYOName as proxy for BYO recipe presence
     if($scope.BYOName) {
-      return 'Edit Ingredients';
+      return 'Change';
     } else {
       //then we have a minNeeded < type.ingredients.length Full
-      return 'Modify Recipe';
+      return 'Modify';
     }
   };
 
@@ -817,7 +820,7 @@ angular.module('main')
     $scope.seasoningProfile = profile;
     if($scope.curMealCookedId) {
       var isAnonymous = true;
-      if(token) {
+      if($ionicAuth.isAuthenticated()) {
         isAnonymous = false;
       }
       SeasoningUsedService.postSeasoningUsed({
@@ -825,7 +828,7 @@ angular.module('main')
         mealCookedId: $scope.curMealCookedId,
         isAnonymous: isAnonymous,
         userId: $ionicUser.get(USER.ID, undefined),
-        token: token
+        token: $ionicAuth.getToken()
       }).then(function(res) {
         //do nothing - don't need any return info
       }, function(response) {
@@ -855,7 +858,7 @@ angular.module('main')
     $scope.seasoningProfile = profile;
     if($scope.curMealCookedId) {
       var isAnonymous = true;
-      if(token) {
+      if($ionicAuth.isAuthenticated()) {
         isAnonymous = false;
       }
       SeasoningUsedService.postSeasoningUsed({
@@ -863,7 +866,7 @@ angular.module('main')
         mealCookedId: $scope.curMealCookedId,
         isAnonymous: isAnonymous,
         userId: $ionicUser.get(USER.ID, undefined),
-        token: token,
+        token: $ionicAuth.getToken(),
         deviceToken: ionic.Platform.device().uuid
       }).then(function(res) {
         //do nothing - don't need any return info
@@ -1009,14 +1012,15 @@ angular.module('main')
       }
       $window.ga.trackEvent('RecipePresent', 'RecipeUnFavorited', name);
     }
-    if(token) {
+    if($ionicAuth.isAuthenticated()) {
+      console.log('fav Recipe', $scope.combinedRecipe);
       $ionicLoading.show({
         template: LOADING.TEMPLATE,
         noBackdrop: true
       });
       FavoriteRecipeService.unfavoriteRecipe({
         userId: $ionicUser.get(USER.ID),
-        token: token,
+        token: $ionicAuth.getToken(),
         favoriteRecipeId: $scope.favoriteRecipeId
       }).then(function(res) {
         $scope.favoriteRecipeId = false;
@@ -1038,7 +1042,7 @@ angular.module('main')
       }
       $window.ga.trackEvent('RecipePresent', 'RecipeFavorited', name);
     }
-    if(token) {
+    if($ionicAuth.isAuthenticated()) {
       var name;
       if($scope.combinedRecipe.name) {
         name = $scope.combinedRecipe.name;
@@ -1050,7 +1054,7 @@ angular.module('main')
       }
       FavoriteRecipeService.saveFavoriteRecipeForUser({
         userId: $ionicUser.get(USER.ID),
-        token: token,
+        token: $ionicAuth.getToken(),
         favoriteRecipe: {
           userId: $ionicUser.get(USER.ID),
           recipeIds: $scope.recipeIds,
@@ -1080,9 +1084,17 @@ angular.module('main')
         $rootScope.redrawSlides = true;
         $scope.loginPopover = popover;
         $scope.loginPopover.show(event);
+        //then, after successful login, want to actually save the recipe to favorites, and then return to the presentation page, as opposed to going to cook-ctrl
+        //could have login directive emit...
       });
     }
   };
+
+  $scope.$on('loginDirective.successfulPopover', function(event) {
+    console.log('here');
+    event.preventDefault();
+    $scope.favoriteRecipe();
+  });
 
   $scope.$on('signInStart', function(event){
     event.preventDefault();

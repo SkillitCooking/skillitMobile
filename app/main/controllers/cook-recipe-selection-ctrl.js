@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$rootScope', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $rootScope, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
 
   var token;
   var loginType = $ionicUser.get(LOGIN.TYPE);
@@ -35,8 +35,18 @@ angular.module('main')
     }
   }, 501);
 
+  //intercept dietaryPreferencesChanged event
+  var dietaryPreferencesChanged = false;
+  $scope.$on('dietaryPreferencesChanged', function(event) {
+    event.preventDefault();
+    dietaryPreferencesChanged = true;
+  });
+
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
+    if(dietaryPreferencesChanged) {
+      $rootScope.$broadcast('dietaryPreferencesChanged');
+    }
   });
 
   $scope.$on('$ionicView.beforeEnter', function(event, data) {

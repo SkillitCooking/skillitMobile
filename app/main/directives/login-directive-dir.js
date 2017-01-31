@@ -100,7 +100,11 @@ angular.module('main')
               title: 'Login was successful!',
               template: 'Now let\'s get cooking!'
             }).then(function(res) {
-              $state.go('main.cook');
+              if(scope.type !== 'popover') {
+                $state.go('main.cook');
+              } else {
+                $rootScope.$broadcast('loginDirective.successfulPopover');
+              }
             });
           }, function(response) {
             clearForm();
@@ -148,11 +152,16 @@ angular.module('main')
                title: 'Signup Successful!',
                template: 'Now let\'s get cooking!'
               }).then(function(res) {
-                $state.go('main.cook');
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
+              $ionicUser.unset(LOGIN.TYPE);
               $ionicAuth.logout();
               ErrorService.showErrorAlert();
             });
@@ -229,7 +238,6 @@ angular.module('main')
             }).then(function(res){
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
-              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -237,11 +245,16 @@ angular.module('main')
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
               }).then(function(res) {
-                $state.go('main.cook');
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
+              $ionicUser.unset(LOGIN.TYPE);
               $ionicFacebookAuth.logout();
               ErrorService.showErrorAlert();
             });
@@ -257,7 +270,6 @@ angular.module('main')
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
-              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -265,11 +277,16 @@ angular.module('main')
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
               }).then(function(res) {
-                $state.go('main.cook');
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               }); 
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
+              $ionicUser.unset(LOGIN.TYPE);
               $ionicFacebookAuth.logout();
               ErrorService.showErrorAlert();
             });
@@ -306,7 +323,6 @@ angular.module('main')
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
-              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -314,11 +330,16 @@ angular.module('main')
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
               }).then(function(res) {
-                $state.go('main.cook');
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
+              $ionicUser.unset(LOGIN.TYPE);
               $ionicGoogleAuth.logout();
               ErrorService.showErrorAlert();
             });
@@ -333,7 +354,6 @@ angular.module('main')
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
-              $ionicUser.set(LOGIN.SOCIALTOKEN, result.token);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
@@ -341,11 +361,16 @@ angular.module('main')
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
               }).then(function(res) {
-                $state.go('main.cook');
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               }); 
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
+              $ionicUser.unset(LOGIN.TYPE);
               $ionicGoogleAuth.logout();
               ErrorService.showErrorAlert();
             });

@@ -14,6 +14,9 @@ angular.module('main')
         /*endinject*/
     }
   })
+  .constant('COMPATIBILITY', {
+    'VERSION': 2
+  })
   .constant('NAME_FORM_FLAGS', {
     'SINGULAR': 'singularForm',
     'STANDARD': 'standardForm',
@@ -23,12 +26,14 @@ angular.module('main')
     'BAKE': 'Bake',
     'BOIL': 'Boil',
     'BRINGTOBOIL': 'BringToBoil',
+    'BREAKEGG': 'BreakEgg',
     'COOK': 'Cook',
     'CUSTOM': 'Custom',
     'CUT': 'Cut',
     'DRY': 'Dry',
     'EQUIPMENTPREP': 'EquipmentPrep',
     'HEAT': 'Heat',
+    'MOVE': 'Move',
     'PLACE': 'Place',
     'PREHEAT': 'PreheatOven',
     'REMOVE': 'Remove',
@@ -121,32 +126,32 @@ angular.module('main')
     {
         'header': 'Input Ingredients',
         'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/ingredients-1.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/ingredients-1.png'
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/input-white.jpg',
+        'screenshot_android': 'main/assets/images/android_walkthrough/ingredients.png'
     },
     {
         'header': 'Select Recipe',
         'subtitle': 'Choose one of our recipes or use \'Build Your Own\' to make your perfect dish',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/selection-2.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/selection-2.png'
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/selection-white.jpg',
+        'screenshot_android': 'main/assets/images/android_walkthrough/selection.png'
     },
     {
         'header': 'Customize Away',
         'subtitle': 'Feeling hungry? Add some sides. Feeling adventurous? Try different spices.',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-3.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/present-3.png'
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-white.jpg',
+        'screenshot_android': 'main/assets/images/android_walkthrough/present.png'
     },
     {
         'header': 'Learn As You Go',
         'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-instructions-4.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/present-instructions-4.png'
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-steps-white.jpg',
+        'screenshot_android': 'main/assets/images/android_walkthrough/present-steps.png'
     },
     {
         'header': 'Discover',
         'subtitle': 'Not sure what you want to cook with? Browse different recipe collections.',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/browse-5.png',
-        'screenshot_android': 'main/assets/images/android_walkthrough/browse-5.png'
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/browse-white.jpg',
+        'screenshot_android': 'main/assets/images/android_walkthrough/browse.png'
     }
   ]).constant('PAGINATION', {
     'ITEMS_PER_PAGE': 25
@@ -162,6 +167,6 @@ angular.module('main')
     'LINK': 'https://skillitcooking.com/pages/app',
     'HASHTAG': '#skillingit'
   }).constant('LOADING', {
-    'TEMPLATE': '<p>Loading...</p><ion-spinner></ion-spinner>',
+    'TEMPLATE': '<p>Brainstorming</p><ion-spinner></ion-spinner>',
     'UPDATE_TEMPLATE': '<p>Updating App</p><ion-spinner></ion-spinner>'
   });

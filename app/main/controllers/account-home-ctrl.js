@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('AccountHomeCtrl', ['_', '$window', '$rootScope', '$scope', '$state', '$ionicLoading', '$ionicAuth', '$ionicGoogleAuth', '$ionicFacebookAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $state, $ionicLoading, $ionicAuth, $ionicGoogleAuth, $ionicFacebookAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOGIN, LOADING) {
+.controller('AccountHomeCtrl', ['_', '$window', '$rootScope', '$scope', '$state', '$ionicHistory', '$ionicLoading', '$ionicAuth', '$ionicGoogleAuth', '$ionicFacebookAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $state, $ionicHistory, $ionicLoading, $ionicAuth, $ionicGoogleAuth, $ionicFacebookAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOGIN, LOADING) {
 
   $scope.ages = USER.AGES;
   $scope.accountInfoSelected = false;
@@ -26,16 +26,9 @@ angular.module('main')
     if(event) {
       event.preventDefault();
     }
-    var token;
-    var loginType = $ionicUser.get(LOGIN.TYPE);
-    if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-      token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-    } else {
-      token = $ionicAuth.getToken();
-    }
     FavoriteRecipeService.getFavoriteRecipesForUser({
         userId: $ionicUser.get(USER.ID),
-        token: token
+        token: $ionicAuth.getToken()
       }).then(function(res) {
         $scope.favoriteRecipes = res.data;
         var favoriteRecipeIds = _.map($scope.favoriteRecipes, function(favRecipe) {
@@ -63,16 +56,9 @@ angular.module('main')
   $scope.$on('signInStop', function(event, removePopover, fetchRecipes) {
     event.preventDefault();
     if(fetchRecipes) {
-      var token;
-      var loginType = $ionicUser.get(LOGIN.TYPE);
-      if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-        token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-      } else {
-        token = $ionicAuth.getToken();
-      }
       FavoriteRecipeService.getFavoriteRecipesForUser({
         userId: $ionicUser.get(USER.ID),
-        token: token
+        token: $ionicAuth.getToken()
       }).then(function(res) {
         $scope.favoriteRecipes = res.data;
         //set fav recipes to $ionicUser
@@ -90,7 +76,7 @@ angular.module('main')
       });
       UserService.getPersonalInfo({
         userId: $ionicUser.get(USER.ID),
-        token: token
+        token: $ionicAuth.getToken()
       }).then(function(res) {
         $scope.user = res.data;
         $ionicUser.set('dietaryPreferences', $scope.user.dietaryPreferences);
@@ -115,17 +101,10 @@ angular.module('main')
   });
 
 //maybe wrap on some kind of $ionicView event?
-  var token;
-  var loginType = $ionicUser.get(LOGIN.TYPE);
-  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-  } else {
-    token = $ionicAuth.getToken();
-  }
-  if(token) {
+  if($ionicAuth.isAuthenticated()) {
     FavoriteRecipeService.getFavoriteRecipesForUser({
       userId: $ionicUser.get(USER.ID),
-      token: token
+      token: $ionicAuth.getToken()
     }).then(function(res) {
       $scope.favoriteRecipes = res.data;
       //set favorite recipes to $ionicUser
@@ -142,7 +121,7 @@ angular.module('main')
     });
     UserService.getPersonalInfo({
       userId: $ionicUser.get(USER.ID),
-      token: token
+      token: $ionicAuth.getToken()
     }).then(function(res) {
       $scope.user = res.data;
       $ionicUser.set('dietaryPreferences', $scope.user.dietaryPreferences);
@@ -196,7 +175,7 @@ angular.module('main')
   };
 
   $scope.isAuthenticated = function() {
-    return $ionicUser.get(LOGIN.SOCIALTOKEN) || $ionicAuth.isAuthenticated();
+    return $ionicAuth.isAuthenticated();
   };
 
   $scope.changeUserInfo = function() {
@@ -264,13 +243,6 @@ angular.module('main')
   };
 
   $scope.saveUserInfo = function() {
-    var token;
-    var loginType = $ionicUser.get(LOGIN.TYPE);
-    if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-      token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-    } else {
-      token = $ionicAuth.getToken();
-    }
     //will need to do dietary preferences update here
     if(typeof $window.ga !== 'undefined') {
       var action = 'saved';
@@ -284,13 +256,16 @@ angular.module('main')
       }
     }
     $ionicUser.set('dietaryPreferences', dietaryPreferences);
+    //so as to reload cook-ctrl ingredients
+    $rootScope.$broadcast('dietaryPreferencesChanged');
+    $rootScope.redrawSlides = true;
     $ionicLoading.show({
       template: LOADING.TEMPLATE,
       noBackdrop: true
     });
     UserService.updatePersonalInfo({
       userId: $ionicUser.get(USER.ID),
-      token: token,
+      token: $ionicAuth.getToken(),
       firstName: $scope.user.firstName,
       lastName: $scope.user.lastName,
       age: $scope.user.age,
@@ -298,7 +273,6 @@ angular.module('main')
     }).then(function(res) {
       $ionicLoading.hide();
       $scope.user = res.data;
-      console.log('saved user', $scope.user);
       $scope.infoHasChanged = false;
     }, function(response) {
       ErrorService.showErrorAlert();
@@ -310,13 +284,6 @@ angular.module('main')
   };
 
   $scope.cookFavoriteRecipe = function(recipe) {
-    var token;
-    var loginType = $ionicUser.get(LOGIN.TYPE);
-    if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-      token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-    } else {
-      token = $ionicAuth.getToken();
-    }
     if(typeof $window.ga !== 'undefined') {
       var action = recipe.name;
       var label = $ionicUser.get(USER.ID);
@@ -324,7 +291,7 @@ angular.module('main')
     }
     FavoriteRecipeService.favoriteRecipeUsedForUser({
       userId: $ionicUser.get(USER.ID),
-      token: token,
+      token: $ionicAuth.getToken(),
       favoriteRecipeId: recipe._id
     }).then(function(res) {
       //nothing yet...
@@ -347,26 +314,19 @@ angular.module('main')
       var label = $ionicUser.get(USER.ID);
       $window.ga.trackEvent('RecipeUnfavorited', action, label);
     }
-    var token;
-    var loginType = $ionicUser.get(LOGIN.TYPE);
-    if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-      token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-    } else {
-      token = $ionicAuth.getToken();
-    }
-    if(token) {
+    if($ionicAuth.isAuthenticated()) {
       $ionicLoading.show({
         template: LOADING.TEMPLATE,
         noBackdrop: true
       });
       FavoriteRecipeService.unfavoriteRecipe({
         userId: $ionicUser.get(USER.ID),
-        token: token,
+        token: $ionicAuth.getToken(),
         favoriteRecipeId: favRecipe._id
       }).then(function(res) {
         FavoriteRecipeService.getFavoriteRecipesForUser({
           userId: $ionicUser.get(USER.ID),
-          token: token
+          token: $ionicAuth.getToken()
         }).then(function(res) {
           $scope.favoriteRecipes = res.data;
           var favoriteRecipeIds = _.map($scope.favoriteRecipes, function(favRecipe) {
@@ -396,20 +356,15 @@ angular.module('main')
       var action = $ionicUser.get(USER.ID);
       $window.ga.trackEvent('Logout', action, label);
     }
-    $ionicUser.unset(LOGIN.SOCIALTOKEN);
+    var userId = $ionicUser.get(USER.ID);
+    var token = $ionicAuth.getToken();
+    var loginType = $ionicUser.get(LOGIN.TYPE);
+    $ionicUser.unset(LOGIN.TYPE);
     $ionicUser.save();
     $ionicLoading.show({
       template: LOADING.TEMPLATE,
       noBackdrop: true
     });
-    var userId = $ionicUser.get(USER.ID);
-    var token;
-    var loginType = $ionicUser.get(LOGIN.TYPE);
-    if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-      token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-    } else {
-      token = $ionicAuth.getToken();
-    }
     if(loginType === LOGIN.BASIC) {
       $ionicAuth.logout();
     } else if(loginType === LOGIN.FACEBOOK) {
@@ -420,6 +375,7 @@ angular.module('main')
       //unrecognized login type
       //ErrorService.showErrorAlert();
     }
+    $ionicHistory.clearHistory();
     UserService.logout({
       userId: userId,
       token: token

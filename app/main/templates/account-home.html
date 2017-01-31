@@ -35,9 +35,11 @@
             <h2 class="recipe-category">Dietary Preferences</h2>
             <p>Let us know if you have any eating restrictions and we'll hide the relevant ingredients and recipes</p>
             <div ng-repeat="pref in dietaryPreferences" class="ingredient-checkbox-row">
-              <ion-checkbox class="checkbox-balanced dietary-preference"  ng-model="pref.isMarked" ng-click="changeUserInfo()">
-                {{pref.title}}
-              </ion-checkbox>
+              <span ng-click="changeUserInfo()">
+                <ion-checkbox class="checkbox-balanced dietary-preference"  ng-model="pref.isMarked">
+                  {{pref.title}}
+                </ion-checkbox>
+              </span>
             </div>
           </ion-list>
         <!--<div class="list">

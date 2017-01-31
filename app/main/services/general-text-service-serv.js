@@ -1,7 +1,15 @@
 'use strict';
 angular.module('main')
-.factory('GeneralTextService', function () {
+.factory('GeneralTextService', function (LibraryFunctions) {
   var service = {};
+
+  service.getNamePairs = function(ingredients) {
+    var names = ingredients.map(function(elem) {
+      return elem.name.standardForm;
+    });
+    names.sort();
+    return LibraryFunctions.pairArray(names, String.prototype.concat);
+  };
 
   service.assignIngredientDisplayNames = function(ingredients) {
     for (var i = ingredients.length - 1; i >= 0; i--) {

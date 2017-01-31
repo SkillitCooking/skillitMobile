@@ -1,14 +1,14 @@
 'use strict';
 angular.module('main')
 .factory('RecipeInstantiationService', 
-  ['_', 'bakeStepService', 'boilStepService', 'bringToBoilStepService', 
+  ['_', 'bakeStepService', 'boilStepService', 'breakEggStepService', 'bringToBoilStepService', 
   'cookStepService', 'customStepService', 'cutStepService', 'dryStepService',
-  'equipmentPrepStepService', 'heatStepService', 'placeStepService',
+  'equipmentPrepStepService', 'heatStepService', 'moveStepService', 'placeStepService',
   'preheatOvenStepService', 'sauteeStepService', 'serveStepService', 'seasonStepService',
   'slowCookStepService', 'steamingStepService', 'stirStepService', 'ErrorService',
-  function (_, bakeStepService, boilStepService, bringToBoilStepService, cookStepService,
+  function (_, bakeStepService, boilStepService, breakEggStepService, bringToBoilStepService, cookStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
-    heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
+    heatStepService, moveStepService, placeStepService, preheatOvenStepService, sauteeStepService,
     serveStepService, seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
   var service = {};
 
@@ -77,6 +77,10 @@ angular.module('main')
             bringToBoilStepService.fillInStep(recipes[i], j);
             break;
 
+          case "BreakEgg":
+            breakEggStepService.fillInStep(recipes[i], j);
+            break;
+
           case "Cook":
             cookStepService.fillInStep(recipes[i], j);
             break;
@@ -95,6 +99,10 @@ angular.module('main')
 
           case "Heat":
             heatStepService.fillInStep(recipes[i], j);
+            break;
+
+          case "Move":
+            moveStepService.fillInStep(recipes[i], j);
             break;
 
           case "Place":
@@ -157,6 +165,9 @@ angular.module('main')
       case "BringToBoil":
         return false;
 
+      case "BreakEgg":
+        return true;
+
       case "Cook":
         return true;
 
@@ -174,6 +185,9 @@ angular.module('main')
 
       case "Heat":
         return false;
+
+      case "Move":
+        return true;
 
       case "Place":
         return true;
@@ -222,6 +236,9 @@ angular.module('main')
       case "BringToBoil":
         return step.stepInputs["dishInput"];
 
+      case "BreakEgg":
+        return step.stepInputs["dishInputs"];
+
       case "Cook":
         return step.stepInputs["dishInput"];
 
@@ -239,6 +256,9 @@ angular.module('main')
 
       case "Heat":
         return step.stepInputs["dishInput"];
+
+      case "Move":
+        return step.stepInputs["stepInput"];
 
       case "Place":
         return step.stepInputs["dishProductInput"];

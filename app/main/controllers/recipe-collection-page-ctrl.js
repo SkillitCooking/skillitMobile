@@ -2,14 +2,6 @@
 angular.module('main')
 .controller('RecipeCollectionPageCtrl', ['$window', '$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicPlatform, $ionicHistory, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
 
-  var token;
-  var loginType = $ionicUser.get(LOGIN.TYPE);
-  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
-    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
-  } else {
-    token = $ionicAuth.getToken();
-  }
-
   $scope.collection = $stateParams.collection;
 
   $ionicLoading.show({
@@ -47,9 +39,9 @@ angular.module('main')
 
   var userId, userToken;
 
-  if(token) {
+  if($ionicAuth.isAuthenticated()) {
     userId = $ionicUser.get(USER.ID);
-    userToken = token;
+    userToken = $ionicAuth.getToken();
   }
 
   $scope.loadMoreRecipes = function() {

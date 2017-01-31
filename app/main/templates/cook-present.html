@@ -6,7 +6,7 @@
       <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset">Reset</button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
-    <ion-content delegate-handle="cook-present" on-scroll="checkScroll()" class="padding">
+    <ion-content delegate-handle="cook-present" overflow-scroll="true" on-scroll="checkScroll()" class="padding">
       <h1 ng-if="combinedRecipe.name">{{combinedRecipe.name}}</h1>
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 
@@ -21,7 +21,6 @@
           <h3>Ingredients</h3>
           <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
           truly a combined recipe-->
-          <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
           <div ng-repeat="recipeIngredients in ingredientsForRecipes">
             <h5 ng-if="combinedRecipe.mainVideos">{{recipeIngredients.name}}</h5>
             <ul> 
@@ -50,7 +49,8 @@
       </div>      
       <div class="row"> 
         <div class="col col-50 ingredients-seasoning">
-          <p style="text-align: center"><button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button></p>
+          <p ng-if="BYOIngredientTypes" style="text-align: center"><button ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button></p>
+          <p ng-if="!BYOIngredientTypes" style="text-align: center"><button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button></p>
         </div>
         <div class="col col-50 ingredients-seasoning seasoning border-left ">
           <p style="text-align: center"><button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Switch It Up</button></p>
