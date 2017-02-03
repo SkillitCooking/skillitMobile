@@ -146,6 +146,9 @@ angular.module('main')
         } else if(recipes[i].recipeType === 'AlaCarte') {
           alaCarteRecipeNames.push(recipes[i].name);
         }
+        if(recipes[i].recipeType === 'Full') {
+          combinedRecipe.nameBodies = recipes[i].nameBodies;
+        }
       }
       combinedRecipe.alaCarteNames = getAlaCarteNames(alaCarteRecipeNames);
       //if no mainName set, then make combination of AlaCarte recipes mainName

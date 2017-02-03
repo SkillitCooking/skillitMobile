@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', 'RecipeNameConstructionService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, RecipeNameConstructionService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING) {
 
   if(typeof $window.ga !== 'undefined') {
     if($stateParams.cameFromRecipes) {
@@ -296,6 +296,7 @@ angular.module('main')
   $scope.recipeIds = $stateParams.recipeIds;
   //run initial check for favoriting
   if($stateParams.loadAlaCarte) {
+    console.log('here');
     RecipeService.getRecipesOfType('AlaCarte', userId, userToken).then(function(recipes) {
       recipes = recipes.data;
       recipes.sort(ingredientCategoryCmpFn);
@@ -333,6 +334,7 @@ angular.module('main')
   if($ionicAuth.isAuthenticated()) {
     isAnonymous = false;
   }
+  console.log('there');
   MealsCookedService.postCookedMeal({
     recipeIds: $scope.recipeIds,
     source: source,
@@ -375,8 +377,16 @@ angular.module('main')
         }
       }
     }
+    console.log('hey');
     recipes.sort(recipeTypeCmpFn);
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames, $scope.selectedIngredientIds);
+    if($stateParams.nameDefaultSeasoning) {
+      for (var i = recipes.length - 1; i >= 0; i--) {
+        if(recipes[i].recipeType === 'Full') {
+          RecipeNameConstructionService.setNewDefaultSeasoning(recipes[i], $stateParams.nameDefaultSeasoning);
+        }
+      }
+    }
     var BYORecipe = _.find(recipes, function(recipe) {
       return recipe.recipeType === 'BYO';
     });
@@ -403,7 +413,14 @@ angular.module('main')
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
-    console.log('combinedRecipe', angular.copy($scope.combinedRecipe));
+    console.log('yo');
+    if($stateParams.displayName) {
+      if($scope.combinedRecipe.mainName) {
+        $scope.combinedRecipe.mainName = $stateParams.displayName;
+      } else {
+        $scope.combinedRecipe.name = $stateParams.displayName;
+      }
+    }
     //mainVideo indicator array
     $scope.mainVideoIndicators = [];
     if($scope.combinedRecipe) {
@@ -812,6 +829,7 @@ angular.module('main')
         $scope.seasonPopover.remove();
       }, 200);
     }
+    RecipeNameConstructionService.switchNameForSeasoning($scope.combinedRecipe, profile);
     $scope.showMoreProfiles = false;
     $scope.combinedRecipe.choiceSeasoningProfiles.push(profile);
     _.remove($scope.seasoningProfiles, function(season) {
@@ -854,6 +872,7 @@ angular.module('main')
         $scope.seasonPopover.remove();
       }, 200);
     }
+    RecipeNameConstructionService.switchNameForSeasoning($scope.combinedRecipe, profile);
     $scope.showMoreProfiles = false;
     $scope.seasoningProfile = profile;
     if($scope.curMealCookedId) {

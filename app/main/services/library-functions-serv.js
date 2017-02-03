@@ -14,5 +14,21 @@ angular.module('main')
     return pairArr;
   };
 
+  service.isEmpty = function(obj) {
+    for(var key in obj) {
+      return false;
+    }
+    return true;
+  };
+
+  service.getRandomObjectKey = function(obj) {
+    var keys = Object.keys(obj);
+    return keys[keys.length * Math.random() << 0];
+  };
+
+  service.getRandomIndex = function(length) {
+    return length * Math.random() << 0;
+  };
+
   return service;
 });

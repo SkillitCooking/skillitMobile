@@ -119,7 +119,9 @@ angular.module('main', [
           cameFromRecipes: false,
           isFavoriteRecipe: true,
           loadAlaCarte: true,
-          isNewLoad: false
+          isNewLoad: false,
+          displayName: null,
+          nameDefaultSeasoning: null
         }
       })
       .state('main.cookAddSideFavorite', {
@@ -214,7 +216,9 @@ angular.module('main', [
           cameFromRecipes: false,
           isFavoriteRecipe: false,
           loadAlaCarte: false,
-          isNewLoad: false
+          isNewLoad: false,
+          displayName: null,
+          nameDefaultSeasoning: null
         }
       })
       .state('main.cookAddSide', {
@@ -303,7 +307,9 @@ angular.module('main', [
           cameFromRecipeCollection: false,
           isFavoriteRecipe: false,
           loadAlaCarte: true,
-          isNewLoad: false
+          isNewLoad: false,
+          displayName: null,
+          nameDefaultSeasoning: null
         }
       })
       .state('main.cookAddSideRecipes', {

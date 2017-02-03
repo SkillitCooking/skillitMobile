@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$window', '$rootScope', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $rootScope, $scope, $stateParams, $state, $ionicHistory, RecipeService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$rootScope', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', 'RecipeNameConstructionService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $rootScope, $scope, $stateParams, $state, $ionicHistory, RecipeService, RecipeNameConstructionService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
 
   var token;
   var loginType = $ionicUser.get(LOGIN.TYPE);
@@ -117,6 +117,7 @@ angular.module('main')
         for (var i = $scope.fullRecipes[key].recipes.length - 1; i >= 0; i--) {
           $scope.fullRecipes[key].recipes[i].prepTime = 5 * Math.round($scope.fullRecipes[key].recipes[i].prepTime/5);
           $scope.fullRecipes[key].recipes[i].totalTime = 5 * Math.round($scope.fullRecipes[key].recipes[i].totalTime/5);
+          RecipeNameConstructionService.setPrefixedRecipeName($scope.fullRecipes[key].recipes[i]);
         }
       }
     }
@@ -349,6 +350,9 @@ angular.module('main')
     var recipeIds = $scope.fullRecipes[recipeCategory].additionalRecipeIds;
     RecipeService.getMoreRecipesForCategory({recipeIds: recipeIds}).then(function(res) {
       var recipes = res.data;
+      for (var i = recipes.recipes.length - 1; i >= 0; i--) {
+        RecipeNameConstructionService.setPrefixedRecipeName(recipes.recipes[i]);
+      }
       Array.prototype.push.apply($scope.fullRecipes[recipeCategory].recipes, recipes.recipes);
       $scope.fullRecipes[recipeCategory].hasMoreToLoad = recipes.hasMoreToLoad;
       $scope.fullRecipes[recipeCategory].additionalRecipeIds = recipes.additionalRecipeIds;
@@ -418,7 +422,9 @@ angular.module('main')
     if(typeof $window.ga !== 'undefined') {
       var interval = Date.now() - $scope.selectionTabStart;
       $window.ga.trackTiming('RecipeSelection', interval, getCurrentTabName());
+      $window.ga.trackEvent('NameConstruction.selected', recipe.setPrefix, recipe.name);
     }
+    var displayName = recipe.displayName;
     recipe.isSelected = true;
     if(recipe.missingIngredients && recipe.missingIngredients.length !== 0) {
       addMissingIngredients(recipe);
@@ -437,7 +443,7 @@ angular.module('main')
       recipe.isSelected = false;
     }, 400);
     setTimeout(function() {
-      $state.go('main.cookPresent', {recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr, isNewLoad: true});
+      $state.go('main.cookPresent', {displayName: displayName, nameDefaultSeasoning: recipe.newDefaultSeasoning, recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr, isNewLoad: true});
     }, 200);
   };
 

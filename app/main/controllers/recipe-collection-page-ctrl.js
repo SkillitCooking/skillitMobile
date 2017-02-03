@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('RecipeCollectionPageCtrl', ['$window', '$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicPlatform, $ionicHistory, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
+.controller('RecipeCollectionPageCtrl', ['$window', '$scope', '$stateParams', '$state', 'RecipeService', 'RecipeNameConstructionService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, RecipeService, RecipeNameConstructionService, $ionicLoading, $ionicPlatform, $ionicHistory, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
 
   $scope.collection = $stateParams.collection;
 
@@ -52,6 +52,7 @@ angular.module('main')
             for (var i = recipes.data.length - 1; i >= 0; i--) {
               recipes.data[i].prepTime = 5 * Math.round(recipes.data[i].prepTime/5);
               recipes.data[i].totalTime = 5 * Math.round(recipes.data[i].totalTime/5);
+              RecipeNameConstructionService.setPrefixedRecipeName(recipes.data[i]);
             }
           }
           $scope.hideInfiniteScroll = !recipes.hasMoreToLoad;
@@ -91,6 +92,7 @@ angular.module('main')
 
   //BYO handling here too
   $scope.recipeSelected = function(recipe) {
+    var displayName = recipe.displayName;
     recipe.isSelected = true;
     setTimeout(function() {
       recipe.isSelected = false;
@@ -125,7 +127,7 @@ angular.module('main')
       var selectedNames = [], selectedIds = [];
       setSelected(selectedNames, selectedIds, recipe);
       setTimeout(function() {
-        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true});
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true, displayName: displayName, nameDefaultSeasoning: recipe.newDefaultSeasoning});
       }, 200);
     }
   };

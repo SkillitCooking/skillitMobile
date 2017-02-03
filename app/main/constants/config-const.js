@@ -4,9 +4,9 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'https://skillicookingdevapi.info/api/',
-    'CHANNEL': 'dev',
-    'API_PASSWORD': 'MDm|C7oQQIm&AZyhx4g7m^+uNGqm$7Ctt2-60O&Ek-%0o!NuLT'
+        'SERVER_URL': 'https://skillicookingprodapi.info/api/',
+    'CHANNEL': 'production',
+    'API_PASSWORD': 'sm@34MLPG9L&rWph|YMwcg=&5|R3TMZ!!H+F48ThGFl56E&*RD'
         /*endinject*/
     },
     BUILD : {
@@ -169,4 +169,6 @@ angular.module('main')
   }).constant('LOADING', {
     'TEMPLATE': '<p>Brainstorming</p><ion-spinner></ion-spinner>',
     'UPDATE_TEMPLATE': '<p>Updating App</p><ion-spinner></ion-spinner>'
+  }).constant('KEYS', {
+    'BLANK': 'blank'
   });

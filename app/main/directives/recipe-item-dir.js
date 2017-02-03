@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.directive('recipeItem', ['$filter', 'RECIPE_TYPES', 'RECIPE_DISCLAIMERS', 'RECIPE_BADGES', function ($filter, RECIPE_TYPES, RECIPE_DISCLAIMERS, RECIPE_BADGES) {
+.directive('recipeItem', ['LibraryFunctions', '$filter', 'RECIPE_TYPES', 'RECIPE_DISCLAIMERS', 'RECIPE_BADGES', function (LibraryFunctions, $filter, RECIPE_TYPES, RECIPE_DISCLAIMERS, RECIPE_BADGES) {
   return {
     templateUrl: 'main/templates/recipe-item.html',
     restrict: 'E',
@@ -20,6 +20,18 @@ angular.module('main')
         }
         return 0;
       }
+
+      scope.getPictureURL = function() {
+        if(!scope.chosenPictureURL) {
+          if(scope.recipe.mainPictureURLs) {
+            var index = LibraryFunctions.getRandomIndex(scope.recipe.mainPictureURLs.length);
+            scope.chosenPictureURL = scope.recipe.mainPictureURLs[index];
+          } else {
+            scope.chosenPictureURL = scope.recipe.mainPictureURL;
+          }
+        }
+        return scope.chosenPictureURL;
+      };
 
       //scope.recipe.badges.sort(recipeBadgeSort);
 
