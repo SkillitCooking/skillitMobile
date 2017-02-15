@@ -3,7 +3,7 @@ angular.module('main')
 .controller('ArticlePageCtrl', ['$window', '$rootScope', '$scope', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicPopover', 'ArticleTextService', 'ArticleService', 'LessonService', 'ContentTextService', 'ErrorService', 'CONTENT_PIECE_TYPES', 'ITEM_TYPES', 'LOADING', function ($window, $rootScope, $scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicPopover, ArticleTextService, ArticleService, LessonService, ContentTextService, ErrorService, CONTENT_PIECE_TYPES, ITEM_TYPES, LOADING) {
     
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.DEFAULT_TEMPLATE,
     noBackdrop: true
   });
 
@@ -136,7 +136,7 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex - 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: LOADING.TEMPLATE,
+            template: LOADING.DEFAULT_TEMPLATE,
             noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex - 1].lessonIds}).then(
@@ -183,7 +183,7 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex + 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: LOADING.TEMPLATE,
+            template: LOADING.DEFAULT_TEMPLATE,
             noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex + 1].lessonIds}).then(

@@ -11,7 +11,7 @@ angular.module('main')
   }
 
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.DEFAULT_TEMPLATE,
     noBackdrop: true
   });
 

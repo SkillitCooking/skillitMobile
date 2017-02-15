@@ -90,22 +90,39 @@ angular.module('main')
         var nameBodyType = recipe.nameBodies[randomKey].type;
         switch(nameBodyType) {
           case 'adjective':
-            prefix = adjectives.find(idMatch).name;
-            var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
-            recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+            var adjective = adjectives.find(idMatch);
+            if(adjective) {
+              prefix = adjective.name;
+              var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
+              recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+            } else {
+              //look into actual cause for this safety case...
+              prefix = KEYS.BLANK;
+            }
             break;
           case 'modifier':
-            prefix = modifiers.find(idMatch).name;
-            var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
-            recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+            var modifier = modifiers.find(idMatch);
+            if(modifier) {
+              prefix = modifier.name;
+              var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
+              recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+            } else {
+              //look into actual cause for this safety case...
+              prefix = KEYS.BLANK;
+            }
             break;
           case 'seasoning':
             var seasoning = seasonings.find(idMatch);
-            prefix = seasoning.recipeTitleAlias;
+            if(seasoning) {
+              prefix = seasoning.recipeTitleAlias;
             var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
-            recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
-            recipe.newDefaultSeasoning = seasoning;
-            recipe.newDefaultSeasoning.nameBodyIndex = randomNameBodyIndex;
+              recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+              recipe.newDefaultSeasoning = seasoning;
+              recipe.newDefaultSeasoning.nameBodyIndex = randomNameBodyIndex;
+            } else {
+              //look into actual cause for this safety case...
+              prefix = KEYS.BLANK;
+            }
             break;
           default:
             break;

@@ -14,7 +14,7 @@ angular.module('main')
   $scope.selectedIngredientNames = [];
   $scope.selectedIngredientIds = [];
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.FETCHING_TEMPLATE,
     noBackdrop: true
   });
 

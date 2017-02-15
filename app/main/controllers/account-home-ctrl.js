@@ -15,7 +15,7 @@ angular.module('main')
   $scope.$on('signInStart', function(event) {
     event.preventDefault();
     $ionicLoading.show({
-      template: LOADING.TEMPLATE,
+      template: LOADING.DEFAULT_TEMPLATE,
       noBackdrop: true
     });
   });
@@ -260,7 +260,7 @@ angular.module('main')
     $rootScope.$broadcast('dietaryPreferencesChanged');
     $rootScope.redrawSlides = true;
     $ionicLoading.show({
-      template: LOADING.TEMPLATE,
+      template: LOADING.DEFAULT_TEMPLATE,
       noBackdrop: true
     });
     UserService.updatePersonalInfo({
@@ -316,7 +316,7 @@ angular.module('main')
     }
     if($ionicAuth.isAuthenticated()) {
       $ionicLoading.show({
-        template: LOADING.TEMPLATE,
+        template: LOADING.DEFAULT_TEMPLATE,
         noBackdrop: true
       });
       FavoriteRecipeService.unfavoriteRecipe({
@@ -362,7 +362,7 @@ angular.module('main')
     $ionicUser.unset(LOGIN.TYPE);
     $ionicUser.save();
     $ionicLoading.show({
-      template: LOADING.TEMPLATE,
+      template: LOADING.DEFAULT_TEMPLATE,
       noBackdrop: true
     });
     if(loginType === LOGIN.BASIC) {

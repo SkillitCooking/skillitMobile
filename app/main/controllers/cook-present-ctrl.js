@@ -141,7 +141,7 @@ angular.module('main')
   }
 
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.COOKING_TEMPLATE,
     noBackdrop: true
   });
 
@@ -1032,9 +1032,8 @@ angular.module('main')
       $window.ga.trackEvent('RecipePresent', 'RecipeUnFavorited', name);
     }
     if($ionicAuth.isAuthenticated()) {
-      console.log('fav Recipe', $scope.combinedRecipe);
       $ionicLoading.show({
-        template: LOADING.TEMPLATE,
+        template: LOADING.DEFAULT_TEMPLATE,
         noBackdrop: true
       });
       FavoriteRecipeService.unfavoriteRecipe({
@@ -1118,7 +1117,7 @@ angular.module('main')
   $scope.$on('signInStart', function(event){
     event.preventDefault();
     $ionicLoading.show({
-      template: LOADING.TEMPLATE,
+      template: LOADING.DEFAULT_TEMPLATE,
       noBackdrop: true
     });
   });

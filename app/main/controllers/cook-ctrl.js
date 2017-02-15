@@ -51,7 +51,7 @@ angular.module('main')
   });
 
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.DEFAULT_TEMPLATE,
     noBackdrop: true
   });
 
@@ -150,7 +150,6 @@ angular.module('main')
         scope: $scope
       });*/
       var ingredientCategoriesObj = response.data;
-      console.log('res', ingredientCategoriesObj);
       $scope.ingredientCategories = [];
       $scope.inputCategoryArray = [];
       //set first form of all ingredients to selected

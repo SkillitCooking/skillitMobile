@@ -17,8 +17,14 @@ angular.module('main')
       case "EquipmentPrep":
         return ["Grease", "Line"];
 
+      case "Move":
+        return ["Move"];
+
       case "Place":
-        return ["Place", "Add", "Combine", "Mix"];
+        return ["Place", "Add", "Combine", "Mix", "Plate"];
+
+      case "Remove":
+        return ["Remove"];
 
       case "Stir":
         return ["Flip", "Stir"];
@@ -42,8 +48,14 @@ angular.module('main')
       case "EquipmentPrep":
         return "prepActionType";
 
+      case "Move":
+        return "moveType";
+
       case "Place":
         return "placeType";
+
+      case "Remove":
+        return "removeType";
 
       case "Stir":
         return "stirType";

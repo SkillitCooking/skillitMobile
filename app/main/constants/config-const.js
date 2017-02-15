@@ -15,7 +15,7 @@ angular.module('main')
     }
   })
   .constant('COMPATIBILITY', {
-    'VERSION': 2
+    'VERSION': 3
   })
   .constant('NAME_FORM_FLAGS', {
     'SINGULAR': 'singularForm',
@@ -146,12 +146,6 @@ angular.module('main')
         'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/present-steps-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/present-steps.png'
-    },
-    {
-        'header': 'Discover',
-        'subtitle': 'Not sure what you want to cook with? Browse different recipe collections.',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/browse-white.jpg',
-        'screenshot_android': 'main/assets/images/android_walkthrough/browse.png'
     }
   ]).constant('PAGINATION', {
     'ITEMS_PER_PAGE': 25
@@ -167,7 +161,9 @@ angular.module('main')
     'LINK': 'https://skillitcooking.com/pages/app',
     'HASHTAG': '#skillingit'
   }).constant('LOADING', {
-    'TEMPLATE': '<p>Brainstorming</p><ion-spinner></ion-spinner>',
+    'DEFAULT_TEMPLATE': '<p>Brewing</p><ion-spinner></ion-spinner>',
+    'FETCHING_TEMPLATE': '<p>Brainstorming</p><ion-spinner></ion-spinner>',
+    'COOKING_TEMPLATE': '<p>Prepping</p><ion-spinner></ion-spinner>',
     'UPDATE_TEMPLATE': '<p>Updating App</p><ion-spinner></ion-spinner>'
   }).constant('KEYS', {
     'BLANK': 'blank'

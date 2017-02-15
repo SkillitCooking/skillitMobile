@@ -5,7 +5,7 @@ angular.module('main')
   $scope.collection = $stateParams.collection;
 
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.FETCHING_TEMPLATE,
     noBackdrop: true
   });
 

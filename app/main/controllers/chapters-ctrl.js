@@ -3,7 +3,7 @@ angular.module('main')
 .controller('ChaptersCtrl', ['$window', '$scope', '$ionicLoading', '$ionicHistory', '$ionicPlatform', '$ionicPopup', '$state', 'ChapterService', 'LessonService', 'ErrorService', 'EXIT_POPUP', 'LOADING', function ($window, $scope, $ionicLoading, $ionicHistory, $ionicPlatform, $ionicPopup, $state, ChapterService, LessonService, ErrorService, EXIT_POPUP, LOADING) {
 
   $ionicLoading.show({
-    template: LOADING.TEMPLATE,
+    template: LOADING.DEFAULT_TEMPLATE,
     noBackdrop: true
   });
 
@@ -60,7 +60,7 @@ angular.module('main')
   $scope.selectChapter = function(chapter, index) {
     if(chapter.lessonIds.length === 1) {
       $ionicLoading.show({
-        template: LOADING.TEMPLATE,
+        template: LOADING.DEFAULT_TEMPLATE,
         noBackdrop: true
       });
       LessonService.getLessonsWithIds({lessonIds: chapter.lessonIds}).then(
