@@ -161,7 +161,7 @@ angular.module('main')
     'LINK': 'https://skillitcooking.com/pages/app',
     'HASHTAG': '#skillingit'
   }).constant('LOADING', {
-    'DEFAULT_TEMPLATE': '<p>Brewing</p><ion-spinner></ion-spinner>',
+    'DEFAULT_TEMPLATE': '<p>Chewing</p><ion-spinner></ion-spinner>',
     'FETCHING_TEMPLATE': '<p>Brainstorming</p><ion-spinner></ion-spinner>',
     'COOKING_TEMPLATE': '<p>Prepping</p><ion-spinner></ion-spinner>',
     'UPDATE_TEMPLATE': '<p>Updating App</p><ion-spinner></ion-spinner>'

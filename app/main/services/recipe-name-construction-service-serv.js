@@ -46,25 +46,28 @@ angular.module('main')
   }
 
   service.switchNameForSeasoning = function(recipe, newSeasoning) {
-    var index;
-    if(recipe.defaultSeasoningProfile.nameBodyIndex) {
-      index = recipe.defaultSeasoningProfile.nameBodyIndex;
-    } else {
-      index = 0;
-    }
-    console.log('switch', recipe);
-    var suffix = recipe.nameBodies[newSeasoning._id];
-    if(!suffix) {
-      suffix = recipe.nameBodies[LibraryFunctions.getRandomObjectKey(recipe.nameBodies)].textArr[0];
-    } else {
-      suffix = recipe.nameBodies[newSeasoning._id].textArr[index];
-    }
-    var name = makeDisplayName(newSeasoning.recipeTitleAlias, suffix);
-    if(recipe.mainName) {
-      //how to also fucking track the textArr index used??
-      recipe.mainName = name;
-    } else {
-      recipe.name = name;
+    if(recipe.nameBodies) {
+      var index;
+      if(recipe.defaultSeasoningProfile.nameBodyIndex) {
+        index = recipe.defaultSeasoningProfile.nameBodyIndex;
+      } else {
+        index = 0;
+      }
+      console.log('switch', recipe);
+      console.log('seasonweit', newSeasoning);
+      var suffix = recipe.nameBodies[newSeasoning._id];
+      if(!suffix) {
+        suffix = recipe.nameBodies[LibraryFunctions.getRandomObjectKey(recipe.nameBodies)].textArr[0];
+      } else {
+        suffix = recipe.nameBodies[newSeasoning._id].textArr[index];
+      }
+      var name = makeDisplayName(newSeasoning.recipeTitleAlias, suffix);
+      if(recipe.mainName) {
+        //how to also fucking track the textArr index used??
+        recipe.mainName = name;
+      } else {
+        recipe.name = name;
+      }
     }
   };
 
