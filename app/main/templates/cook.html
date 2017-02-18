@@ -1,17 +1,16 @@
-<ion-view hide-back-button="true" view-title="What Do Ya Got?" on-swipe-left="swipeLeft()" on-swipe-right="swipeRight()">
+<ion-view hide-back-button="true" on-swipe-left="swipeLeft()" on-swipe-right="swipeRight()">
+    <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
     <ion-nav-buttons side="primary">
-      <button ng-if="notBeginningSlide()" class="button top-back-button" ng-click="slidePrev()"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
+      <button ng-if="notBeginningSlide()" class="button top-back-button" ng-click="slidePrev()"><i class="ion-arrow-left-c" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button top-back-button reset" ng-click="resetIngredientSelection()">Reset</button>
+      <button class="button top-back-button" ng-click="resetIngredientSelection()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <div class="bottom-nav-buttons-cook-tab row">   
-      <div class="col col-33">   
+      <div class="col col-50">   
         <button ng-click="slidePrev()" ng-disabled="isBeginningSlide()" class="button prev-nav-button"><i class="ion-arrow-left-c" aria-hidden="true"></i></button>
       </div>
-      <div class="col col-33">
-      </div>
-      <div class="col col-33">
+      <div class="col col-50">
         <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button float-right"><i class="ion-arrow-right-c" aria-hidden="true"></i></button>
         <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button float-right"><i class="ion-arrow-right-c" aria-hidden="true"></i></button>      
       </div>

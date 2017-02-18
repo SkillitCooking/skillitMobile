@@ -1,9 +1,10 @@
-<ion-view hide-back-button="true" view-title="Let's Cook" class="cook-present-instructions" ng-class="getOpacity()" on-swipe-right="navigateBack()">
+<ion-view hide-back-button="true" class="cook-present-instructions" ng-class="getOpacity()" on-swipe-right="navigateBack()">
+    <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
     <ion-nav-buttons side="primary">
       <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset">Reset</button>
+      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
     <ion-content delegate-handle="cook-present" overflow-scroll="true" on-scroll="checkScroll()" class="padding">
@@ -15,10 +16,14 @@
       <p class="font-weight-600">Ready In: {{getRecipeTotalTime()}} mins | Time Active: {{getRecipeActiveTime()}} mins</p>
       <div>
       </div>
-      <!--RECIPE BADGES HERE -->
+      <div class="row">
+        <div class="col">
+          <h3 style="text-align: center">What You Need</h3>
+        </div>
+      </div>
       <div class="row">
         <div class="col col-50 ingredients-seasoning">
-          <h3>Ingredients</h3>
+          <h4 style="text-align: center">Ingredients</h4>
           <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
           truly a combined recipe-->
           <div ng-repeat="recipeIngredients in ingredientsForRecipes">
@@ -37,8 +42,8 @@
         </div>
         <div class="col col-50 ingredients-seasoning seasoning border-left">
           <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
-            <h3>Seasoning</h3>
-            <h5 class="current-seasoning">{{seasoningProfile.name}}</h5>
+            <h4 style="text-align: center">Seasoning</h4>
+            <h5 class="current-seasoning">{{seasoningProfile.name}}:</h5>
             <ul class="seasoning-spices-list">
               <li ng-repeat="spice in seasoningProfile.spices">
                 &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
@@ -47,7 +52,7 @@
           </div>
         </div>
       </div>      
-      <div class="row"> 
+      <div class="row bottom-margin-10"> 
         <div class="col col-50 ingredients-seasoning">
           <p ng-if="BYOIngredientTypes" style="text-align: center"><button ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button></p>
           <p ng-if="!BYOIngredientTypes" style="text-align: center"><button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button></p>
@@ -83,9 +88,9 @@
                 <p><b>Step {{getSubStepNumber(step, 'clickable-single')}}:</b> {{step.text}}</p>
                 <br ng-if="step.stepType === 'Season'"/>
                 <p ng-repeat="line in step.seasoningInfo">{{line}}</p>
-                <i ng-if="step.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>
-                <i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>
-                <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-ios-toggle-outline instruction-step-tip-icon"></i>
+                <!--<i ng-if="step.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>--><img ng-if="step.hasTip" class="instruction-step-tip-icon icon icons8-About-Filled" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADs0lEQVRoQ+2aTVYaQRDH/zXwfNnFPkHwBGkdspYsAHfiCYInEE+gnkA8gXqC4M7BheMeDDmBcIGM2cX3nKm8bkBBvma0e8LzpTcs6K6uX1dXdXfVEN5JI1McQfHLJpxIApAA5cAsQbQ6Lp+7AHUB9YsOovBGXHU6JnR4E0hQzm8DXAGjMql0TPWY70FoANQQXusi5qiJbolBgoJcxUp2D8RVvfJGm7ZUHQ/hufA790lEJwIJSvkDgGuvXv24mikrATXRbJ/HHRILJChKCcqegtT+T7X5oMddcdlRlprbFoIEZXcPoPoiQdb+V9Zh3hdXt2fz5pgLEpTdU4Cq1pRMIphRF83W/qwhM0GWCuJJez4TXnt3GsxUkOWEGKjPOBLN1uFLmAmQoJQ/BOEgidVT7xtFuy99Zgwk2MoXwLhOXbGkE6oA4ITro9FsHKTs3pk95LgHVlcSAMQ5gD4l1XlOf194ra/D/59ArGypkf1sRf7IFtMg/WtH5s74iW0bBNwVXntNG1yDFDeqcJxTg2bvi7IOoubgHdFsN/ogxn1juCTDa7umUj5i+JKp5V4Ir12hYEvmwNk749ZIUaDwWkRBeaMGOMcpzmt+KuYdCkruGYi+mZeeokTGEQWlvA/Cpp1p+UR47drAD+sA7Vma54KCcp7tCE8pavWj481/kFhWTOMc0UcJ/35PFnFVrsnkZe7ZWClZpO8jNqNWWiDgEwVi7yGVGki0T1YfU2mBRI/r+tL4q+TeE9HHWJEoSadUQLgnvHauf/u1dU1JA2Qwx+A9IiWc7I8kix2rbxog9Lim3u7PT92yqzLi27EUjNvJNgjzuWi2dQLxGcTGu8QiiD7NnVAOMynjWRTjoZi7YBrmbCtmk+DRvvBun3LSUxJ0bgdEn+Punn/Sj3Ejmq3C6NyTIAW5yiuZrpVwbISae3gI5ctC0PTcb1FKpoy/bDDaLzgsTKs7zs7GLxnMPIixqPXS6kuVXWH+CSeszKtczbaIrdM+sZ/wCR7Cw0XF0ek+UnJVufl74jmNDuAeiKrisuXHETsZtXThM3NtPA8cR5vhs5X4cPSMiDN0/EC0lQOOo4nyA+b6oqLnLFGjZYVjEHQOKo2moxDBB9gHRY04Jeh5eg2T2G+r3o6spi5RfMhKhFEO5IwnrTnqIuN08eexs8h5ky4mBWX3lRlA7gFogML6W1czqdLT+idMPgyUj8IzU1/1mIDQB6J+s0dcnZrIVltGfY7E7ANRZ9mUn39pLEq5zArPsuBfagL1XBkHgq4AAAAASUVORK5CYII=" width="25" height="25">
+                <!--<i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>--><img ng-if="step.hasVideo" class="instruction-step-tip-icon icon icons8-YouTube-2-Filled" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAC2klEQVRoQ+2ZTXbaQAzH/wI3WYY5QekNTGBfsgCy5AalJwg9AfQEoScIPUHTXaCLkj003KDuCdwueSVWnw2m2Ab8MR4CPHsHT6PRTxrJ0phwIg+dCAcykEOLZBaRLCKKPJAdLUWOTaw2ckTMmq4Dry5AXF3uVgBBX+3M8P4ON2nkEWEsf7MBzhnI//0lHqZGuJqFxFYQ81ovwtJuAFQ9BkfVnJ7cCMx9MZx83qVyI4hZu2yB6BZEhfTskdTEmILn78W36XSTpgCIWS83QfRFcltFy9nA7LkkRtPf/g2CII3yT4CKiixJQS1/EoNJeyeIk9A57SmF3RSqYEMMJm92gxz0sVozfTYX/uPlOVpmvdIFoaPQnemoJlyJh7GnfHtBGuUeQHbJPfDH+iAGP3rrRvojMgLhbWIKwpVd8wF6nVhHlIWMj2I47ioDEYOx4xizcdlmpi4RXUSxK74MfxWDSXMXyJPMW9wFcWCqegHn+a6So8p4FMOx2yo5PL4cqXB87/xfsQ7i/rtsdfpSR9ZvFGMqhuPS9og00gdZATmlHXYxSSV//E5THhG/M+0Sz+C2bP68OMgqf87yPRC9S3qUDwfkPH8LUOtoQcx6pQNwW3ZEeLGILMYD2FFIpbPeO4hTflm7cybNFJ/dIPWKVIsSeCGeaR0QArODNE/oCzElELNRvgGjK5sHW4FVg2DRNN6llQfbIxfeax3HPBKh+z0OEITNI9eVKhjfpZNRtYLQCdFpvTVTtR3S+sNmdqcPkqxc0kaGKggmemAecUBqus6UH8l2p6H2JBWw5qVNt42br0zr5SYD/UOCYeY/BLTEcHK/yQfbL7GdfMm1wDm7R0p+IZHU8+46xiPIusfM6m+6KnXFon9WsHsmaEU8W0VQzm38vP1THGDbQO+zuKdiy0A+ZwBzI5XPCrKO3Pf6yBHZt2Fx98tA4npMtXwWEdUejqs/i0hcj6mWP5mI/ANrwhhC8mn+vAAAAABJRU5ErkJggg==" width="30" height="30">
+                <!--<i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-ios-toggle-outline instruction-step-tip-icon"></i>--><img ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="instruction-step-tip-icon icon icons8-Ketchup-Filled" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAC/0lEQVRoQ+2aT3YSQRDGvwJ0a9oLaG5AAnthkSE7kxOIJxBPADmBeALxBCa7MFmIeyYhJzC5gE2WIlC+ASHh30x1T8c3jxe2VHXXr7/u6uoCwpZ8aEs44AxEl/I7eJ6rA1wF0U7sAjH3AWphMDxRnV4/1j7GwB1IpdAE6IN5QPxZtYOaud+ihzsQr6BFSixHzNxXfqBSA/LLK/SJ6IVpQMx899IP4rfi09YyXVoA2is2QKiLXRknyu82xPYRhs7OyGwOXSmyNDDV7jqb39lAWwciVcO1nXNFXAcoHc85yNMZkS79BjvniizPo+eli5tSZBPvo4MkXGixu3OQhTPC6IHQUO3umT7I50HZOoiO5tERyuq82xFH+78uRO0VjkD0TR7Y+KNqXzbl9pstnSqivUILRO/kgfGZagf3CskdVyydgejD/Gtw7qdxLL+HKl0PK2M1/iE7KhydKDI5yJnclbEaoUP45B2MdpOq4gakUvwOoGQFMoU5VX5wbO0PJG8+6Mp+Dch8ShLExJf5WPnBqe04iRRJtKWWIw63GI/K6qLXs4FJBuIVr0DI20y81ie8QAfDss15sQbRB/tVZDJfnEHMBrLMYvYgtuk2lpxvVDvYjTVbMkgAUuyA8MZ0QpG9xSX5uCBLmUhci1kUk48Hwnyt/GAlEWhPoGRqQJivwaPqulQ6LedzzchtmQ4QWWkeeZGmAkQYhD4slsAIS5vVj3CMh47uz8h4/F5dXLbislPkPZQKEOGFFtknTgUIZN2SyNdkKkAYP5TfjS3pI9NwSkB6yu/uxZ6RqIIzFSAAJD8XRLZW0wISvvjAmSayf27Vee9mps6kQTF69go0ri30t5blSw1I3L6K+35rQMbDPdOXYoIL0bQZFyfD9HvbX3ntQaJKDFnM662Yvyo/qJoOYQ0STmTeIo0OL1SDMqP8wwQhBUoGMvn/SbZp1u/dJATfEY9KpmdjNloikHlanXThUQXorXQF7+34Fjz5c03TpnviFMQ8ePceThRxH5b5iH8BQBZzQkDAvqsAAAAASUVORK5CYII=" width="30" height="30">
               </ion-item>
               <ion-item ng-switch-default ng-class="clickableStep(step)" class="recipe-instructions" ng-if="!step.isEmpty">
                 <p><b>Step {{getSubStepNumber(step, 'notclickable-single')}}:</b> {{step.text}}</p>
@@ -95,8 +100,8 @@
               <div ng-switch on="isClickable(subStep)">
                 <ion-item ng-switch-when="true" class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)" ng-click="showTip(subStep, $event)">
                   <p><b>Step {{getSubStepNumber(subStep, 'clickable-notsingle')}}:</b> {{subStep.text}}</p>
-                  <i ng-if="subStep.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>
-                  <i ng-if="subStep.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>
+                  <!--<i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>--><img ng-if="step.hasVideo" class="instruction-step-tip-icon icon icons8-YouTube-2-Filled" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAC2klEQVRoQ+2ZTXbaQAzH/wI3WYY5QekNTGBfsgCy5AalJwg9AfQEoScIPUHTXaCLkj003KDuCdwueSVWnw2m2Ab8MR4CPHsHT6PRTxrJ0phwIg+dCAcykEOLZBaRLCKKPJAdLUWOTaw2ckTMmq4Dry5AXF3uVgBBX+3M8P4ON2nkEWEsf7MBzhnI//0lHqZGuJqFxFYQ81ovwtJuAFQ9BkfVnJ7cCMx9MZx83qVyI4hZu2yB6BZEhfTskdTEmILn78W36XSTpgCIWS83QfRFcltFy9nA7LkkRtPf/g2CII3yT4CKiixJQS1/EoNJeyeIk9A57SmF3RSqYEMMJm92gxz0sVozfTYX/uPlOVpmvdIFoaPQnemoJlyJh7GnfHtBGuUeQHbJPfDH+iAGP3rrRvojMgLhbWIKwpVd8wF6nVhHlIWMj2I47ioDEYOx4xizcdlmpi4RXUSxK74MfxWDSXMXyJPMW9wFcWCqegHn+a6So8p4FMOx2yo5PL4cqXB87/xfsQ7i/rtsdfpSR9ZvFGMqhuPS9og00gdZATmlHXYxSSV//E5THhG/M+0Sz+C2bP68OMgqf87yPRC9S3qUDwfkPH8LUOtoQcx6pQNwW3ZEeLGILMYD2FFIpbPeO4hTflm7cybNFJ/dIPWKVIsSeCGeaR0QArODNE/oCzElELNRvgGjK5sHW4FVg2DRNN6llQfbIxfeax3HPBKh+z0OEITNI9eVKhjfpZNRtYLQCdFpvTVTtR3S+sNmdqcPkqxc0kaGKggmemAecUBqus6UH8l2p6H2JBWw5qVNt42br0zr5SYD/UOCYeY/BLTEcHK/yQfbL7GdfMm1wDm7R0p+IZHU8+46xiPIusfM6m+6KnXFon9WsHsmaEU8W0VQzm38vP1THGDbQO+zuKdiy0A+ZwBzI5XPCrKO3Pf6yBHZt2Fx98tA4npMtXwWEdUejqs/i0hcj6mWP5mI/ANrwhhC8mn+vAAAAABJRU5ErkJggg==" width="30" height="30">
+                  <!--<i ng-if="subStep.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>--><img ng-if="subStep.hasVideo" class="instruction-step-tip-icon icon icons8-YouTube-2-Filled" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAC2klEQVRoQ+2ZTXbaQAzH/wI3WYY5QekNTGBfsgCy5AalJwg9AfQEoScIPUHTXaCLkj003KDuCdwueSVWnw2m2Ab8MR4CPHsHT6PRTxrJ0phwIg+dCAcykEOLZBaRLCKKPJAdLUWOTaw2ckTMmq4Dry5AXF3uVgBBX+3M8P4ON2nkEWEsf7MBzhnI//0lHqZGuJqFxFYQ81ovwtJuAFQ9BkfVnJ7cCMx9MZx83qVyI4hZu2yB6BZEhfTskdTEmILn78W36XSTpgCIWS83QfRFcltFy9nA7LkkRtPf/g2CII3yT4CKiixJQS1/EoNJeyeIk9A57SmF3RSqYEMMJm92gxz0sVozfTYX/uPlOVpmvdIFoaPQnemoJlyJh7GnfHtBGuUeQHbJPfDH+iAGP3rrRvojMgLhbWIKwpVd8wF6nVhHlIWMj2I47ioDEYOx4xizcdlmpi4RXUSxK74MfxWDSXMXyJPMW9wFcWCqegHn+a6So8p4FMOx2yo5PL4cqXB87/xfsQ7i/rtsdfpSR9ZvFGMqhuPS9og00gdZATmlHXYxSSV//E5THhG/M+0Sz+C2bP68OMgqf87yPRC9S3qUDwfkPH8LUOtoQcx6pQNwW3ZEeLGILMYD2FFIpbPeO4hTflm7cybNFJ/dIPWKVIsSeCGeaR0QArODNE/oCzElELNRvgGjK5sHW4FVg2DRNN6llQfbIxfeax3HPBKh+z0OEITNI9eVKhjfpZNRtYLQCdFpvTVTtR3S+sNmdqcPkqxc0kaGKggmemAecUBqus6UH8l2p6H2JBWw5qVNt42br0zr5SYD/UOCYeY/BLTEcHK/yQfbL7GdfMm1wDm7R0p+IZHU8+46xiPIusfM6m+6KnXFon9WsHsmaEU8W0VQzm38vP1THGDbQO+zuKdiy0A+ZwBzI5XPCrKO3Pf6yBHZt2Fx98tA4npMtXwWEdUejqs/i0hcj6mWP5mI/ANrwhhC8mn+vAAAAABJRU5ErkJggg==" width="30" height="30">
                 </ion-item>
                 <ion-item ng-switch-default class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)">
                   <p><b>Step {{getSubStepNumber(subStep, 'not-clickable-notsingle')}}:</b> {{subStep.text}}</p>
@@ -109,10 +114,10 @@
       <h3 class="center">Get your grub on!</h3>
       <div class="row">
         <div class="col">
-          <p style="text-align: center"><button class="button facebook social-share-buttons" ng-click="socialShareMeal('facebook')"><i class="icon ion-social-facebook"></i> Post It!</button></p>
+          <p style="text-align: center"><button class="button facebook social-share-buttons" ng-click="socialShareMeal('facebook')"><i class="icon ion-social-facebook"></i> Post!</button></p>
         </div>
         <div class="col">
-          <p style="text-align: center"><button class="button twitter social-share-buttons" ng-click="socialShareMeal('twitter')"><i class="icon ion-social-twitter"></i> Tweet It!</button></p>
+          <p style="text-align: center"><button class="button twitter social-share-buttons" ng-click="socialShareMeal('twitter')"><i class="icon ion-social-twitter"></i> Tweet!</button></p>
         </div>
       </div>
       <div class="row">

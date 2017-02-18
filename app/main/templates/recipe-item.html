@@ -1,6 +1,11 @@
-<ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list no-padding" ng-click="">
+<ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="">
   <div class="row">
-    <div class="col">
+    <div class="col padding-zero">  
+      <img ng-src="{{recipe.mainPictureURL}}">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col recipe-card-info">
       <h2>{{recipe.name}}</h2>
       <div ng-if="!isfavorite" class="recipe-description-time">        
         <p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p>
@@ -9,20 +14,11 @@
       <!--<p ng-if="recipe.usesMissingIngredients" class="missing-ingredient-note font-weight-500">Recipe calls for ingredients you didn't select</p>-->            
     </div>
   </div>  
-  <div class="row">
-    <div class="col">  
-      <img ng-src="{{recipe.mainPictureURL}}">
-    </div>
-  </div>
-  <!--Recipe Badges
-  <div class="row recipe-badges">
+  <!--Recipe Badges-->
+  <!--<div class="row recipe-badges">
     <div class="col col-20" ng-repeat="badge in shortRecipeBadges">      
       <p style="text-align: center"><img ng-src="{{getBadgeIcon(badge)}}"></p>
       <p>{{getBadgeName(badge)}}</p>
     </div>
   </div>-->
-      <!--<div class="col col-10 col-center">
-        <i class="icon ion-chevron-right recipe-selection-arrow"></i>
-    </div>-->
-    <!--<i class="ion-arrow-right-c recipe-selection-arrow" aria-hidden="true"></i>-->
 </ion-item>
