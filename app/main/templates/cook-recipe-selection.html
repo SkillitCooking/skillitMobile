@@ -1,10 +1,11 @@
 
-  <ion-view hide-back-button="true" on-swipe-right="swipeRight()" on-swipe-left="swipeLeft()" view-title="What Looks Good?">
+  <ion-view hide-back-button="true" on-swipe-right="swipeRight()" on-swipe-left="swipeLeft()">
+    <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
     <ion-nav-buttons side="primary">
-      <button class="button top-back-button" ng-click="navigateBack()"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
+      <button class="button top-back-button" ng-click="navigateBack()"><i class="ion-arrow-left-c" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button top-back-button reset" ng-click="resetEverything()">Reset</button>
+      <button class="button top-back-button" ng-click="resetEverything()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <div ng-if="alaCarteSelected" class="row bottom-a-la-carte-buttons">
       <div class="col">
@@ -13,12 +14,6 @@
       <div class="col">
         <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-white">Let's Cook!</button>
       </div>
-    </div>
-    <div class="white-space-above-recipe-category-buttons"></div>
-    <div class="button-bar recipe-category-buttons">
-      <a ng-class="getFullButtonClass()" ng-disabled="noFullDishes()" ng-click="selectFull()">Mains</a>
-      <a ng-class="getBYOButtonClass()" ng-disabled="noBYODishes()" ng-click="selectBYO()">BYOs</a>
-      <a ng-class="getAlaCarteButtonClass()" ng-disabled="noAlaCarteDishes()" ng-click="selectAlaCarte()">Sides</a>
     </div>
     <!-- do you want padding? -->
     <div ng-if="alaCarteSelected">
@@ -62,8 +57,9 @@
     <div ng-if="fullSelected">  
       <ion-content class="padding cook-recipe-selection"> 
         <ion-list>
+          <h2 class="ingredient-type-heading">What Looks Good?</h2>
           <div ng-repeat="(recipeCategory, catObj) in fullRecipes">
-            <h3 class="recipe-category">{{getFullHeader(recipeCategory)}}</h3>
+            <!--<h3 class="recipe-category">{{getFullHeader(recipeCategory)}}</h3>-->
             <recipe-item ng-repeat="recipe in catObj.recipes" recipe="recipe" iconclass="fullRecipeClass($index, recipeCategory)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
             <p style="text-align: center"><button class="button button-spice-up-add-side load-more-recipe-button" ng-if="catObj.hasMoreToLoad" ng-click="loadMoreRecipes(recipeCategory)">Show More {{getFullHeader(recipeCategory)}}</button></p>
             <!--ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
