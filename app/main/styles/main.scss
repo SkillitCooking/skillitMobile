@@ -346,18 +346,24 @@ div.ingredient-form-selection {
 	background-color: #ffffff;
 }
 .cook-tab .list .item {
-	border-left: none;
-	border-right: none;
-	border-bottom: none;
+	border: none;
 }
 .list div:first-child h4 {
 	display: none;
 }
+.checkbox-icon {
+	width: 30px;
+	height: 30px;
+}
 .ingredient-checkbox-row {
-	margin: 0 20px;
+	margin: 0 30px;
+}
+.ingredient-checkbox-row span {
+	font-size: 18px;
 }
 .cook-tab .checkbox {
 	padding-left: 0px;
+	border-bottom: 1px solid #dddddd;
 }
 .cook-tab .item-content {
 	padding-left: 7px;
@@ -370,7 +376,7 @@ h2.ingredient-type-heading {
 }
 h4.ingredient-subtype-heading {
 	font-size: 22px;
-	margin: 5px 0 0 20px;
+	margin: 15px 0 0 30px;
 	color: #000000;
     font-weight: 300;	
 }
@@ -541,6 +547,7 @@ h4.ingredient-subtype-heading {
 .cook-present-instructions h3 {
 	font-size: 23px;
 	font-weight: 400;
+	margin-top: 10px;
 }
 .cook-present-instructions h4 {
 	color: #000;
@@ -1009,6 +1016,16 @@ h2.chapter-number {
 .login-screen .login-signup.button {
 	margin: 0;
 }
+.login-text-field .item.item-input {
+	padding-left: 10px;
+}
+.list.login-text-field {
+	margin: 10px 20px;
+}
+.account-tab p {
+	margin: 0 6px 10px;
+	font-size: 15px;
+}
 
 /***************************************/
 /*WALKTHROUGH  & INTRO SLIDES */
@@ -1059,6 +1076,7 @@ p.walkthrough-subheader {
 }
 .button.skip-button {
     background-color: transparent;
+    font-size: 15px;
 }
 h2.intro-slide-header {
 	color: $balanced;
@@ -1105,6 +1123,12 @@ h2.intro-slide-header {
 		height: 80px;
 		width: auto;
 	}
+	.ingredient-checkbox-row {
+		margin: 0 40px;
+	}
+	h4.ingredient-subtype-heading {
+		margin: 15px 0 0 40px;	
+	}
 	.cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll, .add-side.scroll-content.ionic-scroll {
 		height: 82%;
 	}
@@ -1148,5 +1172,9 @@ h2.intro-slide-header {
 	}	
 	.recipe-collection-container h2{
 		font-size: 30px;
+	}
+	.account-tab p {
+		margin: 0 20px 10px;
+		font-size: 16px;
 	}	
 }
