@@ -148,7 +148,6 @@ angular.module('main')
           $window.ga.trackEvent('NameConstruction', prefix, recipe.name);
         }
       }
-      console.log('recipe', angular.copy(recipe));
       recipe.setPrefix = prefix;
     } else {
       recipe.displayName = recipe.name;

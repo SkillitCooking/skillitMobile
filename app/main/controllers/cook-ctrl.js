@@ -229,11 +229,11 @@ angular.module('main')
   $scope.getDisplaySubCategoryName = function(subCategory) {
     switch(subCategory) {
       case INGREDIENT_CATEGORIES.VEGETABLES:
-        return "Got Produce?";
+        return INGREDIENT_CATEGORIES.VEGETABLES_DISPLAY;
       case INGREDIENT_CATEGORIES.PROTEIN:
-        return "What about Proteins?";
+        return INGREDIENT_CATEGORIES.PROTEIN_DISPLAY;
       case INGREDIENT_CATEGORIES.STARCH:
-        return "Anything Else?";
+        return INGREDIENT_CATEGORIES.STARCH_DISPLAY;
       default:
         return subCategory;
     }

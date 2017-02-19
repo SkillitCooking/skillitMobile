@@ -4,9 +4,9 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'https://skillicookingprodapi.info/api/',
-    'CHANNEL': 'production',
-    'API_PASSWORD': 'sm@34MLPG9L&rWph|YMwcg=&5|R3TMZ!!H+F48ThGFl56E&*RD'
+        'SERVER_URL': 'http://localhost:8000/api/',
+    'CHANNEL': 'dev',
+    'API_PASSWORD': 'MDm|C7oQQIm&AZyhx4g7m^+uNGqm$7Ctt2-60O&Ek-%0o!NuLT'
         /*endinject*/
     },
     BUILD : {
@@ -55,8 +55,11 @@ angular.module('main')
     'MINCED' : 'Minced'
   }).constant('INGREDIENT_CATEGORIES', {
     'VEGETABLES': 'Vegetables',
+    'VEGETABLES_DISPLAY': 'What Veggies Do Ya Got?',
     'PROTEIN': 'Protein',
+    'PROTEIN_DISPLAY': 'How About Proteins?',
     'STARCH': 'Starches',
+    'STARCH_DISPLAY': 'Anything Else?',
     'OTHER': 'Other'
   }).constant('RECIPE_TYPES', {
     'FULL': 'Full',
@@ -168,5 +171,10 @@ angular.module('main')
   }).constant('KEYS', {
     'BLANK': 'blank'
   }).constant('FAREWELL_COPY', [
-    'Get your grub on!'
+    'Get Your Grub On',
+    'Time To Eat',
+    'Get Ready To Feast',
+    'Grab a Fork and Dig In!',
+    'Grab a Spork and Dig In!',
+    'Enjoy Your Edible Masterpiece'
   ]);

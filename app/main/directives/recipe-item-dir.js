@@ -33,9 +33,12 @@ angular.module('main')
         return scope.chosenPictureURL;
       };
 
-      //scope.recipe.badges.sort(recipeBadgeSort);
+      console.log('scope.recipe', scope.recipe);
 
-      //scope.shortRecipeBadges = scope.recipe.badges.slice(0, 3);
+      if(scope.recipe.badges) {
+        scope.recipe.badges.sort(recipeBadgeSort);
+        scope.shortRecipeBadges = scope.recipe.badges.slice(0, 3);
+      }
       
       scope.getBadgeIcon = function(badge) {
         switch(badge) {
