@@ -93,6 +93,7 @@ angular.module('main')
   //BYO handling here too
   $scope.recipeSelected = function(recipe) {
     var displayName = recipe.displayName;
+    var displayNameType = recipe.displayNameType;
     recipe.isSelected = true;
     setTimeout(function() {
       recipe.isSelected = false;
@@ -127,7 +128,7 @@ angular.module('main')
       var selectedNames = [], selectedIds = [];
       setSelected(selectedNames, selectedIds, recipe);
       setTimeout(function() {
-        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true, displayName: displayName, nameDefaultSeasoning: recipe.newDefaultSeasoning});
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true, displayName: displayName, displayNameType: displayNameType, nameDefaultSeasoning: recipe.newDefaultSeasoning});
       }, 200);
     }
   };

@@ -49,7 +49,7 @@ angular.module('main')
       }
       var compositionIngredientTypeKeys = step.stepComposition[step.productKeys[i]].ingredientTypeKeys;
       for (var k = compositionIngredientTypeKeys.length - 1; k >= 0; k--) {
-        var productIngredients = angular.copy(inputIngredientsByType[compositionIngredientTypeKeys[k]]).ingredients;
+        var productIngredients = angular.copy(inputIngredientsByType[compositionIngredientTypeKeys[k]].ingredients);
         _.forEach(productIngredients, function(ingredient) {
           ingredient.transformationPrefix = "";
           ingredient.hasBeenUsed = true;
@@ -61,6 +61,7 @@ angular.module('main')
   }
 
   function instantiateStep(step, recipe) {
+    console.log('da recipe', recipe);
     var productInput = step.stepInputs["stepInput"];
     step.ingredientsToRemove = [];
     switch(productInput.sourceType) {

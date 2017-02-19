@@ -201,8 +201,9 @@ angular.module('main')
     $scope.slider = $scope.data.slider;
   });
 
-  $scope.storeCatName = function(index, name) {
-    $scope.catNames[index] = name;
+  $scope.storeCatName = function(index, obj) {
+    $scope.catNames[index] = obj.name;
+    obj.displayName = $scope.getDisplaySubCategoryName(obj.name);
   };
 
   $scope.notBeginningSlide = function() {
@@ -223,6 +224,19 @@ angular.module('main')
 
   $scope.showSubCategoryName = function(name) {
     return name !== INPUTCATEGORIES.NOSUBCATEGORY;
+  };
+
+  $scope.getDisplaySubCategoryName = function(subCategory) {
+    switch(subCategory) {
+      case INGREDIENT_CATEGORIES.VEGETABLES:
+        return "Got Produce?";
+      case INGREDIENT_CATEGORIES.PROTEIN:
+        return "What about Proteins?";
+      case INGREDIENT_CATEGORIES.STARCH:
+        return "Anything Else?";
+      default:
+        return subCategory;
+    }
   };
 
   $scope.getWrapClass = function(index) {

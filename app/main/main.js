@@ -121,6 +121,7 @@ angular.module('main', [
           loadAlaCarte: true,
           isNewLoad: false,
           displayName: null,
+          displayNameType: null,
           nameDefaultSeasoning: null
         }
       })
@@ -218,6 +219,7 @@ angular.module('main', [
           loadAlaCarte: false,
           isNewLoad: false,
           displayName: null,
+          displayNameType: null,
           nameDefaultSeasoning: null
         }
       })
@@ -309,6 +311,7 @@ angular.module('main', [
           loadAlaCarte: true,
           isNewLoad: false,
           displayName: null,
+          displayNameType: null,
           nameDefaultSeasoning: null
         }
       })

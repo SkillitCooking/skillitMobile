@@ -167,4 +167,6 @@ angular.module('main')
     'UPDATE_TEMPLATE': '<p>Updating App</p><ion-spinner></ion-spinner>'
   }).constant('KEYS', {
     'BLANK': 'blank'
-  });
+  }).constant('FAREWELL_COPY', [
+    'Get your grub on!'
+  ]);

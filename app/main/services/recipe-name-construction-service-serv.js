@@ -46,27 +46,31 @@ angular.module('main')
   }
 
   service.switchNameForSeasoning = function(recipe, newSeasoning) {
-    if(recipe.nameBodies) {
-      var index;
-      if(recipe.defaultSeasoningProfile.nameBodyIndex) {
-        index = recipe.defaultSeasoningProfile.nameBodyIndex;
-      } else {
-        index = 0;
-      }
-      console.log('switch', recipe);
-      console.log('seasonweit', newSeasoning);
-      var suffix = recipe.nameBodies[newSeasoning._id];
-      if(!suffix) {
-        suffix = recipe.nameBodies[LibraryFunctions.getRandomObjectKey(recipe.nameBodies)].textArr[0];
-      } else {
-        suffix = recipe.nameBodies[newSeasoning._id].textArr[index];
-      }
-      var name = makeDisplayName(newSeasoning.recipeTitleAlias, suffix);
-      if(recipe.mainName) {
-        //how to also fucking track the textArr index used??
-        recipe.mainName = name;
-      } else {
-        recipe.name = name;
+    console.log('whoa', angular.copy(recipe));
+    if(recipe.nameBodies && recipe.displayNameType) {
+      console.log('here', angular.copy(recipe));
+      if(recipe.displayNameType === 'blank' || recipe.displayNameType === 'seasoning') {
+        console.log('there', angular.copy(recipe));
+        var index;
+        if(recipe.defaultSeasoningProfile.nameBodyIndex) {
+          index = recipe.defaultSeasoningProfile.nameBodyIndex;
+        } else {
+          index = 0;
+        }
+        var suffix = recipe.nameBodies[newSeasoning._id];
+        if(!suffix) {
+          suffix = recipe.nameBodies[LibraryFunctions.getRandomObjectKey(recipe.nameBodies)].textArr[0];
+        } else {
+          suffix = recipe.nameBodies[newSeasoning._id].textArr[index];
+        }
+        var name = makeDisplayName(newSeasoning.recipeTitleAlias, suffix);
+        recipe.displayNameType = 'seasoning';
+        if(recipe.mainName) {
+          //how to also fucking track the textArr index used??
+          recipe.mainName = name;
+        } else {
+          recipe.name = name;
+        }
       }
     }
   };
@@ -88,6 +92,7 @@ angular.module('main')
       var prefix;
       if(randomKey === KEYS.BLANK) {
         recipe.displayName = recipe.name;
+        recipe.displayNameType = KEYS.BLANK;
         prefix = KEYS.BLANK;
       } else {
         var nameBodyType = recipe.nameBodies[randomKey].type;
@@ -98,9 +103,12 @@ angular.module('main')
               prefix = adjective.name;
               var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
               recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+              recipe.displayNameType = 'adjective';
             } else {
               //look into actual cause for this safety case...
               prefix = KEYS.BLANK;
+              recipe.displayName = recipe.name;
+              recipe.displayNameType = KEYS.BLANK;
             }
             break;
           case 'modifier':
@@ -109,9 +117,12 @@ angular.module('main')
               prefix = modifier.name;
               var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
               recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+              recipe.displayNameType = 'modifier';
             } else {
               //look into actual cause for this safety case...
               prefix = KEYS.BLANK;
+              recipe.displayName = recipe.name;
+              recipe.displayNameType = KEYS.BLANK;
             }
             break;
           case 'seasoning':
@@ -120,11 +131,14 @@ angular.module('main')
               prefix = seasoning.recipeTitleAlias;
             var randomNameBodyIndex = LibraryFunctions.getRandomIndex(recipe.nameBodies[randomKey].textArr.length);
               recipe.displayName = makeDisplayName(prefix, recipe.nameBodies[randomKey].textArr[randomNameBodyIndex]);
+              recipe.displayNameType = 'seasoning';
               recipe.newDefaultSeasoning = seasoning;
               recipe.newDefaultSeasoning.nameBodyIndex = randomNameBodyIndex;
             } else {
               //look into actual cause for this safety case...
               prefix = KEYS.BLANK;
+              recipe.displayName = recipe.name;
+              recipe.displayNameType = KEYS.BLANK;
             }
             break;
           default:
@@ -134,6 +148,7 @@ angular.module('main')
           $window.ga.trackEvent('NameConstruction', prefix, recipe.name);
         }
       }
+      console.log('recipe', angular.copy(recipe));
       recipe.setPrefix = prefix;
     } else {
       recipe.displayName = recipe.name;

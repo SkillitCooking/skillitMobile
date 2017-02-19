@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', 'RecipeNameConstructionService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, RecipeNameConstructionService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'LibraryFunctions', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', 'RecipeNameConstructionService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', 'FAREWELL_COPY', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, LibraryFunctions, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, RecipeNameConstructionService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING, FAREWELL_COPY) {
 
   if(typeof $window.ga !== 'undefined') {
     if($stateParams.cameFromRecipes) {
@@ -413,13 +413,15 @@ angular.module('main')
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
-    console.log('yo');
     if($stateParams.displayName) {
       if($scope.combinedRecipe.mainName) {
         $scope.combinedRecipe.mainName = $stateParams.displayName;
       } else {
         $scope.combinedRecipe.name = $stateParams.displayName;
       }
+    }
+    if($stateParams.displayNameType) {
+      $scope.combinedRecipe.displayNameType = $stateParams.displayNameType;
     }
     //mainVideo indicator array
     $scope.mainVideoIndicators = [];
@@ -1155,6 +1157,15 @@ angular.module('main')
       $window.ga.trackEvent('RecipePresent', 'mainVideoClick', name);
     }
   };
+
+
+
+  function getFarewellCopy() {
+    var index = LibraryFunctions.getRandomIndex(FAREWELL_COPY.length);
+    return FAREWELL_COPY[index];
+  }
+
+  $scope.farewellCopy = getFarewellCopy();
 
   $scope.hasLoggedReachingBottom = false;
   $scope.checkScroll = function() {

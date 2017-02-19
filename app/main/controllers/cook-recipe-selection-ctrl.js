@@ -425,6 +425,7 @@ angular.module('main')
       $window.ga.trackEvent('NameConstruction.selected', recipe.setPrefix, recipe.name);
     }
     var displayName = recipe.displayName;
+    var displayNameType = recipe.displayNameType;
     recipe.isSelected = true;
     if(recipe.missingIngredients && recipe.missingIngredients.length !== 0) {
       addMissingIngredients(recipe);
@@ -443,7 +444,7 @@ angular.module('main')
       recipe.isSelected = false;
     }, 400);
     setTimeout(function() {
-      $state.go('main.cookPresent', {displayName: displayName, nameDefaultSeasoning: recipe.newDefaultSeasoning, recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr, isNewLoad: true});
+      $state.go('main.cookPresent', {displayName: displayName, displayNameType: displayNameType, nameDefaultSeasoning: recipe.newDefaultSeasoning, recipeIds: recipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $scope.alaCarteRecipes, alaCarteSelectedArr: $scope.alaCarteClickedArr, isNewLoad: true});
     }, 200);
   };
 
