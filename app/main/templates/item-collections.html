@@ -1,4 +1,8 @@
 <!--<h2 class="recipe-category no-bottom-margin">{{getItemTypeTitle()}}</h2>-->
 <ion-list>
-  <item-collection ng-repeat="collection in collections" is-recipe-collection="isRecipeCollection()" collection="collection" ng-click="goToCollection(collection)"></item-collection>
+  <div class="row" ng-repeat="collectionRow in collectionRows">
+    <div ng-repeat="collection in collectionRow" class="col col-50">
+      <item-collection is-recipe-collection="isRecipeCollection()" collection="collection" ng-click="goToCollection(collection)"></item-collection>
+    </div>
+  </div>
 </ion-list>
