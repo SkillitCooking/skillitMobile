@@ -4,7 +4,7 @@
       <button ng-if="notBeginningSlide()" class="button top-back-button" ng-click="slidePrev()"><i class="ion-arrow-left-c" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button top-back-button" ng-click="resetIngredientSelection()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+      <button class="button top-back-button" ng-if="notBeginningSlide()" ng-click="resetIngredientSelection()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <div class="bottom-nav-buttons-cook-tab row">   
       <div class="col col-50">   

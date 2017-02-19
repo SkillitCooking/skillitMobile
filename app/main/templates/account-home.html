@@ -1,8 +1,9 @@
-<ion-view view-title="Account">
+<ion-view>
+  <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
   <ion-nav-buttons side="secondary">
     <button ng-if="isAuthenticated()" ng-click="logout()" class="button top-back-button reset">Log Out</button>
   </ion-nav-buttons>
-  <ion-content class="padding cook-recipe-selection account-tab">
+  <ion-content class="padding account-tab">
     <!-- do you want padding? -->
     <div ng-if="isAuthenticated()">
       <div class="button-bar">
