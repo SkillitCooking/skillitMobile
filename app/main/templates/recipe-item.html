@@ -1,5 +1,10 @@
 <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="">
   <div class="row">
+    <div class="col padding-zero">  
+      <img ng-src="{{getPictureURL()}}">
+    </div>
+  </div> 
+  <div class="row">
     <div class="col recipe-card-info">
       <h2 ng-if="!recipe.displayName">{{recipe.name}}</h2>
       <h2 ng-if="recipe.displayName">{{recipe.displayName}}</h2>
@@ -10,16 +15,11 @@
       <!--<p ng-if="recipe.usesMissingIngredients" class="missing-ingredient-note font-weight-500">Recipe calls for ingredients you didn't select</p>-->            
     </div>
   </div>
-  <div class="row">
-    <div class="col">  
-      <img ng-src="{{getPictureURL()}}">
-    </div>
-  </div>
   <!--Recipe Badges-->
   <div class="row recipe-badges">
     <div class="col col-20" ng-repeat="badge in shortRecipeBadges">      
-      <p style="text-align: center"><img ng-src="{{getBadgeIcon(badge)}}"></p>
-      <p>{{getBadgeName(badge)}}</p>
+      <p style="text-align: center; line-height: 80%"><img style="width: 60%" ng-src="{{getBadgeIcon(badge)}}"></p>
+      <p class="recipe-badges-name">{{getBadgeName(badge)}}</p>
     </div>
   </div>
 </ion-item>

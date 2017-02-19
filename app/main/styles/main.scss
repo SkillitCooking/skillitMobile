@@ -146,6 +146,9 @@ h1 {
 .row {
 	padding: 0;
 }
+.bottom-margin-5 {
+	margin-bottom: 5px;
+}
 .bottom-margin-10 {
 	margin-bottom: 10px;
 }
@@ -161,6 +164,9 @@ h1 {
 .padding-left-zero {
 	padding-left: 0;
 } 
+.padding-left-ten {
+	padding-left: 10px;
+}
 .button-float-left {
 	float: left;
 	margin-left: 20px;
@@ -356,7 +362,7 @@ div.ingredient-form-selection {
 	height: 30px;
 }
 .ingredient-checkbox-row {
-	margin: 0 30px;
+	margin: 0 20px;
 }
 .ingredient-checkbox-row span {
 	font-size: 18px;
@@ -375,10 +381,10 @@ h2.ingredient-type-heading {
 	text-align: center;
 }
 h4.ingredient-subtype-heading {
-	font-size: 22px;
+	font-size: 20px;
 	margin: 15px 0 0 30px;
 	color: #000000;
-    font-weight: 300;	
+    font-weight: 400;	
 }
 .cook-tab .list .item-checkbox {
 	padding-left: 40px;
@@ -437,6 +443,9 @@ h4.ingredient-subtype-heading {
 .cook-recipe-selection .item {
 	padding: 0;
 }
+.col.recipe-card-info {
+	padding: 5px 7px;
+}
 .ingredients-seasoning h3 {
 	text-align: center;
 }
@@ -456,7 +465,10 @@ h4.ingredient-subtype-heading {
 	margin: 0 auto;
 }
 .recipe-badges p {
-	text-align: center;
+	text-align: center;	
+}
+.recipe-badges-name p {
+	font-size: 12px;
 }
 .individual-recipe-in-list p {
 	font-size: 14px;
@@ -623,9 +635,9 @@ h4.ingredient-subtype-heading {
 	border-radius: 8px;
 	color: $balanced;
 	background: #ffffff;
-	border: 2px solid $balanced;
+	border: none;
 	min-width: 70px;
-    font-size: 150%;
+    font-size: 300%;
 }
 .button-white-round:active {
 	color: #ffffff;
@@ -859,12 +871,21 @@ h4.article-subtitle {
 	margin: 10px 5px;
 	box-shadow: 0px 1px 3px #999999;
 	white-space: normal;
-	padding: 9px 15px;
+	padding: 0;
 }
 .education-collection p {
 	white-space: normal;
 	font-size: 15px;
-	width: 88%;
+	padding-left: 10px;
+}
+p.lesson-description {
+	padding: 0 10px;
+}
+.education-collection h2.education-title {
+	padding: 0 10px;
+}
+.education-image img {
+	width: 100%;
 }
 .education-collection .icon {
 	position: absolute;
@@ -879,6 +900,9 @@ h4.article-subtitle {
 }
 .education-collection .icon.ion-videocamera {
     padding-left: 9px;
+}
+.learn-tab-article span {
+	font-size: 16px;
 }
 .learn-tab-article img {
 	max-width: 100%;
@@ -910,15 +934,18 @@ img.video-thumbnail {
 	height: 66px;
 	width: auto;
 }
-h2.chapter-number {
-    font-size: 100%;
-    font-weight: 300;	
+span.chapter-number {
+    font-size: 130%;
+    font-weight: 800;	
 }
 .recipe-selection-arrow.chapter {
 	top: 35%;
 }
 .recipe-categories .row .col img {
 	width: 80px;
+}
+.lesson-image img {
+	width: 100%;
 }
 /*********TIPS ITEM PAGE*****************/
 /**********************************/

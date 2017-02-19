@@ -112,19 +112,19 @@ angular.module('main')
     'AGES': ['teens', 'twenties', 'thirties', 'forties', 'fifties +']
   }).constant('RECIPE_BADGES', {
     'GLUTEN_FREE': 'main/assets/images/recipe_badges/gluten-free.png',
-    'GLUTEN_FREE_NAME': 'Gluten Free',
+    'GLUTEN_FREE_NAME': 'G-F',
     'LEAN_PROTEIN': 'main/assets/images/recipe_badges/lean-protein.png',
-    'LEAN_PROTEIN_NAME': 'Lean Protein',
+    'LEAN_PROTEIN_NAME': 'Protein+',
     'PALEO': 'main/assets/images/recipe_badges/paleo.png',
     'PALEO_NAME': 'Paleo',
     'PESCATARIAN': 'main/assets/images/recipe_badges/seafood.png',
-    'PESCATARIAN_NAME': 'Pescatarian',
+    'PESCATARIAN_NAME': 'Seafood',
     'QUICK_EATS': 'main/assets/images/recipe_badges/ready-soon.png',
-    'QUICK_EATS_NAME': 'Ready Soon',
+    'QUICK_EATS_NAME': 'Quick',
     'VEGAN': 'main/assets/images/recipe_badges/vegan.png',
     'VEGAN_NAME': 'Vegan',
     'VEGETARIAN': 'main/assets/images/recipe_badges/vegatarian.png',
-    'VEGETARIAN_NAME': 'Vegetarian'
+    'VEGETARIAN_NAME': 'Veggie'
  }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',
