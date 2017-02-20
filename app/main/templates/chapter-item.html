@@ -1,7 +1,21 @@
 <ion-item class="education-collection " ng-click="">
-  <img ng-if="chapter.pictureURL" ng-src="{{chapter.pictureURL}}">
-  <h2 class="chapter-number">Chapter {{index + 1}} </h2><h2 class="education-title">{{chapter.name}}</h2>
-  <p>{{chapter.description}}</p>
-  <!--<p><b>Estimated Time: {{chapter.timeEstimate}} min</b></p>-->
-  <i class="ion-arrow-right-c recipe-selection-arrow chapter" aria-hidden="true"></i>
+	<div class="row">
+		<div class="col col-50">
+			<h2 class="education-title"><span class="chapter-number">{{index + 1}} </span>{{chapter.name}}</h2>
+			<p>{{chapter.description}}</p>
+			<!--<p><b>Estimated Time: {{chapter.timeEstimate}} min</b></p>-->  
+		</div>
+		<div class="col col-50 education-image">
+			<img ng-if="chapter.pictureURL" ng-src="{{chapter.pictureURL}}">
+		</div>
+	</div>
 </ion-item>
+
+
+<!--<ion-item class="education-collection " ng-click="">
+  <img ng-if="chapter.pictureURL" ng-src="{{chapter.pictureURL}}">
+  <h2 class="education-title"><span class="chapter-number">{{index + 1}} </span>{{chapter.name}}</h2>
+  <p>{{chapter.description}}</p>
+  <p><b>Estimated Time: {{chapter.timeEstimate}} min</b></p>
+</ion-item>
+-->

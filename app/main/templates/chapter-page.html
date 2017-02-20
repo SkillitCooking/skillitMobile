@@ -5,18 +5,18 @@
     <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
   </ion-nav-buttons>
   <ion-content class="padding">
-    <h2 class="recipe-category no-bottom-margin">{{chapter.name}}</h2>
-    <p>{{chapter.description}}</p>
+    <h2 class="recipe-category padding-left-ten bottom-margin-5">{{chapter.name}}</h2>
+    <p class="padding-left-ten font-weight-600">{{chapter.description}}</p>
     <ion-list>
       <lesson-item ng-repeat="lesson in lessons" lesson="lesson" ng-click="selectLesson(lesson, $index)"></lesson-item>
     </ion-list>
     <div class="row">
       <div class="col col-25">
-        <p style="text-align: center"><button class="button button-white-round" ng-click="previousChapter()" ng-disabled="isFirstChapter()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></p>
+        <p style="text-align: center"><button class="button button-white-round" ng-click="previousChapter()" ng-disabled="isFirstChapter()"><i class="ion-arrow-left-c" aria-hidden="true"></i></button></p>
       </div>
       <div class="col col-50"></div>
       <div class="col col-25">
-        <p style="text-align: center"><button class="button button-white-round" ng-click="nextChapter()" ng-disabled="isLastChapter()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button></p>
+        <p style="text-align: center"><button class="button button-white-round" ng-click="nextChapter()" ng-disabled="isLastChapter()"><i class="ion-arrow-right-c" aria-hidden="true"></i></button></p>
       </div>
     </div>
   </ion-content>
