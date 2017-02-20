@@ -57,7 +57,7 @@
     <div ng-if="fullSelected">  
       <ion-content class="padding cook-recipe-selection"> 
         <ion-list>
-          <h2 class="ingredient-type-heading">What Looks Good?</h2>
+          <h2 class="ingredient-type-heading-center">What Looks Good?</h2>
           <div ng-repeat="(recipeCategory, catObj) in fullRecipes">
             <!--<h3 class="recipe-category">{{getFullHeader(recipeCategory)}}</h3>-->
             <recipe-item ng-repeat="recipe in catObj.recipes" recipe="recipe" iconclass="fullRecipeClass($index, recipeCategory)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>

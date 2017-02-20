@@ -105,14 +105,26 @@ h1 {
     margin-left: -50%;
     text-align: right;
 }
+.font-weight-700 {
+	font-weight: 700 !important;
+}
 .font-weight-600 {
-	font-weight: 600;
+	font-weight: 600 !important;
 }
 .font-weight-500 {
-	font-weight: 500;
+	font-weight: 500 !important;
 }
 /***********************/
 /*SPACING**/
+.col-15 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 15%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 15%;
+    -ms-flex: 0 0 15%;
+	flex: 0 0 15%;
+	max-width: 15%;
+}
 .col-36 {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 32%;
@@ -139,6 +151,15 @@ h1 {
     -ms-flex: 0 0 55%;
     flex: 0 0 55%;
     max-width: 55%;
+}
+.col-65 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 65%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 65%;
+    -ms-flex: 0 0 65%;
+    flex: 0 0 65%;
+    max-width: 65%;
 }
 .no-bottom-margin {
 	margin-bottom: 0;
@@ -226,6 +247,48 @@ h1 {
 .has-tabs {
     bottom: 38px;
 }
+.tab-item .icon.ion-ios-flask, .tab-item .icon.ion-ios-flask-outline {
+	font-size: 27px;
+	margin-top: 4px;
+}
+.tab-item .icon.ion-ios-box, .tab-item .icon.ion-ios-box-outline {
+	font-size: 35px;
+}
+.tab-item .icon.ion-happy, .tab-item .icon.ion-happy-outline {
+	font-size: 30px;
+	margin-top: 3px;
+}
+.tabs .tab-item .icon.cook-on, .tabs .tab-item .icon.cook-off, .tabs .tab-item .icon.recipes-on, .tabs .tab-item .icon.recipes-off, .tabs .tab-item .icon.learn-on, .tabs .tab-item .icon.learn-off, .tabs .tab-item .icon.account-on, .tabs .tab-item .icon.account-off {
+  background-repeat: no-repeat;
+  background-position: 50%;
+  height: 100%;
+  background-size: contain;
+  max-width: 25px;
+}
+.tabs .tab-item .icon.cook-on {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Carrot%20Filled-30.png');
+}
+.tabs .tab-item .icon.cook-off {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Carrot-30.png');
+}
+.tabs .tab-item .icon.recipes-on {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Dining%20Room%20Filled-30.png');
+}
+.tabs .tab-item .icon.recipes-off {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Dining%20Room-30.png');
+}
+.tabs .tab-item .icon.learn-on {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Test%20Tube%20Filled-30.png');
+}
+.tabs .tab-item .icon.learn-off {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Test%20Tube-30.png');
+}
+.tabs .tab-item .icon.account-on {
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Happy%20Filled-30.png');
+}
+.tabs .tab-item .icon.account-off {  
+  background-image: url('https://storage.googleapis.com/skillit-photos/app/icons/Happy-30.png');
+}
 /*TOP NAV BUTTONS*/
 .top-back-button-arrow {
 	font-size: 180%;
@@ -271,7 +334,7 @@ img.skillit-logo-nav-bar {
 	padding-top: 4px;
 }
 .cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll, .add-side.scroll-content.ionic-scroll {
-	height: 76%;
+	height: 78%;
 }
 .platform-android .cook-tab.scroll-content.ionic-scroll, .platform-android .edit-byo.scroll-content.ionic-scroll, .platform-android .add-side.scroll-content.ionic-scroll {
 	height: 68%;
@@ -376,8 +439,14 @@ div.ingredient-form-selection {
 }
 h2.ingredient-type-heading {
 	font-size: 24px;
-	margin: 0 0 5px 20px;
-	font-weight: 500;
+	margin: 0 0 5px 24px;
+	font-weight: 600;
+	text-align: left;
+}
+h2.ingredient-type-heading-center {
+	font-size: 24px;
+	margin: 0 0 5px 0px;
+	font-weight: 600;
 	text-align: center;
 }
 h4.ingredient-subtype-heading {
@@ -387,7 +456,7 @@ h4.ingredient-subtype-heading {
     font-weight: 400;	
 }
 .cook-tab .list .item-checkbox {
-	padding-left: 40px;
+    padding: 16px 16px 13px 40px;
 }
 /***********************/
 /*recipe selection tab*/
@@ -446,20 +515,19 @@ h4.ingredient-subtype-heading {
 .col.recipe-card-info {
 	padding: 5px 7px;
 }
-.ingredients-seasoning h3 {
-	text-align: center;
+h2.recipe-name {
+	margin: 4px 0;
 }
-.ingredients-seasoning.seasoning h5 {
-	padding-left: 10px;
+.individual-recipe-in-list p {
+	font-size: 14px;
 }
-.ingredients-seasoning.seasoning ul {
-	padding-left: 10px;
+.recipe-badges img {
+	max-width: 30px;
 }
-.ingredients-seasoning.seasoning p {
-	margin: 0;
-}
-.border-left {
-	border-left: 1px solid $balanced;
+p.recipe-badges-name {
+	line-height: 90%;
+	font-size: 11px !important;
+	padding-bottom: 4px;
 }
 .recipe-badges img {
 	margin: 0 auto;
@@ -467,16 +535,37 @@ h4.ingredient-subtype-heading {
 .recipe-badges p {
 	text-align: center;	
 }
-.recipe-badges-name p {
-	font-size: 12px;
-}
-.individual-recipe-in-list p {
-	font-size: 14px;
-}
 .item h2 {
 	font-size: 18px;
 	white-space: normal;	
 	font-weight: 500;
+}
+div.ready-in-time {
+	margin: 2px 1px;
+	display: inline-block;
+}
+.ready-in-time p {
+	text-align: center;
+	margin-bottom: -5px;
+	font-size: 16px;
+}
+p.cooking-time-number {
+	font-size: 17px;
+}
+p.cooking-time-type {
+	font-size: 13px;
+}
+.col.ready-in-time-col {
+	padding: 0 0 0 7px;
+}
+.recipe-time-badges-row {
+	margin: 3px 0;
+}
+.ready-in-time .ion-android-time {
+	font-size: 30px;
+}
+.ready-in-time p.cooking-time {
+	margin-top: -6px;
 }
 .recipe-description-time p:first-child {
 	margin: 4px 0px 3px;
@@ -554,7 +643,8 @@ h4.ingredient-subtype-heading {
 }
 
 .cook-present-instructions h1{
-	font-weight: 300;
+	font-weight: 400;
+	font-size: 25px;
 }
 .cook-present-instructions h3 {
 	font-size: 23px;
@@ -563,8 +653,8 @@ h4.ingredient-subtype-heading {
 }
 .cook-present-instructions h4 {
 	color: #000;
-    font-size: 20px;
-    font-weight: 300;
+    font-size: 19px;
+    font-weight: 400;
     margin-top: 0;
 }    
 .recipe-instructions {
@@ -594,8 +684,29 @@ h4.ingredient-subtype-heading {
 	font-size: 15px;
 	max-width: 93%;
 }
+span.step-list-number {
+    font-size: 150%;
+    font-weight: 800;	
+}
 .recipe-video {
 	margin: 0 auto;
+}
+.ingredients-seasoning h3 {
+	text-align: center;
+}
+.ingredients-seasoning.seasoning h5 {
+	font-size: 16px;
+	font-weight: 400;
+	text-align: center;
+}
+.ingredients-seasoning.seasoning ul {
+	padding-left: 10px;
+}
+.ingredients-seasoning.seasoning p {
+	margin: 0;
+}
+.border-left {
+	border-left: 2px solid $balanced;
 }
 .col.ingredients-seasoning {
 	padding: 0;
@@ -613,11 +724,13 @@ h4.ingredient-subtype-heading {
     color: #ef4734;
     margin: 10px 0 20px;
     font-size: 15px;
-    border-radius: 8px;
+    border-radius: 40px;
     line-height: 33px;
+    border-width: 2px;
+    font-weight: 600;
 }
 .ingredients-seasoning .button-spice-up-add-side {
-	width: 110px;
+	width: 115px;
 	margin: 10px 0 0;
 }
 .button-spice-up-add-side.login-signup {
@@ -676,10 +789,6 @@ h4.ingredient-subtype-heading {
     left: 0;
     width: 100%;
     height: 100%;
-}
-.cook-present-instructions h5 {
-	font-size: 17px;
-	font-weight: 300;
 }
 .video-slider-dots div{
 	display: inline;
@@ -971,6 +1080,12 @@ span.chapter-number {
 .recipe-tab-padding {
 	padding: 0 0 10px;
 }
+.col.col-50.recipe-collection-col {
+	padding: 6px 4px;
+}
+.recipe-collection-row {
+	padding: 0 3px;
+}
 .recipe-collection-container {
 	text-align: center;
 }
@@ -981,8 +1096,8 @@ span.chapter-number {
 	position: absolute;
 	bottom: 5%;
 	color: #ffffff;
-	font-size: 25px;
-	width: 100%;
+	font-size: 20px;
+	width: 80%;
 	left: 10px;
 	font-weight: 400;
 	text-align: left;
@@ -993,6 +1108,9 @@ span.chapter-number {
 }
 .item.recipe-categories:first-child {
 	margin-top: 0;
+}
+p.recipe-collection-description {
+	font-size: 16px;
 }
 /****************/
 .recipe-category-img {
@@ -1198,10 +1316,16 @@ h2.intro-slide-header {
 		font-weight: 600;
 	}	
 	.recipe-collection-container h2{
-		font-size: 30px;
+		font-size: 23px;
 	}
 	.account-tab p {
 		margin: 0 20px 10px;
 		font-size: 16px;
 	}	
+	.ready-in-time .ion-android-time {
+		font-size: 35px;
+	}
+	h2.ingredient-type-heading {
+		margin: 0 0 5px 44px;
+	}
 }

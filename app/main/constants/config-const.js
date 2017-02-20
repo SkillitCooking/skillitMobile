@@ -55,11 +55,11 @@ angular.module('main')
     'MINCED' : 'Minced'
   }).constant('INGREDIENT_CATEGORIES', {
     'VEGETABLES': 'Vegetables',
-    'VEGETABLES_DISPLAY': 'What Veggies Do Ya Got?',
+    'VEGETABLES_DISPLAY': 'Got Any Veggies?',
     'PROTEIN': 'Protein',
-    'PROTEIN_DISPLAY': 'How About Proteins?',
+    'PROTEIN_DISPLAY': 'How About Protein?',
     'STARCH': 'Starches',
-    'STARCH_DISPLAY': 'Anything Else?',
+    'STARCH_DISPLAY': 'What Else?',
     'OTHER': 'Other'
   }).constant('RECIPE_TYPES', {
     'FULL': 'Full',
