@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'LibraryFunctions', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', 'RecipeNameConstructionService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', 'FAREWELL_COPY', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, LibraryFunctions, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, RecipeNameConstructionService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING, FAREWELL_COPY) {
+.controller('CookPresentCtrl', ['_', '$window', '$document', '$scope', '$rootScope', '$stateParams', '$state', 'LibraryFunctions', 'RecipeService', 'MealsCookedService', 'SeasoningUsedService', 'SeasoningProfileService', 'RecipeInstantiationService', 'StepCombinationService', 'SeasoningProfileTextService', 'FavoriteRecipeService', 'FavoriteRecipeDetectionService', 'ProgressiveStepTipService', 'SocialSharingService', 'RecipeNameConstructionService', '$ionicScrollDelegate', '$ionicPopover', '$ionicModal', '$ionicHistory', '$ionicTabsDelegate', '$ionicLoading', '$ionicPlatform', '$ionicPopup', '$ionicAuth', '$ionicUser', 'ErrorService', 'MEALS_COOKED_SOURCE', 'USER', 'LOGIN', 'LOADING', 'FAREWELL_COPY', 'STEP_ICONS', function (_, $window, $document, $scope, $rootScope, $stateParams, $state, LibraryFunctions, RecipeService, MealsCookedService, SeasoningUsedService, SeasoningProfileService, RecipeInstantiationService, StepCombinationService, SeasoningProfileTextService, FavoriteRecipeService, FavoriteRecipeDetectionService, ProgressiveStepTipService, SocialSharingService, RecipeNameConstructionService, $ionicScrollDelegate, $ionicPopover, $ionicModal, $ionicHistory, $ionicTabsDelegate, $ionicLoading, $ionicPlatform, $ionicPopup, $ionicAuth, $ionicUser, ErrorService, MEALS_COOKED_SOURCE, USER, LOGIN, LOADING, FAREWELL_COPY, STEP_ICONS) {
 
   if(typeof $window.ga !== 'undefined') {
     if($stateParams.cameFromRecipes) {
@@ -782,6 +782,19 @@ angular.module('main')
       return true;
     } else {
        return false;
+    }
+  };
+
+  $scope.getStepIconSrc = function(type) {
+    switch(type) {
+      case 'video':
+        return STEP_ICONS.VIDEO;
+      case 'tip':
+        return STEP_ICONS.TIP;
+      case 'seasoning':
+        return STEP_ICONS.SEASONING;
+      default:
+        break;
     }
   };
 

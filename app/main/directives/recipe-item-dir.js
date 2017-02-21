@@ -33,8 +33,6 @@ angular.module('main')
         return scope.chosenPictureURL;
       };
 
-      console.log('scope.recipe', scope.recipe);
-
       if(scope.recipe.badges) {
         scope.recipe.badges.sort(recipeBadgeSort);
         scope.shortRecipeBadges = scope.recipe.badges.slice(0, 3);

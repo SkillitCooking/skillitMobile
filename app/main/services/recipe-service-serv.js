@@ -15,8 +15,9 @@ angular.module('main')
         compatibilityVersion: COMPATIBILITY.VERSION
       }, 'getRecipesWithIngredientsNew');
     },
-    getMoreRecipesForSelection: function(idsToFetch) {
-      return baseRecipes.customPOST({ingredientIds: idsToFetch, compatibilityVersion: COMPATIBILITY.VERSION}, 'getMoreRecipesForSelection');
+    //"ingredientIds" below misnamed...
+    getMoreRecipesForSelection: function(idsToFetch, ingredientIds) {
+      return baseRecipes.customPOST({ingredientIds: idsToFetch, availableIngredientIds: ingredientIds, compatibilityVersion: COMPATIBILITY.VERSION}, 'getMoreRecipesForSelection');
     },
     getMoreRecipesForCategory: function(info) {
       info.compatibilityVersion = COMPATIBILITY.VERSION;

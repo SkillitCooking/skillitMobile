@@ -128,7 +128,7 @@ angular.module('main')
     if($scope.fullRecipes) {
       var nextIndex = $scope.currentRecipeIdIndex +  PAGINATION.RECIPES_PAGE_SIZE;
       var idsToFetch = $scope.orderedRecipeIds.slice($scope.currentRecipeIdIndex, nextIndex);
-      RecipeService.getMoreRecipesForSelection(idsToFetch).then(function(res) {
+      RecipeService.getMoreRecipesForSelection(idsToFetch, ingredientIds).then(function(res) {
         var recipes = res.data;
         $scope.currentRecipeIdIndex = nextIndex;
         if($scope.currentRecipeIdIndex >= $scope.orderedRecipeIds.length) {
