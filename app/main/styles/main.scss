@@ -1159,7 +1159,7 @@ p.recipe-collection-description {
 }
 .social-login-buttons .button {
 	width: 120px;
-	border-radius: 8px;
+	border-radius: 40px;
 	font-weight: 600;
 }
 .login-screen .login-signup.button {
@@ -1171,9 +1171,13 @@ p.recipe-collection-description {
 .list.login-text-field {
 	margin: 10px 20px;
 }
-.account-tab p {
+/*.account-tab p {
 	margin: 0 6px 10px;
 	font-size: 15px;
+}*/
+.account-tab-tabs {
+	font-weight: 600;
+	font-size: 17px;
 }
 
 /***************************************/

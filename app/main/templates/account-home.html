@@ -1,14 +1,14 @@
 <ion-view>
   <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
   <ion-nav-buttons side="secondary">
-    <button ng-if="isAuthenticated()" ng-click="logout()" class="button top-back-button reset">Log Out</button>
+    <button ng-if="isAuthenticated()" ng-click="logout()" class="button top-back-button reset font-weight-600">Log Out</button>
   </ion-nav-buttons>
   <ion-content class="padding account-tab">
     <!-- do you want padding? -->
     <div ng-if="isAuthenticated()">
       <div class="button-bar">
-        <a ng-class="getFavRecipesButtonClass()" ng-click="selectFavRecipes()">Favorite Recipes</a>
-        <a ng-class="getAccountInfoButtonClass()" ng-click="selectAccountInfo()">Account</a>
+        <a class="account-tab-tabs" ng-class="getFavRecipesButtonClass()" ng-click="selectFavRecipes()">Favorites</a>
+        <a class="account-tab-tabs" ng-class="getAccountInfoButtonClass()" ng-click="selectAccountInfo()">Profile</a>
       </div>
     </div>
     <login-directive type="'account'" ng-if="!isAuthenticated()"></login-directive>
@@ -20,9 +20,9 @@
         </div>
         <div ng-if="!noFavoriteRecipes()">
           <ion-list>
-            <div ng-repeat="recipe in favoriteRecipes">
+            <div class="cook-recipe-selection" ng-repeat="recipe in favoriteRecipes">
               <recipe-item recipe="recipe" iconclass="" showdatefeatured="false" ng-click="cookFavoriteRecipe(recipe)" isfavorite="true"></recipe-item>
-              <button class="button" ng-click="unfavoriteRecipe(recipe)">Remove</button>
+              <!--<button class="button" ng-click="unfavoriteRecipe(recipe)">Remove</button>-->
             </div>
           </ion-list>
         </div>
