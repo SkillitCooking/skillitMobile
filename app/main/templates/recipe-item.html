@@ -15,18 +15,18 @@
   <div class="row recipe-time-badges-row">
     <div class="col col-40 col-bottom ready-in-time-col">
         <div class="ready-in-time">  
-          <p class="font-weight-600 cooking-time-number">{{getRecipeTotalTime(recipe)}}</p>
+          <p class="font-weight-700 cooking-time-number">{{getRecipeTotalTime(recipe)}}</p>
           <p class="cooking-time-type">Total</p>                                         
         </div>  
         <div class="ready-in-time">                    
-          <p><i class="ion-android-time"></i></p> 
+          <p class="recipe-time-clock"><i class="ion-android-time"></i></p> 
         </div>    
         <div class="ready-in-time">     
           <p class="font-weight-700 cooking-time-number">{{getRecipeActiveTime(recipe)}}</p>
           <p class="cooking-time-type">Active</p>                        
         </div>  
     </div>   
-    <div class="col col-20 col-top padding-zero recipe-badges" ng-repeat="badge in shortRecipeBadges">      
+    <div class="col col-20 col-center padding-zero recipe-badges" ng-repeat="badge in shortRecipeBadges">      
       <p style="text-align: center; line-height: 80%"><img ng-src="{{getBadgeIcon(badge)}}"></p>
       <p class="recipe-badges-name">{{getBadgeName(badge)}}</p>
     </div>     

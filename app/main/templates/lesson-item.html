@@ -1,11 +1,13 @@
 <ion-item class="education-collection item-thumbnail-left" ng-click="">	
 	<div class="row">
-		<div class="col col-50 col-center">
-			<h2 class="education-title">{{lesson.name}}</h2>
-		</div>
-		<div class="col col-50 lesson-image">
+		<div class="col education-image">
 			<img ng-if="lesson.pictureURL" ng-src="{{lesson.pictureURL}}">
 		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<h2 class="education-title">{{lesson.name}}</h2>
+		</div>		
 	</div>
 	<div class="row">
 		<div class="col">
