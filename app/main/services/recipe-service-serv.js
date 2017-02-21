@@ -7,6 +7,14 @@ angular.module('main')
     getRecipesWithIngredients: function(ingredientIds, userId, userToken) {
       return baseRecipes.customPOST({ingredientIds: ingredientIds, userId: userId, userToken: userToken, compatibilityVersion: COMPATIBILITY.VERSION}, 'getRecipesWithIngredients');
     },
+    getRecipesWithIngredientsNew: function(ingredientIds, userId, userToken) {
+      return baseRecipes.customPOST({
+        ingredientIds: ingredientIds,
+        userId: userId,
+        userToken: userToken,
+        compatibilityVersion: COMPATIBILITY.VERSION
+      }, 'getRecipesWithIngredientsNew');
+    },
     getMoreRecipesForSelection: function(idsToFetch) {
       return baseRecipes.customPOST({ingredientIds: idsToFetch, compatibilityVersion: COMPATIBILITY.VERSION}, 'getMoreRecipesForSelection');
     },

@@ -102,9 +102,8 @@ angular.module('main')
 
   $scope.hideInfiniteScroll = true;
   
-  RecipeService.getRecipesWithIngredients(ingredientIds, userId, userToken).then(function(response) {
+  RecipeService.getRecipesWithIngredientsNew(ingredientIds, userId, userToken).then(function(response) {
     var retObj = response.data;
-    console.log('retObj', retObj);
     $scope.fullRecipes = retObj.returnRecipes;
     $scope.currentRecipeIdIndex = retObj.currentIndex;
     $scope.orderedRecipeIds = retObj.orderedRecipeIds;
@@ -117,8 +116,8 @@ angular.module('main')
     }
     setTimeout(function() {
       if($scope.orderedRecipeIds.length > $scope.currentRecipeIdIndex) {
-      $scope.hideInfiniteScroll = false;
-    }
+        $scope.hideInfiniteScroll = false;
+      }
       $ionicLoading.hide();
     }, 300);
   }, function(response){
@@ -126,15 +125,11 @@ angular.module('main')
   });
 
   $scope.loadMoreRecipes = function() {
-    console.log('yo', angular.copy($scope.fullRecipes));
-    console.log('infiinte', $scope.hideInfiniteScroll);
     if($scope.fullRecipes) {
       var nextIndex = $scope.currentRecipeIdIndex +  PAGINATION.RECIPES_PAGE_SIZE;
       var idsToFetch = $scope.orderedRecipeIds.slice($scope.currentRecipeIdIndex, nextIndex);
-      console.log('idsToFetch', idsToFetch);
       RecipeService.getMoreRecipesForSelection(idsToFetch).then(function(res) {
         var recipes = res.data;
-        console.log('recipes', recipes);
         $scope.currentRecipeIdIndex = nextIndex;
         if($scope.currentRecipeIdIndex >= $scope.orderedRecipeIds.length) {
           $scope.hideInfiniteScroll = true;
