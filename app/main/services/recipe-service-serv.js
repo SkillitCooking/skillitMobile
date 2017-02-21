@@ -7,6 +7,9 @@ angular.module('main')
     getRecipesWithIngredients: function(ingredientIds, userId, userToken) {
       return baseRecipes.customPOST({ingredientIds: ingredientIds, userId: userId, userToken: userToken, compatibilityVersion: COMPATIBILITY.VERSION}, 'getRecipesWithIngredients');
     },
+    getMoreRecipesForSelection: function(idsToFetch) {
+      return baseRecipes.customPOST({ingredientIds: idsToFetch, compatibilityVersion: COMPATIBILITY.VERSION}, 'getMoreRecipesForSelection');
+    },
     getMoreRecipesForCategory: function(info) {
       info.compatibilityVersion = COMPATIBILITY.VERSION;
       return baseRecipes.customPOST(info, 'getMoreRecipesForCategory');

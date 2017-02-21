@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('CookRecipeSelectionCtrl', ['$window', '$rootScope', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', 'RecipeNameConstructionService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $rootScope, $scope, $stateParams, $state, $ionicHistory, RecipeService, RecipeNameConstructionService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
+.controller('CookRecipeSelectionCtrl', ['$window', '$rootScope', '$scope', '$stateParams', '$state', '$ionicHistory', 'RecipeService', 'RecipeNameConstructionService', '_', '$ionicLoading', '$ionicPopup', '$ionicPlatform', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', 'PAGINATION', function ($window, $rootScope, $scope, $stateParams, $state, $ionicHistory, RecipeService, RecipeNameConstructionService, _, $ionicLoading, $ionicPopup, $ionicPlatform, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING, PAGINATION) {
 
   var token;
   var loginType = $ionicUser.get(LOGIN.TYPE);
@@ -99,58 +99,58 @@ angular.module('main')
     userId = $ionicUser.get(USER.ID);
     userToken = token;
   }
+
+  $scope.hideInfiniteScroll = true;
   
   RecipeService.getRecipesWithIngredients(ingredientIds, userId, userToken).then(function(response) {
-    $scope.alaCarteRecipes = response.data.AlaCarte;
-    if($scope.alaCarteRecipes){
-      $scope.alaCarteClickedArr = Array($scope.alaCarteRecipes.length).fill(false);
-      for (var i = $scope.alaCarteRecipes.length - 1; i >= 0; i--) {
-        $scope.alaCarteRecipes[i].prepTime = 5 * Math.round($scope.alaCarteRecipes[i].prepTime/5);
-        $scope.alaCarteRecipes[i].totalTime = 5 * Math.round($scope.alaCarteRecipes[i].totalTime/5);
-      }
-      //sort alaCarteRecipes according to ingredientCategory, then by ingredient
-      $scope.alaCarteRecipes.sort(ingredientCategoryCmpFn);
-    }
-    $scope.fullRecipes = response.data.Full;
+    var retObj = response.data;
+    console.log('retObj', retObj);
+    $scope.fullRecipes = retObj.returnRecipes;
+    $scope.currentRecipeIdIndex = retObj.currentIndex;
+    $scope.orderedRecipeIds = retObj.orderedRecipeIds;
     if($scope.fullRecipes) {
-      for(var key in $scope.fullRecipes) {
-        for (var i = $scope.fullRecipes[key].recipes.length - 1; i >= 0; i--) {
-          $scope.fullRecipes[key].recipes[i].prepTime = 5 * Math.round($scope.fullRecipes[key].recipes[i].prepTime/5);
-          $scope.fullRecipes[key].recipes[i].totalTime = 5 * Math.round($scope.fullRecipes[key].recipes[i].totalTime/5);
-          RecipeNameConstructionService.setPrefixedRecipeName($scope.fullRecipes[key].recipes[i]);
-        }
-      }
-    }
-    $scope.BYORecipes = response.data.BYO;
-    if($scope.BYORecipes) {
-      for (var i = $scope.BYORecipes.length - 1; i >= 0; i--) {
-        $scope.BYORecipes[i].prepTime = 5 * Math.round($scope.BYORecipes[i].prepTime/5);
-        $scope.BYORecipes[i].totalTime = 5 * Math.round($scope.BYORecipes[i].totalTime/5);
-      }
-    }
-    if($scope.noFullDishes()) {
-      $scope.fullSelected = false;
-      if($scope.noBYODishes()) {
-        $scope.alaCarteSelected = true;
-        if($scope.noAlaCarteDishes()) {
-          //error - there should be at least one recipe available for some selection
-          //of ingredients
-          ErrorService.logError({
-            message: "Cook Recipe Selection Controller ERROR: no recipes found for selected Ingredients",
-            ingredients: ingredientIds
-          });
-          ErrorService.showErrorAlert();
-        }
-      } else {
-        $scope.BYOSelected = true;
+      for (var i = $scope.fullRecipes.length - 1; i >= 0; i--) {
+        $scope.fullRecipes[i].prepTime = 5 * Math.round($scope.fullRecipes[i].prepTime/5);
+        $scope.fullRecipes[i].totalTime = 5 * Math.round($scope.fullRecipes[i].totalTime/5);
+        RecipeNameConstructionService.setPrefixedRecipeName($scope.fullRecipes[i]);
       }
     }
     setTimeout(function() {
+      if($scope.orderedRecipeIds.length > $scope.currentRecipeIdIndex) {
+      $scope.hideInfiniteScroll = false;
+    }
       $ionicLoading.hide();
     }, 300);
   }, function(response){
     ErrorService.showErrorAlert();
   });
+
+  $scope.loadMoreRecipes = function() {
+    console.log('yo', angular.copy($scope.fullRecipes));
+    console.log('infiinte', $scope.hideInfiniteScroll);
+    if($scope.fullRecipes) {
+      var nextIndex = $scope.currentRecipeIdIndex +  PAGINATION.RECIPES_PAGE_SIZE;
+      var idsToFetch = $scope.orderedRecipeIds.slice($scope.currentRecipeIdIndex, nextIndex);
+      console.log('idsToFetch', idsToFetch);
+      RecipeService.getMoreRecipesForSelection(idsToFetch).then(function(res) {
+        var recipes = res.data;
+        console.log('recipes', recipes);
+        $scope.currentRecipeIdIndex = nextIndex;
+        if($scope.currentRecipeIdIndex >= $scope.orderedRecipeIds.length) {
+          $scope.hideInfiniteScroll = true;
+        }
+        for (var i = recipes.length - 1; i >= 0; i--) {
+          recipes[i].prepTime = 5 * Math.round(recipes[i].prepTime/5);
+          recipes[i].totalTime = 5 * Math.round(recipes[i].totalTime/5);
+          RecipeNameConstructionService.setPrefixedRecipeName(recipes[i]);
+        }
+        Array.prototype.push.apply($scope.fullRecipes, recipes);
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      }, function(response) {
+        ErrorService.showErrorAlert();
+      });
+    }
+  };
 
   $scope.noFullDishes = function() {
     if(!$scope.fullRecipes || Object.keys($scope.fullRecipes).length === 0) {
@@ -341,7 +341,7 @@ angular.module('main')
     }
   };
 
-  $scope.loadMoreRecipes = function(recipeCategory) {
+  $scope.loadMoreRecipeCategories = function(recipeCategory) {
     //should we have a loading going on here?
     $ionicLoading.show({
       template: LOADING.TEMPLATE,

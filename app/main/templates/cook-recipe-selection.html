@@ -7,14 +7,14 @@
     <ion-nav-buttons side="secondary">
       <button class="button top-back-button" ng-click="resetEverything()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
-    <div ng-if="alaCarteSelected" class="row bottom-a-la-carte-buttons">
+    <!--div ng-if="alaCarteSelected" class="row bottom-a-la-carte-buttons">
       <div class="col">
         <button ng-click="selectFull()" class="button button-white">Add a Main</button>
       </div>
       <div class="col">
         <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-white">Let's Cook!</button>
       </div>
-    </div>
+    </div-->
     <!-- do you want padding? -->
     <!--div ng-if="alaCarteSelected">
       <ion-content class="padding cook-recipe-selection a-la-carte-selection">
@@ -44,24 +44,24 @@
             </ion-item>
           </div>
         </ion-list>
-        <!--<div class="row bottom-a-la-carte-buttons">
+        <<div class="row bottom-a-la-carte-buttons">
           <div class="col col-50 col-center">
             <button ng-click="cookAlaCarte()" ng-disabled="noneSelected()" class="button button-balanced">Let's Cook!</button>
           </div>
           <div class="col col-50 col-center">
             <button ng-click="selectComplete()" class="button button-balanced">Add Full Dish</button>
           </div>
-        </div>-->
+        </div>>
       </ion-content>
     </div-->
     <div ng-if="fullSelected">  
       <ion-content class="padding cook-recipe-selection"> 
         <ion-list>
           <h2 class="ingredient-type-heading-center">What Looks Good?</h2>
-          <div ng-repeat="(recipeCategory, catObj) in fullRecipes">
+          <div ng-repeat="recipe in fullRecipes">
             <!--<h3 class="recipe-category">{{getFullHeader(recipeCategory)}}</h3>-->
-            <recipe-item ng-repeat="recipe in catObj.recipes" recipe="recipe" iconclass="fullRecipeClass($index, recipeCategory)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
-            <p style="text-align: center"><button class="button button-spice-up-add-side load-more-recipe-button" ng-if="catObj.hasMoreToLoad" ng-click="loadMoreRecipes(recipeCategory)">Show More {{getFullHeader(recipeCategory)}}</button></p>
+            <recipe-item recipe="recipe" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
+            <!--p style="text-align: center"><button class="button button-spice-up-add-side load-more-recipe-button" ng-if="catObj.hasMoreToLoad" ng-click="loadMoreRecipes(recipeCategory)">Show More {{getFullHeader(recipeCategory)}}</button></p-->
             <!--ion-item class="individual-recipe-in-list item-icon-right item-thumbnail-left" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
@@ -84,16 +84,17 @@
               </div>
             </ion-item-->
           </div>
-        </ion-list>       
+        </ion-list>
+        <ion-infinite-scroll ng-if="!hideInfiniteScroll" on-infinite="loadMoreRecipes()" immediate-check="false" distance="1%"></ion-infinite-scroll>      
       </ion-content>
     </div>  
-    <div ng-if="BYOSelected">
+    <!--div ng-if="BYOSelected">
       <ion-content class="padding cook-recipe-selection">
         <h3 class="recipe-category">Build Your Own</h3>
         <ion-list>
           <div ng-repeat="recipe in BYORecipes">
             <recipe-item recipe="recipe" iconclass="BYORecipeClass($index)" showdatefeatured="false" ng-click="recipeSelected(recipe)"></recipe-item>
-            <!--ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="recipeSelected(recipe)">
+            <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="recipeSelected(recipe)">
               <div class="row">
                 <div class="col col-36">  
                   <img ng-src="{{recipe.mainPictureURL}}">
@@ -113,9 +114,9 @@
                   </div>
                 </div>
               </div>
-            </ion-item-->
+            </ion-item>
           </div>
         </ion-list>      
       </ion-content>
-    </div>  
+    </div-->  
   </ion-view>
