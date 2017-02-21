@@ -1,14 +1,14 @@
 <div ng-class="getLoginClasses()">
   <h2 class="recipe-category font-weight-600 center">{{getTitle()}}</h2>
-  <p>{{signUpOrLoginSubheader()}}</p>  
+  <p class="account-tab-text">{{signUpOrLoginSubheader()}}</p>  
   <br>
-  <p style="text-align: center; font-weight: 700">{{signUpOrLoginText()}}</p>
+  <p class="account-tab-text" style="text-align: center; font-weight: 700">{{signUpOrLoginText()}}</p>
   <div class="row social-login-buttons">
     <div class="col col-50"><p style="text-align: center"><button class="button icon-right facebook" ng-click="signInFacebook()"><i class="icon ion-social-facebook"></i> Facebook</button></p></div>
     <div class="col col-50"><p style="text-align: center"><button class="button icon-right google" ng-click="signInGoogle()"><i class="icon ion-social-google"></i> Google</button></p></div>
   </div>
   <br>
-  <p style="text-align: center; font-weight: 700">Too Cool for Social Media?<br>We Get Down with Email, too:</p>
+  <p class="account-tab-text" style="text-align: center; font-weight: 700">Too Cool for Social Media?<br>We Get Down with Email, too:</p>
   <div class="list login-text-field">
     <label class="item item-input">
       <input type="text" ng-model="email" placeholder="Email" />
