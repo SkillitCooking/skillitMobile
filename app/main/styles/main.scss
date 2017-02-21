@@ -69,10 +69,8 @@ h1 {
 
 .bar .button.close-x-button {
     color: $balanced;
-    border: 1px solid $balanced;
-    border-radius: 50%;
     background-color: #ffffff;
-    font-size: 19px;
+    font-size: 33px;
     min-width: 33px;
     top: 6px !important;
 }
@@ -448,7 +446,7 @@ h2.ingredient-type-heading-center {
 	margin: 0 0 5px 0px;
 	font-weight: 600;
 	text-align: center;
-  color: $balanced
+	color: $balanced;
 }
 h4.ingredient-subtype-heading {
 	font-size: 20px;
@@ -527,7 +525,7 @@ h2.recipe-name {
 }
 p.recipe-badges-name {
 	line-height: 90%;
-	font-size: 11px !important;
+	font-size: 12px !important;
 	padding-bottom: 4px;
 }
 .recipe-badges img {
@@ -551,10 +549,11 @@ div.ready-in-time {
 	font-size: 16px;
 }
 p.cooking-time-number {
-	font-size: 17px;
+	font-size: 19px;
+	line-height: 130%;
 }
 p.cooking-time-type {
-	font-size: 13px;
+	font-size: 12px;
 }
 .col.ready-in-time-col {
 	padding: 0 0 0 7px;
@@ -563,10 +562,13 @@ p.cooking-time-type {
 	margin: 3px 0;
 }
 .ready-in-time .ion-android-time {
-	font-size: 30px;
+	font-size: 35px;
 }
 .ready-in-time p.cooking-time {
 	margin-top: -6px;
+}
+p.recipe-time-clock {
+	margin-bottom: 15px !important;
 }
 .recipe-description-time p:first-child {
 	margin: 4px 0px 3px;
@@ -610,9 +612,6 @@ p.cooking-time-type {
 }
 .platform-android .bottom-a-la-carte-buttons {
     bottom: 0px;  
-}
-.bottom-a-la-carte-buttons .col {
-	padding: 0;
 }
 .bottom-a-la-carte-buttons .button-white {
 	min-width: 117px;
@@ -838,7 +837,7 @@ span.step-list-number {
 	background-color: #ffffff;
 }
 .bar.bar-header {
-	border-bottom: 1px solid $balanced;
+	border-bottom: 2px solid $balanced;
 }
 .popover p {
 	font-size: 16px;
@@ -849,10 +848,10 @@ span.step-list-number {
 	top: 10% !important;
 }
 .image-modal {
-    width: 100% !important;
+    width: 90% !important;
     height: 50%;
     top: 25% !important;
-    left: 0 !important;
+    left: 5% !important;
 }
 .popover ion-content.scroll-content {
 	border-radius: 0 !important;
@@ -896,8 +895,8 @@ span.step-list-number {
 
 /*seasoning profile selector*/
 .popover .bar h1.title, .seasoning-selector-popup h3 {
-	font-size: 18px;
-	font-weight: 400;
+	font-size: 15px;
+	font-weight: 600;
 }
 
 
@@ -925,6 +924,7 @@ h3.side-dish-header {
 .add-side-dish-screen .item-icon-right .icon {
 	position: static;
 	color: $balanced;
+	float: right;
 }
 
 /****************/
@@ -986,13 +986,16 @@ h4.article-subtitle {
 .education-collection p {
 	white-space: normal;
 	font-size: 15px;
-	padding-left: 10px;
+	padding-left: 5px;
 }
 p.lesson-description {
 	padding: 0 10px;
 }
 .education-collection h2.education-title {
-	padding: 0 10px;
+	padding: 2px 10px;
+}
+.col.education-image {
+	padding: 0;
 }
 .education-image img {
 	width: 100%;
@@ -1156,7 +1159,7 @@ p.recipe-collection-description {
 }
 .social-login-buttons .button {
 	width: 120px;
-	border-radius: 8px;
+	border-radius: 40px;
 	font-weight: 600;
 }
 .login-screen .login-signup.button {
@@ -1168,9 +1171,13 @@ p.recipe-collection-description {
 .list.login-text-field {
 	margin: 10px 20px;
 }
-.account-tab p {
+/*.account-tab p {
 	margin: 0 6px 10px;
 	font-size: 15px;
+}*/
+.account-tab-tabs {
+	font-weight: 600;
+	font-size: 17px;
 }
 
 /***************************************/
@@ -1315,6 +1322,9 @@ h2.intro-slide-header {
 	.bar .title {
 		font-size: 18px;
 		font-weight: 600;
+	}
+	.popover .bar h1.title, .seasoning-selector-popup h3 {
+		font-size: 17px;
 	}	
 	.recipe-collection-container h2{
 		font-size: 23px;
