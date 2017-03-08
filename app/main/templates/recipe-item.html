@@ -14,14 +14,14 @@
   </div>
   <div class="row recipe-time-badges-row">
     <div class="col col-40 col-bottom ready-in-time-col">
-        <div class="ready-in-time">
+        <div class="ready-in-time marg-right-neg-2">  
           <p class="font-weight-700 cooking-time-number">{{getRecipeTotalTime(recipe)}}</p>
-          <p class="cooking-time-type">Total</p>
-        </div>
-        <div class="ready-in-time">
-          <p class="recipe-time-clock"><i class="ion-android-time"></i></p>
-        </div>
-        <div class="ready-in-time">
+          <p class="cooking-time-type">Total</p>                                         
+        </div>  
+        <div class="ready-in-time">                    
+          <p class="recipe-time-clock"><i class="ion-android-time"></i><!--<img ng-src="main/assets/images/Timer-30.png">--></p> 
+        </div>    
+        <div class="ready-in-time marg-left-neg-4">     
           <p class="font-weight-700 cooking-time-number">{{getRecipeActiveTime(recipe)}}</p>
           <p class="cooking-time-type">Active</p>
         </div>

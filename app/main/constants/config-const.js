@@ -128,27 +128,21 @@ angular.module('main')
  }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',
-        'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
+        'subtitle': 'Tell us what you got',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/input-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/ingredients.png'
     },
     {
-        'header': 'Select Recipe',
-        'subtitle': 'Choose one of our recipes or use \'Build Your Own\' to make your perfect dish',
+        'header': 'Browse Recipes',
+        'subtitle': 'We\'ll show what you can make',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/selection-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/selection.png'
     },
     {
-        'header': 'Customize Away',
-        'subtitle': 'Feeling hungry? Add some sides. Feeling adventurous? Try different spices.',
+        'header': 'Get Your Grub On',
+        'subtitle': 'Click on steps for extra info',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/present-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/present.png'
-    },
-    {
-        'header': 'Learn As You Go',
-        'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-steps-white.jpg',
-        'screenshot_android': 'main/assets/images/android_walkthrough/present-steps.png'
     }
   ]).constant('PAGINATION', {
     'ITEMS_PER_PAGE': 25,
@@ -173,10 +167,12 @@ angular.module('main')
   }).constant('KEYS', {
     'BLANK': 'blank'
   }).constant('FAREWELL_COPY', [
-    'Get Your Grub On',
-    'Time To Eat',
-    'Get Ready To Feast',
+    'Get Your Grub On!',
+    'Time To Eat!',
+    'Get Ready To Feast!',
     'Grab a Fork and Dig In!',
     'Grab a Spork and Dig In!',
-    'Enjoy Your Edible Masterpiece'
+    'Enjoy Your Edible Masterpiece!',
+    'It\'s Eating Time!',
+    'Let\'s Grub!'
   ]);
