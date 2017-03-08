@@ -6,18 +6,16 @@ angular.module('main')
         var appVersion = '0.2.0';
         var iosId = '1160522059';
         var androidPackageName = 'com.skillit.app';
-        console.log('init');
         $specialOffer.init({
             id           : 'my-special-offer' + appVersion,
-            showOnCount  : 1,
+            showOnCount  : 5,
             title        : 'Been Skillin\' it?',
-            text         : 'Well, then let us know!',
+            text         : 'We\'d love to hear from ya!',
             agreeLabel   : 'Rate Us!',
             remindLabel  : 'Remind Me Later',
             declineLabel : 'No Thanks',
             onAgree      : function () {
                 // agree
-                console.log('agree');
                 if ($window.device.platform === 'iOS') {
                     $window.open($specialOffer.appStoreUrl(iosId));
                 } else if ($window.device.platform === 'Android') {
