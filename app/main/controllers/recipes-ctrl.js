@@ -15,6 +15,13 @@ angular.module('main')
     noBackdrop: true
   });
 
+  $scope.$on('allCollections.Loaded', function(e) {
+    e.stopPropagation();
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, LOADING.TIMEOUT);
+  });
+
   if(typeof $window.ga !== 'undefined') {
     $window.ga.trackView('Recipes');
   }
@@ -58,11 +65,10 @@ angular.module('main')
     userId = $ionicUser.get(USER.ID);
     userToken = token;
   }
-  
+
   ItemCollectionService.getCollectionsForItemType('recipe', userId, userToken).then(function(collections) {
     $scope.recipeCollections = collections.data;
     $scope.recipeCollections.sort(recipeCollectionSortFn);
-    $ionicLoading.hide();
   }, function(response) {
     ErrorService.showErrorAlert();
   });

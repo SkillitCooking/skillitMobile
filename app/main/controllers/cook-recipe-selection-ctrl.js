@@ -18,6 +18,16 @@ angular.module('main')
     noBackdrop: true
   });
 
+  $scope.$on('picture.loaded', function(e) {
+    $scope.newLoadedCount += 1;
+    e.stopPropagation();
+    if($scope.newLoadedCount >= $scope.newLoadedLength) {
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, LOADING.TIMEOUT);
+    }
+  });
+
   if(typeof $window.ga !== 'undefined') {
     $window.ga.trackView('RecipeSelection');
   }
@@ -105,6 +115,8 @@ angular.module('main')
   RecipeService.getRecipesWithIngredientsNew(ingredientIds, userId, userToken).then(function(response) {
     var retObj = response.data;
     $scope.fullRecipes = retObj.returnRecipes;
+    $scope.newLoadedCount = 0;
+    $scope.newLoadedLength = $scope.fullRecipes.length;
     $scope.currentRecipeIdIndex = retObj.currentIndex;
     $scope.orderedRecipeIds = retObj.orderedRecipeIds;
     if($scope.fullRecipes) {
@@ -130,6 +142,8 @@ angular.module('main')
       var idsToFetch = $scope.orderedRecipeIds.slice($scope.currentRecipeIdIndex, nextIndex);
       RecipeService.getMoreRecipesForSelection(idsToFetch).then(function(res) {
         var recipes = res.data;
+        $scope.newLoadedCount = 0;
+        $scope.newLoadedLength = recipes.length;
         $scope.currentRecipeIdIndex = nextIndex;
         if($scope.currentRecipeIdIndex >= $scope.orderedRecipeIds.length) {
           $scope.hideInfiniteScroll = true;

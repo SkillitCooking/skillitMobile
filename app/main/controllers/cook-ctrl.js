@@ -194,7 +194,7 @@ angular.module('main')
   $scope.data = {};
 
   $scope.logIngredient = function() {
-    
+
   };
 
   $scope.$watch("data.slider", function(nv, ov) {
@@ -475,7 +475,7 @@ angular.module('main')
           return false;
 
         case 'Protein':
-          if(ingredient.name.standardForm === 'Chicken') {
+          if(ingredient.inputCategory !== curInputCategory || ingredient.name.standardForm === 'Chicken') {
             return false;
           }
           return true;
