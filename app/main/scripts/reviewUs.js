@@ -9,11 +9,11 @@ angular.module('main')
         $specialOffer.init({
             id           : 'my-special-offer' + appVersion,
             showOnCount  : 5,
-            title        : 'Been Skillin\' it?',
-            text         : 'We\'d love to hear from ya!',
-            agreeLabel   : 'Rate Us!',
+            title        : 'Spread the Love!',
+            text         : 'Help others discover Skillit!',
+            agreeLabel   : 'Rate Us',
             remindLabel  : 'Remind Me Later',
-            declineLabel : 'No Thanks',
+            declineLabel : 'Nah, I\'m Selfish',
             onAgree      : function () {
                 // agree
                 if ($window.device.platform === 'iOS') {

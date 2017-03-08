@@ -129,19 +129,19 @@ angular.module('main')
     {
         'header': 'Input Ingredients',
         'subtitle': 'Tell us what you got',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/input-white.jpg',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/input.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/ingredients.png'
     },
     {
         'header': 'Browse Recipes',
         'subtitle': 'We\'ll show what you can make',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/selection-white.jpg',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/selection.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/selection.png'
     },
     {
         'header': 'Get Your Grub On',
         'subtitle': 'Click on steps for extra info',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-white.jpg',
+        'screenshot_ios': 'main/assets/images/ios_walkthrough/present.png',
         'screenshot_android': 'main/assets/images/android_walkthrough/present.png'
     }
   ]).constant('PAGINATION', {
