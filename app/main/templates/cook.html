@@ -6,17 +6,16 @@
     <ion-nav-buttons side="secondary">
       <button class="button top-back-button" ng-if="notBeginningSlide()" ng-click="resetIngredientSelection()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
-    <div class="bottom-nav-buttons-cook-tab row">   
-      <div class="col col-50">   
+    <div class="bottom-nav-buttons-cook-tab row">
+      <div class="col col-50">
         <button ng-click="slidePrev()" ng-disabled="isBeginningSlide()" class="button prev-nav-button"><i class="ion-arrow-left-c" aria-hidden="true"></i></button>
       </div>
       <div class="col col-50">
         <button ng-if="hasMoreSlides()" ng-click="slideNext()" class="button float-right"><i class="ion-arrow-right-c" aria-hidden="true"></i></button>
-        <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button float-right"><i class="ion-arrow-right-c" aria-hidden="true"></i></button>      
+        <button ng-if="!hasMoreSlides()" ng-click="toRecipeSelection()" class="button float-right"><i class="ion-arrow-right-c" aria-hidden="true"></i></button>
       </div>
     </div>
     <!-- do you want padding? -->
-    
         <!-- content goes here -->
       <ion-slides options="slideOptions" slider="data.slider">
         <ion-slide-page ng-repeat="categoryObj in ingredientCategories" ng-init="storeCatName($index, categoryObj)">
@@ -32,10 +31,10 @@
                       {{ingredient.name.standardForm}}
                     </ion-checkbox>
                   </span>
-                  <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
-                    <div class="grouping-of-ingredient-forms"> 
-                    <!--Insert 'any' form here-->             
-                      <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">                  
+                  <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">
+                    <div class="grouping-of-ingredient-forms">
+                    <!--Insert 'any' form here-->
+                      <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">
                         <label ng-click="ingredientFormSelected(form, ingredient)" class="checkbox checkbox-balanced">
                          <span class="ingredient-form-name">{{form.name}}</span>
                          <div ng-class="getFormCheckShape()">

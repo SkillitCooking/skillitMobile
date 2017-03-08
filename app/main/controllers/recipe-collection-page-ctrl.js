@@ -18,6 +18,16 @@ angular.module('main')
     $scope.navigateBack();
   }, 501);
 
+  $scope.$on('picture.loaded', function(e) {
+    $scope.newLoadedCount += 1;
+    e.stopPropagation();
+    if($scope.newLoadedCount >= $scope.newLoadedLength) {
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, LOADING.TIMEOUT);
+    }
+  });
+
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
   });
@@ -46,8 +56,10 @@ angular.module('main')
 
   $scope.loadMoreRecipes = function() {
     if($scope.collection) {
+      $scope.newLoadedCount = 0;
       RecipeService.getRecipesForCollection($scope.collection._id, $scope.nextPageNumber, userId, userToken).then(function(recipes) {
         if(recipes.data) {
+          $scope.newLoadedLength = recipes.data.length;
           if(recipes.data.length !== 0) {
             for (var i = recipes.data.length - 1; i >= 0; i--) {
               recipes.data[i].prepTime = 5 * Math.round(recipes.data[i].prepTime/5);
@@ -62,9 +74,6 @@ angular.module('main')
         }
         Array.prototype.push.apply($scope.recipes, recipes.data);
         $scope.$broadcast('scroll.infiniteScrollComplete');
-        setTimeout(function() {
-          $ionicLoading.hide();
-        }, 200);
       }, function(response) {
         ErrorService.showErrorAlert();
       });

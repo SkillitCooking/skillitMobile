@@ -1,44 +1,44 @@
 <ion-item class="item-thumbnail-left item-icon-right individual-recipe-in-list" ng-click="">
   <div class="row">
-    <div class="col padding-zero">  
-      <img ng-src="{{getPictureURL()}}">
+    <div class="col padding-zero">
+      <img ng-src="{{getPictureURL()}}" imageonload>
     </div>
-  </div> 
+  </div>
   <div class="row">
     <div class="col recipe-card-info">
       <h2 class="recipe-name" ng-if="!recipe.displayName">{{recipe.name}}</h2>
       <h2 class="recipe-name" ng-if="recipe.displayName">{{recipe.displayName}}</h2>
-      <div ng-if="!isfavorite" class="recipe-description-time">                
-      </div>      
-    </div>  
-  </div>  
+      <div ng-if="!isfavorite" class="recipe-description-time">
+      </div>
+    </div>
+  </div>
   <div class="row recipe-time-badges-row">
     <div class="col col-40 col-bottom ready-in-time-col">
-        <div class="ready-in-time">  
+        <div class="ready-in-time">
           <p class="font-weight-700 cooking-time-number">{{getRecipeTotalTime(recipe)}}</p>
-          <p class="cooking-time-type">Total</p>                                         
-        </div>  
-        <div class="ready-in-time">                    
-          <p class="recipe-time-clock"><i class="ion-android-time"></i></p> 
-        </div>    
-        <div class="ready-in-time">     
+          <p class="cooking-time-type">Total</p>
+        </div>
+        <div class="ready-in-time">
+          <p class="recipe-time-clock"><i class="ion-android-time"></i></p>
+        </div>
+        <div class="ready-in-time">
           <p class="font-weight-700 cooking-time-number">{{getRecipeActiveTime(recipe)}}</p>
-          <p class="cooking-time-type">Active</p>                        
-        </div>  
-    </div>   
-    <div class="col col-20 col-center padding-zero recipe-badges" ng-repeat="badge in shortRecipeBadges">      
+          <p class="cooking-time-type">Active</p>
+        </div>
+    </div>
+    <div class="col col-20 col-center padding-zero recipe-badges" ng-repeat="badge in shortRecipeBadges">
       <p style="text-align: center; line-height: 80%"><img ng-src="{{getBadgeIcon(badge)}}"></p>
       <p class="recipe-badges-name">{{getBadgeName(badge)}}</p>
-    </div>     
+    </div>
   </div>
   <!--<div class="row">
     <div class="col recipe-card-info">
-      <p class="font-weight-600 cooking-time">Ready In: {{getRecipeTotalTime(recipe)}} mins | Active: {{getRecipeActiveTime(recipe)}} mins </p>      
+      <p class="font-weight-600 cooking-time">Ready In: {{getRecipeTotalTime(recipe)}} mins | Active: {{getRecipeActiveTime(recipe)}} mins </p>
     </div>
   </div>-->
   <!--Recipe Badges-->
   <!--<div class="row recipe-badges">
-    <div class="col" ng-repeat="badge in shortRecipeBadges">      
+    <div class="col" ng-repeat="badge in shortRecipeBadges">
       <p style="text-align: center; line-height: 80%"><img ng-src="{{getBadgeIcon(badge)}}"></p>
       <p class="recipe-badges-name">{{getBadgeName(badge)}}</p>
     </div>
@@ -47,5 +47,5 @@
 </ion-item>
 
 
-<!--p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p-->        
-      <!--<p ng-if="recipe.usesMissingIngredients" class="missing-ingredient-note font-weight-500">Recipe calls for ingredients you didn't select</p>-->            
+<!--p ng-if="showRecipeDisclaimer()" class="italic"><i>Note: {{getRecipeDisclaimer()}}</i></p-->
+      <!--<p ng-if="recipe.usesMissingIngredients" class="missing-ingredient-note font-weight-500">Recipe calls for ingredients you didn't select</p>-->

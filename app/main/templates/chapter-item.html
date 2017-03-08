@@ -1,14 +1,14 @@
 <ion-item class="education-collection " ng-click="">
 	<div class="row">
 		<div class="col education-image">
-			<img ng-if="chapter.pictureURL" ng-src="{{chapter.pictureURL}}">
+			<img ng-if="chapter.pictureURL" ng-src="{{chapter.pictureURL}}" imageonload>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col ">
 			<h2 class="education-title"><span class="chapter-number">{{index + 1}} </span>{{chapter.name}}</h2>
 			<p>{{chapter.description}}</p>
-			<!--<p><b>Estimated Time: {{chapter.timeEstimate}} min</b></p>-->  
+			<!--<p><b>Estimated Time: {{chapter.timeEstimate}} min</b></p>-->
 		</div>
 	</div>
 </ion-item>

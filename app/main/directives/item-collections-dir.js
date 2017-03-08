@@ -9,6 +9,8 @@ angular.module('main')
       itemType: '='
     },
     link: function (scope, element, attrs) {
+      var collectionSize;
+      var collectionPicturesLoadedCount = 0;
       scope.collectionRows = [];
       function getCollectionRows(collections) {
         var collectionRows = [];
@@ -29,6 +31,7 @@ angular.module('main')
       var deregistration = scope.$watch('collections', function(nv, ov) {
         if(nv) {
           scope.collectionRows = getCollectionRows(nv);
+          collectionSize = nv.length;
           deregistration();
         }
       });
@@ -54,6 +57,15 @@ angular.module('main')
             ErrorService.showErrorAlert();
         }
       };
+
+      scope.$on('picture.loaded', function(e) {
+        collectionPicturesLoadedCount += 1;
+        e.stopPropagation();
+        if(collectionPicturesLoadedCount === collectionSize) {
+          console.log(collectionSize);
+          scope.$emit('allCollections.Loaded');
+        }
+      });
 
       scope.isRecipeCollection = function() {
         if(scope.itemType === 'recipe') {

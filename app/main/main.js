@@ -6,7 +6,8 @@ angular.module('main', [
   'restangular',
   'ionic.cloud',
   'ngStorage',
-  'ng-persist'
+  'ng-persist',
+  'ngSpecialOffer'
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
