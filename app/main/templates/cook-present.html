@@ -116,14 +116,16 @@
         <div class="col">
           <p style="text-align: center"><button class="button facebook social-share-buttons" ng-click="socialShareMeal('facebook')"><i class="icon ion-social-facebook"></i> Post!</button></p>
         </div>
+      </div>
+      <div class="row">
         <div class="col">
           <p style="text-align: center"><button class="button twitter social-share-buttons" ng-click="socialShareMeal('twitter')"><i class="icon ion-social-twitter"></i> Tweet!</button></p>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)">Save To Faves</button></p>
-          <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)">Unfavorite Recipe</button></p>
+          <p style="text-align:center"><button class="button favorite-recipe social-share-buttons" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)"><i class="ion-android-star"></i>Save To Faves</button></p>
+          <p style="text-align:center"><button class="button favorite-recipe social-share-buttons" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)"><i class="ion-android-star"></i>Unfavorite Recipe</button></p>
         </div>
       </div>      
     </ion-content>

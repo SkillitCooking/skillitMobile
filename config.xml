@@ -86,5 +86,5 @@
         <variable name="APP_ID" value="1688425284810758" />
         <variable name="APP_NAME" value="Skillit Cooking" />
     </plugin>
-    <plugin name="cordova-plugin-dialogs" spec="~1.3.1" />
+    <plugin name="cordova-plugin-dialogs" spec="~1.3.2" />
 </widget>

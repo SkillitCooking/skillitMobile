@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 angular.module('main')
 //check for hot updates
 .run(function($ionicPopup, $ionicDeploy, $ionicLoading, $persist, Config, LOADING) {
@@ -41,4 +41,4 @@ angular.module('main')
       //nothing
     }
   });
-});
+});*/

@@ -128,27 +128,21 @@ angular.module('main')
  }).constant('INTRO_SLIDES', [
     {
         'header': 'Input Ingredients',
-        'subtitle': 'Tell us what you want to cook with and we\'ll show you what you can make',
+        'subtitle': 'Tell us what you got',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/input-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/ingredients.png'
     },
     {
-        'header': 'Select Recipe',
-        'subtitle': 'Choose one of our recipes or use \'Build Your Own\' to make your perfect dish',
+        'header': 'Browse Recipes',
+        'subtitle': 'We\'ll show what you can make',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/selection-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/selection.png'
     },
     {
-        'header': 'Customize Away',
-        'subtitle': 'Feeling hungry? Add some sides. Feeling adventurous? Try different spices.',
+        'header': 'Get Your Grub On',
+        'subtitle': 'Click on steps for extra info',
         'screenshot_ios': 'main/assets/images/ios_walkthrough/present-white.jpg',
         'screenshot_android': 'main/assets/images/android_walkthrough/present.png'
-    },
-    {
-        'header': 'Learn As You Go',
-        'subtitle': 'Watch recipe overview videos and tap on certain steps for more info',
-        'screenshot_ios': 'main/assets/images/ios_walkthrough/present-steps-white.jpg',
-        'screenshot_android': 'main/assets/images/android_walkthrough/present-steps.png'
     }
   ]).constant('PAGINATION', {
     'ITEMS_PER_PAGE': 25,
@@ -173,12 +167,14 @@ angular.module('main')
   }).constant('KEYS', {
     'BLANK': 'blank'
   }).constant('FAREWELL_COPY', [
-    'Get Your Grub On',
-    'Time To Eat',
-    'Get Ready To Feast',
+    'Get Your Grub On!',
+    'Time To Eat!',
+    'Get Ready To Feast!',
     'Grab a Fork and Dig In!',
     'Grab a Spork and Dig In!',
-    'Enjoy Your Edible Masterpiece'
+    'Enjoy Your Edible Masterpiece!',
+    'It\'s Eating Time!',
+    'Let\'s Grub!'
   ]).constant('STEP_ICONS', {
     'VIDEO': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAC2klEQVRoQ+2ZTXbaQAzH/wI3WYY5QekNTGBfsgCy5AalJwg9AfQEoScIPUHTXaCLkj003KDuCdwueSVWnw2m2Ab8MR4CPHsHT6PRTxrJ0phwIg+dCAcykEOLZBaRLCKKPJAdLUWOTaw2ckTMmq4Dry5AXF3uVgBBX+3M8P4ON2nkEWEsf7MBzhnI//0lHqZGuJqFxFYQ81ovwtJuAFQ9BkfVnJ7cCMx9MZx83qVyI4hZu2yB6BZEhfTskdTEmILn78W36XSTpgCIWS83QfRFcltFy9nA7LkkRtPf/g2CII3yT4CKiixJQS1/EoNJeyeIk9A57SmF3RSqYEMMJm92gxz0sVozfTYX/uPlOVpmvdIFoaPQnemoJlyJh7GnfHtBGuUeQHbJPfDH+iAGP3rrRvojMgLhbWIKwpVd8wF6nVhHlIWMj2I47ioDEYOx4xizcdlmpi4RXUSxK74MfxWDSXMXyJPMW9wFcWCqegHn+a6So8p4FMOx2yo5PL4cqXB87/xfsQ7i/rtsdfpSR9ZvFGMqhuPS9og00gdZATmlHXYxSSV//E5THhG/M+0Sz+C2bP68OMgqf87yPRC9S3qUDwfkPH8LUOtoQcx6pQNwW3ZEeLGILMYD2FFIpbPeO4hTflm7cybNFJ/dIPWKVIsSeCGeaR0QArODNE/oCzElELNRvgGjK5sHW4FVg2DRNN6llQfbIxfeax3HPBKh+z0OEITNI9eVKhjfpZNRtYLQCdFpvTVTtR3S+sNmdqcPkqxc0kaGKggmemAecUBqus6UH8l2p6H2JBWw5qVNt42br0zr5SYD/UOCYeY/BLTEcHK/yQfbL7GdfMm1wDm7R0p+IZHU8+46xiPIusfM6m+6KnXFon9WsHsmaEU8W0VQzm38vP1THGDbQO+zuKdiy0A+ZwBzI5XPCrKO3Pf6yBHZt2Fx98tA4npMtXwWEdUejqs/i0hcj6mWP5mI/ANrwhhC8mn+vAAAAABJRU5ErkJggg==',
     'TIP': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADs0lEQVRoQ+2aTVYaQRDH/zXwfNnFPkHwBGkdspYsAHfiCYInEE+gnkA8gXqC4M7BheMeDDmBcIGM2cX3nKm8bkBBvma0e8LzpTcs6K6uX1dXdXfVEN5JI1McQfHLJpxIApAA5cAsQbQ6Lp+7AHUB9YsOovBGXHU6JnR4E0hQzm8DXAGjMql0TPWY70FoANQQXusi5qiJbolBgoJcxUp2D8RVvfJGm7ZUHQ/hufA790lEJwIJSvkDgGuvXv24mikrATXRbJ/HHRILJChKCcqegtT+T7X5oMddcdlRlprbFoIEZXcPoPoiQdb+V9Zh3hdXt2fz5pgLEpTdU4Cq1pRMIphRF83W/qwhM0GWCuJJez4TXnt3GsxUkOWEGKjPOBLN1uFLmAmQoJQ/BOEgidVT7xtFuy99Zgwk2MoXwLhOXbGkE6oA4ITro9FsHKTs3pk95LgHVlcSAMQ5gD4l1XlOf194ra/D/59ArGypkf1sRf7IFtMg/WtH5s74iW0bBNwVXntNG1yDFDeqcJxTg2bvi7IOoubgHdFsN/ogxn1juCTDa7umUj5i+JKp5V4Ir12hYEvmwNk749ZIUaDwWkRBeaMGOMcpzmt+KuYdCkruGYi+mZeeokTGEQWlvA/Cpp1p+UR47drAD+sA7Vma54KCcp7tCE8pavWj481/kFhWTOMc0UcJ/35PFnFVrsnkZe7ZWClZpO8jNqNWWiDgEwVi7yGVGki0T1YfU2mBRI/r+tL4q+TeE9HHWJEoSadUQLgnvHauf/u1dU1JA2Qwx+A9IiWc7I8kix2rbxog9Lim3u7PT92yqzLi27EUjNvJNgjzuWi2dQLxGcTGu8QiiD7NnVAOMynjWRTjoZi7YBrmbCtmk+DRvvBun3LSUxJ0bgdEn+Punn/Sj3Ejmq3C6NyTIAW5yiuZrpVwbISae3gI5ctC0PTcb1FKpoy/bDDaLzgsTKs7zs7GLxnMPIixqPXS6kuVXWH+CSeszKtczbaIrdM+sZ/wCR7Cw0XF0ek+UnJVufl74jmNDuAeiKrisuXHETsZtXThM3NtPA8cR5vhs5X4cPSMiDN0/EC0lQOOo4nyA+b6oqLnLFGjZYVjEHQOKo2moxDBB9gHRY04Jeh5eg2T2G+r3o6spi5RfMhKhFEO5IwnrTnqIuN08eexs8h5ky4mBWX3lRlA7gFogML6W1czqdLT+idMPgyUj8IzU1/1mIDQB6J+s0dcnZrIVltGfY7E7ANRZ9mUn39pLEq5zArPsuBfagL1XBkHgq4AAAAASUVORK5CYII=',

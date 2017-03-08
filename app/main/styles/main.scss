@@ -194,6 +194,12 @@ h1 {
 	float: right;
 	margin-right: 20px;
 }
+.marg-left-neg-4 {
+	margin-left: -4px;
+}
+.marg-right-neg-2 {
+	margin-right: -2px;
+}
 /***********************/
 /*POPUPS*/
 .popup-container .popup {
@@ -322,14 +328,17 @@ ion-nav-back-button.button-clear {
 /*general*/
 img.skillit-logo-nav-bar {
 	max-height: 44px;
-	padding: 7px 0 3px;
+	padding: 7px 0 4px;
 }
 .top-back-button .ion-arrow-left-c {
 	font-size: 30px;
 }
+.bar .buttons-left span {
+    margin-top: 2px;
+}
 .top-back-button .fa-refresh {
 	font-size: 23px;
-	padding-top: 4px;
+	padding-top: 6px;
 }
 .cook-tab.scroll-content.ionic-scroll, .edit-byo.scroll-content.ionic-scroll, .add-side.scroll-content.ionic-scroll {
 	height: 78%;
@@ -374,7 +383,7 @@ img.skillit-logo-nav-bar {
     color: $balanced;
     border: none;
     min-width: 114px;
-    height: 43px;
+    height: 47px;
     font-size: 350%;
 }
 .bottom-nav-buttons-cook-tab .button:active {	
@@ -455,7 +464,7 @@ h4.ingredient-subtype-heading {
     font-weight: 400;	
 }
 .cook-tab .list .item-checkbox {
-    padding: 16px 16px 13px 40px;
+    padding: 14px 16px 15px 40px;
 }
 /***********************/
 /*recipe selection tab*/
@@ -540,7 +549,8 @@ p.recipe-badges-name {
 	font-weight: 500;
 }
 div.ready-in-time {
-	margin: 2px 1px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 	display: inline-block;
 }
 .ready-in-time p {
@@ -562,7 +572,8 @@ p.cooking-time-type {
 	margin: 3px 0;
 }
 .ready-in-time .ion-android-time {
-	font-size: 35px;
+	font-size: 32px;
+	color: $balanced;
 }
 .ready-in-time p.cooking-time {
 	margin-top: -6px;
@@ -861,7 +872,8 @@ span.step-list-number {
 }
 .button.social-share-buttons {
     padding: 0;
-    min-width: 120px;
+    width: 100%;
+    max-height: 45px;
     font-weight: 600;
     border-radius: 8px;
 }
@@ -891,6 +903,15 @@ span.step-list-number {
 	background-color: #ffffff;
 	color: #009688;
 	border-color: #009688;
+}
+.favorite-recipe {
+	background-color: $balanced;
+	color: #ffffff;
+}
+.button.favorite-recipe:hover, .button.favorite-recipe:active {
+	background-color: #ffffff;
+	color: $balanced;
+	border-color: $balanced;
 }
 
 /*seasoning profile selector*/
@@ -1090,21 +1111,20 @@ span.chapter-number {
 .recipe-collection-row {
 	padding: 0 3px;
 }
-.recipe-collection-container {
-	text-align: center;
-}
 .recipe-collection-image {
 	width: 100%;
 }
 .recipe-collection-container h2{
-	position: absolute;
-	bottom: 5%;
-	color: #ffffff;
-	font-size: 20px;
-	width: 80%;
-	left: 10px;
-	font-weight: 400;
-	text-align: left;
+    position: absolute;
+    bottom: 2px;
+    color: #ffffff;
+    font-size: 16px;
+    width: 100%;
+    text-shadow: 0px 1px #333333;
+    padding: 15px 5px 7px 10px;
+    font-weight: 400;
+    text-align: left;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .4));
 }
 .item.recipe-categories {
 	margin: -4px 0;
@@ -1158,8 +1178,8 @@ p.recipe-collection-description {
 	border-bottom: none;
 }
 .social-login-buttons .button {
-	width: 120px;
-	border-radius: 40px;
+	width: 100%;
+	border-radius: 10px;
 	font-weight: 600;
 }
 .login-screen .login-signup.button {
@@ -1327,14 +1347,14 @@ h2.intro-slide-header {
 		font-size: 17px;
 	}	
 	.recipe-collection-container h2{
-		font-size: 23px;
+		font-size: 18px;
 	}
 	p.account-tab-text {
 		margin: 0 20px 10px;
 		font-size: 16px;
 	}	
 	.ready-in-time .ion-android-time {
-		font-size: 35px;
+		font-size: 32px;
 	}
 	h2.ingredient-type-heading {
 		margin: 0 0 5px 44px;
