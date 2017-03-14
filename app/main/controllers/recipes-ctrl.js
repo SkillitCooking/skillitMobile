@@ -15,8 +15,11 @@ angular.module('main')
     noBackdrop: true
   });
 
+  $scope.showCollections = false;
+
   $scope.$on('allCollections.Loaded', function(e) {
     e.stopPropagation();
+    $scope.showCollections = true;
     setTimeout(function() {
       $ionicLoading.hide();
     }, LOADING.TIMEOUT);

@@ -4,7 +4,7 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'https://skillicookingprodapi.info/api/',
+        'SERVER_URL': 'https://api.skillitapi.com/',
     'CHANNEL': 'production',
     'API_PASSWORD': 'sm@34MLPG9L&rWph|YMwcg=&5|R3TMZ!!H+F48ThGFl56E&*RD'
         /*endinject*/

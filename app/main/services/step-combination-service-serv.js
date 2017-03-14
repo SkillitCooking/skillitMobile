@@ -86,13 +86,17 @@ angular.module('main')
         return false;
 
       case 'BringToBoil':
+      case 'BreakEgg':
       case 'Cut':
       case 'Dry':
       case 'EquipmentPrep':
       case 'Heat':
+      case 'Move':
       case 'Place':
       case 'PreheatOven':
+      case 'Remove':
       case 'Season':
+      case 'Serve':
       case 'Stir':
         return true;
 
@@ -184,11 +188,30 @@ angular.module('main')
         }
       }, 0);
       combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
-      combinedRecipe.mainVideos = _.map(recipes, function(recipe) {
+      var mainVideos = recipes.map(function(recipe) {
         if(recipe.mainVideo && recipe.mainVideo.videoId) {
-          return recipe.mainVideo;
+          return {
+            video: recipe.mainVideo,
+            type: recipe.recipeType
+          };
+        }
+      }).filter(function(video) {
+        if(typeof video !== 'undefined') {
+          return true;
+        } else {
+          return false;
         }
       });
+      //take out undefined in case some of the recipes don't have videos
+      if(mainVideos.length > 0 && mainVideos[0].type !== 'Full') {
+        combinedRecipe.mainVideo = null;
+      } else if(mainVideos.length > 1) {
+        combinedRecipe.mainVideos = mainVideos;
+      } else if (mainVideos.length === 1) {
+        combinedRecipe.mainVideo = mainVideos[0];
+      } else {
+        combinedRecipe.mainVideo = null;
+      }
       //set combinedRecipe recipeCategories and recipeTypes
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {

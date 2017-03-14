@@ -8,7 +8,7 @@
         <a ng-class="getBYOButtonClass()" ng-click="selectBYO()">BYOs</a>
       </div>-->
       <div ng-if="fullSelected">
-        <item-collections collections="recipeCollections" item-type="'recipe'"></item-collections>
+        <item-collections ng-show="showCollections" collections="recipeCollections" item-type="'recipe'"></item-collections>
       </div>
       <!--<div ng-if="BYOSelected">
         <h3 class="recipe-category no-bottom-margin">Build Your Own</h3>

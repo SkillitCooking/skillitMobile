@@ -296,7 +296,6 @@ angular.module('main')
   $scope.recipeIds = $stateParams.recipeIds;
   //run initial check for favoriting
   if($stateParams.loadAlaCarte) {
-    console.log('here');
     RecipeService.getRecipesOfType('AlaCarte', userId, userToken).then(function(recipes) {
       recipes = recipes.data;
       recipes.sort(ingredientCategoryCmpFn);
@@ -334,7 +333,6 @@ angular.module('main')
   if($ionicAuth.isAuthenticated()) {
     isAnonymous = false;
   }
-  console.log('there');
   MealsCookedService.postCookedMeal({
     recipeIds: $scope.recipeIds,
     source: source,
@@ -377,7 +375,6 @@ angular.module('main')
         }
       }
     }
-    console.log('hey');
     recipes.sort(recipeTypeCmpFn);
     RecipeInstantiationService.cullIngredients(recipes, $scope.selectedIngredientNames, $scope.selectedIngredientIds);
     if($stateParams.nameDefaultSeasoning) {
