@@ -146,7 +146,8 @@ angular.module('main')
       for (var i = recipes.length - 1; i >= 0; i--) {
         if(recipes[i].recipeType === 'Full' || recipes[i].recipeType === 'BYO') {
           combinedRecipe.mainName = recipes[i].name;
-          combinedRecipe.mainPictureURL = recipes[i].mainPictureURL;
+          //initial setting
+          combinedRecipe.mainPictureURL = recipes[i].mainPictureURLs[0];
         } else if(recipes[i].recipeType === 'AlaCarte') {
           alaCarteRecipeNames.push(recipes[i].name);
         }
@@ -159,8 +160,6 @@ angular.module('main')
       if(!combinedRecipe.mainName) {
         combinedRecipe.mainName = combinedRecipe.alaCarteNames;
         combinedRecipe.alaCarteNames = undefined;
-        //set mainPictureURL to index 0
-        combinedRecipe.mainPictureURL = recipes[0].mainPictureURL;
       }
       combinedRecipe.prepTime = _.reduce(recipes, function(prepTime, recipe) {
         return prepTime + recipe.prepTime;

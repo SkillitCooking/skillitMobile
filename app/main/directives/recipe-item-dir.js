@@ -26,10 +26,20 @@ angular.module('main')
           if(scope.recipe.mainPictureURLs) {
             var index = LibraryFunctions.getRandomIndex(scope.recipe.mainPictureURLs.length);
             scope.chosenPictureURL = scope.recipe.mainPictureURLs[index];
+            if(scope.recipe.mainPictureURLs.length === 1) {
+              scope.recipe.displayPictureURL = scope.recipe.mainPictureURLs[index];
+            } else {
+              if(index === 0) {
+                scope.recipe.displayPictureURL = scope.recipe.mainPictureURLs[index+1];
+              } else {
+                scope.recipe.displayPictureURL = scope.recipe.mainPictureURLs[index-1];
+              }
+            }
           } else {
             scope.chosenPictureURL = scope.recipe.mainPictureURL;
           }
         }
+        console.log('pictureURL', scope.chosenPictureURL);
         return scope.chosenPictureURL;
       };
 

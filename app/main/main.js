@@ -221,7 +221,8 @@ angular.module('main', [
           isNewLoad: false,
           displayName: null,
           displayNameType: null,
-          nameDefaultSeasoning: null
+          nameDefaultSeasoning: null,
+          displayPictureURL: null
         }
       })
       .state('main.cookAddSide', {
@@ -313,7 +314,8 @@ angular.module('main', [
           isNewLoad: false,
           displayName: null,
           displayNameType: null,
-          nameDefaultSeasoning: null
+          nameDefaultSeasoning: null,
+          displayPictureURL: null
         }
       })
       .state('main.cookAddSideRecipes', {

@@ -137,7 +137,7 @@ angular.module('main')
       var selectedNames = [], selectedIds = [];
       setSelected(selectedNames, selectedIds, recipe);
       setTimeout(function() {
-        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true, displayName: displayName, displayNameType: displayNameType, nameDefaultSeasoning: recipe.newDefaultSeasoning});
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true, displayName: displayName, displayNameType: displayNameType, nameDefaultSeasoning: recipe.newDefaultSeasoning, displayPictureURL: recipe.presentDisplayPictureURL});
       }, 200);
     }
   };

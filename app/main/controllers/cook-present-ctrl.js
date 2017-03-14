@@ -410,6 +410,10 @@ angular.module('main')
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
+    //set pictureURL
+    if($stateParams.displayPictureURL) {
+      $scope.combinedRecipe.mainPictureURL = $stateParams.displayPictureURL;
+    }
     if($stateParams.displayName) {
       if($scope.combinedRecipe.mainName) {
         $scope.combinedRecipe.mainName = $stateParams.displayName;
@@ -1168,7 +1172,10 @@ angular.module('main')
     }
   };
 
-
+  $scope.getMainPictureURL = function() {
+    //will need to set main picture URL combined recipe
+    
+  };
 
   function getFarewellCopy() {
     var index = LibraryFunctions.getRandomIndex(FAREWELL_COPY.length);
