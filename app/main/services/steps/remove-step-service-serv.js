@@ -1,7 +1,7 @@
 //[removeType] the [ingredientsToRemove]
 'use strict';
 angular.module('main')
-.factory('removeStepService', ['_', 'StepTipService', 'DishInputService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, DishInputService, GeneralTextService, STEP_TYPES, ErrorService) {
+.factory('removeStepService', ['_', 'StepTipService', 'reduceHeatStepService', 'DishInputService', 'GeneralTextService', 'STEP_TYPES', 'ErrorService', function (_, StepTipService, reduceHeatStepService, DishInputService, GeneralTextService, STEP_TYPES, ErrorService) {
   var service = {};
 
   function getIngredientsToRemove(step, referencedStep) {
@@ -163,12 +163,33 @@ angular.module('main')
     }
   }
 
+  function constructAuxiliaryStep(step, dish) {
+    //assuming only one...
+    if(!step.isEmpty) {
+      reduceHeatStepService.constructAuxiliaryStep(step.auxiliarySteps[0], dish);
+    }
+  }
+
+  function addAuxiliaryStep(step) {
+    if(!step.isEmpty) {
+      if(step.text.charAt(step.text.length - 1) !== '.') {
+        step.text += '.';
+      }
+      step.text += " " + step.auxiliarySteps[0].text;
+    }
+  }
+
   service.fillInStep = function(recipe, stepIndex) {
     var step = recipe.stepList[stepIndex];
     //instantiate step
     instantiateStep(step, recipe);
     //construct step
     constructStepText(step);
+    //auxiliary step handling
+    if(step.auxiliarySteps && step.auxiliarySteps.length > 0) {
+      constructAuxiliaryStep(step, step.dishRemovedFrom);
+      addAuxiliaryStep(step);
+    }
   };
 
   return service;

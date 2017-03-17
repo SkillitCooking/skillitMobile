@@ -137,6 +137,17 @@ angular.module('main')
     }
   }
 
+  function addAuxiliarySteps(step) {
+    if(!step.isEmpty) {
+      for (var i = step.auxiliarySteps.length - 1; i >= 0; i--) {
+        if(step.text.charAt(step.text.length - 1) !== '.') {
+          step.text += '.';
+        }
+        step.text += " " + step.auxiliarySteps[i].text;
+      }
+    }
+  }
+
   service.fillInStep = function(recipe, stepIndex) {
     var step = recipe.stepList[stepIndex];
     //instantiate step
@@ -146,6 +157,7 @@ angular.module('main')
     //construct auxiliary steps
     if(step.auxiliarySteps && step.auxiliarySteps.length > 0){
       constructAuxiliarySteps(step, recipe);
+      addAuxiliarySteps(step);
     }
   };
 

@@ -39,7 +39,6 @@ angular.module('main')
             scope.chosenPictureURL = scope.recipe.mainPictureURL;
           }
         }
-        console.log('pictureURL', scope.chosenPictureURL);
         return scope.chosenPictureURL;
       };
 

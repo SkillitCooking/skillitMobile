@@ -3,6 +3,7 @@ angular.module('main')
 .controller('RecipeCollectionPageCtrl', ['$window', '$scope', '$stateParams', '$state', 'RecipeService', 'RecipeNameConstructionService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, RecipeService, RecipeNameConstructionService, $ionicLoading, $ionicPlatform, $ionicHistory, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
 
   $scope.collection = $stateParams.collection;
+  console.log('colleciton', $scope.collection);
 
   $ionicLoading.show({
     template: LOADING.FETCHING_TEMPLATE,

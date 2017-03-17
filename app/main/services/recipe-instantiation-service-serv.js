@@ -4,11 +4,11 @@ angular.module('main')
   ['_', 'bakeStepService', 'boilStepService', 'breakEggStepService', 'bringToBoilStepService', 
   'cookStepService', 'customStepService', 'cutStepService', 'dryStepService',
   'equipmentPrepStepService', 'heatStepService', 'moveStepService', 'placeStepService',
-  'preheatOvenStepService', 'removeStepService', 'sauteeStepService', 'serveStepService', 'seasonStepService',
+  'preheatOvenStepService', 'reduceHeatStepService', 'removeStepService', 'sauteeStepService', 'serveStepService', 'seasonStepService',
   'slowCookStepService', 'steamingStepService', 'stirStepService', 'ErrorService',
   function (_, bakeStepService, boilStepService, breakEggStepService, bringToBoilStepService, cookStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
-    heatStepService, moveStepService, placeStepService, preheatOvenStepService, removeStepService, sauteeStepService,
+    heatStepService, moveStepService, placeStepService, preheatOvenStepService, reduceHeatStepService, removeStepService, sauteeStepService,
     serveStepService, seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
   var service = {};
 
@@ -124,6 +124,10 @@ angular.module('main')
             preheatOvenStepService.fillInStep(recipes[i], j);
             break;
 
+          case "ReduceHeat":
+            reduceHeatStepService.fillInStep(recipes[i], j);
+            break;
+
           case "Remove":
             removeStepService.fillInStep(recipes[i], j);
             break;
@@ -206,6 +210,9 @@ angular.module('main')
       case "PreheatOven":
         return false;
 
+      case "RemoveHeat":
+        return true;
+
       case "Remove":
         return true;
 
@@ -279,6 +286,10 @@ angular.module('main')
 
       case "PreheatOven":
         return false;
+
+      case "ReduceHeat":
+        return step.stepInputs["reduceHeatObjectInput"];
+        break;
 
       case "Remove":
         return step.stepInputs["stepInput"];

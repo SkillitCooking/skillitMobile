@@ -410,6 +410,7 @@ angular.module('main')
     RecipeInstantiationService.setTheRestIsEmpty(recipes);
     //build the below out later
     $scope.combinedRecipe = StepCombinationService.getCombinedRecipe(recipes, $stateParams.currentSeasoningProfile);
+    console.log('combinedRecipe', $scope.combinedRecipe);
     //set pictureURL
     if($stateParams.displayPictureURL) {
       $scope.combinedRecipe.mainPictureURL = $stateParams.displayPictureURL;

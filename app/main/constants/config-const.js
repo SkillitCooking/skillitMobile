@@ -4,9 +4,9 @@ angular.module('main')
   .constant('Config', {
     ENV: {
         /*inject-env*/
-        'SERVER_URL': 'https://api.skillitapi.com/',
-    'CHANNEL': 'production',
-    'API_PASSWORD': 'sm@34MLPG9L&rWph|YMwcg=&5|R3TMZ!!H+F48ThGFl56E&*RD'
+        'SERVER_URL': 'https://skillicookingdevapi.info/api/',
+    'CHANNEL': 'dev',
+    'API_PASSWORD': 'MDm|C7oQQIm&AZyhx4g7m^+uNGqm$7Ctt2-60O&Ek-%0o!NuLT'
         /*endinject*/
     },
     BUILD : {
@@ -15,7 +15,7 @@ angular.module('main')
     }
   })
   .constant('COMPATIBILITY', {
-    'VERSION': 3
+    'VERSION': 4
   })
   .constant('NAME_FORM_FLAGS', {
     'SINGULAR': 'singularForm',
@@ -36,6 +36,7 @@ angular.module('main')
     'MOVE': 'Move',
     'PLACE': 'Place',
     'PREHEAT': 'PreheatOven',
+    'REDUCEHEAT': 'ReduceHeat',
     'REMOVE': 'Remove',
     'SAUTEE': 'Saute',
     'SEASON': 'Season',

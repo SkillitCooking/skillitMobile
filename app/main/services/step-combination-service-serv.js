@@ -94,6 +94,7 @@ angular.module('main')
       case 'Move':
       case 'Place':
       case 'PreheatOven':
+      case 'ReduceHeat':
       case 'Remove':
       case 'Season':
       case 'Serve':
