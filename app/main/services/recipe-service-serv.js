@@ -1,23 +1,40 @@
 'use strict';
 angular.module('main')
-.factory('RecipeService', function (Restangular) {
+.factory('RecipeService', function (Restangular, COMPATIBILITY) {
   var baseRecipes = Restangular.all('recipes');
 
   return {
-    getRecipesWithIngredients: function(ingredientIds) {
-      return baseRecipes.customPOST(ingredientIds, 'getRecipesWithIngredients');
+    getRecipesWithIngredients: function(ingredientIds, userId, userToken) {
+      return baseRecipes.customPOST({ingredientIds: ingredientIds, userId: userId, userToken: userToken, compatibilityVersion: COMPATIBILITY.VERSION}, 'getRecipesWithIngredients');
+    },
+    getRecipesWithIngredientsNew: function(ingredientIds, userId, userToken) {
+      return baseRecipes.customPOST({
+        ingredientIds: ingredientIds,
+        userId: userId,
+        userToken: userToken,
+        compatibilityVersion: COMPATIBILITY.VERSION
+      }, 'getRecipesWithIngredientsNew');
+    },
+    //"ingredientIds" below misnamed...
+    getMoreRecipesForSelection: function(idsToFetch, ingredientIds) {
+      return baseRecipes.customPOST({ingredientIds: idsToFetch, availableIngredientIds: ingredientIds, compatibilityVersion: COMPATIBILITY.VERSION}, 'getMoreRecipesForSelection');
+    },
+    getMoreRecipesForCategory: function(info) {
+      info.compatibilityVersion = COMPATIBILITY.VERSION;
+      return baseRecipes.customPOST(info, 'getMoreRecipesForCategory');
     },
     getRecipesWithIds: function(recipeIds) {
+      recipeIds.compatibilityVersion = COMPATIBILITY.VERSION;
       return baseRecipes.customPOST(recipeIds, 'getRecipesWithIds');
     },
     getRecipesOfTheDay: function() {
-      return baseRecipes.customPOST({}, 'getRecipesOfTheDay');
+      return baseRecipes.customPOST({compatibilityVersion: COMPATIBILITY.VERSION}, 'getRecipesOfTheDay');
     },
-    getRecipesForCollection: function(collectionId) {
-      return baseRecipes.customPOST({collectionId: collectionId}, 'getRecipesForCollection');
+    getRecipesForCollection: function(collectionId, pageNumber, userId, userToken) {
+      return baseRecipes.customPOST({collectionId: collectionId, pageNumber: pageNumber, userId: userId, userToken: userToken, compatibilityVersion: COMPATIBILITY.VERSION}, 'getRecipesForCollection');
     },
-    getRecipesOfType: function(recipeType) {
-      return baseRecipes.customPOST({recipeType: recipeType}, 'getRecipesOfType');
+    getRecipesOfType: function(recipeType, userId, userToken) {
+      return baseRecipes.customPOST({recipeType: recipeType, userId: userId, userToken: userToken, compatibilityVersion: COMPATIBILITY.VERSION}, 'getRecipesOfType');
     }
   };
 

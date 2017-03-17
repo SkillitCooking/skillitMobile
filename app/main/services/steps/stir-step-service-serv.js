@@ -61,7 +61,6 @@ angular.module('main')
               };
             } else {
               //error - no products for found step
-              console.log("stirStepService error: no products for referencedStep: ", referencedStep);
               ErrorService.logError({
                 message: "Stir Step Service ERROR: no products for referencedStep in function 'instantiateStep'",
                 referencedStep: referencedStep,

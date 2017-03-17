@@ -266,7 +266,7 @@ angular.module('main')
         case 0:
           //error
           ErrorService.logError({
-            message: "Place Step Service ERROR: ingredientsToPlace in function 'constructStepText'",
+            message: "Place Step Service ERROR: ingredientsToPlace in function 'constructStepText' is empty",
             step: step
           });
           ErrorService.showErrorAlert();

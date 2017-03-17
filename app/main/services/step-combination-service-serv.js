@@ -86,13 +86,18 @@ angular.module('main')
         return false;
 
       case 'BringToBoil':
+      case 'BreakEgg':
       case 'Cut':
       case 'Dry':
       case 'EquipmentPrep':
       case 'Heat':
+      case 'Move':
       case 'Place':
       case 'PreheatOven':
+      case 'ReduceHeat':
+      case 'Remove':
       case 'Season':
+      case 'Serve':
       case 'Stir':
         return true;
 
@@ -142,9 +147,13 @@ angular.module('main')
       for (var i = recipes.length - 1; i >= 0; i--) {
         if(recipes[i].recipeType === 'Full' || recipes[i].recipeType === 'BYO') {
           combinedRecipe.mainName = recipes[i].name;
-          combinedRecipe.mainPictureURL = recipes[i].mainPictureURL;
+          //initial setting
+          combinedRecipe.mainPictureURL = recipes[i].mainPictureURLs[0];
         } else if(recipes[i].recipeType === 'AlaCarte') {
           alaCarteRecipeNames.push(recipes[i].name);
+        }
+        if(recipes[i].recipeType === 'Full') {
+          combinedRecipe.nameBodies = recipes[i].nameBodies;
         }
       }
       combinedRecipe.alaCarteNames = getAlaCarteNames(alaCarteRecipeNames);
@@ -152,8 +161,6 @@ angular.module('main')
       if(!combinedRecipe.mainName) {
         combinedRecipe.mainName = combinedRecipe.alaCarteNames;
         combinedRecipe.alaCarteNames = undefined;
-        //set mainPictureURL to index 0
-        combinedRecipe.mainPictureURL = recipes[0].mainPictureURL;
       }
       combinedRecipe.prepTime = _.reduce(recipes, function(prepTime, recipe) {
         return prepTime + recipe.prepTime;
@@ -181,12 +188,31 @@ angular.module('main')
         }
       }, 0);
       combinedRecipe.manTotalTime = 5 * Math.round(combinedRecipe.manTotalTime/5);
-      combinedRecipe.mainVideos = _.map(recipes, function(recipe) {
+      var mainVideos = recipes.map(function(recipe) {
         if(recipe.mainVideo && recipe.mainVideo.videoId) {
-          return recipe.mainVideo;
+          return {
+            video: recipe.mainVideo,
+            type: recipe.recipeType
+          };
+        }
+      }).filter(function(video) {
+        if(typeof video !== 'undefined') {
+          return true;
+        } else {
+          return false;
         }
       });
-      //set combinedRecipe recipeCategories
+      //take out undefined in case some of the recipes don't have videos
+      if(mainVideos.length > 0 && mainVideos[0].type !== 'Full') {
+        combinedRecipe.mainVideo = null;
+      } else if(mainVideos.length > 1) {
+        combinedRecipe.mainVideos = mainVideos;
+      } else if (mainVideos.length === 1) {
+        combinedRecipe.mainVideo = mainVideos[0];
+      } else {
+        combinedRecipe.mainVideo = null;
+      }
+      //set combinedRecipe recipeCategories and recipeTypes
       combinedRecipe.recipeCategorys = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
         combinedRecipe.recipeCategorys.push(recipes[i].recipeCategory);
@@ -264,6 +290,27 @@ angular.module('main')
     var combinedRecipe = combineRecipes(recipes, currentSeasoningProfile);
     assignStepNumbers(combinedRecipe);
     return combinedRecipe;
+  };
+
+  service.eliminateUnnecesaries = function(combinedRecipe) {
+    //eliminate unnecessary 'some of'
+    var stepList = combinedRecipe.stepList;
+    for (var i = stepList.length - 1; i >= 0; i--) {
+      if(stepList[i].textArr) {
+        var textArr = stepList[i].textArr;
+        for (var j = 0; j < textArr.length; j++) {
+          if(!textArr[j].hasBeenAmended) {
+            if(j !== 0 && j === textArr.length - 1) {
+              //then replace "some of" with "the rest of"
+              textArr[j].text = textArr[j].text.replace("some of", "the rest of");
+            } else {
+              //then just take out 'some of'
+              textArr[j].text = textArr[j].text.replace("some of", "");
+            }
+          }
+        }
+      }
+    }
   };
 
   return service;

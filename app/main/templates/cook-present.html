@@ -1,29 +1,31 @@
-  <ion-view hide-back-button="true" view-title="Let's Cook" class="cook-present-instructions" ng-class="getOpacity()" on-swipe-right="navigateBack()">
+<ion-view hide-back-button="true" class="cook-present-instructions" ng-class="getOpacity()" on-swipe-right="navigateBack()">
+    <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
     <ion-nav-buttons side="primary">
       <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset">Reset</button>
+      <button ng-if="fromCookTab()" ng-click="resetEverything()" class="button top-back-button reset"><i class="fa fa-refresh" aria-hidden="true"></i></button>
     </ion-nav-buttons>
     <!-- do you want padding? -->
-    <ion-content class="padding">
+    <ion-content delegate-handle="cook-present" overflow-scroll="true" on-scroll="checkScroll()" class="padding">
       <h1 ng-if="combinedRecipe.name">{{combinedRecipe.name}}</h1>
       <h1 ng-if="combinedRecipe.mainName">{{combinedRecipe.mainName}}</h1>
       <h3 ng-if="combinedRecipe.alaCarteNames">with {{combinedRecipe.alaCarteNames}}</h3> 
-      <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->
-      <p>Active Time: {{getRecipeActiveTime()}} mins | Total Time: {{getRecipeTotalTime()}} mins</p>
+      <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->      
+      <p>{{combinedRecipe.description}}</p>
+      <p class="font-weight-600">Ready In: {{getRecipeTotalTime()}} mins | Active: {{getRecipeActiveTime()}} mins</p>
       <div>
       </div>
-      <!--RECIPE BADGES HERE -->
-      <div class="recipe-badges-container">
-        <img ng-repeat="badge in recipeBadges" ng-src="{{badge}}">
+      <div class="row">
+        <div class="col">
+          <h3 style="text-align: center">What You'll Need</h3>
+        </div>
       </div>
       <div class="row">
-        <div class="col col-60 ingredients-seasoning">
-          <h3>Ingredient List</h3>
+        <div class="col col-50 ingredients-seasoning">
+          <h4 style="text-align: center">Ingredients</h4>
           <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
           truly a combined recipe-->
-          <button ng-if="BYOIngredientTypes" ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button>
           <div ng-repeat="recipeIngredients in ingredientsForRecipes">
             <h5 ng-if="combinedRecipe.mainVideos">{{recipeIngredients.name}}</h5>
             <ul> 
@@ -36,32 +38,45 @@
                 &nbsp;&nbsp;• <span>Oil or Butter</span>
               </li>
             </ul>
-          </div>
-          <button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button>
+          </div>          
+        </div>
+        <div class="col col-50 ingredients-seasoning seasoning border-left">
           <div class="seasoning-section" ng-if="combinedRecipe.canAddSeasoningProfile">
-            <h3>Seasoning</h3>
-            <h5>Current Seasoning:</h5>
-            <h5 class="current-seasoning">{{seasoningProfile.name}}</h5>
+            <h4 style="text-align: center">Seasoning</h4>
+            <h5 class="current-seasoning">{{seasoningProfile.name}}:</h5>
             <ul class="seasoning-spices-list">
               <li ng-repeat="spice in seasoningProfile.spices">
                 &nbsp;&nbsp;• <span>{{capitalize(spice)}}</span>
               </li>
-            </ul>
-            <button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Spice Up Yo' Life</button>      
+            </ul>            
           </div>
-        </div>          
-      </div>
+        </div>
+      </div>      
+      <div class="row bottom-margin-10"> 
+        <div class="col col-50 ingredients-seasoning">
+          <p ng-if="BYOIngredientTypes" style="text-align: center"><button ng-click="editBYOIngredients()" class="button button-spice-up-add-side">{{getEditIngredientsButtonText()}}</button></p>
+          <p ng-if="!BYOIngredientTypes" style="text-align: center"><button ng-click="addSide()" class="button button-spice-up-add-side">{{getAddSideText()}}</button></p>
+        </div>
+        <div class="col col-50 ingredients-seasoning seasoning border-left ">
+          <p style="text-align: center"><button class="button button-spice-up-add-side" ng-click="seasoningProfilePopup($event)">Switch It Up</button></p>
+        </div>
+      </div>          
+      
       <ion-list class="list">
       <h3>Instructions</h3>
-      <div class="video-container">
-        <youtube ng-if="playingVideo" video="playingVideo" playerid="'mainplayer'"></youtube>
+      <div ng-if="playingVideo" class="video-container">
+        <youtube ng-click="mainVideoClicked()"  video="playingVideo" playerid="'mainplayer'"></youtube>
+      </div>
+      <!--No playing video, then picture-->
+      <div ng-if="!playingVideo">
+        <img ng-src="{{combinedRecipe.mainPictureURL}}">
       </div>
       <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideos">
         <div class="col col-25 col-center">
           <button class="button button-white-round" ng-click="decrementMainVideo()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
         </div>
         <div class="col col-50 col-center">
-          <div ng-repeat="indicator in mainVideoIndicators track by $index">      
+          <div ng-repeat="indicator in mainVideoIndicators track by $index">
             <i ng-click="toggleMainVideo($index)" ng-class="getMainVideoDotClass($index)"></i>
           </div>
         </div>
@@ -69,39 +84,52 @@
           <button class="button button-white-round" ng-click="incrementMainVideo()"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
-      <br/>   
         <div ng-if="!isError()" ng-repeat="step in combinedRecipe.stepList">
           <div ng-switch on="isSingleStep(step)">
             <div ng-switch-when="true" ng-switch on="isClickable(step)">
               <ion-item ng-switch-when="true" ng-class="clickableStep(step)" class="recipe-instructions" ng-if="!step.isEmpty" ng-click="showTip(step, $event)">
-                <p><b>Step {{getSubStepNumber(step, 'clickable-single')}}:</b> {{step.text}}</p>
+                <p><span class="step-list-number">{{getSubStepNumber(step, 'clickable-single')}}</span> {{step.text}}</p>
                 <br ng-if="step.stepType === 'Season'"/>
                 <p ng-repeat="line in step.seasoningInfo">{{line}}</p>
-                <i ng-if="step.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>
-                <i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>
-                <i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-ios-toggle-outline instruction-step-tip-icon"></i>
+                <!--<i ng-if="step.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>--><img ng-if="step.hasTip" class="instruction-step-tip-icon icon icons8-About-Filled" ng-src="{{getStepIconSrc('tip')}}" width="25" height="25">
+                <!--<i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>--><img ng-if="step.hasVideo" class="instruction-step-tip-icon icon icons8-YouTube-2-Filled" ng-src="{{getStepIconSrc('video')}}" width="30" height="30">
+                <!--<i ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="ion-ios-toggle-outline instruction-step-tip-icon"></i>--><img ng-if="step.stepType === 'Season' && combinedRecipe.canAddSeasoningProfile" class="instruction-step-tip-icon icon icons8-Ketchup-Filled" ng-src="{{getStepIconSrc('seasoning')}}" width="30" height="30">
               </ion-item>
               <ion-item ng-switch-default ng-class="clickableStep(step)" class="recipe-instructions" ng-if="!step.isEmpty">
-                <p><b>Step {{getSubStepNumber(step, 'notclickable-single')}}:</b> {{step.text}}</p>
+                <p><span class="step-list-number">{{getSubStepNumber(step, 'notclickable-single')}}</span> {{step.text}}</p>
               </ion-item>
             </div>
             <div ng-switch-default ng-repeat="subStep in step.textArr">
               <div ng-switch on="isClickable(subStep)">
                 <ion-item ng-switch-when="true" class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)" ng-click="showTip(subStep, $event)">
-                  <p><b>Step {{getSubStepNumber(subStep, 'clickable-notsingle')}}:</b> {{subStep.text}}</p>
-                  <i ng-if="subStep.hasTip" class="ion-ios-help-outline instruction-step-tip-icon"></i>
-                  <i ng-if="subStep.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>
+                  <p><span class="step-list-number">{{getSubStepNumber(subStep, 'clickable-notsingle')}}</span> {{subStep.text}}</p>
+                  <!--<i ng-if="step.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>--><img ng-if="step.hasVideo" class="instruction-step-tip-icon icon icons8-YouTube-2-Filled" ng-src="{{getStepIconSrc('video')}}" width="30" height="30">
+                  <!--<i ng-if="subStep.hasVideo" class="ion-ios-videocam-outline instruction-step-tip-icon"></i>--><img ng-if="subStep.hasVideo" class="instruction-step-tip-icon icon icons8-YouTube-2-Filled" ng-src="{{getStepIconSrc('video')}}" width="30" height="30">
                 </ion-item>
                 <ion-item ng-switch-default class="recipe-instructions" ng-if="!step.isEmpty" ng-class="clickableStep(subStep)">
-                  <p><b>Step {{getSubStepNumber(subStep, 'not-clickable-notsingle')}}:</b> {{subStep.text}}</p>
+                  <p><span class="step-list-number">{{getSubStepNumber(subStep, 'not-clickable-notsingle')}}</span> {{subStep.text}}</p>
                 </ion-item>
               </div>
             </div>
           </div>
         </div>
       </ion-list>
-      <h3 class="center">Time to eat!</h3>
-      <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)">Save to Favorites</button></p>
-      <p style="text-align:center"><button class="button button-spice-up-add-side" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)">Unfavorite Recipe</button></p>
+      <h3 class="center">{{farewellCopy}}</h3>
+      <div class="row">
+        <div class="col">
+          <p style="text-align: center"><button class="button facebook social-share-buttons" ng-click="socialShareMeal('facebook')"><i class="icon ion-social-facebook"></i> Post!</button></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p style="text-align: center"><button class="button twitter social-share-buttons" ng-click="socialShareMeal('twitter')"><i class="icon ion-social-twitter"></i> Tweet!</button></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p style="text-align:center"><button class="button favorite-recipe social-share-buttons" ng-if="!favoriteRecipeId" ng-click="favoriteRecipe($event)"><i class="ion-android-star"></i>Save To Faves</button></p>
+          <p style="text-align:center"><button class="button favorite-recipe social-share-buttons" ng-if="favoriteRecipeId" ng-click="unfavoriteRecipe($event)"><i class="ion-android-star"></i>Unfavorite Recipe</button></p>
+        </div>
+      </div>      
     </ion-content>
   </ion-view>

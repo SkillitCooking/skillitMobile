@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('ErrorService', ['$state', '$ionicHistory', '$ionicPopup', 'ErrorLoggingService', function ($state, $ionicHistory, $ionicPopup, ErrorLoggingService) {
+.factory('ErrorService', ['$rootScope', '$state', '$ionicHistory', '$ionicPopup', 'ErrorLoggingService', function ($rootScope, $state, $ionicHistory, $ionicPopup, ErrorLoggingService) {
   var service = {};
 
   service.isErrorAlready = false;
@@ -18,6 +18,7 @@ angular.module('main')
         //clearHistory and cache and navigate to cook beginning
         $ionicHistory.clearHistory();
         $ionicHistory.clearCache().then(function() {
+          $rootScope.redrawSlides;
           $state.go('main.cook', {fromError: true});
         });
       });

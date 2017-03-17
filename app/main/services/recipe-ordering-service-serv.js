@@ -16,13 +16,18 @@ angular.module('main')
         return false;
 
       case 'BringToBoil':
+      case 'BreakEgg':
       case 'Cut':
       case 'Dry':
       case 'EquipmentPrep':
       case 'Heat':
+      case 'Move':
       case 'Place':
       case 'PreheatOven':
+      case 'ReduceHeat':
+      case 'Remove':
       case 'Season':
+      case 'Serve':
       case 'Stir':
         return true;
 

@@ -1,17 +1,33 @@
 'use strict';
 angular.module('main')
-.controller('RecipeCollectionPageCtrl', ['$scope', '$stateParams', '$state', 'RecipeService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', 'ErrorService', function ($scope, $stateParams, $state, RecipeService, $ionicLoading, $ionicPlatform, $ionicHistory, ErrorService) {
+.controller('RecipeCollectionPageCtrl', ['$window', '$scope', '$stateParams', '$state', 'RecipeService', 'RecipeNameConstructionService', '$ionicLoading', '$ionicPlatform', '$ionicHistory', '$ionicUser', '$ionicAuth', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $stateParams, $state, RecipeService, RecipeNameConstructionService, $ionicLoading, $ionicPlatform, $ionicHistory, $ionicUser, $ionicAuth, ErrorService, USER, LOGIN, LOADING) {
 
   $scope.collection = $stateParams.collection;
+  console.log('colleciton', $scope.collection);
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.FETCHING_TEMPLATE,
+    noBackdrop: true
   });
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('RecipeCollection');
+  }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();
     $scope.navigateBack();
   }, 501);
+
+  $scope.$on('picture.loaded', function(e) {
+    $scope.newLoadedCount += 1;
+    e.stopPropagation();
+    if($scope.newLoadedCount >= $scope.newLoadedLength) {
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, LOADING.TIMEOUT);
+    }
+  });
 
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
@@ -27,6 +43,43 @@ angular.module('main')
 
   $scope.navigateBack = function() {
     $ionicHistory.goBack();
+  };
+
+  //initialize first next page value
+  $scope.nextPageNumber = 0;
+
+  var userId, userToken;
+
+  if($ionicAuth.isAuthenticated()) {
+    userId = $ionicUser.get(USER.ID);
+    userToken = $ionicAuth.getToken();
+  }
+
+  $scope.loadMoreRecipes = function() {
+    if($scope.collection) {
+      $scope.newLoadedCount = 0;
+      RecipeService.getRecipesForCollection($scope.collection._id, $scope.nextPageNumber, userId, userToken).then(function(recipes) {
+        if(recipes.data) {
+          $scope.newLoadedLength = recipes.data.length;
+          if(recipes.data.length !== 0) {
+            for (var i = recipes.data.length - 1; i >= 0; i--) {
+              recipes.data[i].prepTime = 5 * Math.round(recipes.data[i].prepTime/5);
+              recipes.data[i].totalTime = 5 * Math.round(recipes.data[i].totalTime/5);
+              RecipeNameConstructionService.setPrefixedRecipeName(recipes.data[i]);
+            }
+          }
+          $scope.hideInfiniteScroll = !recipes.hasMoreToLoad;
+        }
+        if(!$scope.recipes) {
+          $scope.recipes = [];
+        }
+        Array.prototype.push.apply($scope.recipes, recipes.data);
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      }, function(response) {
+        ErrorService.showErrorAlert();
+      });
+      $scope.nextPageNumber += 1;
+    }
   };
 
   function setSelected(names, ids, recipe) {
@@ -49,6 +102,8 @@ angular.module('main')
 
   //BYO handling here too
   $scope.recipeSelected = function(recipe) {
+    var displayName = recipe.displayName;
+    var displayNameType = recipe.displayNameType;
     recipe.isSelected = true;
     setTimeout(function() {
       recipe.isSelected = false;
@@ -74,7 +129,8 @@ angular.module('main')
           selectedIngredientIds: [],
           BYOIngredientTypes: ingredientTypes,
           BYOName: recipe.name,
-          loadAlaCarte: true
+          loadAlaCarte: true,
+          isNewLoad: true
         }, 200);
       });
     } else {
@@ -82,26 +138,10 @@ angular.module('main')
       var selectedNames = [], selectedIds = [];
       setSelected(selectedNames, selectedIds, recipe);
       setTimeout(function() {
-        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true});
+        $state.go('main.cookPresentRecipes', {recipeIds: [recipe._id], selectedIngredientNames: selectedNames, selectedIngredientIds: selectedIds, alaCarteRecipes: [], alaCarteSelectedArr: [], cameFromRecipes: false, cameFromRecipeCollection: true, isNewLoad: true, displayName: displayName, displayNameType: displayNameType, nameDefaultSeasoning: recipe.newDefaultSeasoning, displayPictureURL: recipe.presentDisplayPictureURL});
       }, 200);
     }
   };
 
-  //BYO handling here
-  if($scope.collection) {
-    RecipeService.getRecipesForCollection($scope.collection._id).then(function(recipes) {
-      $scope.recipes = recipes.data;
-      if($scope.recipes) {
-        for (var i = $scope.recipes.length - 1; i >= 0; i--) {
-          $scope.recipes[i].prepTime = 5 * Math.round($scope.recipes[i].prepTime/5);
-          $scope.recipes[i].totalTime = 5 * Math.round($scope.recipes[i].totalTime/5);
-        }
-      }
-      setTimeout(function() {
-        $ionicLoading.hide();
-      }, 200);
-    }, function(response) {
-      ErrorService.showErrorAlert();
-    });
-  }
+  $scope.recipes = [];
 }]);

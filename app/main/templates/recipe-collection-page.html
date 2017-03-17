@@ -1,13 +1,15 @@
-<ion-view hide-back-button="true" view-title="Recipes">
+<ion-view hide-back-button="true">
+  <ion-nav-title><img class="skillit-logo-nav-bar" src="main/assets/images/skillit-white-text-small.png"></ion-nav-title>
   <!-- do you want padding? -->
   <ion-nav-buttons side="primary">
     <button ng-click="navigateBack()" class="button top-back-button"><i class="ion-arrow-left-c top-back-button-arrow" aria-hidden="true"></i></button>
   </ion-nav-buttons>
   <ion-content class="padding cook-recipe-selection normal-padding">
     <h2 class="recipe-category no-bottom-margin">{{collection.name}}</h2>
-    <p>{{collection.description}}</p>
+    <p class="recipe-collection-description">{{collection.description}}</p>
     <ion-list>
       <recipe-item ng-repeat="recipe in recipes" recipe="recipe" iconclass="recipeIconClass($index)" isfavorite="false" ng-click="recipeSelected(recipe)" showdatefeatured="false"></recipe-item>
     </ion-list>
+    <ion-infinite-scroll ng-if="!hideInfiniteScroll" on-infinite="loadMoreRecipes()" distance="1%"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

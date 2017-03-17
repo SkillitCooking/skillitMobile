@@ -106,7 +106,7 @@ angular.module('main')
         default:
           //error
           ErrorService.logError({
-            message: "Boil Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
+            message: "Custom Step Service ERROR: no ingredientType found for input key in function 'instantiateStep'",
             ingredientInput: ingredientInput,
             step: step,
             recipeName: recipe.name
@@ -151,6 +151,9 @@ angular.module('main')
             return iterStep.stepId === dishInput.sourceId;
           });
           if(referencedStep) {
+            console.log('step', step);
+            console.log('step.products', step.products);
+            console.log('step.productKeys', step.productKeys);
             if(!referencedStep.isEmpty) {
               if(referencedStep.products) {
                 if(!step.products) {
@@ -172,7 +175,7 @@ angular.module('main')
                 });
                 ErrorService.showErrorAlert();
               }
-            } else if(step.products[step.productKeys[0]].ingredients && step.products[step.productKeys[0]].ingredients.length > 0) {
+            } else if(step.products && step.products[step.productKeys[0]].ingredients && step.products[step.productKeys[0]].ingredients.length > 0) {
               var originalDishProducts = DishInputService.findDishProduct(referencedStep, recipe.stepList, recipe.ingredientList.equipmentNeeded);
               if(originalDishProducts) {
                 var dishKey = DishInputService.getDishKey(step.stepType);

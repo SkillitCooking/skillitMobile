@@ -1,0 +1,64 @@
+<ion-slides slider="data.slider">
+    <!--intro-slide ng-repeat="slide in slides" header="slide.header" subtitle="slide.subtitle" screenshot="getScreenshot(slide)" index="$index" slide-count="slideCount" modal="modal" slider="slider"></intro-slide-->
+    <ion-slide-page class="intro-slide-background">
+      <div class="intro-wrapper">
+        <p style="text-align: center"> <img class="skillit-logo-walkthrough" src="main/assets/images/skillit-orange-text.png" /></p>
+        <h2 class="intro-slide-header">Ready to Get Cooking<br>Good Looking?</h2>
+        <p class="intro-slide-subheader">Swipe to begin</p>
+        <br><br><br><br>
+        <div class="row">
+          <div class="col col-center">
+          <p style="text-align: center"><button class="button skip-button" ng-click="closeIntro()">Skip</button></p>
+          </div>
+        </div>  
+        <!--div class="walkthrough-img-container">
+          <div class="walkthrough-slider-dots">
+            <i ng-repeat="n in slideCount track by $index" ng-class="getDotClass($index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+          </div>
+        </div-->
+        
+      </div>
+      <!--<div class="walkthrough-img-container">
+        <button class="button get-cooking" ng-click="signUp()">Get Cooking</button>
+      </div>
+      <div class="walkthrough-img-container">
+        <button class="button skip-button" ng-click="getCooking()">Skip</button>
+      </div>-->
+    </ion-slide-page>
+    <ion-slide-page ng-repeat="slide in slides" class="intro-slide-background">
+      <ion-content scroll="true">
+        <h3 class="walkthrough-top-header">{{slide.header}}</h3>
+        <p class="walkthrough-subheader">{{slide.subtitle}}</p  >
+        <p class="walkthrough-img-container"><img ng-src="{{getScreenshot(slide)}}"></p>
+        <!--div class="walkthrough-img-container">
+          <div class="walkthrough-slider-dots">
+            <i ng-repeat="n in slideCount track by $index" ng-class="getDotClass($index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+          </div>
+        </div-->
+      </ion-content>
+    </ion-slide-page>
+    <ion-slide-page class="intro-slide-background">
+      <ion-content scroll="true">
+        <div class="final-walkthrough-slide">
+          <p style="text-align: center"><img class="skillit-logo-walkthrough" src="main/assets/images/skillit-orange-text.png" /></p>
+          <br>
+          <h2 class="intro-slide-header">Time to start skilling it</h2>
+          <br><br>
+          <div class="row">
+            <div class="col col-50 col-center">
+              <p style="text-align: center"><button class="button button-spice-up-add-side walkthrough-login-signup" ng-click="goToSignUp()">Sign Up</button></p>
+            </div>
+            <div class="col col-50 col-center">
+              <p style="text-align: center"><button class="button button-spice-up-add-side walkthrough-login-signup" ng-click="goToSignIn()">Sign In</button></p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col col-center">
+            <p style="text-align: center"><button class="button skip-button" ng-click="closeIntro()">Skip</button></p>
+            </div>
+          </div>  
+        </div> 
+      </ion-content>
+    </ion-slide-page>
+</ion-slides>

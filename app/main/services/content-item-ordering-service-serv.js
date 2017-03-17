@@ -3,14 +3,16 @@ angular.module('main')
 .factory('ContentItemOrderingService', function () {
   var service = {};
 
-  service.orderLessonItems = function(groupedItems, itemIds) {
+  service.orderLessonItems = function(currentItems, groupedItems, itemIds) {
     var orderedItems = [];
     var flattenedItems = [];
-    var assignItemType = function(item) {
+    var assignItemType = function(item, key) {
         item.itemType = key;
     };
     for(var key in groupedItems) {
-      groupedItems[key].forEach(assignItemType);
+      for (var i = groupedItems[key].length - 1; i >= 0; i--) {
+        assignItemType(groupedItems[key][i], key);
+      }
       flattenedItems = flattenedItems.concat(groupedItems[key]);
     }
     var findItemIndex = function(item) {
@@ -23,7 +25,7 @@ angular.module('main')
       var index = flattenedItems.findIndex(findItemIndex);
       orderedItems = orderedItems.concat(flattenedItems.splice(index, 1));
     }
-    return orderedItems;
+    Array.prototype.push.apply(currentItems, orderedItems);
   };
 
   return service;

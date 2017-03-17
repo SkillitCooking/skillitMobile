@@ -1,10 +1,33 @@
 'use strict';
 angular.module('main')
-.controller('RecipesCtrl', ['$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', function ($scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP) {
+.controller('RecipesCtrl', ['$window', '$scope', '$ionicHistory', '$state', 'RecipeService', 'ItemCollectionService', '$ionicUser', '$ionicAuth', '$ionicLoading', '$ionicPopup', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'USER', 'LOGIN', 'LOADING', function ($window, $scope, $ionicHistory, $state, RecipeService, ItemCollectionService, $ionicUser, $ionicAuth, $ionicLoading, $ionicPopup, $ionicPlatform, ErrorService, EXIT_POPUP, USER, LOGIN, LOADING) {
+
+  var token;
+  var loginType = $ionicUser.get(LOGIN.TYPE);
+  if(loginType === LOGIN.FACEBOOK || loginType === LOGIN.GOOGLE) {
+    token = $ionicUser.get(LOGIN.SOCIALTOKEN);
+  } else {
+    token = $ionicAuth.getToken();
+  }
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.DEFAULT_TEMPLATE,
+    noBackdrop: true
   });
+
+  $scope.showCollections = false;
+
+  $scope.$on('allCollections.Loaded', function(e) {
+    e.stopPropagation();
+    $scope.showCollections = true;
+    setTimeout(function() {
+      $ionicLoading.hide();
+    }, LOADING.TIMEOUT);
+  });
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('Recipes');
+  }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();
@@ -39,11 +62,16 @@ angular.module('main')
     }
     return 0;
   }
-  
-  ItemCollectionService.getCollectionsForItemType('recipe').then(function(collections) {
+
+  var userId, userToken;
+  if(token) {
+    userId = $ionicUser.get(USER.ID);
+    userToken = token;
+  }
+
+  ItemCollectionService.getCollectionsForItemType('recipe', userId, userToken).then(function(collections) {
     $scope.recipeCollections = collections.data;
     $scope.recipeCollections.sort(recipeCollectionSortFn);
-    $ionicLoading.hide();
   }, function(response) {
     ErrorService.showErrorAlert();
   });

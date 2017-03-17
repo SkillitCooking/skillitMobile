@@ -1,30 +1,60 @@
 'use strict';
 angular.module('main')
-.controller('ChapterPageCtrl', ['$scope', '$stateParams', '$state', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'LessonService', 'ErrorService', function ($scope, $stateParams, $state, $ionicLoading, $ionicHistory, $ionicPlatform, LessonService, ErrorService) {
-  
+.controller('ChapterPageCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicLoading', '$ionicHistory', '$ionicPlatform', 'LessonService', 'ErrorService', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicLoading, $ionicHistory, $ionicPlatform, LessonService, ErrorService, LOADING) {
+
   $scope.chapter = $stateParams.chapter;
   $scope.chapters = $stateParams.chapters;
   $scope.currentIndex = $stateParams.index;
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.DEFAULT_TEMPLATE,
+    noBackdrop: true
   });
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('ChapterPage');
+  }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $ionicLoading.hide();
     $scope.navigateBack();
   }, 501);
 
+  $scope.$on('picture.loaded', function(e) {
+    $scope.newLoadedCount += 1;
+    e.stopPropagation();
+    if($scope.newLoadedCount >= $scope.newLoadedLength) {
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, LOADING.TIMEOUT);
+    }
+  });
+
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
     deregisterBackAction();
   });
 
+  function getPictureCount(lessons) {
+    var count = 0;
+    for (var i = lessons.length - 1; i >= 0; i--) {
+      if(lessons[i].pictureURL) {
+        count++;
+      }
+    }
+    console.log('count', count);
+    return count;
+  }
+
   if($scope.chapter) {
     LessonService.getLessonsWithIds({lessonIds: $scope.chapter.lessonIds}).then(function(res) {
       $scope.lessons = res.data;
-      setTimeout(function() {
-        $ionicLoading.hide();
-      }, 200);
+      $scope.newLoadedCount = 0;
+      $scope.newLoadedLength = getPictureCount($scope.lessons);
+      if($scope.newLoadedLength === 0) {
+        setTimeout(function() {
+          $ionicLoading.hide();
+        }, LOADING.TIMEOUT);
+      }
     }, function(response) {
       ErrorService.showErrorAlert();
     });
@@ -54,7 +84,8 @@ angular.module('main')
     if($scope.chapters && $scope.currentIndex > 0) {
       if($scope.chapters[$scope.currentIndex - 1].lessonIds.length === 1) {
         $ionicLoading.show({
-          template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+          template: LOADING.DEFAULT_TEMPLATE,
+          noBackdrop: true
         });
         LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentIndex - 1].lessonIds}).then(
           function(res) {
@@ -82,7 +113,8 @@ angular.module('main')
     if($scope.chapters && $scope.currentIndex < $scope.chapters.length - 1) {
       if($scope.chapters[$scope.currentIndex + 1].lessonIds.length === 1) {
         $ionicLoading.show({
-          template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+          template: LOADING.DEFAULT_TEMPLATE,
+          noBackdrop: true
         });
         LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentIndex + 1].lessonIds}).then(
           function(res) {

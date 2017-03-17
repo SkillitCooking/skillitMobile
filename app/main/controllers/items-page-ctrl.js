@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('ItemsPageCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService) {
+.controller('ItemsPageCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ContentItemOrderingService', 'ItemsService', 'LessonService', 'ErrorService', 'PAGINATION', 'LOADING', function ($window, $scope, $stateParams, $state, $ionicHistory, $ionicLoading, $ionicPlatform, ContentItemOrderingService, ItemsService, LessonService, ErrorService, PAGINATION, LOADING) {
 
   $scope.lesson = $stateParams.lesson;
   $scope.chapters = $stateParams.chapters;
@@ -8,8 +8,13 @@ angular.module('main')
   $scope.lessons = $stateParams.lessons;
   $scope.currentLessonIndex = $stateParams.currentLessonIndex;
 
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('ItemsPage');
+  }
+
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.DEFAULT_TEMPLATE,
+    noBackdrop: true
   });
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
@@ -21,15 +26,37 @@ angular.module('main')
     deregisterBackAction();
   });
 
-  if($scope.lesson) {
-    ItemsService.getItemsWithTypesAndIds({items: $scope.lesson.itemIds}).then(function(res) {
-      $scope.items = ContentItemOrderingService.orderLessonItems(res.data, $scope.lesson.itemIds);
+  $scope.nextPageNumber = 1;
+
+  function getPagedIds() {
+    var begin = PAGINATION.ITEMS_PER_PAGE * ($scope.nextPageNumber - 1);
+    var end = PAGINATION.ITEMS_PER_PAGE * $scope.nextPageNumber;
+    var sliced = $scope.lesson.itemIds.slice(begin, end);
+    if(end >= $scope.lesson.itemIds.length) {
+      $scope.hideInfiniteScroll = true;
+    }
+    return sliced;
+  }
+
+  $scope.loadMoreItems = function() {
+    var pagedIds = getPagedIds();
+    ItemsService.getItemsWithTypesAndIds({items: pagedIds}).then(function(res) {
+      if(!$scope.items) {
+        $scope.items = [];
+      }
+      ContentItemOrderingService.orderLessonItems($scope.items, res.data, $scope.lesson.itemIds);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
       setTimeout(function() {
         $ionicLoading.hide();
       }, 200);
     }, function(response) {
       ErrorService.showErrorAlert();
     });
+    $scope.nextPageNumber += 1;
+  };
+
+  if($scope.lesson) {
+    $scope.loadMoreItems();
   } else {
     //error - we need $scope.lesson
     ErrorService.logError({
@@ -47,7 +74,8 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex - 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+            template: LOADING.DEFAULT_TEMPLATE,
+            noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex - 1].lessonIds}).then(
             function(res) {
@@ -93,7 +121,8 @@ angular.module('main')
         if($scope.chapters[$scope.currentChapterIndex + 1].lessonIds.length === 1) {
           //then redirect
           $ionicLoading.show({
-            template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+            template: LOADING.DEFAULT_TEMPLATE,
+            noBackdrop: true
           });
           LessonService.getLessonsWithIds({lessonIds: $scope.chapters[$scope.currentChapterIndex + 1].lessonIds}).then(
             function(res) {
@@ -124,8 +153,10 @@ angular.module('main')
   };
 
   $scope.isLast = function() {
-    if($scope.currentLessonIndex === $scope.lessons.length - 1 && $scope.currentChapterIndex === $scope.chapters.length - 1) {
-      return true;
+    if($scope.lessons && $scope.chapters) {
+      if($scope.currentLessonIndex === $scope.lessons.length - 1 && $scope.currentChapterIndex === $scope.chapters.length - 1) {
+        return true;
+      }
     }
     return false;
   };

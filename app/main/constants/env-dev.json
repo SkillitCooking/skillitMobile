@@ -1,4 +1,5 @@
 {
-  "SERVER_URL": "http://107.170.199.250:3000/api/",
-  "CHANNEL": "dev"
+  "SERVER_URL": "https://skillicookingdevapi.info/api/",
+  "CHANNEL": "dev",
+  "API_PASSWORD": "MDm|C7oQQIm&AZyhx4g7m^+uNGqm$7Ctt2-60O&Ek-%0o!NuLT"
 }

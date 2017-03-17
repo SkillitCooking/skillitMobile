@@ -1,0 +1,12 @@
+<ion-slide-page class="intro-slide-background">
+  <ion-content scroll="true">
+    <h1>{{header}}</h1>
+    <h3>{{subtitle}}</h3>
+    <img ng-src="{{screenshot}}">
+    <div ng-repeat="n in slideCount track by $index">
+      <i ng-class="getDotClass($index)" ng-click="goToSlide($index)" aria-hidden="true"></i>
+    </div>
+    <button class="button" ng-click="signUp()">Sign Up</button>
+    <button class="button" ng-click="getCooking()">Get Cooking</button>
+  </ion-content>
+</ion-slide-page>

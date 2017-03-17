@@ -4,7 +4,10 @@ angular.module('main', [
   'ngCordova',
   'ui.router',
   'restangular',
-  'ionic.cloud'
+  'ionic.cloud',
+  'ngStorage',
+  'ng-persist',
+  'ngSpecialOffer'
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
@@ -12,6 +15,12 @@ angular.module('main', [
   $ionicCloudProvider.init({
     'core': {
       'app_id': 'e5243594'
+    },
+    'auth': {
+      'google': {
+        'webClientId': '1098208374252-m9i429nt3774deb9e5e2c2adceark6nr.apps.googleusercontent.com'
+      },
+      'facebook': {}
     }
   });
 })
@@ -32,16 +41,53 @@ angular.module('main', [
       ErrorService.showErrorAlert();
     };
   }]);
+
+  //Restangular configuration
   RestangularProvider.setBaseUrl(Config.ENV.SERVER_URL);
+  RestangularProvider.setDefaultHeaders({password: Config.ENV.API_PASSWORD});
 
   // ROUTING with ui.router
-  $urlRouterProvider.otherwise('main/cook');
+  $urlRouterProvider.otherwise('/root');
   $stateProvider
     // this state is placed in the <ion-nav-view> in the index.html
     .state('main', {
       url: '/main',
       abstract: true,
       templateUrl: 'main/templates/tabs.html'
+    })
+    .state('root', {
+      url: '/root',
+      onEnter: function($state, $persist) {
+        $persist.get('HAS_SEEN', 'INTRO_SLIDES', false).then(function(hasSeen) {
+          if(hasSeen) {
+            $state.go('main.cook');
+          } else {
+            $persist.set('HAS_SEEN', 'INTRO_SLIDES', true);
+            $state.go('main.introSlides');
+          }
+        });
+      }
+    })
+    .state('main.introSlides', {
+      url: '/introSlides',
+      views: {
+        'intro-slides': {
+          templateUrl: 'main/templates/intro-slides-modal.html',
+          controller: 'IntroSlidesCtrl as ctrl'
+        }
+      }
+    })
+    .state('main.loginIntro', {
+      url: '/loginIntro',
+      views: {
+        'intro-slides': {
+          templateUrl: 'main/templates/login-intro.html',
+          controller: 'LoginIntroCtrl as ctrl',
+        }
+      },
+      params: {
+        type: null
+      }
     })
       .state('main.account', {
         url: '/account',
@@ -73,7 +119,11 @@ angular.module('main', [
           cameFromHome: false,
           cameFromRecipes: false,
           isFavoriteRecipe: true,
-          loadAlaCarte: true
+          loadAlaCarte: true,
+          isNewLoad: false,
+          displayName: null,
+          displayNameType: null,
+          nameDefaultSeasoning: null
         }
       })
       .state('main.cookAddSideFavorite', {
@@ -117,7 +167,8 @@ angular.module('main', [
           BYOName: null,
           cameFromRecipes: false,
           cameFromHome: false,
-          isFavoriteRecipe: true
+          isFavoriteRecipe: true,
+          isNewLoad: false
         }
       })
       //base screen of flow for cook tab
@@ -166,7 +217,12 @@ angular.module('main', [
           cameFromHome: false,
           cameFromRecipes: false,
           isFavoriteRecipe: false,
-          loadAlaCarte: false
+          loadAlaCarte: false,
+          isNewLoad: false,
+          displayName: null,
+          displayNameType: null,
+          nameDefaultSeasoning: null,
+          displayPictureURL: null
         }
       })
       .state('main.cookAddSide', {
@@ -207,7 +263,8 @@ angular.module('main', [
           numberBackToRecipeSelection: null,
           BYOIngredientTypes: null,
           BYOName: null,
-          cameFromRecipes: false
+          cameFromRecipes: false,
+          isNewLoad: false
         }
       })
       .state('main.recipes', {
@@ -253,7 +310,12 @@ angular.module('main', [
           cameFromRecipes: true,
           cameFromRecipeCollection: false,
           isFavoriteRecipe: false,
-          loadAlaCarte: true
+          loadAlaCarte: true,
+          isNewLoad: false,
+          displayName: null,
+          displayNameType: null,
+          nameDefaultSeasoning: null,
+          displayPictureURL: null
         }
       })
       .state('main.cookAddSideRecipes', {
@@ -297,7 +359,8 @@ angular.module('main', [
           BYOIngredientTypes: null,
           BYOName: null,
           cameFromRecipes: true,
-          loadAlaCarte: false
+          loadAlaCarte: false,
+          isNewLoad: false
         }
       })
       .state('main.chapters', {

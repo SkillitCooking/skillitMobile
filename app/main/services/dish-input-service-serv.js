@@ -17,9 +17,14 @@ angular.module('main')
         return "dishInput";
       case "Custom":
       case "EquipmentPrep":
+      case "BreakEgg":
+      case "Serve":
         return "dishInputs";
       case "Place":
         return "dishProductInput";
+      case "Move":
+      case "Remove":
+        return "stepInput";
       default:
         //error
         ErrorService.logError({

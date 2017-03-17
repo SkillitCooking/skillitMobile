@@ -1,20 +1,83 @@
 'use strict';
 angular.module('main')
-.directive('loginDirective', ['$rootScope', '$ionicAuth', '$ionicUser', '$ionicModal', '$ionicPopup', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($rootScope, $ionicAuth, $ionicUser, $ionicModal, $ionicPopup, UserService, ErrorService, LOGIN, USER) {
+.directive('loginDirective', ['$window', '$rootScope', '$ionicAuth', '$ionicGoogleAuth', '$ionicFacebookAuth', '$ionicUser', '$ionicModal', '$ionicPopup', '$state', 'UserService', 'ErrorService', 'LOGIN', 'USER', function ($window, $rootScope, $ionicAuth, $ionicGoogleAuth, $ionicFacebookAuth, $ionicUser, $ionicModal, $ionicPopup, $state, UserService, ErrorService, LOGIN, USER) {
   return {
     templateUrl: 'main/templates/login-directive.html',
     restrict: 'E',
-    scope: {},
+    scope: {
+      type: '='
+    },
     link: function (scope, element, attrs) {
       scope.hasErrors = false;
       scope.data = {};
+
+      switch(scope.type) {
+        case 'account':
+        case 'popover':
+          scope.isSignIn = true;
+          scope.isSignUp = true;
+          break;
+        case 'introSignUp':
+          scope.isSignUp = true;
+          scope.isSignIn = false;
+          scope.isWalkthrough = true;
+          break;
+        case 'introSignIn':
+          scope.isSignUp = false;
+          scope.isSignIn = true;
+          scope.isWalkthrough = true;
+          break;
+        default:
+          break;
+      }
 
       function clearForm() {
         scope.password = "";
         scope.passwordConfirm = "";
       }
 
+      scope.signUpOrLoginText = function() {
+        if(scope.isSignIn && scope.isSignUp) {
+          return 'Sign Up or Login for an Account Using:';
+        } else if(scope.isSignIn) {
+          return 'Login to your Account Using:';
+        } else if (scope.isSignUp) {
+          return 'Sign Up for an Account Using:';
+        }
+      };
+
+      scope.signUpOrLoginSubheader = function() {
+        if(scope.isSignIn && scope.isSignUp) {
+          return 'Sign up to save your favorite dishes, select any dietary restrictions, and receive tailored recipes just for you!';
+        } else if(scope.isSignIn) {
+          return 'Login to get back to Skillin\' it your way';
+        } else if(scope.isSignUp) {
+          return 'Sign up to save your favorite dishes, select any dietary restrictions, and receive tailored recipes just for you!';
+        }
+      };
+
+      scope.getTitle = function() {
+        if(scope.isSignUp && scope.isSignIn) {
+          return 'Create Your Account!';
+        } else if(scope.isSignUp) {
+          return 'Create an Account';
+        } else if(scope.isSignIn) {
+          return 'Login to your Account';
+        }
+      };
+
+      scope.getLoginClasses = function() {
+        if(scope.isWalkthrough) {
+          return 'login-screen-walkthrough';
+        } else {
+          return 'login-screen';
+        }
+      };
+
       scope.signIn = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('EmailSignIn', 'signIn');
+        }
         //if success, want to let parent know - either broadcast or $emit
         //also, want to make server call to set current Token for User
         //if failure, then display error messages
@@ -29,12 +92,19 @@ angular.module('main')
             token: result.token
           }).then(function(res) {
             $ionicUser.set(USER.ID, res.data._id);
+            $ionicUser.set(LOGIN.TYPE, LOGIN.BASIC);
             $ionicUser.save();
             $rootScope.$broadcast('signInStop', true, true);
             clearForm();
             $ionicPopup.alert({
               title: 'Login was successful!',
               template: 'Now let\'s get cooking!'
+            }).then(function(res) {
+              if(scope.type !== 'popover') {
+                $state.go('main.cook');
+              } else {
+                $rootScope.$broadcast('loginDirective.successfulPopover');
+              }
             });
           }, function(response) {
             clearForm();
@@ -56,6 +126,9 @@ angular.module('main')
       };
 
       scope.signUp = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('EmailSignUp', 'signUp');
+        }
         //if success, then login; want to let parent know that successful login has occured -either $broadcast or $emit
         //also, want to make server call to create User and set current Token for User
         //if failure, then error messages
@@ -71,16 +144,24 @@ angular.module('main')
               token: result.token
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.BASIC);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Signup Successful!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
+              $ionicUser.unset(LOGIN.TYPE);
               $ionicAuth.logout();
               ErrorService.showErrorAlert();
             });
@@ -133,15 +214,17 @@ angular.module('main')
       };
 
       scope.signInFacebook = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('FacebookSignIn', 'signIn');
+        }
         //if success, want to let parent know - either $broadcast or $emit
         //also, want to make server call to possibly create User and set current Token for User
         //if failure, then error messages
         scope.$emit('signInStart');
         //loading screen needed? Especially when going to in app browser?
-        $ionicAuth.login(LOGIN.FACEBOOK).then(function(result) {
+        $ionicFacebookAuth.login().then(function(result) {
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
-
           //different alert cases - new signup vs. existing user
           if(result.signup) {
             //then signed up for the first time
@@ -154,17 +237,25 @@ angular.module('main')
               username: $ionicUser.social.facebook.data.username
             }).then(function(res){
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicUser.unset(LOGIN.TYPE);
+              $ionicFacebookAuth.logout();
               ErrorService.showErrorAlert();
             });
           } else {
@@ -178,17 +269,25 @@ angular.module('main')
               name: $ionicUser.social.facebook.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               }); 
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicUser.unset(LOGIN.TYPE);
+              $ionicFacebookAuth.logout();
               ErrorService.showErrorAlert();
             });
           }
@@ -201,12 +300,15 @@ angular.module('main')
       };
 
       scope.signInGoogle = function() {
+        if(typeof $window.ga !== 'undefined') {
+          $window.ga.trackEvent('GoogleLogIn', 'LogIn');
+        }
         //if success, want to let parent know - either $broadcast or $emit
         //also, want to make server call to possibly create User and set current Token for User
         //if failure, then error messages
         scope.$emit('signInStart');
         //loading screen needed? Especially when going to in app browser?
-        $ionicAuth.login(LOGIN.GOOGLE).then(function(result) {
+        $ionicGoogleAuth.login().then(function(result) {
           //broadcast/emit to parent to set off appropriate behaviors
           //result will carry whether the login created a new user or not
           if(result.signup) {
@@ -220,17 +322,25 @@ angular.module('main')
               username: $ionicUser.social.google.data.username
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Thanks for signing up!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               });
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicUser.unset(LOGIN.TYPE);
+              $ionicGoogleAuth.logout();
               ErrorService.showErrorAlert();
             });
           } else {
@@ -243,17 +353,25 @@ angular.module('main')
               name: $ionicUser.social.google.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
+              $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
               $ionicUser.save();
               $rootScope.$broadcast('signInStop', true, true);
               clearForm();
               $ionicPopup.alert({
                title: 'Login Successful!',
                template: 'Now let\'s get cooking!'
+              }).then(function(res) {
+                if(scope.type !== 'popover') {
+                  $state.go('main.cook');
+                } else {
+                  $rootScope.$broadcast('loginDirective.successfulPopover');
+                }
               }); 
             }, function(response) {
               $rootScope.$broadcast('signInStop', true, false);
               clearForm();
-              $ionicAuth.logout();
+              $ionicUser.unset(LOGIN.TYPE);
+              $ionicGoogleAuth.logout();
               ErrorService.showErrorAlert();
             });
           }
@@ -270,7 +388,16 @@ angular.module('main')
           return true;
         }
         if(!scope.password || scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+          scope.signInPasswordJustRight = false;
+          if(scope.password && scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+            scope.signInPasswordTooShort = true;
+          } else {
+            scope.signInPasswordTooShort = false;
+          }
           return true;
+        } else {
+          scope.signInPasswordTooShort = false;
+          scope.signInPasswordJustRight = true;
         }
         return false;
       };
@@ -280,10 +407,29 @@ angular.module('main')
           return true;
         }
         if(!scope.password || scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+          scope.signInPasswordJustRight = false;
+          if(scope.password && scope.password.length < LOGIN.MIN_PASSWORD_LENGTH) {
+            scope.signInPasswordTooShort = true;
+          } else {
+            scope.signInPasswordTooShort = false;
+          }
           return true;
+        } else {
+          scope.signInPasswordTooShort = false;
+          scope.signInPasswordJustRight = true;
         }
         if(!scope.passwordConfirm || scope.passwordConfirm !== scope.password) {
+          if(scope.passwordConfirm) {
+            scope.passwordConfirmGood = false;
+            scope.passwordConfirmBad = true;
+          } else {
+            scope.passwordConfirmGood = false;
+            scope.passwordConfirmBad = false;
+          }
           return true;
+        } else {
+          scope.passwordConfirmGood = true;
+          scope.passwordConfirmBad = false;
         }
         return false;
       };

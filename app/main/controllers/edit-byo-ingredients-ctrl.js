@@ -1,21 +1,35 @@
 'use strict';
 angular.module('main')
-.controller('EditByoIngredientsCtrl', ['$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, INGREDIENT_CATEGORIES, ErrorService) {
+.controller('EditByoIngredientsCtrl', ['$window', '$scope', '$stateParams', '$state', '$ionicHistory', '_', '$ionicTabsDelegate', '$ionicPlatform', 'DietaryPreferenceAdjustments', 'INGREDIENT_CATEGORIES', 'ErrorService', function ($window, $scope, $stateParams, $state, $ionicHistory, _, $ionicTabsDelegate, $ionicPlatform, DietaryPreferenceAdjustments, INGREDIENT_CATEGORIES, ErrorService) {
 
   $scope.hasChanged = false;
   $scope.selectedIngredientNames = $stateParams.selectedIngredientNames;
   $scope.selectedIngredientIds = $stateParams.selectedIngredientIds;
   $scope.BYOIngredientTypes = $stateParams.BYOIngredientTypes;
+  DietaryPreferenceAdjustments.takeOutIngredients($scope.BYOIngredientTypes);
   $scope.originalBYOIngredientTypes = angular.copy($scope.BYOIngredientTypes);
   $scope.BYOName = $stateParams.BYOName;
   $scope.loadAlaCarte = $stateParams.loadAlaCarte;
+
+  if(typeof $window.ga !== 'undefined') {
+    $window.ga.trackView('EditIngredients');
+  }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
     $scope.navigateBack();
   }, 501);
 
   $scope.$on('$ionicView.beforeLeave', function(event, data) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var interval = Date.now() - $scope.editBYOTimeStart;
+      $window.ga.trackTiming('EditBYO', interval, 'TimeOnPage');
+    }
     deregisterBackAction();
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function(event, data) {
+    $scope.editBYOTimeStart = Date.now();
   });
 
   //on entering, if no selectedIngredientIds, then select first form of each ingredient
@@ -125,11 +139,11 @@ angular.module('main')
       }
     }
     if($stateParams.cameFromRecipes) {
-      $state.go('main.cookPresentRecipes', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames:$scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: $scope.loadAlaCarte});
+      $state.go('main.cookPresentRecipes', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames:$scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: $scope.loadAlaCarte, isNewLoad: $stateParams.isNewLoad});
     } else if($stateParams.isFavoriteRecipe) {
-      $state.go('main.cookPresentFavoriteRecipe', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames:$scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: $scope.loadAlaCarte});
+      $state.go('main.cookPresentFavoriteRecipe', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames:$scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, loadAlaCarte: $scope.loadAlaCarte, isNewLoad: $stateParams.isNewLoad});
     } else {
-      $state.go('main.cookPresent', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, cameFromRecipes: $stateParams.cameFromRecipes});
+      $state.go('main.cookPresent', {recipeIds: $stateParams.previousRecipeIds, selectedIngredientNames: $scope.selectedIngredientNames, selectedIngredientIds: $scope.selectedIngredientIds, alaCarteRecipes: $stateParams.alaCarteRecipes, alaCarteSelectedArr: $stateParams.alaCarteSelectedArr, currentSeasoningProfile: $stateParams.currentSeasoningProfile, ingredientsChanged: true, numberBackToRecipeSelection: $stateParams.numberBackToRecipeSelection, cameFromRecipes: $stateParams.cameFromRecipes, isNewLoad: $stateParams.isNewLoad});
     }
   };
 
@@ -246,6 +260,35 @@ angular.module('main')
       return 'Cancel';
     } else {
       return 'No Changes';
+    }
+  };
+
+  $scope.ingredientClicked = function(ingredient, type) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      if(!$scope.isCheckboxDisabled(type)) {
+        var action;
+        if(ingredient.useInRecipe) {
+          action = 'IngredientSelected';
+        } else {
+          action = 'IngredientUnSelected';
+        }
+        $window.ga.trackEvent('EditBYO', action, ingredient.name.standardForm);
+      }
+    }
+  };
+
+  $scope.ingredientFormClicked = function(form, ingredient) {
+    //analytics
+    if(typeof $window.ga !== 'undefined') {
+      var action;
+      if(form.useInRecipe) {
+        action = 'FormSelected';
+      } else {
+        action = 'FormSelected';
+      }
+      $window.ga.trackEvent('EditBYO', action, form.name);
+      $window.ga.trackEvent('EditBYO', action, ingredient.name.standardForm);
     }
   };
 

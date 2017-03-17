@@ -1,15 +1,15 @@
 'use strict';
 angular.module('main')
 .factory('RecipeInstantiationService', 
-  ['_', 'bakeStepService', 'boilStepService', 'bringToBoilStepService', 
+  ['_', 'bakeStepService', 'boilStepService', 'breakEggStepService', 'bringToBoilStepService', 
   'cookStepService', 'customStepService', 'cutStepService', 'dryStepService',
-  'equipmentPrepStepService', 'heatStepService', 'placeStepService',
-  'preheatOvenStepService', 'sauteeStepService', 'seasonStepService',
+  'equipmentPrepStepService', 'heatStepService', 'moveStepService', 'placeStepService',
+  'preheatOvenStepService', 'reduceHeatStepService', 'removeStepService', 'sauteeStepService', 'serveStepService', 'seasonStepService',
   'slowCookStepService', 'steamingStepService', 'stirStepService', 'ErrorService',
-  function (_, bakeStepService, boilStepService, bringToBoilStepService, cookStepService,
+  function (_, bakeStepService, boilStepService, breakEggStepService, bringToBoilStepService, cookStepService,
     customStepService, cutStepService, dryStepService, equipmentPrepStepService,
-    heatStepService, placeStepService, preheatOvenStepService, sauteeStepService,
-    seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
+    heatStepService, moveStepService, placeStepService, preheatOvenStepService, reduceHeatStepService, removeStepService, sauteeStepService,
+    serveStepService, seasonStepService, slowCookStepService, steamingStepService, stirStepService, ErrorService) {
   var service = {};
 
   service.cullIngredients = function(recipes, ingredientNames, ingredientIds) {
@@ -62,6 +62,13 @@ angular.module('main')
 
   service.fillInSteps = function(recipes) {
     for (var i = recipes.length - 1; i >= 0; i--) {
+      //add type name information to each ingredient
+      for (var j = recipes[i].ingredientList.ingredientTypes.length - 1; j >= 0; j--) {
+        var type = recipes[i].ingredientList.ingredientTypes[j];
+        for (var k = type.ingredients.length - 1; k >= 0; k--) {
+          type.ingredients[k].typeName = type.typeName;
+        }
+      }
       var stepList = recipes[i].stepList;
       for (var j = 0; j < stepList.length; j++) {
         switch(stepList[j].stepType) {
@@ -75,6 +82,10 @@ angular.module('main')
 
           case "BringToBoil":
             bringToBoilStepService.fillInStep(recipes[i], j);
+            break;
+
+          case "BreakEgg":
+            breakEggStepService.fillInStep(recipes[i], j);
             break;
 
           case "Cook":
@@ -93,8 +104,16 @@ angular.module('main')
             dryStepService.fillInStep(recipes[i], j);
             break;
 
+          case "EquipmentPrep":
+            equipmentPrepStepService.fillInStep(recipes[i], j);
+            break;
+
           case "Heat":
             heatStepService.fillInStep(recipes[i], j);
+            break;
+
+          case "Move":
+            moveStepService.fillInStep(recipes[i], j);
             break;
 
           case "Place":
@@ -105,12 +124,24 @@ angular.module('main')
             preheatOvenStepService.fillInStep(recipes[i], j);
             break;
 
+          case "ReduceHeat":
+            reduceHeatStepService.fillInStep(recipes[i], j);
+            break;
+
+          case "Remove":
+            removeStepService.fillInStep(recipes[i], j);
+            break;
+
           case "Sautee":
             sauteeStepService.fillInStep(recipes[i], j);
             break;
 
           case "Season":
             seasonStepService.fillInStep(recipes[i], j);
+            break;
+
+          case "Serve":
+            serveStepService.fillInStep(recipes[i], j);
             break;
 
           case "SlowCook":
@@ -120,11 +151,7 @@ angular.module('main')
           case "Steam":
             steamingStepService.fillInStep(recipes[i], j);
             break;
-
-          case "EquipmentPrep":
-            equipmentPrepStepService.fillInStep(recipes[i], j);
-            break;
-
+          
           case "Stir":
             stirStepService.fillInStep(recipes[i], j);
             break;
@@ -153,6 +180,9 @@ angular.module('main')
       case "BringToBoil":
         return false;
 
+      case "BreakEgg":
+        return true;
+
       case "Cook":
         return true;
 
@@ -171,16 +201,28 @@ angular.module('main')
       case "Heat":
         return false;
 
+      case "Move":
+        return true;
+
       case "Place":
         return true;
 
       case "PreheatOven":
         return false;
 
+      case "RemoveHeat":
+        return true;
+
+      case "Remove":
+        return true;
+
       case "Sautee":
         return true;
 
       case "Season":
+        return true;
+
+      case "Serve":
         return true;
 
       case "SlowCook":
@@ -215,6 +257,9 @@ angular.module('main')
       case "BringToBoil":
         return step.stepInputs["dishInput"];
 
+      case "BreakEgg":
+        return step.stepInputs["dishInputs"];
+
       case "Cook":
         return step.stepInputs["dishInput"];
 
@@ -233,17 +278,30 @@ angular.module('main')
       case "Heat":
         return step.stepInputs["dishInput"];
 
+      case "Move":
+        return step.stepInputs["stepInput"];
+
       case "Place":
         return step.stepInputs["dishProductInput"];
 
       case "PreheatOven":
         return false;
 
+      case "ReduceHeat":
+        return step.stepInputs["reduceHeatObjectInput"];
+        break;
+
+      case "Remove":
+        return step.stepInputs["stepInput"];
+
       case "Sautee":
         return step.stepInputs["dishInput"];
 
       case "Season":
         return step.stepInputs["dishInput"];
+
+      case "Serve":
+        return step.stepInputs["dishInputs"];
 
       case "SlowCook":
         return false;

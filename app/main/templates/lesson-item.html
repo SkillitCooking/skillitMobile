@@ -1,7 +1,18 @@
-<ion-item class="education-collection item-thumbnail-left" ng-click="">
-  <img ng-if="lesson.pictureURL" ng-src="{{lesson.pictureURL}}">
-  <h2 class="education-title">{{lesson.name}}</h2>
-  <p>{{lesson.description}}</p>
-  <!--p><b>Estimated Time: {{lesson.timeEstimate}} min</b></p-->
-  <i class="ion-arrow-right-c recipe-selection-arrow"></i>
+<ion-item class="education-collection item-thumbnail-left" ng-click="">	
+	<div class="row">
+		<div class="col education-image">
+			<img ng-if="lesson.pictureURL" ng-src="{{lesson.pictureURL}}" imageonload>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<h2 class="education-title">{{lesson.name}}</h2>
+		</div>		
+	</div>
+	<div class="row">
+		<div class="col">
+  			<p class="lesson-description">{{lesson.description}}</p>
+		</div>
+	</div>
 </ion-item>
+<!--p><b>Estimated Time: {{lesson.timeEstimate}} min</b></p-->  

@@ -6,7 +6,7 @@
   </ion-tab>-->
 
   <!-- Cook Tab -->
-  <ion-tab title="" icon-off="ion-ios-home-outline" icon-on="ion-ios-home" ui-sref="main.cook">
+  <ion-tab title="" icon-off="cook-off" icon-on="cook-on" ui-sref="main.cook">
     <ion-nav-view name="tab-cook"></ion-nav-view>
   </ion-tab>
 
@@ -15,25 +15,29 @@
     <ion-nav-view name="tab-learn"></ion-nav-view>
   </ion-tab>-->
 <!-- Recipes Tab -->
-  <ion-tab title="" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ui-sref="main.recipes">
+  <ion-tab title="" icon-off="recipes-off" icon-on="recipes-on" ui-sref="main.recipes">
     <ion-nav-view name="tab-recipes"></ion-nav-view>
   </ion-tab>
   
   <!-- new Learn Tab -->
-  <ion-tab title="" icon-off="ion-ios-lightbulb-outline" icon-on="ion-ios-lightbulb" ui-sref="main.chapters">
+  <ion-tab title="" icon-off="learn-off" icon-on="learn-on" ui-sref="main.chapters">
     <ion-nav-view name="tab-learn2"></ion-nav-view>
   </ion-tab>
 
-  <!-- Tips Tab
-  <ion-tab title="Tips" icon-off="ion-ios-information-outline" icon-on="ion-ios-information" ui-sref="main.tips">
-    <ion-nav-view name="tab-tips"></ion-nav-view>
-  </ion-tab>-->
+  <!--ion-tab title="Test" icon-off="ion-ios-information-outline" icon-on="ion-ios-information" ui-sref="main.test">
+    <ion-nav-view name="tab-test"></ion-nav-view>
+  </ion-tab-->
 
-  
 
   <!--Account Tab-->
-  <ion-tab title="" icon-off="ion-ios-person-outline" icon-on="ion-ios-person" ui-sref="main.account">
+  <ion-tab title="" icon-off="account-off" icon-on="account-on" ui-sref="main.account">
     <ion-nav-view name="tab-account"></ion-nav-view>
   </ion-tab>
 
+  <!--Hidden Intro Slides Tab-->
+  <ion-tab title="" hidden="true" ui-sref="main.introSlides">
+    <ion-nav-view name="intro-slides"></ion-nav-view>
+  </ion-tab>
+
 </ion-tabs>
+

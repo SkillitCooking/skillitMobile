@@ -1,6 +1,8 @@
 'use strict';
 angular.module('main')
-.controller('CookCtrl', ['$rootScope', '$scope', '$ionicSlideBoxDelegate', 'IngredientService', '$ionicScrollDelegate', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', function ($rootScope, $scope, $ionicSlideBoxDelegate, IngredientService, $ionicScrollDelegate, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, ErrorService, EXIT_POPUP, INPUTCATEGORIES) {
+.controller('CookCtrl', ['_', '$window', '$rootScope', '$scope', '$persist', '$ionicNavBarDelegate', '$ionicTabsDelegate', '$ionicSlideBoxDelegate', 'AnyFormSelectionService', 'GeneralTextService', 'IngredientService', 'IngredientsUsedService',  '$ionicScrollDelegate', '$ionicModal', '$ionicPopup', '$state', '$stateParams', '$ionicHistory', '$ionicLoading', '$ionicPlatform', '$ionicAuth', '$ionicUser', 'ErrorService', 'EXIT_POPUP', 'INPUTCATEGORIES', 'INGREDIENT_CATEGORIES', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $persist, $ionicNavBarDelegate, $ionicTabsDelegate, $ionicSlideBoxDelegate, AnyFormSelectionService, GeneralTextService, IngredientService, IngredientUsedService, $ionicScrollDelegate, $ionicModal, $ionicPopup, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicPlatform, $ionicAuth, $ionicUser, ErrorService, EXIT_POPUP, INPUTCATEGORIES, INGREDIENT_CATEGORIES, USER, LOGIN, LOADING) {
+
+  $scope.catNames = [];
 
   function alphabeticalCmp(a, b) {
     if(a.name.standardForm < b.name.standardForm) {
@@ -10,6 +12,13 @@ angular.module('main')
     } else {
       return 0;
     }
+  }
+
+  if(typeof $window.ga !== 'undefined') {
+    if($ionicAuth.isAuthenticated()) {
+      $window.ga.setUserId($ionicUser.get(USER.ID));
+    }
+    $window.ga.trackView('IngredientInput');
   }
 
   var deregisterBackAction = $ionicPlatform.registerBackButtonAction(function() {
@@ -42,7 +51,8 @@ angular.module('main')
   });
 
   $ionicLoading.show({
-    template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+    template: LOADING.DEFAULT_TEMPLATE,
+    noBackdrop: true
   });
 
   //catch resize event
@@ -50,7 +60,16 @@ angular.module('main')
     $rootScope.redrawSlides = true;
   });
 
+  var userId, userToken;
+
   $scope.$on('$ionicView.beforeEnter', function() {
+    $persist.set('HAS_SEEN', 'FIRST_OPEN', true);
+    if($ionicAuth.isAuthenticated()) {
+      userId = $ionicUser.get(USER.ID);
+      userToken = $ionicAuth.getToken();
+    }
+    $ionicTabsDelegate.showBar(true);
+    $ionicNavBarDelegate.showBar(true);
     if($scope.slider) {
       if($rootScope.redrawSlides) {
         //Could stand to refactor this out into some sort of service...
@@ -76,41 +95,116 @@ angular.module('main')
     if($stateParams.fromError) {
       ErrorService.toggleIsErrorAlready();
       $scope.clearIngredients();
+      $stateParams.fromError = !$stateParams.fromError;
     }
+    $scope.slideStartTime = Date.now();
   });
 
-  IngredientService.getIngredientsForSelection().then(function(response){
-    $scope.ingredientCategories = response.data;
-    $scope.inputCategoryArray = [];
-    //set first form of all ingredients to selected
-    for(var category in $scope.ingredientCategories) {
-      $scope.inputCategoryArray.push(category);
-      var subCategories = $scope.ingredientCategories[category];
-      for(var subCategory in subCategories) {
-        var ingredients = subCategories[subCategory];
-        ingredients.sort(alphabeticalCmp);
-        for (var i = ingredients.length - 1; i >= 0; i--) {
-          //select form
-          ingredients[i].ingredientForms[0].isSelected = true;
+  function categorySortFn(catA, catB) {
+    if(catA.name === INGREDIENT_CATEGORIES.VEGETABLES) {
+      return -1;
+    }
+    if(catB.name === INGREDIENT_CATEGORIES.VEGETABLES) {
+      return 1;
+    }
+    if(catA.name === INGREDIENT_CATEGORIES.PROTEIN) {
+      return -1;
+    }
+    if(catB.name === INGREDIENT_CATEGORIES.PROTEIN) {
+      return 1;
+    }
+    if(catA.name === INGREDIENT_CATEGORIES.STARCH) {
+      return -1;
+    }
+    if(catB.name === INGREDIENT_CATEGORIES.STARCH) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function hasDisplayForms(ingredient) {
+    if(ingredient.ingredientForms.length === 0) {
+      return false;
+    }
+    switch(ingredient.inputCategory) {
+      case 'Vegetables':
+      case 'Starches':
+        return false;
+
+      case 'Protein':
+        if(ingredient.name.standardForm === 'Chicken') {
+          return false;
+        }
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  function getIngredients() {
+    IngredientService.getIngredientsForSelection(userId, userToken).then(function(response){
+      /*$scope.response = _.omit(response, ['data']);
+      $ionicPopup.show({
+        title: 'Debug',
+        template: '<pre>{{response | json}}</pre>',
+        scope: $scope
+      });*/
+      var ingredientCategoriesObj = response.data;
+      $scope.ingredientCategories = [];
+      $scope.inputCategoryArray = [];
+      //set first form of all ingredients to selected
+      for(var category in ingredientCategoriesObj) {
+        var subCategories = ingredientCategoriesObj[category];
+        $scope.ingredientCategories.push({
+          name: category,
+          subCategories: subCategories
+        });
+        $scope.inputCategoryArray.push(category);
+        for(var subCategory in subCategories) {
+          var ingredients = subCategories[subCategory];
+          ingredients.sort(alphabeticalCmp);
+          for (var i = ingredients.length - 1; i >= 0; i--) {
+            //select form
+            if(!hasDisplayForms(ingredients[i])) {
+              ingredients[i].ingredientForms[0].isSelected = true;
+            } 
+          }
         }
       }
-    }
-    setTimeout(function() {
-      $ionicLoading.hide();
-    }, 500);
-  }, function(response){
-    ErrorService.showErrorAlert();
+      $scope.ingredientCategories.sort(categorySortFn);
+      setTimeout(function() {
+        $ionicLoading.hide();
+      }, 500);
+    }, function(response){
+      $scope.response = _.omit(response, ['data']);
+      ErrorService.showErrorAlert();
+    });
+  }
+
+  getIngredients();
+
+  //when dietaryPreferences change, reload
+  $scope.$on('dietaryPreferencesChanged', function(event) {
+    console.log('right here');
+    event.preventDefault();
+    $scope.goToSlide(0);
+    getIngredients();
   });
 
   $scope.data = {};
 
   $scope.logIngredient = function() {
-    
+
   };
 
   $scope.$watch("data.slider", function(nv, ov) {
     $scope.slider = $scope.data.slider;
   });
+
+  $scope.storeCatName = function(index, obj) {
+    $scope.catNames[index] = obj.name;
+    obj.displayName = $scope.getDisplaySubCategoryName(obj.name);
+  };
 
   $scope.notBeginningSlide = function() {
     if($scope.slider) {
@@ -130,6 +224,19 @@ angular.module('main')
 
   $scope.showSubCategoryName = function(name) {
     return name !== INPUTCATEGORIES.NOSUBCATEGORY;
+  };
+
+  $scope.getDisplaySubCategoryName = function(subCategory) {
+    switch(subCategory) {
+      case INGREDIENT_CATEGORIES.VEGETABLES:
+        return INGREDIENT_CATEGORIES.VEGETABLES_DISPLAY;
+      case INGREDIENT_CATEGORIES.PROTEIN:
+        return INGREDIENT_CATEGORIES.PROTEIN_DISPLAY;
+      case INGREDIENT_CATEGORIES.STARCH:
+        return INGREDIENT_CATEGORIES.STARCH_DISPLAY;
+      default:
+        return subCategory;
+    }
   };
 
   $scope.getWrapClass = function(index) {
@@ -171,14 +278,15 @@ angular.module('main')
     }
   };
 
-  $scope.slideHasChanged = function(index) {
-    /*if($scope.slider) {
-      $scope.slider.update();
-    }*/
-  };
-
   $scope.slidePrev = function() {
     if($scope.slider) {
+      if(!$scope.slider.isBeginning) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          $scope.slideStartTime = Date.now();
+        }
+      }
       $scope.slider.slidePrev();
       setTimeout(function() {
         $ionicScrollDelegate.scrollTop();
@@ -188,6 +296,11 @@ angular.module('main')
 
   $scope.slideNext = function() {
     if($scope.slider) {
+      if(typeof $window.ga !== 'undefined') {
+        var interval = Date.now() - $scope.slideStartTime;
+        $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+        $scope.slideStartTime = Date.now();
+      }
       $scope.slider.slideNext();
       setTimeout(function() {
         $ionicScrollDelegate.scrollTop();
@@ -198,7 +311,7 @@ angular.module('main')
   $scope.hasMoreSlides = function() {
     if($scope.slider) {
       if($scope.ingredientCategories) {
-        return $scope.slider.activeIndex < Object.keys($scope.ingredientCategories).length - 1;
+        return $scope.slider.activeIndex < $scope.ingredientCategories.length - 1;
       }
     }
   };
@@ -229,34 +342,76 @@ angular.module('main')
     }
   };
 
+  function getIngredientIds(selectedIngredients) {
+    return _.map(selectedIngredients, function(ingredient) {
+      return {
+        _id: ingredient._id,
+        formIds: _.map(ingredient.ingredientForms, '_id')
+      };
+    });
+  }
+
   $scope.toRecipeSelection = function() {
-    var selectedIngredients = [];
-    for(var key in $scope.ingredientCategories){
-      var subCategories = angular.copy($scope.ingredientCategories[key]);
-      for(var subCategory in subCategories) {
-        var ingredients = subCategories[subCategory];
-        for (var i = ingredients.length - 1; i >= 0; i--) {
-          var ingredient = ingredients[i];
-          if(ingredient.isSelected){
-            //trim unselected forms, then test forms for emptiness
-            //Add check for 'any' here
-            for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
-              if(!ingredient.ingredientForms[j].isSelected){
-                ingredient.ingredientForms.splice(j, 1);
+    if($scope.ingredientCategories) {
+      var selectedIngredients = [];
+      for(var i = $scope.ingredientCategories.length - 1; i >= 0; i--){
+        var subCategories = angular.copy($scope.ingredientCategories[i].subCategories);
+        for(var subCategory in subCategories) {
+          var ingredients = subCategories[subCategory];
+          for (var k = ingredients.length - 1; k >= 0; k--) {
+            var ingredient = ingredients[k];
+            if(ingredient.isSelected){
+              //trim unselected forms, then test forms for emptiness
+              if(!_.some(ingredient.ingredientForms, function(form) {
+                return form.isSelected;
+              })) {
+                //then select necessary forms
+                AnyFormSelectionService.selectForms(ingredient.ingredientForms);
               }
-            }
-            if(ingredient.ingredientForms.length > 0){
-              selectedIngredients.push(ingredient);
+              for (var j = ingredient.ingredientForms.length - 1; j >= 0; j--) {
+                if(!ingredient.ingredientForms[j].isSelected){
+                  ingredient.ingredientForms.splice(j, 1);
+                }
+              }
+              if(ingredient.ingredientForms.length > 0){
+                selectedIngredients.push(ingredient);
+              }
             }
           }
         }
       }
-    }
-    if(selectedIngredients.length > 0){
-      //go to next controller - but do we want to query for recipes here or there? Also, how are params accessed by the coming state?
-      $state.go('main.cookRecipeSelection', {selectedIngredients: selectedIngredients});
-    } else {
-      $scope.showInvalidPopup();
+      if(selectedIngredients.length > 0) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          var ingredientNamePairs = GeneralTextService.getNamePairs(selectedIngredients);
+          for (var l = ingredientNamePairs.length - 1; l >= 0; l--) {
+            $window.ga.trackEvent('IngredientPair', ingredientNamePairs[l]);
+          }
+        }
+        //create id/formid array
+        var isAnonymous = true;
+        if($ionicAuth.isAuthenticated()) {
+          isAnonymous = false;
+        }
+        var ingredientIds = getIngredientIds(selectedIngredients);
+        IngredientUsedService.postUsedIngredients({
+          ingredientIds: ingredientIds,
+          isAnonymous: isAnonymous,
+          userId: $ionicUser.get(USER.ID, undefined),
+          token: $ionicAuth.getToken(),
+          deviceToken: ionic.Platform.device().uuid
+        }).then(function(res) {
+          //don't need to handle a success either - just logging ish for now
+        }, function(response) {
+          //don't need to do anything to client-side handle an error - just let the
+          //user continue
+        });
+        //go to next controller - but do we want to query for recipes here or there? Also, how are params accessed by the coming state?
+        $state.go('main.cookRecipeSelection', {selectedIngredients: selectedIngredients});
+      } else {
+        $scope.showInvalidPopup();
+      }
     }
   };
 
@@ -284,19 +439,25 @@ angular.module('main')
     $scope.resetPopup.then(function(res) {
       $scope.resetPopup.pending = false;
       if(res) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+        }
         $scope.clearIngredients();
       }
     });
   };
 
   $scope.clearIngredients = function() {
-    for(var key in $scope.ingredientCategories) {
-      for(var subCat in $scope.ingredientCategories[key]) {
-        for (var i = $scope.ingredientCategories[key][subCat].length - 1; i >= 0; i--) {
-          $scope.ingredientCategories[key][subCat][i].isSelected = false;
-          for (var j = $scope.ingredientCategories[key][subCat][i].ingredientForms.length - 1; j >= 0; j--) {
-            if(j > 0) {
-              $scope.ingredientCategories[key][subCat][i].ingredientForms[j].isSelected = false;
+    if($scope.ingredientCategories) {
+      for(var k = $scope.ingredientCategories.length - 1; k >= 0; k--) {
+        for(var subCat in $scope.ingredientCategories[k].subCategories) {
+          for (var i = $scope.ingredientCategories[k].subCategories[subCat].length - 1; i >= 0; i--) {
+            $scope.ingredientCategories[k].subCategories[subCat][i].isSelected = false;
+            for (var j = $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms.length - 1; j >= 0; j--) {
+              if(j > 0) {
+                $scope.ingredientCategories[k].subCategories[subCat][i].ingredientForms[j].isSelected = false;
+              }
             }
           }
         }
@@ -314,7 +475,7 @@ angular.module('main')
           return false;
 
         case 'Protein':
-          if(ingredient.name.standardForm === 'Chicken') {
+          if(ingredient.inputCategory !== curInputCategory || ingredient.name.standardForm === 'Chicken') {
             return false;
           }
           return true;
@@ -341,6 +502,11 @@ angular.module('main')
   $scope.swipeLeft = function() {
     if($scope.slider) {
       if($scope.hasMoreSlides()) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          $scope.slideStartTime = Date.now();
+        }
         $scope.slider.slideNext();
         setTimeout(function() {
           $ionicScrollDelegate.scrollTop();
@@ -353,6 +519,13 @@ angular.module('main')
 
   $scope.swipeRight = function() {
     if($scope.slider) {
+      if(!$scope.slider.isBeginning) {
+        if(typeof $window.ga !== 'undefined') {
+          var interval = Date.now() - $scope.slideStartTime;
+          $window.ga.trackTiming('IngredientInput', interval, $scope.catNames[$scope.slider.activeIndex]);
+          $scope.slideStartTime = Date.now();
+        }
+      }
       $scope.slider.slidePrev();
       setTimeout(function() {
         $ionicScrollDelegate.scrollTop();
@@ -368,4 +541,25 @@ angular.module('main')
       return 'checkbox-circle';
     }
   };
+
+  $scope.ingredientSelected = function(ingredient) {
+    if(typeof $window.ga !== 'undefined') {
+      var action = 'unchecked';
+      if(ingredient.isSelected) {
+        action = 'checked';
+      }
+      $window.ga.trackEvent('IngredientChecked', action, ingredient.name.standardForm);
+    }
+  };
+
+  $scope.ingredientFormSelected = function(form, ingredient) {
+    if(typeof $window.ga !== 'undefined') {
+      var action = 'unchecked';
+      if(form.isSelected) {
+        action = 'unchecked';
+      }
+      var label = ingredient.name.standardForm + '.' + form.name;
+      $window.ga.trackEvent('IngredientFormChecked', action, label);
+    }
+  }
 }]);

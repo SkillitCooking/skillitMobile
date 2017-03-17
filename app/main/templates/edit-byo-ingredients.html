@@ -23,12 +23,12 @@
       </div>
       <ion-list class="cook-tab">
         <div ng-repeat="ingredient in type.ingredients" class="ingredient-checkbox-row">
-          <ion-checkbox class="checkbox-balanced" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name.standardForm}}</ion-checkbox>
+          <ion-checkbox class="checkbox-balanced" ng-click="ingredientClicked(ingredient, type)" ng-model="ingredient.useInRecipe" ng-disabled="isCheckboxDisabled(type)">{{ingredient.name.standardForm}}</ion-checkbox>
           <ion-item ng-if="canHaveForms(ingredient)" class="ingredient-form-items">  
             <div class="grouping-of-ingredient-forms">              
                 <div ng-repeat="form in ingredient.ingredientForms" class="ingredient-form-selection">         
-                  <label class="checkbox checkbox-balanced">
-                  <span class="ingredient-form-name">{{form.name}}</span>
+                  <label ng-click="ingredientFormClicked(form, ingredient)" class="checkbox checkbox-balanced">
+                   <span class="ingredient-form-name">{{form.name}}</span>
                    <input class="ingredient-form-type" type="checkbox" ng-model="form.useInRecipe">
                    <div class="track">
                      <div class="handle"></div>

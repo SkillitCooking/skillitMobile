@@ -100,7 +100,7 @@ angular.module('main')
     }
     //set stepTip
     if(!step.isEmpty) {
-      StepTipService.setStepTipInfo(step, ingredientsToDry);
+      StepTipService.setStepTipInfo(step, step.ingredientsToDry);
     }
   }
 
