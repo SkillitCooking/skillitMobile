@@ -14,6 +14,10 @@
       <!--<button class="button button-spice-up-add-side" ng-if="!isFavoriteRecipe" ng-click="favoriteRecipe($event)">Save to Favorites</button>  -->      
       <p>{{combinedRecipe.description}}</p>
       <p class="font-weight-600">Ready In: {{getRecipeTotalTime()}} mins | Active: {{getRecipeActiveTime()}} mins</p>
+      <!-- No video, show image -->
+      <div class="col education-image" ng-if="!playingVideo">
+        <img ng-src="{{combinedRecipe.mainPictureURL}}">
+      </div>
       <div>
       </div>
       <div class="row">
@@ -66,10 +70,6 @@
       <h3>Instructions</h3>
       <div ng-if="playingVideo" class="video-container">
         <youtube ng-click="mainVideoClicked()"  video="playingVideo" playerid="'mainplayer'"></youtube>
-      </div>
-      <!--No playing video, then picture-->
-      <div ng-if="!playingVideo">
-        <img ng-src="{{combinedRecipe.mainPictureURL}}">
       </div>
       <div class="row video-slider-dots" ng-if="combinedRecipe.mainVideos">
         <div class="col col-25 col-center">
