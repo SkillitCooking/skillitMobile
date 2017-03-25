@@ -21,6 +21,19 @@ angular.module('main', [
         'webClientId': '1098208374252-m9i429nt3774deb9e5e2c2adceark6nr.apps.googleusercontent.com'
       },
       'facebook': {}
+    },
+    //checkout phonegap docs for options wrt plugin configuration
+    'push': {
+      "sender_id": "469914915397",
+      "pluginConfig": {
+        "ios": {
+          "badge": true,
+          "sound": true
+        },
+        "android": {
+          "iconColor": "#343434"
+        }
+      }
     }
   });
 })
