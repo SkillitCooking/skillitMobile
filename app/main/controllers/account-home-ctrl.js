@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.controller('AccountHomeCtrl', ['_', '$window', '$rootScope', '$scope', '$state', '$ionicHistory', '$ionicLoading', '$ionicAuth', '$ionicGoogleAuth', '$ionicFacebookAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOGIN', 'LOADING', function (_, $window, $rootScope, $scope, $state, $ionicHistory, $ionicLoading, $ionicAuth, $ionicGoogleAuth, $ionicFacebookAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOGIN, LOADING) {
+.controller('AccountHomeCtrl', ['_', '$window', '$rootScope', '$scope', '$state', '$ionicHistory', '$ionicLoading', '$ionicAuth', '$ionicGoogleAuth', '$ionicFacebookAuth', '$ionicUser', '$ionicPopover', 'UserService', 'FavoriteRecipeService', 'DietaryPreferencesService', 'ErrorService', 'USER', 'LOGIN', 'LOADING', 'EVENTS', function (_, $window, $rootScope, $scope, $state, $ionicHistory, $ionicLoading, $ionicAuth, $ionicGoogleAuth, $ionicFacebookAuth, $ionicUser, $ionicPopover, UserService, FavoriteRecipeService, DietaryPreferencesService, ErrorService, USER, LOGIN, LOADING, EVENTS) {
 
   $scope.ages = USER.AGES;
   $scope.accountInfoSelected = false;
@@ -12,7 +12,8 @@ angular.module('main')
     $window.ga.trackView('AccoutHome');
   }
 
-  $scope.$on('signInStart', function(event) {
+  //Where is this event being sent from
+  $scope.$on(EVENTS.SIGNIN_START, function(event) {
     event.preventDefault();
     $ionicLoading.show({
       template: LOADING.DEFAULT_TEMPLATE,
