@@ -233,8 +233,7 @@ angular.module('main')
               socialType: LOGIN.FACEBOOK,
               token: result.token,
               email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name,
-              username: $ionicUser.social.facebook.data.username
+              name: $ionicUser.social.facebook.data.full_name
             }).then(function(res){
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
@@ -265,7 +264,6 @@ angular.module('main')
               socialType: LOGIN.FACEBOOK,
               token: result.token,
               email: $ionicUser.social.facebook.data.email,
-              username: $ionicUser.social.facebook.data.username,
               name: $ionicUser.social.facebook.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
@@ -318,8 +316,7 @@ angular.module('main')
               socialType: LOGIN.GOOGLE,
               token: result.token,
               email: $ionicUser.social.google.data.email,
-              name: $ionicUser.social.google.data.full_name,
-              username: $ionicUser.social.google.data.username
+              name: $ionicUser.social.google.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
@@ -349,7 +346,6 @@ angular.module('main')
               socialType: LOGIN.GOOGLE,
               token: result.token,
               email: $ionicUser.social.google.data.email,
-              username: $ionicUser.social.google.data.username,
               name: $ionicUser.social.google.data.full_name
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
