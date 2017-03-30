@@ -59,6 +59,7 @@
     "ios"
   ],
   "dependencies": {
-    "@ionic/cloud": "^0.15.1"
+    "@ionic/cloud": "^0.15.1",
+    "moment-timezone": "^0.5.11"
   }
 }

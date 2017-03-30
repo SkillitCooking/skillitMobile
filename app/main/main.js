@@ -11,6 +11,7 @@ angular.module('main', [
   // TODO: load other modules selected during generation
 ])
 .constant('_', window._)
+.constant('moment', window.moment)
 .config(function($ionicCloudProvider) {
   $ionicCloudProvider.init({
     'core': {
