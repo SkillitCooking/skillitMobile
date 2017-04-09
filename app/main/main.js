@@ -19,9 +19,12 @@ angular.module('main', [
     },
     'auth': {
       'google': {
+        'scope': ['profile'],
         'webClientId': '1098208374252-m9i429nt3774deb9e5e2c2adceark6nr.apps.googleusercontent.com'
       },
-      'facebook': {}
+      'facebook': {
+        'scope': ['public_profile']
+      }
     },
     //checkout phonegap docs for options wrt plugin configuration
     'push': {

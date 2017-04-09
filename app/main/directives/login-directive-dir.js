@@ -229,64 +229,74 @@ angular.module('main')
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
-            UserService.socialSignup({
-              socialType: LOGIN.FACEBOOK,
-              token: result.token,
-              email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name
-            }).then(function(res){
-              $ionicUser.set(USER.ID, res.data._id);
-              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
-              $ionicUser.save();
-              $rootScope.$broadcast('signInStop', true, true);
-              clearForm();
-              $ionicPopup.alert({
-               title: 'Thanks for signing up!',
-               template: 'Now let\'s get cooking!'
-              }).then(function(res) {
-                if(scope.type !== 'popover') {
-                  $state.go('main.cook');
-                } else {
-                  $rootScope.$broadcast('loginDirective.successfulPopover');
-                }
+            console.log($ionicUser.social.facebook.data.raw_data);
+            facebookConnectPlugin.getAccessToken(function(token) {
+              UserService.socialSignup({
+                socialType: LOGIN.FACEBOOK,
+                token: result.token,
+                email: $ionicUser.social.facebook.data.email,
+                name: $ionicUser.social.facebook.data.full_name,
+                socialId: $ionicUser.social.facebook.uid,
+                fbAccessToken: token
+              }).then(function(res){
+                $ionicUser.set(USER.ID, res.data._id);
+                $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
+                $ionicUser.save();
+                $rootScope.$broadcast('signInStop', true, true);
+                clearForm();
+                $ionicPopup.alert({
+                 title: 'Thanks for signing up!',
+                 template: 'Now let\'s get cooking!'
+                }).then(function(res) {
+                  if(scope.type !== 'popover') {
+                    $state.go('main.cook');
+                  } else {
+                    $rootScope.$broadcast('loginDirective.successfulPopover');
+                  }
+                });
+              }, function(response) {
+                $rootScope.$broadcast('signInStop', true, false);
+                clearForm();
+                $ionicUser.unset(LOGIN.TYPE);
+                $ionicFacebookAuth.logout();
+                ErrorService.showErrorAlert();
               });
-            }, function(response) {
-              $rootScope.$broadcast('signInStop', true, false);
-              clearForm();
-              $ionicUser.unset(LOGIN.TYPE);
-              $ionicFacebookAuth.logout();
-              ErrorService.showErrorAlert();
             });
           } else {
             //then relogging in
             //notify server
-            UserService.socialLogin({
-              socialType: LOGIN.FACEBOOK,
-              token: result.token,
-              email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name
-            }).then(function(res) {
-              $ionicUser.set(USER.ID, res.data._id);
-              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
-              $ionicUser.save();
-              $rootScope.$broadcast('signInStop', true, true);
-              clearForm();
-              $ionicPopup.alert({
-               title: 'Login Successful!',
-               template: 'Now let\'s get cooking!'
+            console.log($ionicUser.social.facebook.data.raw_data);
+            facebookConnectPlugin.getAccessToken(function(token) {
+              UserService.socialLogin({
+                socialType: LOGIN.FACEBOOK,
+                token: result.token,
+                email: $ionicUser.social.facebook.data.email,
+                name: $ionicUser.social.facebook.data.full_name,
+                socialId: $ionicUser.social.facebook.uid,
+                fbAccessToken: token
               }).then(function(res) {
-                if(scope.type !== 'popover') {
-                  $state.go('main.cook');
-                } else {
-                  $rootScope.$broadcast('loginDirective.successfulPopover');
-                }
-              }); 
-            }, function(response) {
-              $rootScope.$broadcast('signInStop', true, false);
-              clearForm();
-              $ionicUser.unset(LOGIN.TYPE);
-              $ionicFacebookAuth.logout();
-              ErrorService.showErrorAlert();
+                $ionicUser.set(USER.ID, res.data._id);
+                $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
+                $ionicUser.save();
+                $rootScope.$broadcast('signInStop', true, true);
+                clearForm();
+                $ionicPopup.alert({
+                 title: 'Login Successful!',
+                 template: 'Now let\'s get cooking!'
+                }).then(function(res) {
+                  if(scope.type !== 'popover') {
+                    $state.go('main.cook');
+                  } else {
+                    $rootScope.$broadcast('loginDirective.successfulPopover');
+                  }
+                });
+              }, function(response) {
+                $rootScope.$broadcast('signInStop', true, false);
+                clearForm();
+                $ionicUser.unset(LOGIN.TYPE);
+                $ionicFacebookAuth.logout();
+                ErrorService.showErrorAlert();
+              });
             });
           }
         }, function(err) {
@@ -312,11 +322,13 @@ angular.module('main')
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
+            console.log($ionicUser.social.google.data.raw_data);
             UserService.socialSignup({
               socialType: LOGIN.GOOGLE,
               token: result.token,
               email: $ionicUser.social.google.data.email,
-              name: $ionicUser.social.google.data.full_name
+              name: $ionicUser.social.google.data.full_name,
+              socialId: $ionicUser.social.google.uid
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
@@ -342,11 +354,13 @@ angular.module('main')
             });
           } else {
             //then relogging in
+            console.log($ionicUser.social.google.data.raw_data);
             UserService.socialLogin({
               socialType: LOGIN.GOOGLE,
               token: result.token,
               email: $ionicUser.social.google.data.email,
-              name: $ionicUser.social.google.data.full_name
+              name: $ionicUser.social.google.data.full_name,
+              socialId: $ionicUser.social.google.uid
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
