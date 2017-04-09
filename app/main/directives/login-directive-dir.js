@@ -229,11 +229,21 @@ angular.module('main')
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
+            var firstName, lastName;
+            var rawdata = $ionicUser.social.facebook.data.raw_data;
+            if(rawdata.first_name) {
+              firstName = rawdata.first_name;
+            }
+            if(rawdata.last_name) {
+              lastName = rawdata.last_name;
+            }
             UserService.socialSignup({
               socialType: LOGIN.FACEBOOK,
               token: result.token,
               email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name
+              name: $ionicUser.social.facebook.data.full_name,
+              firstName: firstName,
+              lastName: lastName
             }).then(function(res){
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
@@ -260,11 +270,21 @@ angular.module('main')
           } else {
             //then relogging in
             //notify server
+            var firstName, lastName;
+            var rawdata = $ionicUser.social.facebook.data.raw_data;
+            if(rawdata.first_name) {
+              firstName = rawdata.first_name;
+            }
+            if(rawdata.last_name) {
+              lastName = rawdata.last_name;
+            }
             UserService.socialLogin({
               socialType: LOGIN.FACEBOOK,
               token: result.token,
               email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name
+              name: $ionicUser.social.facebook.data.full_name,
+              firstName: firstName,
+              lastName: lastName
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
@@ -312,11 +332,19 @@ angular.module('main')
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
+            var firstName, lastName;
+            var rawdata = $ionicUser.social.google.data.raw_data;
+            if(rawdata.name) {
+              firstName = rawdata.name.givenName;
+              lastName = rawdata.name.familyName;
+            }
             UserService.socialSignup({
               socialType: LOGIN.GOOGLE,
               token: result.token,
               email: $ionicUser.social.google.data.email,
-              name: $ionicUser.social.google.data.full_name
+              name: $ionicUser.social.google.data.full_name,
+              firstName: firstName,
+              lastName: lastName
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);
@@ -342,11 +370,19 @@ angular.module('main')
             });
           } else {
             //then relogging in
+            var firstName, lastName;
+            var rawdata = $ionicUser.social.google.data.raw_data;
+            if(rawdata.name) {
+              firstName = rawdata.name.givenName;
+              lastName = rawdata.name.familyName;
+            }
             UserService.socialLogin({
               socialType: LOGIN.GOOGLE,
               token: result.token,
               email: $ionicUser.social.google.data.email,
-              name: $ionicUser.social.google.data.full_name
+              name: $ionicUser.social.google.data.full_name,
+              firstName: firstName,
+              lastName: lastName
             }).then(function(res) {
               $ionicUser.set(USER.ID, res.data._id);
               $ionicUser.set(LOGIN.TYPE, LOGIN.GOOGLE);

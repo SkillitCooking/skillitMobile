@@ -14,7 +14,7 @@ angular.module('main').run(function($ionicPush, ErrorService, UserService, $root
       UserService.registerDevice(token.token, timezoneString).then(function(res) {
         //do nothing
       }, function(response) {
-        ErrorService.logError({error: response, context: 'pushTokenRegister - UserService.registerDevice'})
+        ErrorService.logError({error: response, context: 'pushTokenRegister - UserService.registerDevice'});
       });
       return $ionicPush.saveToken(token);
     }
