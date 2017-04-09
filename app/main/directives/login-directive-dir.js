@@ -229,7 +229,6 @@ angular.module('main')
           if(result.signup) {
             //then signed up for the first time
             //will need to create user on server in this case
-<<<<<<< HEAD
             var firstName, lastName;
             var rawdata = $ionicUser.social.facebook.data.raw_data;
             if(rawdata.first_name) {
@@ -238,29 +237,6 @@ angular.module('main')
             if(rawdata.last_name) {
               lastName = rawdata.last_name;
             }
-            UserService.socialSignup({
-              socialType: LOGIN.FACEBOOK,
-              token: result.token,
-              email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name,
-              firstName: firstName,
-              lastName: lastName
-            }).then(function(res){
-              $ionicUser.set(USER.ID, res.data._id);
-              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
-              $ionicUser.save();
-              $rootScope.$broadcast('signInStop', true, true);
-              clearForm();
-              $ionicPopup.alert({
-               title: 'Thanks for signing up!',
-               template: 'Now let\'s get cooking!'
-              }).then(function(res) {
-                if(scope.type !== 'popover') {
-                  $state.go('main.cook');
-                } else {
-                  $rootScope.$broadcast('loginDirective.successfulPopover');
-                }
-=======
             console.log($ionicUser.social.facebook.data.raw_data);
             facebookConnectPlugin.getAccessToken(function(token) {
               UserService.socialSignup({
@@ -269,7 +245,9 @@ angular.module('main')
                 email: $ionicUser.social.facebook.data.email,
                 name: $ionicUser.social.facebook.data.full_name,
                 socialId: $ionicUser.social.facebook.uid,
-                fbAccessToken: token
+                fbAccessToken: token,
+                firstName: firstName,
+                lastName: lastName
               }).then(function(res){
                 $ionicUser.set(USER.ID, res.data._id);
                 $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
@@ -292,13 +270,11 @@ angular.module('main')
                 $ionicUser.unset(LOGIN.TYPE);
                 $ionicFacebookAuth.logout();
                 ErrorService.showErrorAlert();
->>>>>>> bff14c9c4592350b228900b736b604a9c4e6018a
               });
             });
           } else {
             //then relogging in
             //notify server
-<<<<<<< HEAD
             var firstName, lastName;
             var rawdata = $ionicUser.social.facebook.data.raw_data;
             if(rawdata.first_name) {
@@ -307,23 +283,6 @@ angular.module('main')
             if(rawdata.last_name) {
               lastName = rawdata.last_name;
             }
-            UserService.socialLogin({
-              socialType: LOGIN.FACEBOOK,
-              token: result.token,
-              email: $ionicUser.social.facebook.data.email,
-              name: $ionicUser.social.facebook.data.full_name,
-              firstName: firstName,
-              lastName: lastName
-            }).then(function(res) {
-              $ionicUser.set(USER.ID, res.data._id);
-              $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
-              $ionicUser.save();
-              $rootScope.$broadcast('signInStop', true, true);
-              clearForm();
-              $ionicPopup.alert({
-               title: 'Login Successful!',
-               template: 'Now let\'s get cooking!'
-=======
             console.log($ionicUser.social.facebook.data.raw_data);
             facebookConnectPlugin.getAccessToken(function(token) {
               UserService.socialLogin({
@@ -331,9 +290,10 @@ angular.module('main')
                 token: result.token,
                 email: $ionicUser.social.facebook.data.email,
                 name: $ionicUser.social.facebook.data.full_name,
+                firstName: firstName,
+                lastName: lastName,
                 socialId: $ionicUser.social.facebook.uid,
                 fbAccessToken: token
->>>>>>> bff14c9c4592350b228900b736b604a9c4e6018a
               }).then(function(res) {
                 $ionicUser.set(USER.ID, res.data._id);
                 $ionicUser.set(LOGIN.TYPE, LOGIN.FACEBOOK);
