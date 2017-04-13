@@ -237,7 +237,6 @@ angular.module('main')
             if(rawdata.last_name) {
               lastName = rawdata.last_name;
             }
-            console.log($ionicUser.social.facebook.data.raw_data);
             facebookConnectPlugin.getAccessToken(function(token) {
               UserService.socialSignup({
                 socialType: LOGIN.FACEBOOK,
@@ -283,7 +282,6 @@ angular.module('main')
             if(rawdata.last_name) {
               lastName = rawdata.last_name;
             }
-            console.log($ionicUser.social.facebook.data.raw_data);
             facebookConnectPlugin.getAccessToken(function(token) {
               UserService.socialLogin({
                 socialType: LOGIN.FACEBOOK,
