@@ -23,7 +23,7 @@ angular.module('main').run(function($ionicPush, ErrorService, UserService, $root
     //save error
     ErrorService.logError({error: err, context: 'pushTokenRegister - $ionicPush.register'});
   }).then(function(token) {
-    console.log('Token saved:', token.token);
+    //do nothing - already have token
   }, function(err) {
     //save error
     ErrorService.logError({error: err, context: 'pushTokenRegister - $ionicPush.saveToken'});

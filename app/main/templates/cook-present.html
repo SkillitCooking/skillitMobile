@@ -31,7 +31,7 @@
           <!--the test with combinedRecipe.mainVideos is a proxy for whether it is 
           truly a combined recipe-->
           <div ng-repeat="recipeIngredients in ingredientsForRecipes">
-            <h5 ng-if="combinedRecipe.mainVideos">{{recipeIngredients.name}}</h5>
+            <h5 ng-if="constituentRecipes()">{{recipeIngredients.name}}</h5>
             <ul> 
               <li ng-repeat="ingredient in recipeIngredients.ingredients">
               <!--ingredients such that ingredient.useInRecipe === false should only come through with Fulls-->

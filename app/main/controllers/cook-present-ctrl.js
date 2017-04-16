@@ -44,6 +44,13 @@ angular.module('main')
     }
   }
 
+  function ingredientInArray(array, element) {
+    console.log('name', element.name);
+    return array.findIndex(function(ingred) {
+      return ingred.name === element.name;
+    }) !== -1;
+  }
+
   function getIngredientsForRecipes(recipes) {
     var ingredientsForRecipes = [];
     var ingredientsUsed = [];
@@ -120,11 +127,12 @@ angular.module('main')
             name: ingredient.name.standardForm,
             useInRecipe: ingredient.useInRecipe
           };
-        }).reduce(function(a,b) {
-          if(a.indexOf(b) < 0) {
-            a.push(b);
+        }).reduce(function(array, element) {
+          //check name or useInRecipe specifically here
+          if(!ingredientInArray(array, element)) {
+            array.push(element);
           }
-          return a;
+          return array;
         },[]);
       ingredientsForRecipes.push(ingredientsForRecipe);
     }
@@ -983,6 +991,15 @@ angular.module('main')
         });
       }
     });
+  };
+
+  $scope.constituentRecipes = function() {
+    if($scope.combinedRecipe) {
+      if($scope.combinedRecipe.isComposedRecipe) {
+        return true;
+      }
+    }
+    return false;
   };
 
   $scope.categoryNeedsOilOrButter = function() {

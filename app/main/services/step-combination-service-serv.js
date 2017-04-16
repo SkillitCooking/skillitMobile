@@ -142,6 +142,7 @@ angular.module('main')
     //order with respect to time remaining for recipe
     if(recipes.length > 1) {
       var combinedRecipe = {};
+      combinedRecipe.isComposedRecipe = true;
       combinedRecipe.stepList = [];
       var alaCarteRecipeNames = [];
       for (var i = recipes.length - 1; i >= 0; i--) {
