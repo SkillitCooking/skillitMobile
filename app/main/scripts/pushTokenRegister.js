@@ -13,6 +13,7 @@ angular.module('main').run(function($ionicPush, ErrorService, UserService, $root
       var timezoneString = moment.tz.guess();
       UserService.registerDevice(token.token, timezoneString).then(function(res) {
         //do nothing
+        console.log('res', res);
       }, function(response) {
         ErrorService.logError({error: response, context: 'pushTokenRegister - UserService.registerDevice'});
       });

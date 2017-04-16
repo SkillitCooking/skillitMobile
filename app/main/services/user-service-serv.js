@@ -14,17 +14,19 @@ angular.module('main')
       return baseUsers.customPOST(body, 'registerDevice');
     },
     socialLogin: function(userInfo) {
+      userInfo.deviceUUID = $rootScope.deviceUUID
       return baseUsers.customPOST(userInfo, 'socialLogin');
     },
     socialSignup: function(userInfo) {
-      userInfo.deviceUUID = deviceUUID;
+      userInfo.deviceUUID = $rootScope.deviceUUID;
       return baseUsers.customPOST(userInfo, 'socialSignup');
     },
     emailLogin: function(userInfo) {
+      userInfo.deviceUUID = $rootScope.deviceUUID;
       return baseUsers.customPOST(userInfo, 'emailLogin');
     },
     emailSignup: function(userInfo) {
-      userInfo.deviceUUID = deviceUUID;
+      userInfo.deviceUUID = $rootScope.deviceUUID;
       return baseUsers.customPOST(userInfo, 'emailSignup');
     },
     logout: function(userInfo) {
