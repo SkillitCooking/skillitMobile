@@ -346,7 +346,6 @@ angular.module('main')
               firstName = rawdata.name.givenName;
               lastName = rawdata.name.familyName;
             }
-            console.log($ionicUser.social.google.data.raw_data);
             UserService.socialSignup({
               socialType: LOGIN.GOOGLE,
               token: result.token,
@@ -386,7 +385,6 @@ angular.module('main')
               firstName = rawdata.name.givenName;
               lastName = rawdata.name.familyName;
             }
-            console.log($ionicUser.social.google.data.raw_data);
             UserService.socialLogin({
               socialType: LOGIN.GOOGLE,
               token: result.token,

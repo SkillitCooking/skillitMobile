@@ -6,8 +6,15 @@ angular.module('main')
       userId: $ionicUser.get(USER.ID),
       token: $ionicAuth.getToken()
     }).then(function(res) {
-      var user = res.data;
-      $ionicUser.set('dietaryPreferences', user.dietaryPreferences);
+      if(res.invalidUser) {
+        //then logout and clear $ionicUser/$ionicAuth ish
+        $ionicAuth.logout();
+        $ionicUser.unstore();
+        $ionicUser.delete();
+      } else {
+        var user = res.data;
+        $ionicUser.set('dietaryPreferences', user.dietaryPreferences);
+      }
     }, function(response) {
       ErrorService.showErrorAlert();
     });
